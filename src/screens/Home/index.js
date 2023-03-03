@@ -1,48 +1,71 @@
+//React
+import { useState } from 'react';
+import styled from 'styled-components/native';
+import { useIsFocused } from '@react-navigation/native';
 
+//Components
+import { StatusBar } from 'expo-status-bar';
+import { StatusBarArea, SafeArea, ContainerTop } from 'components/Common';
+import DefaultButton from 'components/Button/Default';
+import { COLOR } from 'constants/design';
 
-//Core Components
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  Text,
-} from 'react-native';
+function FocusAwareStatusBar(props) {
+  const isFocused = useIsFocused();
+  return isFocused && <StatusBar {...props} />;
+}
 
-//Constants
-import COLOR from 'constants/color'
-
-export default function HomePage({ route, navigation }) {
-  const value = route?.params?.value;
+export default function HomeScreen({ navigation }) {
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
+    <>
+      <StatusBarArea backgroundColor={COLOR.MAIN}>
+        <FocusAwareStatusBar animated style="light" />
+      </StatusBarArea>
 
-        <Text style={styles.subtitle}>홈 스크린: {value}</Text>
+      <SafeArea backgroundColor={COLOR.MAIN}>
+        <ContainerTop>
+          <SectionContainer>
 
-      </View>
-    </SafeAreaView>
+          </SectionContainer>
+
+          <BannerContainer>
+
+          </BannerContainer>
+
+          <ContentsContainer>
+            <DefaultButton
+              marginTop={20}
+              text="2차 소견"
+              action={() => navigation.navigate('NeedLoginSecondOpinion')}
+            />
+            <DefaultButton
+              marginTop={10}
+              text="의료 질문"
+              action={() => navigation.navigate('NeedLoginMedicalQuestion')}
+            />
+
+          </ContentsContainer>
+        </ContainerTop>
+      </SafeArea>
+    </>
   );
 }
 
-const styles = StyleSheet.create({
+const SectionContainer = styled.View`
+  width: 100%;
+  height: 70px;
+  //background-color: red;
+`;
 
-  container: {
-    flex: 1,
-    paddingHorizontal: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const BannerContainer = styled.View`
+  width: 100%;
+  height: 130px;
+  //background-color: blue;
+`;
 
-  bold: {
-    fontWeight: '700',
-  },
-
-  subtitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: COLOR.MAIN,
-    marginTop: 20
-  },
-
-});
+const ContentsContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border-radius: 15px 15px 0px 0px;
+`;

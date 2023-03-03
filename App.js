@@ -1,21 +1,34 @@
-import * as React from 'react';
+//Navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-//Screens
-import LoginScreen from 'screens/Login';
-import HomeScreen from 'screens/Home';
+//Navigation
+import BottomTapNavigation from 'navigation/BottomTapNavigation';
+import LoginStackNavigation from 'navigation/LoginStackNavigation';
+import NeedLoginSecondOpinion from 'navigation/LoginStackNavigation/NeedLoginSecondOpinion';
+import NeedLoginMedicalQuestion from 'navigation/LoginStackNavigation/NeedLoginMedicalQuestion';
+import PolicyStackNavigation from 'navigation/MyPage/PolicyStackNavigation';
+import InquiryStackNavigation from 'navigation/MyPage/InquiryStackNavigation';
 
 const Stack = createNativeStackNavigator();
-const BottomTab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Navigator initialRouteName="BottomTapNavigation" >
+
+        <Stack.Group screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="BottomTapNavigation" component={BottomTapNavigation} />
+          <Stack.Screen name="NeedLoginSecondOpinion" component={NeedLoginSecondOpinion} />
+          <Stack.Screen name="NeedLoginMedicalQuestion" component={NeedLoginMedicalQuestion} />
+          <Stack.Screen name="InquiryStackNavigation" component={InquiryStackNavigation} />
+          <Stack.Screen name="PolicyStackNavigation" component={PolicyStackNavigation} />
+        </Stack.Group>
+
+        <Stack.Group screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>
+          <Stack.Screen name="LoginStackNavigation" component={LoginStackNavigation} />
+        </Stack.Group>
+
       </Stack.Navigator>
     </NavigationContainer>
   );
