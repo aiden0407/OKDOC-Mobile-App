@@ -23,11 +23,11 @@ export default function HistoryScreen({ navigation }) {
   }
 
   function FaqOnClick() {
-    Alert.alert('자주하는 질문 스크린');
+    navigation.navigate('FaqStackNavigation');
   }
 
   function NotificationOnClick() {
-    Alert.alert('공지사항 스크린');
+    navigation.navigate('NotificationStackNavigation');
   }
 
   return (

@@ -22,15 +22,19 @@ export default function PolicyScreen({ navigation }) {
           <Title>약관 및 정책</Title>
         </TitleContainer>
 
-        <PolicyRow onPress={() => TermsOfServiceOnClick()}>
-          <CustomerSurviceTitle>서비스 이용약관</CustomerSurviceTitle>
-          <Ionicons name="chevron-forward" size={20} />
-        </PolicyRow>
+        <PolicyBox>
+          <PolicyRow onPress={() => TermsOfServiceOnClick()}>
+            <PolicyTitle>서비스 이용약관</PolicyTitle>
+            <Ionicons name="chevron-forward" size={20} />
+          </PolicyRow>
+        </PolicyBox>
 
-        <PolicyRow onPress={() => PrivacyPolicyOnClick()}>
-          <CustomerSurviceTitle>개인정보 보호정책</CustomerSurviceTitle>
-          <Ionicons name="chevron-forward" size={20} />
-        </PolicyRow>
+        <PolicyBox>
+          <PolicyRow onPress={() => PrivacyPolicyOnClick()}>
+            <PolicyTitle>개인정보 보호정책</PolicyTitle>
+            <Ionicons name="chevron-forward" size={20} />
+          </PolicyRow>
+        </PolicyBox>
 
       </ContainerTop>
     </SafeArea>
@@ -48,17 +52,21 @@ const Title = styled.Text`
   font-size: 20px;
 `;
 
-const PolicyRow = styled.TouchableOpacity`
+const PolicyBox = styled.View`
   width: 100%;
   padding: 26px 24px;
   border-bottom-width: 2px;
   border-bottom-color: #F7F8FA;
+`;
+
+const PolicyRow = styled.TouchableOpacity`
+  width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 `;
 
-const CustomerSurviceTitle = styled.Text`
+const PolicyTitle = styled.Text`
   font-weight: 600;
   font-size: 16px;
 `;
