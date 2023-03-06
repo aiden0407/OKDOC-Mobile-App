@@ -1,16 +1,32 @@
 //React
+import { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 
 //Components
 import { SafeArea, ContainerTop } from 'components/Common';
 
-export default function PrivacyPolicyScreen() {
+export default function PolicyDetialsScreen({ navigation, route }) {
+  
+  const [title, setTitle] = useState(route.params.title);
+
+  useEffect(() => {
+    setTitle(route.params.title);
+    navigation.setOptions(
+      title
+        ? {
+          title: route.params.title
+        }
+        : {
+          headerShown: false
+        }
+    );
+  }, [navigation, route]);
 
   return (
     <SafeArea>
       <ContainerTop paddingTop={50}>
         <TitleContainer>
-          <Title>개인정보 보호정책</Title>
+          <Title>{title}</Title>
         </TitleContainer>
 
         <ContentsContainer>

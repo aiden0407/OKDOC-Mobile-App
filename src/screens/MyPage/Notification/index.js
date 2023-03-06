@@ -7,8 +7,26 @@ import { SafeArea, ContainerTop } from 'components/Common';
 
 export default function NotificationScreen({ navigation }) {
 
-  function DetailsOnClick(title) {
-    navigation.navigate('Details', { title: title });
+  function NotificationButton({ title, recent, date }) {
+    return (
+      <NotificationBox>
+        <NotificationTouchable
+          activeOpacity={0.4}
+          onPress={() => navigation.navigate('NotificationDetails', {
+            title: title,
+          })}
+        >
+          <SubtitleRow>
+            <SubtitleTextRow>
+              <SubtitleText>{title}</SubtitleText>
+              {recent && <SubtitleNew><SubtitleNewN>N</SubtitleNewN></SubtitleNew>}
+            </SubtitleTextRow>
+            <Ionicons name="chevron-forward" size={20} />
+          </SubtitleRow>
+          <DateText>{date}</DateText>
+        </NotificationTouchable>
+      </NotificationBox>
+    )
   }
 
   return (
@@ -18,44 +36,22 @@ export default function NotificationScreen({ navigation }) {
           <Title>공지사항</Title>
         </TitleContainer>
 
-        <NotificationBox>
-          <NotificationButton onPress={() => DetailsOnClick('[공지] 생일축하 쿠폰 지급정책 변경 안내3')}>
-            <SubtitleRow>
-              <SubtitleTextRow>
-                <SubtitleText>[공지] 생일축하 쿠폰 지급정책 변경 안내3</SubtitleText>
-                <SubtitleNew><SubtitleNewN>N</SubtitleNewN></SubtitleNew>
-              </SubtitleTextRow>
-              <Ionicons name="chevron-forward" size={20} />
-            </SubtitleRow>
-            <DateText>2023.04.10</DateText>
-          </NotificationButton>
-        </NotificationBox>
+        <NotificationButton
+          title="[공지] 생일축하 쿠폰 지급정책 변경 안내3"
+          recent
+          date="2023.04.10"
+        />
 
-        <NotificationBox>
-          <NotificationButton onPress={() => DetailsOnClick('[공지] 생일축하 쿠폰 지급정책 변경 안내2')}>
-            <SubtitleRow>
-              <SubtitleTextRow>
-                <SubtitleText>[공지] 생일축하 쿠폰 지급정책 변경 안내2</SubtitleText>
-                <SubtitleNew><SubtitleNewN>N</SubtitleNewN></SubtitleNew>
-              </SubtitleTextRow>
-              <Ionicons name="chevron-forward" size={20} />
-            </SubtitleRow>
-            <DateText>2023.04.08</DateText>
-          </NotificationButton>
-        </NotificationBox>
+        <NotificationButton
+          title="[공지] 생일축하 쿠폰 지급정책 변경 안내2"
+          recent
+          date="2023.04.08"
+        />
 
-        <NotificationBox>
-          <NotificationButton onPress={() => DetailsOnClick('[공지] 생일축하 쿠폰 지급정책 변경 안내1')}>
-            <SubtitleRow>
-              <SubtitleTextRow>
-                <SubtitleText>[공지] 생일축하 쿠폰 지급정책 변경 안내1</SubtitleText>
-                {/* <SubtitleNew><SubtitleNewN>N</SubtitleNewN></SubtitleNew> */}
-              </SubtitleTextRow>
-              <Ionicons name="chevron-forward" size={20} />
-            </SubtitleRow>
-            <DateText>2023.04.07</DateText>
-          </NotificationButton>
-        </NotificationBox>
+        <NotificationButton
+          title="[공지] 생일축하 쿠폰 지급정책 변경 안내"
+          date="2023.04.07"
+        />
 
       </ContainerTop>
     </SafeArea>
@@ -80,7 +76,7 @@ const NotificationBox = styled.View`
   border-bottom-color: #F7F8FA;
 `;
 
-const NotificationButton = styled.TouchableOpacity`
+const NotificationTouchable = styled.TouchableOpacity`
   width: 100%;
   gap: 10px;
 `;

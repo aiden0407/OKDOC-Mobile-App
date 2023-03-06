@@ -1,34 +1,31 @@
 //Navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import NotificationScreen from 'screens/MyPage/Notification';
-import DetailsScreen from 'screens/MyPage/Notification/Details';
+import CategoryScreen from 'screens/Home/Treatment/Category';
 
 //Components
 import NavigationBackArrow from 'components/NavigationBackArrow';
 
 const Stack = createNativeStackNavigator();
 
-export default function NotificationStackNavigation({ navigation }) {
+export default function TreatmentReservation({ navigation }) {
 
   return (
-    <Stack.Navigator initialRouteName="Notification" >
+    <Stack.Navigator initialRouteName="Category" >
       <Stack.Group screenOptions={{ headerLargeTitleShadowVisible: false }}>
-        
         <Stack.Screen
-          name="Notification"
-          component={NotificationScreen}
+          name="Category"
+          component={CategoryScreen}
           options={() => ({
-            title: '공지사항',
+            title: '비대면 진료실',
             headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
           })}
         />
-
         <Stack.Screen
-          name="Details"
-          component={DetailsScreen}
+          name="Category2"
+          component={CategoryScreen}
           options={() => ({
-            title: '공지사항',
-            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Notification')} />,
+            title: '비대면 진료실2',
+            headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
           })}
         />
       </Stack.Group>

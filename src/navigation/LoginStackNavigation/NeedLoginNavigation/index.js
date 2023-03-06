@@ -7,7 +7,7 @@ import NavigationBackArrow from 'components/NavigationBackArrow';
 
 const Stack = createNativeStackNavigator();
 
-export default function NeedLoginSecondOpinion({ navigation }) {
+export default function NeedLoginNavigation({ navigation }) {
 
   return (
     <Stack.Navigator initialRouteName="NeedLogin" >
@@ -16,7 +16,6 @@ export default function NeedLoginSecondOpinion({ navigation }) {
           name="NeedLogin"
           component={NeedLoginScreen}
           options={() => ({
-            title: '2차 소견',
             headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
           })}
         />

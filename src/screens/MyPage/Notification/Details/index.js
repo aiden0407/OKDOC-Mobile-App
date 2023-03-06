@@ -4,9 +4,9 @@ import styled from 'styled-components/native';
 //Components
 import { SafeArea, ContainerTop } from 'components/Common';
 
-export default function ContentsScreen({ route }) {
+export default function NotificationDetailsScreen({ route }) {
+  
   const title = route.params.title;
-  console.log(route);
 
   return (
     <SafeArea>

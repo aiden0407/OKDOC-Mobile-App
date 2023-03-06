@@ -2,15 +2,15 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-//Navigation
+//BottomTap
 import BottomTapNavigation from 'navigation/BottomTapNavigation';
+//Home
+import TreatmentReservation from 'navigation/Home/TreatmentReservation';
+//Mypage
+import MyPageStackNavigation from 'navigation/MyPage';
+//Login/Register
 import LoginStackNavigation from 'navigation/LoginStackNavigation';
-import NeedLoginSecondOpinion from 'navigation/LoginStackNavigation/NeedLoginSecondOpinion';
-import NeedLoginMedicalQuestion from 'navigation/LoginStackNavigation/NeedLoginMedicalQuestion';
-import InquiryStackNavigation from 'navigation/MyPage/InquiryStackNavigation';
-import PolicyStackNavigation from 'navigation/MyPage/PolicyStackNavigation';
-import FaqStackNavigation from 'navigation/MyPage/FaqStackNavigation';
-import NotificationStackNavigation from 'navigation/MyPage/NotificationStackNavigation';
+import NeedLoginNavigation from 'navigation/LoginStackNavigation/NeedLoginNavigation';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,13 +21,12 @@ export default function App() {
 
         <Stack.Group screenOptions={{ headerShown: false }}>
           <Stack.Screen name="BottomTapNavigation" component={BottomTapNavigation} />
-          <Stack.Screen name="NeedLoginSecondOpinion" component={NeedLoginSecondOpinion} />
-          <Stack.Screen name="NeedLoginMedicalQuestion" component={NeedLoginMedicalQuestion} />
+          {/* Home Components */}
+          <Stack.Screen name="TreatmentReservation" component={TreatmentReservation} />
           {/* MyPage Components */}
-          <Stack.Screen name="InquiryStackNavigation" component={InquiryStackNavigation} />
-          <Stack.Screen name="PolicyStackNavigation" component={PolicyStackNavigation} />
-          <Stack.Screen name="FaqStackNavigation" component={FaqStackNavigation} />
-          <Stack.Screen name="NotificationStackNavigation" component={NotificationStackNavigation} />
+          <Stack.Screen name="MyPageStackNavigation" component={MyPageStackNavigation} />
+          {/* Etc. */}
+          <Stack.Screen name="NeedLoginNavigation" component={NeedLoginNavigation} />
         </Stack.Group>
 
         <Stack.Group screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>

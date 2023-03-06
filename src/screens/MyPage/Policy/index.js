@@ -7,34 +7,32 @@ import { SafeArea, ContainerTop } from 'components/Common';
 
 export default function PolicyScreen({ navigation }) {
 
-  function TermsOfServiceOnClick() {
-    navigation.navigate('TermsOfService');
-  }
-
-  function PrivacyPolicyOnClick() {
-    navigation.navigate('PrivacyPolicy');
+  function PolicyButton({ title }) {
+    return (
+      <PolicyBox>
+        <PolicyRow
+          activeOpacity={0.4}
+          onPress={() => navigation.push('PolicyDetails', {
+            title: title,
+          })}
+        >
+          <PolicyTitle>{title}</PolicyTitle>
+          <Ionicons name="chevron-forward" size={20} />
+        </PolicyRow>
+      </PolicyBox>
+    )
   }
 
   return (
     <SafeArea>
       <ContainerTop paddingTop={50}>
+
         <TitleContainer>
           <Title>약관 및 정책</Title>
         </TitleContainer>
 
-        <PolicyBox>
-          <PolicyRow onPress={() => TermsOfServiceOnClick()}>
-            <PolicyTitle>서비스 이용약관</PolicyTitle>
-            <Ionicons name="chevron-forward" size={20} />
-          </PolicyRow>
-        </PolicyBox>
-
-        <PolicyBox>
-          <PolicyRow onPress={() => PrivacyPolicyOnClick()}>
-            <PolicyTitle>개인정보 보호정책</PolicyTitle>
-            <Ionicons name="chevron-forward" size={20} />
-          </PolicyRow>
-        </PolicyBox>
+        <PolicyButton title="서비스 이용약관"/>
+        <PolicyButton title="개인정보 보호정책"/>
 
       </ContainerTop>
     </SafeArea>

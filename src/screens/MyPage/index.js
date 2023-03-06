@@ -3,31 +3,27 @@ import { useState } from 'react';
 import styled from 'styled-components/native';
 
 //Components
-import { Alert } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, ContainerTop } from 'components/Common';
-import { COLOR } from 'constants/design';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function HistoryScreen({ navigation }) {
+export default function MyPageScreen({ navigation }) {
 
   function LoginOnClick() {
     navigation.navigate('LoginStackNavigation');
   }
 
-  function InquiryOnClick() {
-    navigation.navigate('InquiryStackNavigation');
-  }
-
-  function PolicyOnClick() {
-    navigation.navigate('PolicyStackNavigation');
-  }
-
-  function FaqOnClick() {
-    navigation.navigate('FaqStackNavigation');
-  }
-
-  function NotificationOnClick() {
-    navigation.navigate('NotificationStackNavigation');
+  function ServicesButton({ title, navigate }) {
+    return (
+      <CustomerSurviceRow 
+        activeOpacity={0.4}
+        onPress={() => navigation.navigate('MyPageStackNavigation', {
+          screen: navigate,
+        })}
+      >
+        <CustomerSurviceTitle>{title}</CustomerSurviceTitle>
+        <Ionicons name="chevron-forward" size={20} />
+      </CustomerSurviceRow>
+    )
   }
 
   return (
@@ -44,26 +40,14 @@ export default function HistoryScreen({ navigation }) {
 
         </ProfileContainer>
 
-        <DividingLine/>
+        <DividingLine />
 
         <CustomerSurviceContainer>
           <CustomerSurvice>고객센터</CustomerSurvice>
-          <CustomerSurviceRow onPress={() => InquiryOnClick()}>
-            <CustomerSurviceTitle>1:1 문의</CustomerSurviceTitle>
-            <Ionicons name="chevron-forward" size={20} />
-          </CustomerSurviceRow>
-          <CustomerSurviceRow onPress={() => PolicyOnClick()}>
-            <CustomerSurviceTitle>서비스 이용약관</CustomerSurviceTitle>
-            <Ionicons name="chevron-forward" size={20} />
-          </CustomerSurviceRow>
-          <CustomerSurviceRow onPress={() => FaqOnClick()}>
-            <CustomerSurviceTitle>자주하는 질문</CustomerSurviceTitle>
-            <Ionicons name="chevron-forward" size={20} />
-          </CustomerSurviceRow>
-          <CustomerSurviceRow onPress={() => NotificationOnClick()}>
-            <CustomerSurviceTitle>공지사항</CustomerSurviceTitle>
-            <Ionicons name="chevron-forward" size={20} />
-          </CustomerSurviceRow>
+          <ServicesButton title="1:1 문의" navigate="Inquiry"/>
+          <ServicesButton title="서비스 이용약관" navigate="Policy"/>
+          <ServicesButton title="자주하는 질문" navigate="FAQ"/>
+          <ServicesButton title="공지사항" navigate="Notification"/>
         </CustomerSurviceContainer>
       </ContainerTop>
     </SafeArea>
