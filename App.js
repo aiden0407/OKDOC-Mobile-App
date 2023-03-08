@@ -12,6 +12,13 @@ import MyPageStackNavigation from 'navigation/MyPage';
 import LoginStackNavigation from 'navigation/LoginStackNavigation';
 import NeedLoginNavigation from 'navigation/LoginStackNavigation/NeedLoginNavigation';
 
+//기본 폰트 크기 고정
+import { Text, TextInput } from 'react-native';
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
+TextInput.defaultProps = TextInput.defaultProps || {};
+TextInput.defaultProps.allowFontScaling = false;
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
