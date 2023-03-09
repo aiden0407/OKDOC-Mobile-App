@@ -1,7 +1,7 @@
 //Styled Components
 import styled from 'styled-components/native';
 
-//Core Components
+//Components
 import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
