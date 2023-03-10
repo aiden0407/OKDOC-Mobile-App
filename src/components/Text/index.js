@@ -24,4 +24,5 @@ export const Text = styled.Text`
   ${(props) => fontTypeSelector(props.T1, props.T2, props.T3, props.T4, props.T5, props.T6, props.T7, props.T8)}
   margin-top: ${(props) => `${props.marginTop ?? 0}px`};
   color: ${(props) => props.color ?? '#000000'};
+  ${(props) => props.center && 'text-align: center'}
 `;
