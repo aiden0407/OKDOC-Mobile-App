@@ -3,13 +3,15 @@ import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-//Font
+//Default Settings
 import { useFonts } from 'expo-font';
 import { Text, TextInput } from 'react-native';
+import { COLOR } from 'constants/design'
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
 TextInput.defaultProps = TextInput.defaultProps || {};
 TextInput.defaultProps.allowFontScaling = false;
+TextInput.defaultProps.placeholderTextColor = COLOR.GRAY2;
 
 //BottomTap
 import BottomTapNavigation from 'navigation/BottomTapNavigation';
