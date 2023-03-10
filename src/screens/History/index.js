@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components/native';
 
 //Components
-import { SafeArea, ContainerTop } from 'components/Common';
+import { SafeArea, ContainerTop } from 'components/Layout';
 import { COLOR } from 'constants/design';
 
 export default function HistoryScreen({ navigation }) {

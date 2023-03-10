@@ -10,7 +10,7 @@ const Stack = createNativeStackNavigator();
 export default function NeedLoginNavigation({ navigation }) {
 
   return (
-    <Stack.Navigator initialRouteName="NeedLogin" >
+    <Stack.Navigator>
       <Stack.Group screenOptions={{ headerLargeTitleShadowVisible: false }}>
         <Stack.Screen
           name="NeedLogin"

@@ -3,23 +3,16 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 
 //Components
-import { SafeArea, ContainerTop } from 'components/Common';
+import { SafeArea, ContainerTop } from 'components/Layout';
 
 export default function PolicyDetialsScreen({ navigation, route }) {
   
-  const [title, setTitle] = useState(route.params.title);
+  const [title, setTitle] = useState(route.params?.title);
 
   useEffect(() => {
-    setTitle(route.params.title);
-    navigation.setOptions(
-      title
-        ? {
-          title: route.params.title
-        }
-        : {
-          headerShown: false
-        }
-    );
+    navigation.setOptions({
+      title: route.params.title
+    });
   }, [navigation, route]);
 
   return (
@@ -59,7 +52,7 @@ const ContentsContainer = styled.View`
 `;
 
 const Contents = styled.Text`
-  font-weight: 500;
   font-size: 14px;
+  line-height: 20px;
   color: #8B8E99;
 `;

@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 
 //Components
 import { Ionicons } from '@expo/vector-icons';
-import { SafeArea, ContainerTop } from 'components/Common';
+import { SafeArea, ContainerTop } from 'components/Layout';
 
 export default function NotificationScreen({ navigation }) {
 

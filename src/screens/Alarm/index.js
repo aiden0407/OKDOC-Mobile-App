@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components/native';
 
 //Components
-import { SafeArea, ContainerCenter } from 'components/Common';
+import { SafeArea, ContainerCenter } from 'components/Layout';
 import { COLOR } from 'constants/design';
 
 export default function AlarmScreen({ navigation }) {

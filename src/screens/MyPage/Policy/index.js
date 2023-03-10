@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 
 //Components
 import { Ionicons } from '@expo/vector-icons';
-import { SafeArea, ContainerTop } from 'components/Common';
+import { SafeArea, ContainerTop } from 'components/Layout';
 
 export default function PolicyScreen({ navigation }) {
 
@@ -12,7 +12,7 @@ export default function PolicyScreen({ navigation }) {
       <PolicyBox>
         <PolicyRow
           activeOpacity={0.4}
-          onPress={() => navigation.push('PolicyDetails', {
+          onPress={() => navigation.navigate('PolicyDetails', {
             title: title,
           })}
         >

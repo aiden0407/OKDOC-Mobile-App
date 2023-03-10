@@ -44,21 +44,23 @@ export default function NotificationStackNavigation({ navigation }) {
         />
       </Stack.Group>
 
-      <Stack.Screen
-        name="PolicyDetails"
-        component={PolicyDetailsScreen}
-        options={{
-          headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Policy')} />,
-        }}
-      />
-      <Stack.Screen
-        name="NotificationDetails"
-        component={NotificationDetailsScreen}
-        options={{ 
-          title: '공지사항',
-          headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Notification')} />,
-        }}
-      />
+      <Stack.Group screenOptions={{ headerLargeTitleShadowVisible: false }}>
+        <Stack.Screen
+          name="PolicyDetails"
+          component={PolicyDetailsScreen}
+          options={{
+            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Policy')} />,
+          }}
+        />
+        <Stack.Screen
+          name="NotificationDetails"
+          component={NotificationDetailsScreen}
+          options={{
+            title: '공지사항',
+            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Notification')} />,
+          }}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }
