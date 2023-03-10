@@ -28,6 +28,11 @@ export const SafeArea = styled.SafeAreaView`
   background-color: ${(props) => props.backgroundColor ?? '#FFFFFF'};
 `;
 
+export const Container = styled.View`
+  flex: 1;
+  background-color: ${(props) => props.backgroundColor ?? 'transparent'};
+`;
+
 export const ContainerTop = styled.View`
   flex: 1;
   align-items: center;
