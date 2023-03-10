@@ -1,6 +1,7 @@
 //Navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CategoryScreen from 'screens/Home/Treatment/Category';
+import BookingScreen from 'screens/Home/Treatment/Booking';
 
 //Components
 import NavigationBackArrow from 'components/NavigationBackArrow';
@@ -21,10 +22,18 @@ export default function TreatmentReservation({ navigation }) {
           })}
         />
         <Stack.Screen
-          name="Category2"
-          component={CategoryScreen}
+          name="Booking"
+          component={BookingScreen}
           options={() => ({
-            title: '비대면 진료실2',
+            title: '비대면 진료실',
+            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Category')} />,
+          })}
+        />
+        <Stack.Screen
+          name="BookingDirectly"
+          component={BookingScreen}
+          options={() => ({
+            title: '비대면 진료실',
             headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
           })}
         />
