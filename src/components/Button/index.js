@@ -1,7 +1,5 @@
 //Styled Components
 import styled from 'styled-components/native';
-
-//Constants
 import { COLOR, TYPOGRAPHY, BUTTON } from 'constants/design'
 
 function buttonSizeSelector(large, medium, tiny){
@@ -56,7 +54,7 @@ export function OutlineButton({ text, action, marginTop, large, medium, tiny, do
       tiny={tiny}
       double={double}
       marginTop={marginTop}
-      underlayColor={!disabled && COLOR.SUB3}
+      underlayColor={!disabled && COLOR.SUB4}
       onPress={action}
     >
       <OutlineButtonText disabled={disabled} large={large} medium={medium} tiny={tiny} double={double}>{text}</OutlineButtonText>
@@ -99,7 +97,7 @@ export function SubColorButton({ text, action, marginTop, large, medium, tiny, d
 const SubColorButtonBackground = styled.TouchableHighlight`
   ${(props) => buttonSizeSelector(props.large, props.medium, props.tiny)}
   margin-top: ${(props) => `${props.marginTop ?? 0}px`};
-  background-color: ${(props) => props.disabled ? COLOR.GRAY5 : COLOR.SUB3};
+  background-color: ${(props) => props.disabled ? COLOR.GRAY6 : COLOR.SUB3};
   align-items: center;
   justify-content: center;
 `;

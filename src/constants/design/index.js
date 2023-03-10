@@ -3,11 +3,13 @@ export const COLOR = {
     SUB1: '#3E0095',
     SUB2: '#E3D0FF',
     SUB3: '#F1E8FF',
+    SUB4: '#FAF6FF',
     GRAY1: '#7A7A7A',
     GRAY2: '#858585',
     GRAY3: '#DBDBDB',
     GRAY4: '#E8E8E8',
-    GRAY5: '#F8F8F8',
+    GRAY5: '#F2F2F5',
+    GRAY6: '#F7F8FA',
 }
 
 export const TYPOGRAPHY = {
