@@ -1,21 +1,25 @@
 //React
-import { useState } from 'react';
 import styled from 'styled-components/native';
 import { useIsFocused } from '@react-navigation/native';
 
 //Components
-import { StatusBar } from 'expo-status-bar';
-import { StatusBarArea, SafeArea, ContainerTop } from 'components/Common';
 import { COLOR } from 'constants/design';
+import { StatusBar } from 'expo-status-bar';
+import { StatusBarArea, SafeArea, ContainerTop, ContainerCenter } from 'components/Layout';
+import { Text } from 'components/Text';
+import { Image } from 'components/Image';
 
 //Assets
 import bannerImage1 from 'assets/images/banner_image1.png';
-import category1 from 'assets/icons/category1.png';
-import category2 from 'assets/icons/category2.png';
-import category3 from 'assets/icons/category3.png';
-import category4 from 'assets/icons/category4.png';
-import category5 from 'assets/icons/category5.png';
-import category6 from 'assets/icons/category6.png';
+import fluIcon from 'assets/icons/symptoms/flu.png';
+import headacheIcon from 'assets/icons/symptoms/headache.png';
+import highFeverIcon from 'assets/icons/symptoms/high-fever.png';
+import stomachacheIcon from 'assets/icons/symptoms/stomachache.png';
+import indigestionIcon from 'assets/icons/symptoms/indigestion.png';
+import acheIcon from 'assets/icons/symptoms/ache.png';
+import internalMedicineIcon from 'assets/icons/medical-subjects/internal-medicine.png';
+import otolaryngologyIcon from 'assets/icons/medical-subjects/otolaryngology.png';
+import ophthalmologyIcon from 'assets/icons/medical-subjects/ophthalmology.png';
 
 function FocusAwareStatusBar(props) {
   const isFocused = useIsFocused();
@@ -24,22 +28,20 @@ function FocusAwareStatusBar(props) {
 
 export default function HomeScreen({ navigation }) {
 
-  function Icon({ category, source }) {
+  function Icon({ source, category, title }) {
     return (
       <IconButton
-        underlayColor={'#F0F0F0'}
+        underlayColor={COLOR.GRAY5}
         onPress={() => {
           navigation.navigate('TreatmentReservation', {
-            screen: 'Category2',
-            params: {
-              category: category
-            },
+            screen: 'BookingDirectly',
+            params: { category: category, name: title },
           });
         }}
       >
         <>
-          <IconImage source={source} />
-          <IconText>{category}</IconText>
+          <Image source={source} marginTop={6} width={48} height={48}/>
+          <Text T7 medium>{title}</Text>
         </>
       </IconButton>
     )
@@ -53,38 +55,35 @@ export default function HomeScreen({ navigation }) {
 
       <SafeArea backgroundColor={COLOR.MAIN}>
         <ContainerTop>
-          {/* <SectionContainer>
-
-          </SectionContainer> */}
 
           <BannerContainer>
-            <BannerImage source={bannerImage1} />
+            <Image source={bannerImage1} width={300} height={110} />
           </BannerContainer>
 
           <ContentsContainer>
-            <Subtitle>해외에서도 한국 대학병원 전문의에게</Subtitle>
-            <Title>비대면 진료</Title>
+            <Text T6 color={COLOR.GRAY1}>해외에서도 한국 대학병원 전문의에게</Text>
+            <Text T3 bold marginTop={6}>비대면 진료</Text>
 
-            <Center>
+            <ContainerCenter>
               <IconsWrapper>
-                <Icon category='감기' source={category1} />
-                <Icon category='소아과' source={category2} />
-                <Icon category='고열+미열' source={category3} />
-                <Icon category='산부인과' source={category4} />
-                <Icon category='두통' source={category5} />
-                <Icon category='안과' source={category6} />
-                <Icon category='소아과' source={category2} />
-                <Icon category='고열+미열' source={category3} />
-                <Icon category='감기' source={category1} />
+                <Icon source={fluIcon} title="감기" category="flu" />
+                <Icon source={headacheIcon} title="두통" category="headache" />
+                <Icon source={highFeverIcon} title="고열/미열" category="highFever" />
+                <Icon source={stomachacheIcon} title="복통" category="stomachache" />
+                <Icon source={indigestionIcon} title="소화불량" category="indigestion" />
+                <Icon source={acheIcon} title="몸살" category="ache" />
+                <Icon source={internalMedicineIcon} title='내과' category="internalMedicine" />
+                <Icon source={otolaryngologyIcon} title='이비인후과' category="otolaryngology" />
+                <Icon source={ophthalmologyIcon} title='안과' category="ophthalmology" />
               </IconsWrapper>
 
               <FullCategoryButton
-                underlayColor={'#F0F0F0'}
-                onPress={() => navigation.navigate('TreatmentReservation')}
+                underlayColor={COLOR.GRAY5}
+                onPress={() => navigation.navigate('TreatmentReservation', {screen: 'Category'})}
               >
-                <FullCategoryText>증상/진료과 전체 보기 +</FullCategoryText>
+                <Text T5 medium>증상/진료과 전체 보기 +</Text>
               </FullCategoryButton>
-            </Center>
+            </ContainerCenter>
           </ContentsContainer>
         </ContainerTop>
       </SafeArea>
@@ -92,52 +91,20 @@ export default function HomeScreen({ navigation }) {
   );
 }
 
-const SectionContainer = styled.View`
-  width: 100%;
-  height: 70px;
-  //background-color: red;
-`;
-
 const BannerContainer = styled.View`
   width: 100%;
   height: 130px;
   align-items: center;
   justify-content: center;
-  //padding: 0 30px;
-  //background-color: blue;
-`;
-
-const BannerImage = styled.Image`
-  width: 300px;
-  height: 110px;
 `;
 
 const ContentsContainer = styled.View`
   flex: 1;
   width: 100%;
   padding: 42px 24px 0px 24px;
-  background-color: white;
+  background-color: #FFFFFF;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
-`;
-
-const Subtitle = styled.Text`
-  font-weight: 400;
-  font-size: 14px;
-  color: #63656E;
-`;
-
-const Title = styled.Text`
-  margin-top: 12px;
-  font-weight: 600;
-  font-size: 20px;
-`;
-
-const Center = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  //background-color: tomato;
 `;
 
 const IconsWrapper = styled.View`
@@ -150,33 +117,16 @@ const IconButton = styled.TouchableHighlight`
   width: 80px;
   height: 80px;
   border-radius: 10px;
-  background-color: #F7F8FA;
+  background-color: ${COLOR.GRAY6};
   align-items: center;
-`;
-
-const IconImage = styled.Image`
-  margin-top: 4px;
-  width: 48px;
-  height: 48px;
-`;
-
-const IconText = styled.Text`
-  margin-top: 4px;
-  font-weight: 500;
-  font-size: 12px;
 `;
 
 const FullCategoryButton = styled.TouchableHighlight`
   margin-top: 30px;
   width: 300px;
-  height: 55px;
-  border-radius: 10px;
-  background-color: #F7F8FA;
+  height: 56px;
+  border-radius: 5px;
+  background-color: ${COLOR.GRAY6};
   align-items: center;
   justify-content: center;
-`;
-
-const FullCategoryText = styled.Text`
-  font-weight: 500;
-  font-size: 16px;
 `;

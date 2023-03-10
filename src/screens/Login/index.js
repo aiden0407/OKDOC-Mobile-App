@@ -3,12 +3,13 @@ import { useState, useRef } from 'react';
 import styled from 'styled-components/native';
 
 //Components
-import { Alert } from 'react-native';
-import { SafeArea, KeyboardAvoiding, ContainerCenter, Center } from 'components/Common';
-import BorderTextInput from 'components/Input/Border';
-import DefaultButton from 'components/Button/Default';
-import BorderButton from 'components/Button/Border';
 import { COLOR } from 'constants/design'
+import { Alert } from 'react-native';
+import { SafeArea, KeyboardAvoiding, ContainerCenter, Center } from 'components/Layout';
+import { Text } from 'components/Text';
+import { Image } from 'components/Image';
+import { BorderInput } from 'components/TextInput';
+import { SolidButton, OutlineButton } from 'components/Button';
 
 //Assets
 import mainLogo from 'assets/main/main_logo.png';
@@ -19,7 +20,7 @@ export default function LoginPage({ navigation }) {
   const [password, setPassword] = useState();
   const passwordRef = useRef();
 
-  function LoginEvent(email, password) {
+  function handleLogin(email, password) {
     if (email === 'test' && password === 'test') {
       navigation.goBack();
     } else {
@@ -27,11 +28,11 @@ export default function LoginPage({ navigation }) {
     }
   }
 
-  function RegisterEvent() {
+  function handleRegister() {
     Alert.alert('회원가입 이벤트');
   }
 
-  function FindEvent() {
+  function handleFindEmailPassword() {
     Alert.alert('이메일/비밀번호 찾기 이벤트');
   }
 
@@ -41,52 +42,51 @@ export default function LoginPage({ navigation }) {
         <ContainerCenter paddingHorizontal={15}>
 
           <Center>
-            <Logo source={mainLogo} />
-            <Title>해외에서도 <Bold>대학병원 전문의</Bold>를 만나보세요</Title>
+            <Image source={mainLogo} width={182} height={40} />
+            <Text T5 medium color={COLOR.MAIN} marginTop={20}>해외에서도 <Text T5 bold color={COLOR.MAIN}>대학병원 전문의</Text>를 만나보세요</Text>
           </Center>
 
-          <BorderTextInput
-            marginTop={20}
+          <BorderInput
+            marginTop={30}
             value={email}
             onChangeText={setEmail}
             placeholder="이메일"
             autoCompleteType="email"
             keyboardType="email-address"
             returnKeyType="next"
-            placeholderTextColor="#CDCFD7"
             onSubmitEditing={() => {
               passwordRef.current.focus();
             }}
           />
-          <BorderTextInput
-            marginTop={10}
+          <BorderInput
+            marginTop={8}
             value={password}
             onChangeText={setPassword}
             placeholder="비밀번호"
             secureTextEntry
             returnKeyType="done"
             onSubmitEditing={() => {
-              LoginEvent(email, password);
+              handleLogin(email, password);
             }}
             ref={passwordRef}
           />
 
-          <DefaultButton
-            marginTop={60}
-            text="로그인 하기"
-            action={() => LoginEvent(email, password)}
+          <SolidButton
+            marginTop={120}
+            text="로그인"
+            action={() => handleLogin(email, password)}
           />
-          <BorderButton
-            marginTop={15}
-            text="회원가입 하기"
-            action={() => RegisterEvent()}
+          <OutlineButton
+            marginTop={8}
+            text="회원가입"
+            action={() => handleRegister()}
           />
 
           <FindEmailPasswordContainer
             activeOpacity={0.8}
-            onPress={() => FindEvent()}
+            onPress={() => handleFindEmailPassword()}
           >
-            <FindEmailPasswordText>이메일/비밀번호가 기억나지 않나요?</FindEmailPasswordText>
+            <Text T6 medium color={COLOR.GRAY2}>이메일/비밀번호가 기억나지 않나요?</Text>
           </FindEmailPasswordContainer>
 
         </ContainerCenter>
@@ -95,30 +95,8 @@ export default function LoginPage({ navigation }) {
   );
 }
 
-const Logo = styled.Image`
-  width: 171px;
-  height: 40px;
-`;
-
-const Title = styled.Text`
-  margin-top: 20px;
-  font-size: 16px;
-  font-weight: 500;
-  color: ${COLOR.MAIN};
-`;
-
-const Bold = styled.Text`
-  font-weight: 700;
-`;
-
 const FindEmailPasswordContainer = styled.TouchableOpacity`
   margin-top: 40px;
   border-bottom-width: 1px;
-  border-bottom-color: #DDDDDD;
-`;
-
-const FindEmailPasswordText = styled.Text`
-  font-size: 13px;
-  font-weight: 500;
-  color: #8B8E99;
+  border-bottom-color: ${COLOR.GRAY3};
 `;
