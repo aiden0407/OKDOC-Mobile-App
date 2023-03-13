@@ -40,6 +40,19 @@ import rheumatismIcon from 'assets/icons/medical-subjects/rheumatism.png';
 import cardiologyIcon from 'assets/icons/medical-subjects/cardiology.png';
 import laboratoryMedicineIcon from 'assets/icons/medical-subjects/laboratory-medicine.png';
 import infectionMedicineIcon from 'assets/icons/medical-subjects/infection-medicine.png';
+import endocrineMedicineIcon from 'assets/icons/medical-subjects/endocrine-medicine.png';
+import anesthesiologyIcon from 'assets/icons/medical-subjects/anesthesiology.png';
+import radiationOncologyIcon from 'assets/icons/medical-subjects/radiation-oncology.png';
+import thoracicSurgeryIcon from 'assets/icons/medical-subjects/thoracic-surgery.png';
+import pathologyIcon from 'assets/icons/medical-subjects/pathology.png';
+import nuclearMedicineIcon from 'assets/icons/medical-subjects/nuclear-medicine.png';
+import plasticSurgeryIcon from 'assets/icons/medical-subjects/plastic-surgery.png';
+import hematoOncologyIcon from 'assets/icons/medical-subjects/hemato-oncology.png';
+import pulmonologyIcon from 'assets/icons/medical-subjects/pulmonology.png';
+import neurologyIcon from 'assets/icons/medical-subjects/neurology.png';
+import neurosurgeryIcon from 'assets/icons/medical-subjects/neurosurgery.png';
+import nephrologyIcon from 'assets/icons/medical-subjects/nephrology.png';
+import radiologyIcon from 'assets/icons/medical-subjects/radiology.png';
 
 export default function CategoryScreen({ navigation }) {
 
@@ -133,6 +146,19 @@ export default function CategoryScreen({ navigation }) {
               <Icon source={cardiologyIcon} title="심장내과" category="cardiology" />
               <Icon source={laboratoryMedicineIcon} title="진단검사의학과" category="laboratory" />
               <Icon source={infectionMedicineIcon} title="감염내과" category="infection" />
+              <Icon source={endocrineMedicineIcon} title="내분비과" category="endocrineMedicine" />
+              <Icon source={anesthesiologyIcon} title="마취통증의학과" category="anesthesiology" />
+              <Icon source={radiationOncologyIcon} title="방사선종양학과" category="radiationOncology" />
+              <Icon source={thoracicSurgeryIcon} title="흉부외과" category="thoracicSurgery" />
+              <Icon source={pathologyIcon} title="병리과" category="pathology" />
+              <Icon source={nuclearMedicineIcon} title="핵의학과" category="nuclearMedicine" />
+              <Icon source={plasticSurgeryIcon} title="성형외과" category="plasticSurgery" />
+              <Icon source={hematoOncologyIcon} title="혈액종양내과" category="hematoOncology" />
+              <Icon source={pulmonologyIcon} title="호흡기내과" category="pulmonology" />
+              <Icon source={neurologyIcon} title="신경과" category="neurology" />
+              <Icon source={neurosurgeryIcon} title="신경외과" category="neurosurgery" />
+              <Icon source={nephrologyIcon} title="신장내과" category="nephrology" />
+              <Icon source={radiologyIcon} title="영상의학과" category="radiology" />
             </IconsWrapper>
           </IconsContainer>
         )}
