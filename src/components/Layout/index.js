@@ -2,6 +2,7 @@
 import styled from 'styled-components/native';
 
 //Components
+import { COLOR } from 'constants/design';
 import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -49,5 +50,16 @@ export const ContainerCenter = styled.View`
 export const Center = styled.View`
   width: 100%;
   align-items: center;
-  margin-top: ${(props) => `${props.top ?? 0}px`};
+  margin-top: ${(props) => `${props.marginTop ?? 0}px`};
+`;
+
+export const ScrollView = styled.ScrollView`
+  background-color: ${(props) => props.backgroundColor ?? 'transparent'};
+`;
+
+export const DividingLine = styled.View`
+  width: 100%;
+  height: ${(props) => `${props.thin ? 2 : 10}px`};
+  background-color: ${COLOR.GRAY6};
+  margin-top: ${(props) => `${props.marginTop ?? 0}px`};
 `;
