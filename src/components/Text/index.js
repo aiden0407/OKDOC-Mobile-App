@@ -22,7 +22,6 @@ function fontTypeSelector(T1, T2, T3, T4, T5, T6, T7, T8){
 export const Text = styled.Text`
   ${(props) => fontFamilySelector(props.bold, props.medium)}
   ${(props) => fontTypeSelector(props.T1, props.T2, props.T3, props.T4, props.T5, props.T6, props.T7, props.T8)}
-  margin-top: ${(props) => `${props.marginTop ?? 0}px`};
   color: ${(props) => props.color ?? '#000000'};
   ${(props) => props.center && 'text-align: center'}
 `;
