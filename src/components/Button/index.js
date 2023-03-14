@@ -15,7 +15,7 @@ function textSizeSelector(large, medium, tiny, double){
   return `font-size: ${TYPOGRAPHY.T4.SIZE}; line-height: ${TYPOGRAPHY.T4.LEADING}; font-family: Pretendard-Medium;`
 }
 
-export function SolidButton({ text, action, marginTop, large, medium, tiny, double, disabled }) {
+export function SolidButton({ text, action, marginTop, marginBottom, large, medium, tiny, double, disabled }) {
   return (
     <SolidButtonBackground
       disabled={disabled}
@@ -24,6 +24,7 @@ export function SolidButton({ text, action, marginTop, large, medium, tiny, doub
       tiny={tiny}
       double={double}
       marginTop={marginTop}
+      marginBottom={marginBottom}
       underlayColor={!disabled && COLOR.SUB1}
       onPress={action}
     >
@@ -35,6 +36,7 @@ export function SolidButton({ text, action, marginTop, large, medium, tiny, doub
 const SolidButtonBackground = styled.TouchableHighlight`
   ${(props) => buttonSizeSelector(props.large, props.medium, props.tiny)}
   margin-top: ${(props) => `${props.marginTop ?? 0}px`};
+  margin-bottom: ${(props) => `${props.marginBottom ?? 0}px`};
   background-color: ${(props) => props.disabled ? COLOR.GRAY4 : COLOR.MAIN};
   align-items: center;
   justify-content: center;
@@ -45,7 +47,7 @@ const SolidButtonText = styled.Text`
   color: ${(props) => props.disabled ? COLOR.GRAY2 : '#FFFFFF'};
 `;
 
-export function OutlineButton({ text, action, marginTop, large, medium, tiny, double, disabled }) {
+export function OutlineButton({ text, action, marginTop, marginBottom, large, medium, tiny, double, disabled }) {
   return (
     <OutlineButtonBackground
       disabled={disabled}
@@ -54,6 +56,7 @@ export function OutlineButton({ text, action, marginTop, large, medium, tiny, do
       tiny={tiny}
       double={double}
       marginTop={marginTop}
+      marginBottom={marginBottom}
       underlayColor={!disabled && COLOR.SUB4}
       onPress={action}
     >
@@ -65,6 +68,7 @@ export function OutlineButton({ text, action, marginTop, large, medium, tiny, do
 const OutlineButtonBackground = styled.TouchableHighlight`
   ${(props) => buttonSizeSelector(props.large, props.medium, props.tiny)}
   margin-top: ${(props) => `${props.marginTop ?? 0}px`};
+  margin-bottom: ${(props) => `${props.marginBottom ?? 0}px`};
   border-width: 1.5px;
   border-color: ${(props) => props.disabled ? COLOR.GRAY3 : COLOR.MAIN};
   background-color: #FFFFFF;
@@ -77,7 +81,7 @@ const OutlineButtonText = styled.Text`
   color: ${(props) => props.disabled ? COLOR.GRAY2 : COLOR.MAIN};
 `;
 
-export function SubColorButton({ text, action, marginTop, large, medium, tiny, double, disabled }) {
+export function SubColorButton({ text, action, marginTop, marginBottom, large, medium, tiny, double, disabled }) {
   return (
     <SubColorButtonBackground
       disabled={disabled}
@@ -86,6 +90,7 @@ export function SubColorButton({ text, action, marginTop, large, medium, tiny, d
       tiny={tiny}
       double={double}
       marginTop={marginTop}
+      marginBottom={marginBottom}
       underlayColor={!disabled && COLOR.SUB2}
       onPress={action}
     >
@@ -97,6 +102,7 @@ export function SubColorButton({ text, action, marginTop, large, medium, tiny, d
 const SubColorButtonBackground = styled.TouchableHighlight`
   ${(props) => buttonSizeSelector(props.large, props.medium, props.tiny)}
   margin-top: ${(props) => `${props.marginTop ?? 0}px`};
+  margin-bottom: ${(props) => `${props.marginBottom ?? 0}px`};
   background-color: ${(props) => props.disabled ? COLOR.GRAY6 : COLOR.SUB3};
   align-items: center;
   justify-content: center;
