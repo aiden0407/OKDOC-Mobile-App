@@ -1,9 +1,12 @@
 //React
-import styled from 'styled-components/native';
+import { useContext } from 'react';
+import { AppContext } from 'context/AppContext';
 import { useIsFocused } from '@react-navigation/native';
+import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design';
+import { SYMPTOM, SUBJECT } from 'constants/service';
 import { StatusBar } from 'expo-status-bar';
 import { StatusBarArea, SafeArea, ContainerTop, ContainerCenter } from 'components/Layout';
 import { Text } from 'components/Text';
@@ -11,15 +14,6 @@ import { Image } from 'components/Image';
 
 //Assets
 import bannerImage1 from 'assets/images/banner_image1.png';
-import fluIcon from 'assets/icons/symptoms/flu.png';
-import headacheIcon from 'assets/icons/symptoms/headache.png';
-import highFeverIcon from 'assets/icons/symptoms/high-fever.png';
-import stomachacheIcon from 'assets/icons/symptoms/stomachache.png';
-import indigestionIcon from 'assets/icons/symptoms/indigestion.png';
-import acheIcon from 'assets/icons/symptoms/ache.png';
-import internalMedicineIcon from 'assets/icons/medical-subjects/internal-medicine.png';
-import otolaryngologyIcon from 'assets/icons/medical-subjects/otolaryngology.png';
-import ophthalmologyIcon from 'assets/icons/medical-subjects/ophthalmology.png';
 
 function FocusAwareStatusBar(props) {
   const isFocused = useIsFocused();
@@ -28,20 +22,33 @@ function FocusAwareStatusBar(props) {
 
 export default function HomeScreen({ navigation }) {
 
-  function Icon({ source, category, title }) {
+  const { dispatch } = useContext(AppContext);
+
+  function handleNextStep(category, item) {
+    dispatch({ type: 'TELEMEDICINE_RESERVATION_CATEGORY', category: category, item: item });
+    dispatch({ type: 'SHORTCUT' });
+    navigation.navigate('TelemedicineReservation', {screen: 'Reservation'});
+  }
+
+  function handleFullCategory() {
+    navigation.navigate('TelemedicineReservation', { screen: 'Category' });
+  }
+
+  function Icon({ category, item }) {
     return (
       <IconButton
         underlayColor={COLOR.GRAY5}
-        onPress={() => {
-          navigation.navigate('TreatmentReservation', {
-            screen: 'BookingDirectly',
-            params: { category: category, name: title },
-          });
-        }}
+        onPress={() => handleNextStep(category, item)}
       >
         <>
-          <Image source={source} marginTop={6} width={48} height={48}/>
-          <Text T7 medium>{title}</Text>
+          {category === 'symptom' && (<>
+            <Image source={SYMPTOM[item]?.ICON} marginTop={6} width={48} height={48} />
+            <Text T7 medium>{SYMPTOM[item]?.NAME}</Text>
+          </>)}
+          {category === 'medicalSubject' && (<>
+            <Image source={SUBJECT[item]?.ICON} marginTop={6} width={48} height={48} />
+            <Text T7 medium>{SUBJECT[item]?.NAME}</Text>
+          </>)}
         </>
       </IconButton>
     )
@@ -66,21 +73,18 @@ export default function HomeScreen({ navigation }) {
 
             <ContainerCenter>
               <IconsWrapper>
-                <Icon source={fluIcon} title="감기" category="flu" />
-                <Icon source={headacheIcon} title="두통" category="headache" />
-                <Icon source={highFeverIcon} title="고열/미열" category="highFever" />
-                <Icon source={stomachacheIcon} title="복통" category="stomachache" />
-                <Icon source={indigestionIcon} title="소화불량" category="indigestion" />
-                <Icon source={acheIcon} title="몸살" category="ache" />
-                <Icon source={internalMedicineIcon} title='내과' category="internalMedicine" />
-                <Icon source={otolaryngologyIcon} title='이비인후과' category="otolaryngology" />
-                <Icon source={ophthalmologyIcon} title='안과' category="ophthalmology" />
+                <Icon category="symptom" item="flu" />
+                <Icon category="symptom" item="headache" />
+                <Icon category="symptom" item="highFever" />
+                <Icon category="symptom" item="stomachache" />
+                <Icon category="symptom" item="indigestion" />
+                <Icon category="symptom" item="ache" />
+                <Icon category="medicalSubject" item="internalMedicine" />
+                <Icon category="medicalSubject" item="otolaryngology" />
+                <Icon category="medicalSubject" item="ophthalmology" />
               </IconsWrapper>
 
-              <FullCategoryButton
-                underlayColor={COLOR.GRAY5}
-                onPress={() => navigation.navigate('TreatmentReservation', {screen: 'Category'})}
-              >
+              <FullCategoryButton underlayColor={COLOR.GRAY5} onPress={() => handleFullCategory()}>
                 <Text T5 medium>증상/진료과 전체 보기 +</Text>
               </FullCategoryButton>
             </ContainerCenter>
