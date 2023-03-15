@@ -50,7 +50,12 @@ export const ContainerCenter = styled.View`
 export const Center = styled.View`
   width: 100%;
   align-items: center;
-  margin-top: ${(props) => `${props.marginTop ?? 0}px`};
+`;
+
+export const Row = styled.View`
+  flex-direction: row;
+  ${(props) => props.align && 'align-items: center'}
+  background-color: ${(props) => props.backgroundColor ?? 'transparent'};
 `;
 
 export const ScrollView = styled.ScrollView`
@@ -61,5 +66,9 @@ export const DividingLine = styled.View`
   width: 100%;
   height: ${(props) => `${props.thin ? 2 : 10}px`};
   background-color: ${COLOR.GRAY6};
-  margin-top: ${(props) => `${props.marginTop ?? 0}px`};
+`;
+
+export const Box = styled.View`
+  width: ${(props) => `${props.width ?? 0}px`};
+  height: ${(props) => `${props.height ?? 0}px`};
 `;
