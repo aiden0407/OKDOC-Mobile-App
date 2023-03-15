@@ -1,26 +1,57 @@
 //React
-import { useState } from 'react';
+import { useContext } from 'react';
+import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
-import { SafeArea, ContainerTop } from 'components/Common';
+import { COLOR } from 'constants/design'
+import { SafeArea, ContainerTop, DividingLine } from 'components/Layout';
 import { Ionicons } from '@expo/vector-icons';
+import { Text } from 'components/Text';
+import { Image } from 'components/Image';
+
+//Assets
+import accountPerson from 'assets/icons/account_person.png';
+import profileCard from 'assets/images/profile_card.png';
 
 export default function MyPageScreen({ navigation }) {
 
-  function LoginOnClick() {
+  const { state: {userData} } = useContext(AppContext);
+
+  function handleLogin() {
     navigation.navigate('LoginStackNavigation');
+  }
+
+  function handleAccountInformation() {
+    if(userData.loginStatus){
+      
+    } else {
+      navigation.navigate('NeedLoginNavigation', {
+        screen: 'NeedLogin',
+        params: { title: '마이페이지' },
+      });
+    }
+  }
+
+  function handleProfileList() {
+    if(userData.loginStatus){
+      
+    } else {
+      navigation.navigate('NeedLoginNavigation', {
+        screen: 'NeedLogin',
+        params: { title: '마이페이지' },
+      });
+    }
   }
 
   function ServicesButton({ title, navigate }) {
     return (
-      <CustomerSurviceRow 
-        activeOpacity={0.4}
+      <CustomerSurviceRow
         onPress={() => navigation.navigate('MyPageStackNavigation', {
           screen: navigate,
         })}
       >
-        <CustomerSurviceTitle>{title}</CustomerSurviceTitle>
+        <Text T5 medium>{title}</Text>
         <Ionicons name="chevron-forward" size={20} />
       </CustomerSurviceRow>
     )
@@ -30,20 +61,42 @@ export default function MyPageScreen({ navigation }) {
     <SafeArea>
       <ContainerTop paddingTop={30}>
         <LoginContainer>
-          <LoginButton onPress={() => LoginOnClick()}>
-            <LoginText>로그인을 해주세요</LoginText>
-            <Ionicons name="chevron-forward" size={20} />
-          </LoginButton>
+          {
+            userData?.loginStatus
+              ? (<>
+                <LoginButton activeOpacity={1}>
+                  <Text T3 bold>안녕하세요, <Text T3 bold color={COLOR.MAIN} marginRight={12}>{userData.name}</Text>님</Text>
+                </LoginButton>
+              </>)
+              : (<>
+                <LoginButton onPress={() => handleLogin()}>
+                  <Text T3 bold marginRight={12}>로그인을 해주세요</Text>
+                  <Ionicons name="chevron-forward" size={20} />
+                </LoginButton>
+              </>)
+          }
         </LoginContainer>
 
-        <ProfileContainer>
+        <InformationContainer>
+          <InformationButton underlayColor={COLOR.GRAY5} onPress={() => handleAccountInformation()}>
+            <>
+              <Image source={accountPerson} width={35} height={40.25} marginTop={13} />
+              <Text T6 marginTop={11}>계정 정보</Text>
+            </>
+          </InformationButton>
 
-        </ProfileContainer>
+          <InformationButton underlayColor={COLOR.GRAY5} onPress={() => handleProfileList()}>
+            <>
+              <Image source={profileCard} width={54} height={32} marginTop={18} />
+              <Text T6 marginTop={14}>프로필 목록</Text>
+            </>
+          </InformationButton>
+        </InformationContainer>
 
         <DividingLine />
 
         <CustomerSurviceContainer>
-          <CustomerSurvice>고객센터</CustomerSurvice>
+          <Text T6 medium color={COLOR.GRAY1}>고객센터</Text>
           <ServicesButton title="1:1 문의" navigate="Inquiry"/>
           <ServicesButton title="서비스 이용약관" navigate="Policy"/>
           <ServicesButton title="자주하는 질문" navigate="FAQ"/>
@@ -65,33 +118,27 @@ const LoginButton = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const LoginText = styled.Text`
-  margin-right: 12px;
-  font-weight: 500;
-  font-size: 20px;
-`;
-
-const ProfileContainer = styled.View`
+const InformationContainer = styled.View`
   width: 100%;
   height: 190px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
 `;
 
-const DividingLine = styled.View`
-  width: 100%;
-  height: 10px;
-  background-color: #F7F8FA;
+const InformationButton = styled.TouchableHighlight`
+  width: 100px;
+  height: 94px;
+  border-radius: 10px;
+  background-color: ${COLOR.GRAY6};
+  align-items: center;
 `;
 
 const CustomerSurviceContainer = styled.View`
   width: 100%;
   height: 100%;
-  padding: 40px 20px 0 20px;
-`;
-
-const CustomerSurvice = styled.Text`
-  font-weight: 500;
-  font-size: 14px;
-  color: #7C7E88;
+  padding: 30px 20px 0 20px;
 `;
 
 const CustomerSurviceRow = styled.TouchableOpacity`
@@ -100,9 +147,4 @@ const CustomerSurviceRow = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-`;
-
-const CustomerSurviceTitle = styled.Text`
-  font-weight: 600;
-  font-size: 16px;
 `;
