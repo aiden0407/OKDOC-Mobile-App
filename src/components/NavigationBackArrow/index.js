@@ -6,10 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function NavigationBackArrow({ action }) {
   return (
-    <TouchableOpacity
-      activeOpacity={0.6}
-      onPress={action}
-    >
+    <TouchableOpacity onPress={action}>
       <Ionicons name="chevron-back" size={26} />
     </TouchableOpacity>
   );

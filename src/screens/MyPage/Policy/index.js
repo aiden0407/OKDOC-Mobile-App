@@ -11,7 +11,6 @@ export default function PolicyScreen({ navigation }) {
     return (
       <PolicyBox>
         <PolicyRow
-          activeOpacity={0.4}
           onPress={() => navigation.navigate('PolicyDetails', {
             title: title,
           })}
