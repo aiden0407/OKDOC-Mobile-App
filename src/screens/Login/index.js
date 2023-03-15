@@ -1,5 +1,6 @@
 //React
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
+import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
@@ -16,13 +17,15 @@ import mainLogo from 'assets/main/main_logo.png';
 
 export default function LoginPage({ navigation }) {
 
+  const { dispatch } = useContext(AppContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const passwordRef = useRef();
 
   function handleLogin(email, password) {
     if (email === 'test' && password === 'test') {
-      navigation.goBack();
+      dispatch({ type: 'LOGIN', userName: '이준범' });
+      navigation.pop(2);
     } else {
       Alert.alert('로그인 실패');
     }
@@ -82,10 +85,7 @@ export default function LoginPage({ navigation }) {
             action={() => handleRegister()}
           />
 
-          <FindEmailPasswordContainer
-            activeOpacity={0.8}
-            onPress={() => handleFindEmailPassword()}
-          >
+          <FindEmailPasswordContainer onPress={() => handleFindEmailPassword()}>
             <Text T6 medium color={COLOR.GRAY2}>이메일/비밀번호가 기억나지 않나요?</Text>
           </FindEmailPasswordContainer>
 
