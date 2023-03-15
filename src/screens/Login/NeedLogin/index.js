@@ -25,7 +25,7 @@ export default function NeedLoginScreen({ navigation, route }) {
 
         <Image source={profileCard} marginTop={-80} width={94} height={55}/>
         <Text T3 bold marginTop={24}>로그인이 필요해요</Text>
-        <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>해외에서도 비대면으로{`\n`}한국 대학병원 전문의를 만나보세요</Text>
+        <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>해외에서도 비대면으로{'\n'}한국 대학병원 전문의를 만나보세요</Text>
         <SolidButton
           large
           marginTop={24}

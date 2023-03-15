@@ -1,13 +1,11 @@
 //React
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components/native';
 
 //Components
 import { SafeArea, ContainerTop } from 'components/Layout';
 
 export default function PolicyDetialsScreen({ navigation, route }) {
-  
-  const [title, setTitle] = useState(route.params?.title);
 
   useEffect(() => {
     navigation.setOptions({
@@ -19,15 +17,15 @@ export default function PolicyDetialsScreen({ navigation, route }) {
     <SafeArea>
       <ContainerTop paddingTop={50}>
         <TitleContainer>
-          <Title>{title}</Title>
+          <Title>{route.params?.title}</Title>
         </TitleContainer>
 
         <ContentsContainer>
           <Contents>
             테스트용으로 쓰이는 더미 텍스트다. 디자인을 할 때 가제로 쓰이고 레이아웃을 테스트할 때 든지 프린트의 테스트, 기계 테스트, 폰트 테스트, 컨텐츠의 양을 측정할 때도 쓰인다. 테스트용으로 쓰이는 더미 텍스트다.
-            {"\n"}{"\n"}
+            {'\n'}{'\n'}
             테스트용으로 쓰이는 더미 텍스트다. 디자인을 할 때 가제로 쓰이고 레이아웃을 테스트할 때 든지 프린트의 테스트, 기계 테스트, 폰트 테스트, 컨텐츠의 양을 측정할 때도 쓰인다. 테스트용으로 쓰이는 더미 텍스트다. 테스트용으로 쓰이는 더미 텍스트다. 디자인을 할 때 가제로 쓰이고 레이아웃을 테스트할 때 든지 프린트의 테스트, 기계 테스트, 폰트 테스트, 컨텐츠의 양을 측정할 때도 쓰인다.
-            {"\n"}{"\n"}
+            {'\n'}{'\n'}
             테스트용으로 쓰이는 더미 텍스트다. 디자인을 할 때 가제로 쓰이고 레이아웃을 테스트할 때 든지 프린트의 테스트, 기계 테스트, 폰트 테스트, 컨텐츠의 양을 측정할 때도 쓰인다. 테스트용으로 쓰이는 더미 텍스트다. 디자인을 할 때 가제로 쓰이고 레이아웃을 테스트할 때 든지 프린트의 테스트, 기계 테스트, 폰트 테스트, 컨텐츠의 양을 측정할 때도 쓰인다.
           </Contents>
         </ContentsContainer>
