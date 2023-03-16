@@ -1,5 +1,6 @@
 //React
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
+import { AppContext } from 'context/AppContext';
 import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
@@ -12,7 +13,14 @@ import NeedLogin from 'components/NeedLogin';
 
 export default function HistoryScreen({ navigation }) {
 
+  const { dispatch } = useContext(AppContext);
   const { state: { userData } } = useContext(ApiContext);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      dispatch({ type: 'BOTTOM_TAP_NAVIGATION', menu: 'HISTORY' });
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <SafeArea>
