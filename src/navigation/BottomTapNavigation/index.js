@@ -14,8 +14,11 @@ const BottomTab = createBottomTabNavigator();
 export default function BottomTapNavigation() {
   return (
     <BottomTab.Navigator
-      initialRouteName="Home"
       screenOptions={({ route }) => ({
+        tabBarStyle: {
+          paddingTop: 2,
+          height: 84, //default: 79
+        },
         tabBarActiveTintColor: COLOR.MAIN,
         tabBarInactiveTintColor: '#AAAAAA',
         tabBarIcon: ({ focused, color }) => {
@@ -40,7 +43,7 @@ export default function BottomTapNavigation() {
               ? 'person-outline'
               : 'person-outline';
           }
-          return <Ionicons name={iconName} size={24} color={color} />;
+          return <Ionicons name={iconName} size={24} color={color} marginLeft={2}/>;
         },
       })}
     >
