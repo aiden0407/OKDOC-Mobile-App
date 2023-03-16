@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AppProvider } from "context/AppContext";
+import { ApiProvider } from 'context/ApiContext';
 
 //Default Settings
 import { useFonts } from 'expo-font';
@@ -47,24 +48,26 @@ export default function App() {
 
   return (
     <AppProvider>
-      <NavigationContainer>
+      <ApiProvider>
         <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
-          <Stack.Navigator>
+          <NavigationContainer>
+            <Stack.Navigator>
 
-            <Stack.Group screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="BottomTapNavigation" component={BottomTapNavigation} />
-              <Stack.Screen name="TelemedicineReservation" component={TelemedicineReservation} />
-              <Stack.Screen name="MyPageStackNavigation" component={MyPageStackNavigation} />
-              <Stack.Screen name="NeedLoginNavigation" component={NeedLoginNavigation} />
-            </Stack.Group>
+              <Stack.Group screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="BottomTapNavigation" component={BottomTapNavigation} />
+                <Stack.Screen name="TelemedicineReservation" component={TelemedicineReservation} />
+                <Stack.Screen name="MyPageStackNavigation" component={MyPageStackNavigation} />
+                <Stack.Screen name="NeedLoginNavigation" component={NeedLoginNavigation} />
+              </Stack.Group>
 
-            <Stack.Group screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>
-              <Stack.Screen name="LoginStackNavigation" component={LoginStackNavigation} />
-            </Stack.Group>
+              <Stack.Group screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>
+                <Stack.Screen name="LoginStackNavigation" component={LoginStackNavigation} />
+              </Stack.Group>
 
-          </Stack.Navigator>
+            </Stack.Navigator>
+          </NavigationContainer>
         </View>
-      </NavigationContainer>
+      </ApiProvider>
     </AppProvider>
   );
 }

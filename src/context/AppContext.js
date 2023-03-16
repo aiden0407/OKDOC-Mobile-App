@@ -2,17 +2,13 @@ import { createContext, useReducer } from "react";
 
 //initial state
 const initialState = {
-  appStatus: {
-    usedHomeShortcut: false,
-  },
-  userData: {
-    loginStatus: false,
-    name: undefined,
-  },
+  isHomeShorcutUsed: false,
   telemedicineReservationStatus: {
     category: undefined,
     item: undefined,
-    doctorInfo: undefined,
+    date: undefined,
+    time: undefined,
+    doctorId: undefined,
   },
 };
 
@@ -22,30 +18,19 @@ const AppContext = createContext({});
 //create reducer
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'LOGIN':
+
+    case 'USE_SHORTCUT':
       return {
         ...state,
-        userData: {
-          loginStatus: true,
-          name: action.userName,
-        },
+        isHomeShorcutUsed: true,
       };
-    case 'SHORTCUT':
+
+    case 'DELETE_SHORTCUT':
       return {
         ...state,
-        appStatus: {
-          ...state.appStatus,
-          usedHomeShortcut: true,
-        },
+        isHomeShorcutUsed: false,
       };
-     case 'DELETE_SHORTCUT':
-      return {
-        ...state,
-        appStatus: {
-          ...state.appStatus,
-          usedHomeShortcut: false,
-        },
-      };
+
     case 'TELEMEDICINE_RESERVATION_CATEGORY':
       return {
         ...state,
@@ -55,14 +40,18 @@ const reducer = (state, action) => {
           item: action.item,
         },
       };
+
     case 'TELEMEDICINE_RESERVATION_DOCTOR':
       return {
         ...state,
         telemedicineReservationStatus: {
           ...state.telemedicineReservationStatus,
-          doctorInfo: action.doctorInfo,
+          date: action.date,
+          time: action.time,
+          doctorId: action.doctorId,
         },
       };
+
     default:
       return state;
   }
@@ -72,7 +61,7 @@ const reducer = (state, action) => {
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
-  console.log(state);
+  console.log(`AppContext: ${JSON.stringify(state)}`);
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
