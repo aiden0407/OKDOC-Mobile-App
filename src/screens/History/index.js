@@ -1,24 +1,36 @@
 //React
-import { useState } from 'react';
+import { useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
 //Components
-import { SafeArea, ContainerTop } from 'components/Layout';
 import { COLOR } from 'constants/design';
+import { SafeArea, Container, ContainerCenter } from 'components/Layout';
+import { Text } from 'components/Text';
+import { Image } from 'components/Image';
+import NeedLogin from 'components/NeedLogin';
 
 export default function HistoryScreen({ navigation }) {
 
+  const { state: { userData } } = useContext(ApiContext);
+
   return (
     <SafeArea>
-      <ContainerTop backgroundColor="#F7F8FA" paddingHorizontal={20} paddingTop={30}>
-        <Title>예약 • 접수 내역</Title>
-      </ContainerTop>
+      {
+        userData.loginStatus
+          ? (<>
+            <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20} paddingTop={30}>
+              <Text T3 bold>예약 / 접수 내역</Text>
+            </Container>
+          </>)
+          
+          : (<>
+            <ContainerCenter backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
+              <NeedLogin marginTop={-40} action={() => navigation.navigate('LoginStackNavigation')}/>
+            </ContainerCenter>
+          </>)
+      }
+
     </SafeArea>
   );
 }
-
-const Title = styled.Text`
-  width: 100%;
-  font-weight: 600;
-  font-size: 20px;
-`;
