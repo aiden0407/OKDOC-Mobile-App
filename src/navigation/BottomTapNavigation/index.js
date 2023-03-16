@@ -1,5 +1,9 @@
-//Navigation
+//React
+import { useContext } from 'react';
+import { AppContext } from 'context/AppContext';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+//Navigation
 import HomeScreen from 'screens/Home';
 import HistoryScreen from 'screens/History';
 import AlarmScreen from 'screens/Alarm';
@@ -12,6 +16,9 @@ import { COLOR } from 'constants/design'
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTapNavigation() {
+
+  const { dispatch } = useContext(AppContext);
+
   return (
     <BottomTab.Navigator
       screenOptions={({ route }) => ({
@@ -51,10 +58,18 @@ export default function BottomTapNavigation() {
         headerTitleAlign: 'center',
         headerShadowVisible: false,
       }}>
-        <BottomTab.Screen name="Home" component={HomeScreen} options={{ title: '홈', headerShown: false }} />
-        <BottomTab.Screen name="History" component={HistoryScreen} options={{ title: '진료 내역' }} />
-        <BottomTab.Screen name="Alarm" component={AlarmScreen} options={{ title: '알림' }} />
-        <BottomTab.Screen name="MyPage" component={MyPageScreen} options={{ title: '마이페이지' }} />
+        <BottomTab.Screen name="Home" component={HomeScreen} options={{ title: '홈', headerShown: false }}
+          listeners={{ tabPress: () => dispatch({ type: 'BOTTOM_TAP_NAVIGATION', menu: 'HOME' }) }}
+        />
+        <BottomTab.Screen name="History" component={HistoryScreen} options={{ title: '진료 내역' }} 
+          listeners={{ tabPress: () => dispatch({ type: 'BOTTOM_TAP_NAVIGATION', menu: 'HISTORY' }) }}
+        />
+        <BottomTab.Screen name="Alarm" component={AlarmScreen} options={{ title: '알림' }} 
+          listeners={{ tabPress: () => dispatch({ type: 'BOTTOM_TAP_NAVIGATION', menu: 'ALARM' }) }}
+        />
+        <BottomTab.Screen name="MyPage" component={MyPageScreen} options={{ title: '마이페이지' }} 
+          listeners={{ tabPress: () => dispatch({ type: 'BOTTOM_TAP_NAVIGATION', menu: 'MYPAGE' }) }}
+        />
       </BottomTab.Group>
     </BottomTab.Navigator>
   );
