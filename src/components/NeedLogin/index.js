@@ -6,7 +6,7 @@ import { Image } from 'components/Image';
 import { SolidButton } from 'components/Button';
 
 //Assets
-import profileCard from 'assets/images/profile_card.png';
+import profileCard from 'assets/icons/mypage-profile.png';
 
 export default function NeedLoginBox({ marginTop, action }) {
   return (

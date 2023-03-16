@@ -11,8 +11,8 @@ export default function PolicyScreen({ navigation }) {
     return (
       <PolicyBox>
         <PolicyRow
-          onPress={() => navigation.navigate('PolicyDetails', {
-            title: title,
+          onPress={() => navigation.navigate('PolicyDetail', {
+            headerTitle: title,
           })}
         >
           <PolicyTitle>{title}</PolicyTitle>

@@ -1,23 +1,18 @@
 //React
-import { useEffect } from 'react';
 import styled from 'styled-components/native';
 
 //Components
 import { SafeArea, ContainerTop } from 'components/Layout';
 
-export default function PolicyDetialsScreen({ navigation, route }) {
-
-  useEffect(() => {
-    navigation.setOptions({
-      title: route.params.title
-    });
-  }, [navigation, route]);
+export default function NotificationDetailScreen({ route }) {
+  
+  const title = route.params.title;
 
   return (
     <SafeArea>
       <ContainerTop paddingTop={50}>
         <TitleContainer>
-          <Title>{route.params?.title}</Title>
+          <Title>{title}</Title>
         </TitleContainer>
 
         <ContentsContainer>
@@ -50,7 +45,7 @@ const ContentsContainer = styled.View`
 `;
 
 const Contents = styled.Text`
+  font-weight: 500;
   font-size: 14px;
-  line-height: 20px;
   color: #8B8E99;
 `;

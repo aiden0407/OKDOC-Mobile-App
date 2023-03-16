@@ -154,7 +154,7 @@ export default function ReservationScreen({ navigation, route }) {
         <ScrollView showsVerticalScrollIndicator={false}>
 
           <ReservationContainer>
-            <Text T3 bold marginTop={42}>진료시간을 선택해주세요</Text>
+            <Text T3 bold marginTop={30}>진료시간을 선택해주세요</Text>
 
             <Text T6 medium marginTop={36}>날짜선택</Text>
             <DateContainer>
@@ -162,7 +162,7 @@ export default function ReservationScreen({ navigation, route }) {
                 {bookableData.map((item, index) =>
                   <DateButton
                     key={`date${index}`}
-                    isSellected={dateIndex === index}
+                    isSelected={dateIndex === index}
                     onPress={() => {
                       if (dateIndex !== index) {
                         setDateIndex(index);
@@ -186,7 +186,7 @@ export default function ReservationScreen({ navigation, route }) {
                 {bookableData[dateIndex][2].map((item, index) =>
                   <TimeButton
                     key={`time${index}`}
-                    isSellected={timeIndex === index}
+                    isSelected={timeIndex === index}
                     onPress={() => setTimeIndex(index)}
                     underlayColor={timeIndex !== index && COLOR.GRAY5}
                   >
@@ -242,7 +242,7 @@ const DateButton = styled.TouchableHighlight`
   width: 74px;
   height: 80px;
   border-radius: 5px;
-  background-color: ${(props) => props.isSellected ? COLOR.SUB3 : COLOR.GRAY6};
+  background-color: ${(props) => props.isSelected ? COLOR.SUB3 : COLOR.GRAY6};
   align-items: center;
   justify-content: center;
 `;
@@ -258,7 +258,7 @@ const TimeButton = styled.TouchableHighlight`
   width: 84px;
   height: 46px;
   border-radius: 5px;
-  background-color: ${(props) => props.isSellected ? COLOR.SUB3 : COLOR.GRAY6};
+  background-color: ${(props) => props.isSelected ? COLOR.SUB3 : COLOR.GRAY6};
   align-items: center;
   justify-content: center;
 `;

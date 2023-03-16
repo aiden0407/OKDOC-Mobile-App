@@ -11,7 +11,7 @@ export default function NotificationScreen({ navigation }) {
     return (
       <NotificationBox>
         <NotificationTouchable
-          onPress={() => navigation.navigate('NotificationDetails', {
+          onPress={() => navigation.navigate('NotificationDetail', {
             title: title,
           })}
         >

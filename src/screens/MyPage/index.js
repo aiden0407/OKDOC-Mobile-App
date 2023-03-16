@@ -11,8 +11,8 @@ import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 
 //Assets
-import accountPerson from 'assets/icons/account_person.png';
-import profileCard from 'assets/images/profile_card.png';
+import accountPerson from 'assets/icons/mypage-account.png';
+import profileCard from 'assets/icons/mypage-profile.png';
 
 export default function MyPageScreen({ navigation }) {
 
@@ -28,18 +28,18 @@ export default function MyPageScreen({ navigation }) {
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
-        params: { title: '마이페이지' },
+        params: { headerTitle: '마이페이지' },
       });
     }
   }
 
   function handleProfileList() {
     if(userData.loginStatus){
-      
+      navigation.navigate('ProfileStackNavigation', { screen: 'ProfileList' });
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
-        params: { title: '마이페이지' },
+        params: { headerTitle: '마이페이지' },
       });
     }
   }

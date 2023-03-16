@@ -2,17 +2,17 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import InquiryScreen from 'screens/MyPage/Inquiry';
 import PolicyScreen from 'screens/MyPage/Policy';
-import PolicyDetailsScreen from 'screens/MyPage/Policy/Details';
+import PolicyDetailScreen from 'screens/MyPage/Policy/Detail';
 import FaqScreen from 'screens/MyPage/FAQ';
 import NotificationScreen from 'screens/MyPage/Notification';
-import NotificationDetailsScreen from 'screens/MyPage/Notification/Details';
+import NotificationDetailScreen from 'screens/MyPage/Notification/Detail';
 
 //Components
 import NavigationBackArrow from 'components/NavigationBackArrow';
 
 const Stack = createNativeStackNavigator();
 
-export default function NotificationStackNavigation({ navigation }) {
+export default function MypageStackNavigation({ navigation }) {
 
   return (
     <Stack.Navigator>
@@ -46,15 +46,15 @@ export default function NotificationStackNavigation({ navigation }) {
 
       <Stack.Group screenOptions={{ headerLargeTitleShadowVisible: false }}>
         <Stack.Screen
-          name="PolicyDetails"
-          component={PolicyDetailsScreen}
+          name="PolicyDetail"
+          component={PolicyDetailScreen}
           options={{
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Policy')} />,
           }}
         />
         <Stack.Screen
-          name="NotificationDetails"
-          component={NotificationDetailsScreen}
+          name="NotificationDetail"
+          component={NotificationDetailScreen}
           options={{
             title: '공지사항',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Notification')} />,

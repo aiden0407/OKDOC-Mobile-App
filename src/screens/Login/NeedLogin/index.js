@@ -9,7 +9,7 @@ export default function NeedLoginScreen({ navigation, route }) {
 
   useEffect(() => {
     navigation.setOptions({
-      title: route.params?.title ?? '로그인'
+      title: route.params?.headerTitle ?? '로그인'
     });
   }, [navigation, route]);
 
