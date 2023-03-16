@@ -1,6 +1,6 @@
 //React
 import { useState, useRef, useContext } from 'react';
-import { AppContext } from 'context/AppContext';
+import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
 //Components
@@ -17,7 +17,7 @@ import mainLogo from 'assets/main/main_logo.png';
 
 export default function LoginPage({ navigation }) {
 
-  const { dispatch } = useContext(AppContext);
+  const { dispatch } = useContext(ApiContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const passwordRef = useRef();

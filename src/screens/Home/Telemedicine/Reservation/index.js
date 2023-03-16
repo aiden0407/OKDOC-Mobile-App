@@ -1,5 +1,6 @@
 //React
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
@@ -11,16 +12,9 @@ import { Image } from 'components/Image';
 
 export default function ReservationScreen({ navigation, route }) {
 
+  const { state: {telemedicineReservationStatus}, dispatch } = useContext(AppContext);
   const [dateIndex, setDateIndex] = useState(0);
   const [timeIndex, setTimeIndex] = useState(0);
-
-  function handleSelectDoctor(doctorInfo) {
-    navigation.navigate('DoctorProfile', { 
-      doctorInfo: doctorInfo,
-      category: route.params?.category,
-      item: route.params?.item
-    });
-  }
 
   const bookableData = [
     ['27일', '목요일', [
@@ -144,6 +138,16 @@ export default function ReservationScreen({ navigation, route }) {
     ]],
   ];
 
+  function handleSelectDoctor(date, time, doctorInfo) {
+    dispatch({ 
+      type: 'TELEMEDICINE_RESERVATION_DOCTOR', 
+      date: date, 
+      time: time, 
+      doctorId: doctorInfo.name,
+    });
+    navigation.navigate('DoctorProfile', {doctorInfo: doctorInfo});
+  }
+
   return (
     <SafeArea>
       <Container>
@@ -200,7 +204,7 @@ export default function ReservationScreen({ navigation, route }) {
             {bookableData[dateIndex][2][timeIndex][1].map((item, index) =>
               <DoctorRow
                 key={`doctor${index}`}
-                onPress={() => handleSelectDoctor(item)}
+                onPress={() => handleSelectDoctor(bookableData[dateIndex][0], bookableData[dateIndex][2][timeIndex][0], item)}
               >
                 <Image source={{ uri: item.image }} width={66} height={66} circle />
                 <DoctorColumn>

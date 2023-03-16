@@ -1,6 +1,6 @@
 //React
 import { useContext } from 'react';
-import { AppContext } from 'context/AppContext';
+import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
 //Components
@@ -16,7 +16,7 @@ import profileCard from 'assets/images/profile_card.png';
 
 export default function MyPageScreen({ navigation }) {
 
-  const { state: {userData} } = useContext(AppContext);
+  const { state: { userData } } = useContext(ApiContext);
 
   function handleLogin() {
     navigation.navigate('LoginStackNavigation');

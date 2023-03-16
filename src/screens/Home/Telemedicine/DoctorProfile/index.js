@@ -1,5 +1,6 @@
 //React
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
 //Components
@@ -16,8 +17,8 @@ import starFull from 'assets/icons/star-full.png';
 
 export default function DoctorProfileScreen({ navigation, route }) {
 
+  const { state: { userData } } = useContext(ApiContext);
   const [informationGroup, setInformationGroup] = useState('profile');
-
   const doctorInfo = route.params.doctorInfo
 
   const title = `연세튼튼치과/내과 건강검진센터 병원장\n${doctorInfo.name}입니다.`
@@ -30,10 +31,14 @@ export default function DoctorProfileScreen({ navigation, route }) {
 직장 시간때문에 진료 시간내 오지못하는 경우, 거리가 멀어서 직접 못오시는 경우 진료 신청 해주시면 감사하겠습니다.`;
 
   function handleApplyReservation() {
-    navigation.navigate('NeedLoginNavigation', {
-      screen: 'NeedLogin',
-      params: { title: '비대면 진료실' },
-    });
+    if(userData.loginStatus){
+      
+    } else {
+      navigation.navigate('NeedLoginNavigation', {
+        screen: 'NeedLogin',
+        params: { title: '비대면 진료실' },
+      });
+    }
   }
 
   function Review() {

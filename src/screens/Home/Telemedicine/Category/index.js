@@ -1,5 +1,6 @@
 //React
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
@@ -11,15 +12,21 @@ import { Image } from 'components/Image';
 
 export default function CategoryScreen({ navigation }) {
 
+  const { dispatch } = useContext(AppContext);
   const [categoryGroup, setCategoryGroup] = useState('symptoms');
   const symptomKeys = Object.keys(SYMPTOM);
   const medicalSubjectKeys = Object.keys(SUBJECT);
+
+  function handleNextStep(category, item) {
+    dispatch({ type: 'TELEMEDICINE_RESERVATION_CATEGORY', category: category, item: item });
+    navigation.navigate('Reservation');
+  }
 
   function Icon({ category, item }) {
     return (
       <IconButton
         underlayColor={COLOR.GRAY5}
-        onPress={() => navigation.navigate('Reservation', { category: category, item: item })}
+        onPress={() => handleNextStep(category, item)}
       >
         <>
           {category === 'symptom' && (<>

@@ -15,10 +15,10 @@ const Stack = createNativeStackNavigator();
 
 export default function TelemedicineReservation({ navigation }) {
 
-  const { state:{appStatus}, dispatch } = useContext(AppContext);
+  const { state: { isHomeShorcutUsed }, dispatch } = useContext(AppContext);
 
   function handleReservationBack() {
-    if(appStatus.usedHomeShortcut){
+    if(isHomeShorcutUsed){
       dispatch({ type: 'DELETE_SHORTCUT' });
       navigation.goBack();
     } else {

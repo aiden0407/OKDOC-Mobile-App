@@ -26,11 +26,12 @@ export default function HomeScreen({ navigation }) {
 
   function handleNextStep(category, item) {
     dispatch({ type: 'TELEMEDICINE_RESERVATION_CATEGORY', category: category, item: item });
-    dispatch({ type: 'SHORTCUT' });
+    dispatch({ type: 'USE_SHORTCUT' });
     navigation.navigate('TelemedicineReservation', {screen: 'Reservation'});
   }
 
   function handleFullCategory() {
+    dispatch({ type: 'DELETE_SHORTCUT' });
     navigation.navigate('TelemedicineReservation', { screen: 'Category' });
   }
 
