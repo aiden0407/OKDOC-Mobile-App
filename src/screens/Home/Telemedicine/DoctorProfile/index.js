@@ -32,11 +32,17 @@ export default function DoctorProfileScreen({ navigation, route }) {
 
   function handleApplyReservation() {
     if(userData.loginStatus){
-      
+      navigation.navigate('ProfileStackNavigation', {
+        screen: 'ProfileList',
+        params: { 
+          headerTitle: '프로필 선택',
+          bodyTitle: '진료 받을 분을 선택해 주세요',
+        },
+      });
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
-        params: { title: '비대면 진료실' },
+        params: { headerTitle: '비대면 진료실' },
       });
     }
   }
