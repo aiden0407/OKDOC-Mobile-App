@@ -2,6 +2,7 @@ import { createContext, useReducer } from "react";
 
 //initial state
 const initialState = {
+  bottomTabMenu: 'HOME',
   isHomeShorcutUsed: false,
   telemedicineReservationStatus: {
     category: undefined,
@@ -9,6 +10,7 @@ const initialState = {
     date: undefined,
     time: undefined,
     doctorId: undefined,
+    profileId: undefined,
   },
 };
 
@@ -18,6 +20,12 @@ const AppContext = createContext({});
 //create reducer
 const reducer = (state, action) => {
   switch (action.type) {
+
+    case 'BOTTOM_TAP_NAVIGATION':
+      return {
+        ...state,
+        bottomTabMenu: action.menu,
+      };
 
     case 'USE_SHORTCUT':
       return {
@@ -49,6 +57,15 @@ const reducer = (state, action) => {
           date: action.date,
           time: action.time,
           doctorId: action.doctorId,
+        },
+      };
+
+    case 'TELEMEDICINE_RESERVATION_PROFILE':
+      return {
+        ...state,
+        telemedicineReservationStatus: {
+          ...state.telemedicineReservationStatus,
+          profileId: action.profileId,
         },
       };
 
