@@ -1,5 +1,5 @@
 //React
-import { useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { AppContext } from 'context/AppContext';
 import { useIsFocused } from '@react-navigation/native';
 import styled from 'styled-components/native';
@@ -23,12 +23,6 @@ function FocusAwareStatusBar(props) {
 export default function HomeScreen({ navigation }) {
 
   const { dispatch } = useContext(AppContext);
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      dispatch({ type: 'BOTTOM_TAP_NAVIGATION', menu: 'HOME' });
-    });
-    return unsubscribe;
-  }, [navigation]);
 
   function handleNextStep(category, item) {
     dispatch({ type: 'TELEMEDICINE_RESERVATION_CATEGORY', category: category, item: item });
