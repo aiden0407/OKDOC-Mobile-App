@@ -29,7 +29,11 @@ export default function ProfileListScreen({ navigation, route }) {
 
   function Profile({ name, relationship, isSelected, action }) {
     return (
-      <ProfileButton isSelected={isSelected} onPress={action}>
+      <ProfileButton
+        isSelected={isSelected} 
+        onPress={action}
+        underlayColor={bottomTabMenu==='MYPAGE' && COLOR.GRAY5}
+      >
         <>
           <Image source={isSelected ? profileSelected : profileDefault} width={40} height={40} />
           <Text T5 bold marginTop={8} color={isSelected ? '#FFFFFF' : COLOR.GRAY1}>{name}</Text>
@@ -48,6 +52,10 @@ export default function ProfileListScreen({ navigation, route }) {
     navigation.navigate('ProfileDetail', { headerTitle: '프로필 정보' });
   }
 
+  function handleProfileDetail() {
+    navigation.navigate('ProfileDetail', { headerTitle: '프로필 상세보기' });
+  }
+
 
   return (
     <SafeArea>
@@ -58,10 +66,13 @@ export default function ProfileListScreen({ navigation, route }) {
             name={userData.name}
             relationship='본인'
             isSelected={profileIndex === 0}
-            action={() => setProfileIndex(0)}
+            action={() => {
+              bottomTabMenu==='HOME' && setProfileIndex(0)
+              bottomTabMenu==='MYPAGE' && handleProfileDetail()
+            }}
           />
           {
-            bottomTabMenu === 'HOME' && (<>
+            bottomTabMenu==='HOME' && (<>
               <Profile
                 name='기타'
                 relationship='가족 /  지인'
@@ -93,7 +104,7 @@ const BottomButtonContainer = styled.View`
   padding: 20px;
 `;
 
-const ProfileButton = styled.Pressable`
+const ProfileButton = styled.TouchableHighlight`
   width: 100px;
   height: 116px;
   border-radius: 5px;
