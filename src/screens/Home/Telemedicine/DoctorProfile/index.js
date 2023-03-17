@@ -5,6 +5,7 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design';
+import { LinearGradient } from 'expo-linear-gradient'
 import { SafeArea, ScrollView, Row, DividingLine, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
@@ -18,7 +19,7 @@ import starFull from 'assets/icons/star-full.png';
 export default function DoctorProfileScreen({ navigation, route }) {
 
   const { state: { userData } } = useContext(ApiContext);
-  const [informationGroup, setInformationGroup] = useState('profile');
+  const [informationCategory, setInformationCategory] = useState('profile');
   const doctorInfo = route.params.doctorInfo
 
   const title = `연세튼튼치과/내과 건강검진센터 병원장\n${doctorInfo.name}입니다.`
@@ -31,10 +32,10 @@ export default function DoctorProfileScreen({ navigation, route }) {
 직장 시간때문에 진료 시간내 오지못하는 경우, 거리가 멀어서 직접 못오시는 경우 진료 신청 해주시면 감사하겠습니다.`;
 
   function handleApplyReservation() {
-    if(userData.loginStatus){
+    if (userData.loginStatus) {
       navigation.navigate('ProfileStackNavigation', {
         screen: 'ProfileList',
-        params: { 
+        params: {
           headerTitle: '프로필 선택',
           bodyTitle: '진료 받을 분을 선택해 주세요',
         },
@@ -68,27 +69,36 @@ export default function DoctorProfileScreen({ navigation, route }) {
 
   return (
     <SafeArea>
-      <ScrollView showsVerticalScrollIndicator={false} paddingHorizontal={20}>
-
+      <LinearGradient
+        colors={['#FFFFFF', '#FFFFFF', '#FFFFFF', 'rgba(255,255,255,0)']}
+        style={{
+          width: '100%',
+          padding: 20,
+          paddingBottom: 60,
+          position: 'absolute',
+          zIndex: 1,
+          top: 0
+        }}
+      >
         <ButtonsArea>
-          {informationGroup === 'profile' && (
+          {informationCategory === 'profile' && (
             <>
               <SellectedButton>
                 <Text T5 bold color={COLOR.MAIN}>의사정보</Text>
               </SellectedButton>
               <UnsellectedButtonRight
                 underlayColor='transparent'
-                onPress={() => setInformationGroup('review')}
+                onPress={() => setInformationCategory('review')}
               >
                 <Text T5 color={COLOR.GRAY1}>진료후기</Text>
               </UnsellectedButtonRight>
             </>
           )}
-          {informationGroup === 'review' && (
+          {informationCategory === 'review' && (
             <>
               <UnsellectedButtonLeft
                 underlayColor='transparent'
-                onPress={() => setInformationGroup('profile')}
+                onPress={() => setInformationCategory('profile')}
               >
                 <Text T5 color={COLOR.GRAY1}>의사정보</Text>
               </UnsellectedButtonLeft>
@@ -98,8 +108,10 @@ export default function DoctorProfileScreen({ navigation, route }) {
             </>
           )}
         </ButtonsArea>
+      </LinearGradient>
 
-        {informationGroup === 'profile' && (
+      <ScrollView showsVerticalScrollIndicator={false} paddingHorizontal={20} paddingTop={80}>
+        {informationCategory === 'profile' && (
           <>
             <Row align marginTop={36}>
               <Image source={{ uri: doctorInfo.image }} width={66} height={66} circle />
@@ -140,7 +152,7 @@ export default function DoctorProfileScreen({ navigation, route }) {
             <Text T6 marginTop={18} marginBottom={60}>{text}</Text>
           </>
         )}
-        {informationGroup === 'review' && (
+        {informationCategory === 'review' && (
           <>
             <ReviewContainer>
               <Text T1 bold>4.5</Text>
@@ -153,7 +165,7 @@ export default function DoctorProfileScreen({ navigation, route }) {
               </Row>
             </ReviewContainer>
 
-            <DividingLine thin marginTop={24} />
+            <DividingLine thin marginTop={42} />
 
             <Text T5 medium color={COLOR.GRAY1} marginTop={24}>리뷰 34개</Text>
 
@@ -162,23 +174,32 @@ export default function DoctorProfileScreen({ navigation, route }) {
             <Review />
             <Review />
             <Review />
-            <Box height={60}/>
           </>
         )}
+        <Box height={220} />
       </ScrollView>
 
-      <BottomButtonContainer>
+      <LinearGradient
+        colors={['rgba(255,255,255,0)', '#FFFFFF', '#FFFFFF', '#FFFFFF']}
+        style={{
+          width: '100%',
+          marginBottom: 30,
+          padding: 20,
+          paddingTop: 70,
+          position: 'absolute',
+          bottom: 0
+        }}
+      >
         <SolidButton
           text="진료 예약 신청"
           action={() => handleApplyReservation()}
         />
-      </BottomButtonContainer>
+      </LinearGradient>
     </SafeArea>
   );
 }
 
 const ButtonsArea = styled.View`
-  margin-top: 24px;
   width: 100%;
   height: 48px;
   background: ${COLOR.GRAY6};
@@ -228,13 +249,8 @@ const BulletPoint = styled.View`
   background-color: ${COLOR.GRAY3};
 `;
 
-const BottomButtonContainer = styled.View`
-  width: 100%;
-  padding: 20px;
-`;
-
 const ReviewContainer = styled.View`
-  margin-top: 42px;
+  margin-top: 30px;
   width: 100%;
   align-items: center;
   justify-content: center;
