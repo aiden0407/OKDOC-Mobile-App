@@ -1,7 +1,8 @@
 //Navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ProfileListScreen from 'screens/MyPage/Profile';
-import ProfileDetailScreen from 'screens/MyPage/Profile/Detail';
+import MyPageProfileDetailScreen from 'screens/MyPage/Profile/MyPageDetail'
+import ReservationProfileDetailScreen from 'screens/MyPage/Profile/ReservationDetail';
 
 //Components
 import NavigationBackArrow from 'components/NavigationBackArrow';
@@ -18,14 +19,23 @@ export default function ProfileStackNavigation({ navigation }) {
           name="ProfileList"
           component={ProfileListScreen}
           options={() => ({
+            title: '프로필 목록',
             headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
           })}
         />
         <Stack.Screen
-          name="ProfileDetail"
-          component={ProfileDetailScreen}
+          name="MyPageProfileDetail"
+          component={MyPageProfileDetailScreen}
           options={() => ({
-            title: '비대면 진료실',
+            title: '프로필 정보',
+            headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
+          })}
+        />
+        <Stack.Screen
+          name="ReservationProfileDetail"
+          component={ReservationProfileDetailScreen}
+          options={() => ({
+            title: '프로필 정보',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('ProfileList')} />,
           })}
         />
