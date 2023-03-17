@@ -17,22 +17,15 @@ import profileSelected from 'assets/icons/profile-selected.png';
 
 export default function ProfileListScreen({ navigation, route }) {
 
-  useEffect(() => {
-    navigation.setOptions({
-      title: route.params?.headerTitle ?? '프로필 목록'
-    });
-  }, [navigation, route]);
-  const { state: { bottomTabMenu }, dispatch } = useContext(AppContext);
-  const { state: { userData } } = useContext(ApiContext);
-
+  const { dispatch } = useContext(AppContext);
+  const { state: { profileData } } = useContext(ApiContext);
   const [profileIndex, setProfileIndex] = useState(null);
 
   function Profile({ name, relationship, isSelected, action }) {
     return (
       <ProfileButton
-        isSelected={isSelected} 
+        isSelected={isSelected}
         onPress={action}
-        underlayColor={bottomTabMenu==='MYPAGE' && COLOR.GRAY5}
       >
         <>
           <Image source={isSelected ? profileSelected : profileDefault} width={40} height={40} />
@@ -45,17 +38,13 @@ export default function ProfileListScreen({ navigation, route }) {
 
   function handleSelectProfile(profileIndex) {
     if (profileIndex === 0) {
-      dispatch({ type: 'TELEMEDICINE_RESERVATION_PROFILE', profileId: userData.name });
+      dispatch({ type: 'TELEMEDICINE_RESERVATION_PROFILE', profileId: profileData[0].name });
+      navigation.navigate('ReservationProfileDetail', { profileInfo: profileData[0] });
     } else {
       dispatch({ type: 'TELEMEDICINE_RESERVATION_PROFILE', profileId: 'else' });
+      navigation.navigate('ReservationProfileDetail');
     }
-    navigation.navigate('ProfileDetail', { headerTitle: '프로필 정보' });
   }
-
-  function handleProfileDetail() {
-    navigation.navigate('ProfileDetail', { headerTitle: '프로필 상세보기' });
-  }
-
 
   return (
     <SafeArea>
@@ -63,38 +52,27 @@ export default function ProfileListScreen({ navigation, route }) {
         <Text T3 bold marginTop={30}>{route.params?.bodyTitle ?? '등록된 프로필 정보'}</Text>
         <Row marginTop={42} gap={10}>
           <Profile
-            name={userData.name}
-            relationship='본인'
-            isSelected={profileIndex === 0}
-            action={() => {
-              bottomTabMenu==='HOME' && setProfileIndex(0)
-              bottomTabMenu==='MYPAGE' && handleProfileDetail()
-            }}
+            name={profileData[0].name}
+            relationship={profileData[0].relationship}
+            isSelected={profileIndex===0}
+            action={() => setProfileIndex(0)}
           />
-          {
-            bottomTabMenu==='HOME' && (<>
-              <Profile
-                name='기타'
-                relationship='가족 /  지인'
-                isSelected={profileIndex === 1}
-                action={() => setProfileIndex(1)}
-              />
-            </>)
-          }
+          <Profile
+            name='기타'
+            relationship='가족 / 지인'
+            isSelected={profileIndex===1}
+            action={() => setProfileIndex(1)}
+          />
         </Row>
       </Container>
 
-      {
-        bottomTabMenu === 'HOME' && (<>
-          <BottomButtonContainer>
-            <SolidButton
-              disabled={profileIndex === null}
-              text="다음"
-              action={() => handleSelectProfile(profileIndex)}
-            />
-          </BottomButtonContainer>
-        </>)
-      }
+      <BottomButtonContainer>
+        <SolidButton
+          disabled={profileIndex === null}
+          text="다음"
+          action={() => handleSelectProfile(profileIndex)}
+        />
+      </BottomButtonContainer>
     </SafeArea>
   );
 }
@@ -104,7 +82,7 @@ const BottomButtonContainer = styled.View`
   padding: 20px;
 `;
 
-const ProfileButton = styled.TouchableHighlight`
+const ProfileButton = styled.Pressable`
   width: 100px;
   height: 116px;
   border-radius: 5px;
