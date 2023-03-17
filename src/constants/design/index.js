@@ -4,6 +4,7 @@ export const COLOR = {
     SUB2: '#E3D0FF',
     SUB3: '#F1E8FF',
     SUB4: '#FAF6FF',
+    GRAY0: '#666666',
     GRAY1: '#7A7A7A',
     GRAY2: '#858585',
     GRAY3: '#DBDBDB',
@@ -57,8 +58,8 @@ export const BUTTON = {
         HEIGHT: '48px',
     },
     MEDIUM: {
-        WIDTH: '124px',
-        HEIGHT: '38px',
+        WIDTH: '138px',
+        HEIGHT: '44px',
     },
     TINY: {
         PADDING: '6px 20px',
