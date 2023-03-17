@@ -11,7 +11,7 @@ export default function NeedLoginScreen({ navigation, route }) {
     navigation.setOptions({
       title: route.params?.headerTitle ?? '로그인'
     });
-  }, [navigation, route]);
+  }, [navigation]);
 
   return (
     <SafeArea>

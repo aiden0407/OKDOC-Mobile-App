@@ -11,7 +11,7 @@ export default function PolicyDetialsScreen({ navigation, route }) {
     navigation.setOptions({
       title: route.params?.headerTitle
     });
-  }, [navigation, route]);
+  }, [navigation]);
 
   return (
     <SafeArea>

@@ -35,7 +35,7 @@ export default function MyPageScreen({ navigation }) {
 
   function handleProfileList() {
     if(userData.loginStatus){
-      navigation.navigate('ProfileStackNavigation', { screen: 'ProfileList' });
+      navigation.navigate('ProfileStackNavigation', { screen: 'MyPageProfileDetail' });
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
@@ -81,14 +81,14 @@ export default function MyPageScreen({ navigation }) {
           <InformationButton underlayColor={COLOR.GRAY5} onPress={() => handleAccountInformation()}>
             <>
               <Image source={accountPerson} width={35} height={40.25} marginTop={13} />
-              <Text T6 marginTop={11}>계정 정보</Text>
+              <Text T6 marginTop={11}>계정 설정</Text>
             </>
           </InformationButton>
 
           <InformationButton underlayColor={COLOR.GRAY5} onPress={() => handleProfileList()}>
             <>
               <Image source={profileCard} width={54} height={32} marginTop={18} />
-              <Text T6 marginTop={14}>프로필 목록</Text>
+              <Text T6 marginTop={14}>프로필 정보</Text>
             </>
           </InformationButton>
         </InformationContainer>
