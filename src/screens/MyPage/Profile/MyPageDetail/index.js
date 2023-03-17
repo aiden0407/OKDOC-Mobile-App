@@ -158,7 +158,11 @@ export default function ProfileDetailScreen({ navigation, route }) {
                 <LineInput
                   value={height}
                   onChangeText={setHeight}
-                  onBlur={() => setHeight(parseFloat(height).toFixed(1))}
+                  onBlur={() => 
+                    height.replace(/[^0-9.]/g, '')
+                      ? setHeight(parseFloat(height.replace(/[^0-9.]/g, '')).toFixed(1)) 
+                      : setHeight('')
+                  }
                   editable={isEditable}
                   style={{ width: 100 }}
                   placeholder="몸무게"
@@ -169,7 +173,11 @@ export default function ProfileDetailScreen({ navigation, route }) {
                   marginLeft={30}
                   value={weight}
                   onChangeText={setWeight}
-                  onBlur={() => setWeight(parseFloat(weight).toFixed(1))}
+                  onBlur={() => 
+                    height
+                      ? setWeight(parseFloat(weight.replace(/[^0-9.]/g, '')).toFixed(1)) 
+                      : setWeight('')
+                  }
                   editable={isEditable}
                   style={{ width: 100 }}
                   placeholder="키"
