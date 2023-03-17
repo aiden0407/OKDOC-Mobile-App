@@ -31,20 +31,17 @@ export const SafeArea = styled.SafeAreaView`
 
 export const Container = styled.View`
   flex: 1;
-  background-color: ${(props) => props.backgroundColor ?? 'transparent'};
 `;
 
 export const ContainerTop = styled.View`
   flex: 1;
   align-items: center;
-  background-color: ${(props) => props.backgroundColor ?? 'transparent'};
 `;
 
 export const ContainerCenter = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => props.backgroundColor ?? 'transparent'};
 `;
 
 export const Center = styled.View`
@@ -55,11 +52,9 @@ export const Center = styled.View`
 export const Row = styled.View`
   flex-direction: row;
   ${(props) => props.align && 'align-items: center'}
-  background-color: ${(props) => props.backgroundColor ?? 'transparent'};
 `;
 
 export const ScrollView = styled.ScrollView`
-  background-color: ${(props) => props.backgroundColor ?? 'transparent'};
 `;
 
 export const DividingLine = styled.View`
