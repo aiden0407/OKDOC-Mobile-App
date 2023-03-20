@@ -22,7 +22,6 @@ TouchableOpacity.defaultProps.activeOpacity = 0.6;
 import BottomTapNavigation from 'navigation/BottomTapNavigation';
 import TelemedicineReservation from 'navigation/Home/TelemedicineReservation';
 import MyPageStackNavigation from 'navigation/MyPage';
-import ProfileStackNavigation from 'navigation/MyPage/ProfileStackNavigation';
 import LoginStackNavigation from 'navigation/LoginStackNavigation';
 import NeedLoginNavigation from 'navigation/LoginStackNavigation/NeedLoginNavigation';
 
@@ -58,7 +57,6 @@ export default function App() {
                 <Stack.Screen name="BottomTapNavigation" component={BottomTapNavigation} />
                 <Stack.Screen name="TelemedicineReservation" component={TelemedicineReservation} />
                 <Stack.Screen name="MyPageStackNavigation" component={MyPageStackNavigation} />
-                <Stack.Screen name="ProfileStackNavigation" component={ProfileStackNavigation} />
                 <Stack.Screen name="NeedLoginNavigation" component={NeedLoginNavigation} />
               </Stack.Group>
 
