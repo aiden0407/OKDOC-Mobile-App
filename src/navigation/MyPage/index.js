@@ -4,6 +4,7 @@ import InquiryScreen from 'screens/MyPage/Inquiry';
 import PolicyScreen from 'screens/MyPage/Policy';
 import PolicyDetailScreen from 'screens/MyPage/Policy/Detail';
 import FaqScreen from 'screens/MyPage/FAQ';
+import MyPageProfileDetailScreen from 'screens/MyPage/Profile/MyPageDetail'
 import NotificationScreen from 'screens/MyPage/Notification';
 import NotificationDetailScreen from 'screens/MyPage/Notification/Detail';
 
@@ -22,6 +23,11 @@ export default function MypageStackNavigation({ navigation }) {
           headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
         }}
       >
+        <Stack.Screen
+          name="MyPageProfileDetail"
+          component={MyPageProfileDetailScreen}
+          options={{title: '프로필 정보'}}
+        />
         <Stack.Screen
           name="Inquiry"
           component={InquiryScreen}
