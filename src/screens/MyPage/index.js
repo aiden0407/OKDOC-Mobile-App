@@ -35,7 +35,7 @@ export default function MyPageScreen({ navigation }) {
 
   function handleProfileList() {
     if(userData.loginStatus){
-      navigation.navigate('ProfileStackNavigation', { screen: 'MyPageProfileDetail' });
+      navigation.navigate('MyPageStackNavigation', { screen: 'MyPageProfileDetail' });
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
@@ -44,13 +44,13 @@ export default function MyPageScreen({ navigation }) {
     }
   }
 
+  function handleMyPageScreen(navigate) {
+    navigation.navigate('MyPageStackNavigation', { screen: navigate });
+  }
+
   function ServicesButton({ title, navigate }) {
     return (
-      <CustomerSurviceRow
-        onPress={() => navigation.navigate('MyPageStackNavigation', {
-          screen: navigate,
-        })}
-      >
+      <CustomerSurviceRow onPress={() => handleMyPageScreen(navigate)}>
         <Text T5 medium>{title}</Text>
         <Ionicons name="chevron-forward" size={20} />
       </CustomerSurviceRow>
