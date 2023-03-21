@@ -143,9 +143,9 @@ export default function ReservationScreen({ navigation, route }) {
       type: 'TELEMEDICINE_RESERVATION_DOCTOR', 
       date: date, 
       time: time, 
-      doctorId: doctorInfo.name,
+      doctorInfo: doctorInfo,
     });
-    navigation.navigate('DoctorProfile', {doctorInfo: doctorInfo});
+    navigation.navigate('DoctorProfile');
   }
 
   return (
