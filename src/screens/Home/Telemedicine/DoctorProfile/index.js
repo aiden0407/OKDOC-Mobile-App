@@ -1,5 +1,6 @@
 //React
 import { useState, useContext } from 'react';
+import { AppContext } from 'context/AppContext';
 import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
@@ -18,9 +19,10 @@ import starFull from 'assets/icons/star-full.png';
 
 export default function DoctorProfileScreen({ navigation, route }) {
 
+  const { state: { telemedicineReservationStatus } } = useContext(AppContext);
   const { state: { userData } } = useContext(ApiContext);
   const [informationCategory, setInformationCategory] = useState('profile');
-  const doctorInfo = route.params.doctorInfo
+  const doctorInfo = telemedicineReservationStatus.doctorInfo
 
   const title = `연세튼튼치과/내과 건강검진센터 병원장\n${doctorInfo.name}입니다.`
   const text = `안녕하세요, 인천 검단신도시 아라동에 위치한 연세튼튼치과 원장 ${doctorInfo.name}입니다.
@@ -33,13 +35,7 @@ export default function DoctorProfileScreen({ navigation, route }) {
 
   function handleApplyReservation() {
     if (userData.loginStatus) {
-      navigation.navigate('ProfileStackNavigation', {
-        screen: 'ProfileList',
-        params: {
-          headerTitle: '프로필 선택',
-          bodyTitle: '진료 받을 분을 선택해 주세요',
-        },
-      });
+      navigation.navigate('ProfileList');
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
