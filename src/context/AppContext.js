@@ -8,8 +8,9 @@ const initialState = {
     item: undefined,
     date: undefined,
     time: undefined,
-    doctorId: undefined,
-    profileId: undefined,
+    doctorInfo: undefined,
+    profileType: undefined,
+    profileInfo: undefined,
   },
 };
 
@@ -49,7 +50,7 @@ const reducer = (state, action) => {
           ...state.telemedicineReservationStatus,
           date: action.date,
           time: action.time,
-          doctorId: action.doctorId,
+          doctorInfo: action.doctorInfo,
         },
       };
 
@@ -58,7 +59,8 @@ const reducer = (state, action) => {
         ...state,
         telemedicineReservationStatus: {
           ...state.telemedicineReservationStatus,
-          profileId: action.profileId,
+          profileType: action.profileType,
+          profileInfo: action.profileType==='my' ? action.profileInfo : null
         },
       };
 
