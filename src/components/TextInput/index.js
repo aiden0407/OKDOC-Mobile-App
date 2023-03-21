@@ -20,5 +20,32 @@ export const LineInput = styled.TextInput`
   border-color: ${COLOR.GRAY3};
   font-family: 'Pretendard-Regular';
   font-size: ${TYPOGRAPHY.T5.SIZE};
-  color: ${(props) => props.editable ? '#000000' : COLOR.GRAY0 };
+  color: ${(props) => props.editable===false ? COLOR.GRAY0 : '#000000' };
+`;
+
+export function BoxInputMedium({ ...props }) {
+  return (
+    <MediumTextInputBackground
+      editable={props.editable}
+      marginTop={props.marginTop}
+    >
+      <MediumTextInput {...props} marginTop={0}/>
+    </MediumTextInputBackground>
+  );
+}
+
+export const MediumTextInputBackground = styled.View`
+  width: 100%;
+  padding: 12px 6px 16px 16px;
+  background-color: ${(props) => props.editable===false ? COLOR.GRAY4 : COLOR.GRAY6 };
+  border-radius: 5px;
+`;
+
+export const MediumTextInput = styled.TextInput`
+  width: 100%;
+  height: 66px;
+  padding: 0 6px 0 0;
+  font-family: 'Pretendard-Regular';
+  font-size: ${TYPOGRAPHY.T6.SIZE};
+  color: ${(props) => props.editable===false ? '#333333' : '#000000' };
 `;
