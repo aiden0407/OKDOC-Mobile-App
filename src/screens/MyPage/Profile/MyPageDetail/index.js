@@ -1,6 +1,5 @@
 //React
 import { useState, useEffect, useContext, useRef } from 'react';
-import { AppContext } from 'context/AppContext';
 import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
@@ -25,15 +24,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
   const [medicalHistory, setMedicalHistory] = useState(profileData[0]?.medicalHistory);
   const [medicalHistoryFamily, setMedicalHistoryFamily] = useState(profileData[0]?.medicalHistoryFamily);
   const [medication, setMedication] = useState(profileData[0]?.medication);
-  // const [allergyStatus, setAllergyStatus] = useState(profileData[0]?.allergyStatus);
-  const [allergyDetail, setAllergyDetail] = useState(profileData[0]?.allergyDetail);
-  const [allergySneeze, setAllergySneeze] = useState(profileData[0]?.allergicReaction.sneeze);
-  const [allergyTear, setAllergyTear] = useState(profileData[0]?.allergicReaction.tear);
-  const [allergyItchy, setAllergyItchy] = useState(profileData[0]?.allergicReaction.itchy);
-  const [allergyRash, setAllergyRash] = useState(profileData[0]?.allergicReaction.rash);
-  const [allergyEtc, setAllergyEtc] = useState(profileData[0]?.allergicReaction.etc);
+  const [allergyReaction, setAllergyReaction] = useState(profileData[0]?.allergyReaction);
   const [etcConsideration, setEtcConsideration] = useState(profileData[0]?.etcConsideration);
-
 
   useEffect(() => {
     navigation.setOptions({
@@ -159,7 +151,7 @@ export default function ProfileDetailScreen({ navigation, route }) {
                   value={height}
                   onChangeText={setHeight}
                   onBlur={() => 
-                    height.replace(/[^0-9.]/g, '')
+                    height?.replace(/[^0-9.]/g, '')
                       ? setHeight(parseFloat(height.replace(/[^0-9.]/g, '')).toFixed(1)) 
                       : setHeight('')
                   }
@@ -174,7 +166,7 @@ export default function ProfileDetailScreen({ navigation, route }) {
                   value={weight}
                   onChangeText={setWeight}
                   onBlur={() => 
-                    height
+                    weight?.replace(/[^0-9.]/g, '')
                       ? setWeight(parseFloat(weight.replace(/[^0-9.]/g, '')).toFixed(1)) 
                       : setWeight('')
                   }
@@ -262,44 +254,11 @@ export default function ProfileDetailScreen({ navigation, route }) {
                 multiline
                 marginTop={12}
                 editable={isEditable}
-                placeholder="본인에게 알러지를 유발하는 음식, 약, 환경을 알고 있다면 입력해 주세요."
-                value={allergyDetail}
-                onChangeText={setAllergyDetail}
+                placeholder="본인에게 알러지를 유발하는 음식이나 환경이 있다면 알러지 반응과 함께 입력해 주세요."
+                value={allergyReaction}
+                onChangeText={setAllergyReaction}
                 onFocus={() => handleTextInputFocus(680)}
               />
-              <Text T6 bold marginTop={30}>알러지 반응</Text>
-              <Row marginTop={12} gap={12} style={{ width: '100%', flexWrap: 'wrap'}}>
-                <TinySolidButton
-                  isEditable={isEditable}
-                  isSelected={allergySneeze}
-                  action={() => isEditable && setAllergySneeze(!allergySneeze)}
-                  text='발진'
-                />
-                <TinySolidButton
-                  isEditable={isEditable}
-                  isSelected={allergyTear}
-                  action={() => isEditable && setAllergyTear(!allergyTear)}
-                  text='눈물'
-                />
-                <TinySolidButton
-                  isEditable={isEditable}
-                  isSelected={allergyItchy}
-                  action={() => isEditable && setAllergyItchy(!allergyItchy)}
-                  text='가려움'
-                />
-                <TinySolidButton
-                  isEditable={isEditable}
-                  isSelected={allergyRash}
-                  action={() => isEditable && setAllergyRash(!allergyRash)}
-                  text='발진'
-                />
-                <TinySolidButton
-                  isEditable={isEditable}
-                  isSelected={allergyEtc}
-                  action={() => isEditable && setAllergyEtc(!allergyEtc)}
-                  text='기타'
-                />
-              </Row>
               <Text T6 bold marginTop={30}>기타 사항</Text>
               <BoxInputMedium
                 multiline
@@ -308,7 +267,7 @@ export default function ProfileDetailScreen({ navigation, route }) {
                 placeholder="의사 선생님이 알아야 하는 기타 사항이 있다면 입력해 주세요."
                 value={etcConsideration}
                 onChangeText={setEtcConsideration}
-                onFocus={()=>handleTextInputFocus(900)}
+                onFocus={()=>handleTextInputFocus(840)}
               />
               <Box height={400} />
             </ScrollView>
