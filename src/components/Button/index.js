@@ -3,16 +3,16 @@ import styled from 'styled-components/native';
 import { COLOR, TYPOGRAPHY, BUTTON } from 'constants/design'
 
 function buttonSizeSelector(large, medium, tiny){
-  if(large) return `width: ${BUTTON.LARGE.WIDTH}; height: ${BUTTON.LARGE.HEIGHT}; border-radius: 5px;`
-  if(medium) return `width: ${BUTTON.MEDIUM.WIDTH}; height: ${BUTTON.MEDIUM.HEIGHT}; border-radius: 5px;`
-  if(tiny) return `padding: ${BUTTON.TINY.PADDING}; border-radius: 50%;`
-  return `width: ${BUTTON.FULL.WIDTH}; height: ${BUTTON.FULL.HEIGHT}; border-radius: 5px;`
+  if(large) return `width: ${BUTTON.LARGE.WIDTH}; height: ${BUTTON.LARGE.HEIGHT}; border-radius: ${BUTTON.LARGE.BORDER_RADIUS};`
+  if(medium) return `width: ${BUTTON.MEDIUM.WIDTH}; height: ${BUTTON.MEDIUM.HEIGHT}; border-radius: ${BUTTON.MEDIUM.BORDER_RADIUS};`
+  if(tiny) return `width: ${BUTTON.TINY.WIDTH}; height: ${BUTTON.TINY.HEIGHT}; border-radius: ${BUTTON.TINY.BORDER_RADIUS};`
+  return `width: ${BUTTON.FULL.WIDTH}; height: ${BUTTON.FULL.HEIGHT}; border-radius: ${BUTTON.FULL.BORDER_RADIUS};`
 }
 
 function textSizeSelector(large, medium, tiny, double){
   if(large || medium || double) return `font-size: ${TYPOGRAPHY.T5.SIZE}; line-height: ${TYPOGRAPHY.T5.LEADING}; font-family: Pretendard-Medium;`
-  if(tiny) return `font-size: ${TYPOGRAPHY.T5.SIZE}; line-height: ${TYPOGRAPHY.T5.LEADING}; font-family: Pretendard-Regular;`
-  return `font-size: ${TYPOGRAPHY.T4.SIZE}; line-height: ${TYPOGRAPHY.T4.LEADING}; font-family: Pretendard-Medium;`
+  if(tiny) return `font-size: ${TYPOGRAPHY.T6.SIZE}; line-height: ${TYPOGRAPHY.T6.LEADING}; font-family: Pretendard-Bold;`
+  return `font-size: ${TYPOGRAPHY.T5.SIZE}; line-height: ${TYPOGRAPHY.T5.LEADING}; font-family: Pretendard-Medium;`
 }
 
 export function SolidButton({ text, action, marginTop, marginBottom, large, medium, tiny, double, disabled }) {

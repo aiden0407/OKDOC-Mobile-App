@@ -51,17 +51,22 @@ export const TYPOGRAPHY = {
 export const BUTTON = {
     FULL: {
         WIDTH: '100%',
-        HEIGHT: '56px',
+        HEIGHT: '58px',
+        BORDER_RADIUS: '5px',
     },
     LARGE: {
         WIDTH: '280px',
         HEIGHT: '48px',
+        BORDER_RADIUS: '5px',
     },
     MEDIUM: {
         WIDTH: '138px',
         HEIGHT: '44px',
+        BORDER_RADIUS: '5px',
     },
     TINY: {
-        PADDING: '6px 20px',
+        WIDTH: '82px',
+        HEIGHT: '36px',
+        BORDER_RADIUS: '25px',
     },
 }
