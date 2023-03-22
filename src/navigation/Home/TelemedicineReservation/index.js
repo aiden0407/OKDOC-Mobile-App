@@ -10,6 +10,11 @@ import DoctorProfileScreen from 'screens/Home/Telemedicine/DoctorProfile';
 import ProfileListScreen from 'screens/Home/Telemedicine/ProfileList';
 import ProfileDetailScreen from 'screens/Home/Telemedicine/ProfileDetail';
 import SymptomDetailScreen from 'screens/Home/Telemedicine/SymptomDetail';
+import PaymentNotificationScreen from 'screens/Home/Telemedicine/PaymentNotification';
+import PaymentPolicyDetailScreen from 'screens/Home/Telemedicine/PaymentNotification/PaymentPolicyDetail';
+import RefundPolicyDetailScreen from 'screens/Home/Telemedicine/PaymentNotification/RefundPolicyDetail';
+import PaymentScreen from 'screens/Home/Telemedicine/Payment';
+import PaymentConfirmScreen from 'screens/Home/Telemedicine/PaymentConfirm';
 
 //Components
 import NavigationBackArrow from 'components/NavigationBackArrow';
@@ -35,50 +40,89 @@ export default function TelemedicineReservation({ navigation }) {
         <Stack.Screen
           name="Category"
           component={CategoryScreen}
-          options={() => ({
+          options={{
             title: '비대면 진료실',
             headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
-          })}
+          }}
         />
         <Stack.Screen
           name="Reservation"
           component={ReservationScreen}
-          options={() => ({
+          options={{
             title: '비대면 진료실',
             headerLeft: () => <NavigationBackArrow action={() => handleReservationBack()} />,
-          })}
+          }}
         />
         <Stack.Screen
           name="DoctorProfile"
           component={DoctorProfileScreen}
-          options={() => ({
+          options={{
             title: '의사 프로필',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Reservation')} />,
-          })}
+          }}
         />
         <Stack.Screen
           name="ProfileList"
           component={ProfileListScreen}
-          options={() => ({
+          options={{
             title: '프로필 선택',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('DoctorProfile')} />,
-          })}
+          }}
         />
         <Stack.Screen
           name="ProfileDetail"
           component={ProfileDetailScreen}
-          options={() => ({
+          options={{
             title: '프로필 정보',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('ProfileList')} />,
-          })}
+          }}
         />
         <Stack.Screen
           name="SymptomDetail"
           component={SymptomDetailScreen}
-          options={() => ({
+          options={{
             title: '증상 설명',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('ProfileDetail')} />,
-          })}
+          }}
+        />
+        <Stack.Screen
+          name="PaymentNotification"
+          component={PaymentNotificationScreen}
+          options={{
+            title: '결제 안내',
+            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('SymptomDetail')} />,
+          }}
+        />
+        <Stack.Screen
+          name="PaymentPolicyDetail"
+          component={PaymentPolicyDetailScreen}
+          options={{
+            title: '결제 대행 서비스 이용 약관',
+            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('PaymentNotification')} />,
+          }}
+        />
+        <Stack.Screen
+          name="RefundPolicyDetail"
+          component={RefundPolicyDetailScreen}
+          options={{
+            title: '취소 및 환불 규정',
+            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('PaymentNotification')} />,
+          }}
+        />
+        <Stack.Screen
+          name="Payment"
+          component={PaymentScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PaymentConfirm"
+          component={PaymentConfirmScreen}
+          options={{
+            title: '결제 완료',
+            headerBackVisible: false,
+          }}
         />
       </Stack.Group>
     </Stack.Navigator>
