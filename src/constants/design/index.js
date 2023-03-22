@@ -70,3 +70,20 @@ export const BUTTON = {
         BORDER_RADIUS: '25px',
     },
 }
+
+export const INPUT_BOX = {
+    DEFAULT: {
+        BACKGROUND_PADDING: '10px 12px 12px 12px',
+        TEXT_INPUT_HEIGHT: '20px',
+    },
+    MEDIUM: {
+        BACKGROUND_PADDING: '12px 6px 12px 12px',
+        TEXT_INPUT_PADDING: '0px 6px 0px 0px',
+        TEXT_INPUT_HEIGHT: '66px',
+    },
+    LARGE: {
+        BACKGROUND_PADDING: '12px 6px 12px 12px',
+        TEXT_INPUT_PADDING: '0px 6px 0px 0px',
+        TEXT_INPUT_HEIGHT: '100px',
+    },
+}
