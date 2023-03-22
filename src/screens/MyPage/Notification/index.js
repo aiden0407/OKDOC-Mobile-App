@@ -2,8 +2,10 @@
 import styled from 'styled-components/native';
 
 //Components
+import { COLOR } from 'constants/design'
 import { Ionicons } from '@expo/vector-icons';
-import { SafeArea, ContainerTop } from 'components/Layout';
+import { SafeArea, Container } from 'components/Layout';
+import { Text } from 'components/Text';
 
 export default function NotificationScreen({ navigation }) {
 
@@ -17,12 +19,12 @@ export default function NotificationScreen({ navigation }) {
         >
           <SubtitleRow>
             <SubtitleTextRow>
-              <SubtitleText>{title}</SubtitleText>
-              {recent && <SubtitleNew><SubtitleNewN>N</SubtitleNewN></SubtitleNew>}
+              <Text T6 bold>{title}</Text>
+              {recent && <SubtitleNew><Text T8 bold color="#FFFFFF">N</Text></SubtitleNew>}
             </SubtitleTextRow>
             <Ionicons name="chevron-forward" size={20} />
           </SubtitleRow>
-          <DateText>{date}</DateText>
+          <Text T7 color={COLOR.GRAY1}>{date}</Text>
         </NotificationTouchable>
       </NotificationBox>
     )
@@ -30,43 +32,28 @@ export default function NotificationScreen({ navigation }) {
 
   return (
     <SafeArea>
-      <ContainerTop paddingTop={50}>
-        <TitleContainer>
-          <Title>공지사항</Title>
-        </TitleContainer>
+      <Container>
 
+        <Text T3 bold marginTop={30} marginLeft={20}>공지사항</Text>
         <NotificationButton
           title="[공지] 생일축하 쿠폰 지급정책 변경 안내3"
           recent
           date="2023.04.10"
         />
-
         <NotificationButton
           title="[공지] 생일축하 쿠폰 지급정책 변경 안내2"
           recent
           date="2023.04.08"
         />
-
         <NotificationButton
           title="[공지] 생일축하 쿠폰 지급정책 변경 안내"
           date="2023.04.07"
         />
 
-      </ContainerTop>
+      </Container>
     </SafeArea>
   );
 }
-
-const TitleContainer = styled.View`
-  width: 100%;
-  margin-bottom: 10px;
-`;
-
-const Title = styled.Text`
-  margin-left: 20px;
-  font-weight: 500;
-  font-size: 20px;
-`;
 
 const NotificationBox = styled.View`
   width: 100%;
@@ -77,7 +64,7 @@ const NotificationBox = styled.View`
 
 const NotificationTouchable = styled.TouchableOpacity`
   width: 100%;
-  gap: 10px;
+  gap: 6px;
 `;
 
 const SubtitleRow = styled.View`
@@ -92,11 +79,6 @@ const SubtitleTextRow = styled.View`
   align-items: center;
 `;
 
-const SubtitleText = styled.Text`
-  font-weight: 600;
-  font-size: 14px;
-`;
-
 const SubtitleNew = styled.View`
   margin-left: 6px;
   width: 15px;
@@ -105,16 +87,4 @@ const SubtitleNew = styled.View`
   border-radius: 50px;
   align-items: center;
   justify-content: center;
-`;
-
-const SubtitleNewN = styled.Text`
-  font-weight: 600;
-  font-size: 13px;
-  color: #FFFFFF;
-`;
-
-const DateText = styled.Text`
-  font-weight: 500;
-  font-size: 12px;
-  color: #8B8E99;
 `;

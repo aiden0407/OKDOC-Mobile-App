@@ -3,7 +3,8 @@ import styled from 'styled-components/native';
 
 //Components
 import { Ionicons } from '@expo/vector-icons';
-import { SafeArea, ContainerTop } from 'components/Layout';
+import { SafeArea, Container, Box } from 'components/Layout';
+import { Text } from 'components/Text';
 
 export default function PolicyScreen({ navigation }) {
 
@@ -15,7 +16,7 @@ export default function PolicyScreen({ navigation }) {
             headerTitle: title,
           })}
         >
-          <PolicyTitle>{title}</PolicyTitle>
+          <Text T5 medium>{title}</Text>
           <Ionicons name="chevron-forward" size={20} />
         </PolicyRow>
       </PolicyBox>
@@ -24,34 +25,21 @@ export default function PolicyScreen({ navigation }) {
 
   return (
     <SafeArea>
-      <ContainerTop paddingTop={50}>
+      <Container>
 
-        <TitleContainer>
-          <Title>약관 및 정책</Title>
-        </TitleContainer>
-
+        <Text T3 bold marginTop={30} marginLeft={20}>약관 및 정책</Text>
+        <Box height={18}/>
         <PolicyButton title="서비스 이용약관"/>
         <PolicyButton title="개인정보 보호정책"/>
 
-      </ContainerTop>
+      </Container>
     </SafeArea>
   );
 }
 
-const TitleContainer = styled.View`
-  width: 100%;
-  margin-bottom: 10px;
-`;
-
-const Title = styled.Text`
-  margin-left: 20px;
-  font-weight: 500;
-  font-size: 20px;
-`;
-
 const PolicyBox = styled.View`
   width: 100%;
-  padding: 26px 24px;
+  padding: 24px;
   border-bottom-width: 2px;
   border-bottom-color: #F7F8FA;
 `;
@@ -61,9 +49,4 @@ const PolicyRow = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-`;
-
-const PolicyTitle = styled.Text`
-  font-weight: 600;
-  font-size: 16px;
 `;
