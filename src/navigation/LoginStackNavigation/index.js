@@ -14,11 +14,11 @@ export default function LoginStackNavigation({ navigation }) {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={() => ({
+        options={{
           title: '로그인',
           headerLargeTitleShadowVisible: false,
           headerLeft: () => <NavigationBackArrow action={()=>navigation.goBack()} />,
-        })}
+        }}
       />
 
     </Stack.Navigator>

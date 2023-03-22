@@ -15,9 +15,9 @@ export default function NeedLoginNavigation({ navigation }) {
         <Stack.Screen
           name="NeedLogin"
           component={NeedLoginScreen}
-          options={() => ({
+          options={{
             headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
-          })}
+          }}
         />
       </Stack.Group>
     </Stack.Navigator>
