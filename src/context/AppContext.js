@@ -11,6 +11,7 @@ const initialState = {
     doctorInfo: undefined,
     profileType: undefined,
     profileInfo: undefined,
+    symptom: undefined,
   },
 };
 
@@ -60,7 +61,31 @@ const reducer = (state, action) => {
         telemedicineReservationStatus: {
           ...state.telemedicineReservationStatus,
           profileType: action.profileType,
-          profileInfo: action.profileType==='my' ? action.profileInfo : null
+          profileInfo: action.profileType === 'my' ? action.profileInfo : null
+        },
+      };
+
+    case 'TELEMEDICINE_RESERVATION_SYMPTOM':
+      return {
+        ...state,
+        telemedicineReservationStatus: {
+          ...state.telemedicineReservationStatus,
+          symptom: action.symptom,
+        },
+      };
+
+    case 'TELEMEDICINE_RESERVATION_CONFIRMED':
+      return {
+        ...state,
+        telemedicineReservationStatus: {
+          category: undefined,
+          item: undefined,
+          date: undefined,
+          time: undefined,
+          doctorInfo: undefined,
+          profileType: undefined,
+          profileInfo: undefined,
+          symptom: undefined,
         },
       };
 
