@@ -9,7 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, KeyboardAvoiding, Container, ScrollView, Row, Box } from 'components/Layout';
 import { Text } from 'components/Text';
-import { LineInput, BoxInputMedium } from 'components/TextInput';
+import { LineInput, BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
 export default function ProfileDetailScreen({ navigation, route }) {
@@ -218,8 +218,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
                 />
               </Row>
               <Text T6 bold marginTop={30}>본인 병력</Text>
-              <BoxInputMedium
-                multiline
+              <BoxInput
+                medium
                 marginTop={12}
                 editable={isEditable}
                 placeholder="현재 앓고 있는 병이나 과거에 앓았던 질병이 있으면 병명을 입력해 주세요."
@@ -228,8 +228,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
                 onFocus={()=>handleTextInputFocus(200)}
               />
               <Text T6 bold marginTop={30}>가족 병력</Text>
-              <BoxInputMedium
-                multiline
+              <BoxInput
+                medium
                 marginTop={12}
                 editable={isEditable}
                 placeholder="부모, 형제 등 직계 가족이 앓고 있거나 과거에 앓았던 질병이 있으면 병명을 입력해 주세요."
@@ -238,8 +238,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
                 onFocus={()=>handleTextInputFocus(360)}
               />
               <Text T6 bold marginTop={30}>현재 복용중인 약</Text>
-              <BoxInputMedium
-                multiline
+              <BoxInput
+                medium
                 marginTop={12}
                 editable={isEditable}
                 placeholder="현재 복용중인 약을 입력해 주세요."
@@ -250,8 +250,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
               <Row marginTop={30} align>
                 <Text T6 bold>알러지 유무</Text>
               </Row>
-              <BoxInputMedium
-                multiline
+              <BoxInput
+                medium
                 marginTop={12}
                 editable={isEditable}
                 placeholder="본인에게 알러지를 유발하는 음식이나 환경이 있다면 알러지 반응과 함께 입력해 주세요."
@@ -260,8 +260,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
                 onFocus={() => handleTextInputFocus(680)}
               />
               <Text T6 bold marginTop={30}>기타 사항</Text>
-              <BoxInputMedium
-                multiline
+              <BoxInput
+                medium
                 marginTop={12}
                 editable={isEditable}
                 placeholder="의사 선생님이 알아야 하는 기타 사항이 있다면 입력해 주세요."

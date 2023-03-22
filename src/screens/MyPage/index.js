@@ -5,8 +5,8 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design'
-import { SafeArea, ContainerTop, DividingLine } from 'components/Layout';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeArea, ContainerTop, DividingLine } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 
@@ -24,7 +24,7 @@ export default function MyPageScreen({ navigation }) {
 
   function handleAccountInformation() {
     if(userData.loginStatus){
-      
+      navigation.navigate('MyPageStackNavigation', { screen: 'AccountSettings' });
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',

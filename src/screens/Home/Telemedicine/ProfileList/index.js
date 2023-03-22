@@ -64,23 +64,19 @@ export default function ProfileListScreen({ navigation, route }) {
             action={() => setProfileIndex(1)}
           />
         </Row>
-      </Container>
 
-      <BottomButtonContainer>
+        <Container />
+
         <SolidButton
+          marginBottom={20}
           disabled={profileIndex === null}
           text="다음"
           action={() => handleSelectProfile(profileIndex)}
         />
-      </BottomButtonContainer>
+      </Container>
     </SafeArea>
   );
 }
-
-const BottomButtonContainer = styled.View`
-  width: 100%;
-  padding: 20px;
-`;
 
 const ProfileButton = styled.Pressable`
   width: 100px;

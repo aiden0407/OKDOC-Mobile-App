@@ -8,10 +8,10 @@ import { COLOR, BUTTON } from 'constants/design';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, KeyboardAvoiding, ScrollView, Row, DividingLine } from 'components/Layout';
 import { Text } from 'components/Text';
-import { LineInput, BoxInputMedium } from 'components/TextInput';
+import { LineInput, BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
-export default function ProfileDetailScreen({ navigation, route }) {
+export default function ProfileDetailScreen({ navigation }) {
 
   const { state: { telemedicineReservationStatus }, dispatch } = useContext(AppContext);
   const profileInfo = telemedicineReservationStatus?.profileInfo;
@@ -208,8 +208,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
             <Row marginTop={30}>
               <Text T6 bold>본인 병력</Text><Text T6 medium color={COLOR.GRAY2} marginLeft={2}>(선택)</Text>
             </Row>
-            <BoxInputMedium
-              multiline
+            <BoxInput
+              medium
               marginTop={12}
               placeholder="현재 앓고 있는 병이나 과거에 앓았던 질병이 있으면 병명을 입력해 주세요."
               value={medicalHistory}
@@ -219,8 +219,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
             <Row marginTop={30}>
               <Text T6 bold>가족 병력</Text><Text T6 medium color={COLOR.GRAY2} marginLeft={2}>(선택)</Text>
             </Row>
-            <BoxInputMedium
-              multiline
+            <BoxInput
+              medium
               marginTop={12}
               placeholder="부모, 형제 등 직계 가족이 앓고 있거나 과거에 앓았던 질병이 있으면 병명을 입력해 주세요."
               value={medicalHistoryFamily}
@@ -230,8 +230,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
             <Row marginTop={30}>
               <Text T6 bold>복용 중인 약</Text><Text T6 medium color={COLOR.GRAY2} marginLeft={2}>(선택)</Text>
             </Row>
-            <BoxInputMedium
-              multiline
+            <BoxInput
+              medium
               marginTop={12}
               placeholder="현재 복용 중인 약을 입력해 주세요."
               value={medication}
@@ -241,8 +241,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
             <Row marginTop={30}>
               <Text T6 bold>알러지 유무</Text><Text T6 medium color={COLOR.GRAY2} marginLeft={2}>(선택)</Text>
             </Row>
-            <BoxInputMedium
-              multiline
+            <BoxInput
+              medium
               marginTop={12}
               placeholder="본인에게 알러지를 유발하는 음식이나 환경이 있다면 알러지 반응과 함께 입력해 주세요."
               value={allergicReaction}
@@ -252,8 +252,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
             <Row marginTop={30}>
               <Text T6 bold>기타 사항</Text><Text T6 medium color={COLOR.GRAY2} marginLeft={2}>(선택)</Text>
             </Row>
-            <BoxInputMedium
-              multiline
+            <BoxInput
+              medium
               marginTop={12}
               placeholder="의사 선생님이 알아야 하는 기타 사항이 있다면 입력해 주세요."
               value={etcConsideration}
@@ -262,6 +262,7 @@ export default function ProfileDetailScreen({ navigation, route }) {
             />
             <SolidButton
               marginTop={90}
+              marginBottom={20}
               text="다음"
               disabled={!name || !relationship || !birth || !gender || !height || !weight || !dringkingStatus || smokingStatus === undefined}
               action={() => handleSubmitProfileDetail()}
