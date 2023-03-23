@@ -12,12 +12,12 @@ import NeedLogin from 'components/NeedLogin';
 
 export default function AlarmScreen({ navigation }) {
 
-  const { state: { userData } } = useContext(ApiContext);
+  const { state: { accountData } } = useContext(ApiContext);
 
   return (
     <SafeArea>
       {
-        userData.loginStatus
+        accountData.loginStatus
           ? (<>
             <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20} paddingTop={30}>
               <Text T3 bold>알림 기록</Text>

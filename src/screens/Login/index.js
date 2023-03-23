@@ -24,7 +24,7 @@ export default function LoginPage({ navigation }) {
 
   function handleLogin(email, password) {
     if (email === 'test' && password === 'test') {
-      dispatch({ type: 'LOGIN', userName: '이준범' });
+      dispatch({ type: 'LOGIN', name: '이준범', phoneNumber: '+82 10-2427-8139' });
       navigation.pop(2);
     } else {
       Alert.alert('로그인 실패');

@@ -12,12 +12,12 @@ import NeedLogin from 'components/NeedLogin';
 
 export default function HistoryScreen({ navigation }) {
 
-  const { state: { userData } } = useContext(ApiContext);
+  const { state: { accountData } } = useContext(ApiContext);
 
   return (
     <SafeArea>
       {
-        userData.loginStatus
+        accountData.loginStatus
           ? (<>
             <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20} paddingTop={30}>
               <Text T3 bold>예약 / 접수 내역</Text>

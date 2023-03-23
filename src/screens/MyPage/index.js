@@ -16,14 +16,14 @@ import profileCard from 'assets/icons/mypage-profile.png';
 
 export default function MyPageScreen({ navigation }) {
 
-  const { state: { userData } } = useContext(ApiContext);
+  const { state: { accountData } } = useContext(ApiContext);
 
   function handleLogin() {
     navigation.navigate('LoginStackNavigation');
   }
 
   function handleAccountInformation() {
-    if(userData.loginStatus){
+    if(accountData.loginStatus){
       navigation.navigate('MyPageStackNavigation', { screen: 'AccountSettings' });
     } else {
       navigation.navigate('NeedLoginNavigation', {
@@ -34,7 +34,7 @@ export default function MyPageScreen({ navigation }) {
   }
 
   function handleProfileList() {
-    if(userData.loginStatus){
+    if(accountData.loginStatus){
       navigation.navigate('MyPageStackNavigation', { screen: 'MyPageProfileDetail' });
     } else {
       navigation.navigate('NeedLoginNavigation', {
@@ -62,10 +62,10 @@ export default function MyPageScreen({ navigation }) {
       <ContainerTop paddingTop={30}>
         <LoginContainer>
           {
-            userData?.loginStatus
+            accountData?.loginStatus
               ? (<>
                 <LoginButton activeOpacity={1}>
-                  <Text T3 bold>안녕하세요, <Text T3 bold color={COLOR.MAIN} marginRight={12}>{userData.name}</Text>님</Text>
+                  <Text T3 bold>안녕하세요, <Text T3 bold color={COLOR.MAIN} marginRight={12}>{accountData.name}</Text>님</Text>
                 </LoginButton>
               </>)
               : (<>
