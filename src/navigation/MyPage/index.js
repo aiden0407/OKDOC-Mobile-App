@@ -1,10 +1,11 @@
 //Navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AccountSettingScreen from 'screens/MyPage/AccountSetting' ;
+import MyPageProfileDetailScreen from 'screens/MyPage/Profile/MyPageDetail';
 import InquiryScreen from 'screens/MyPage/Inquiry';
 import PolicyScreen from 'screens/MyPage/Policy';
 import PolicyDetailScreen from 'screens/MyPage/Policy/Detail';
 import FaqScreen from 'screens/MyPage/FAQ';
-import MyPageProfileDetailScreen from 'screens/MyPage/Profile/MyPageDetail'
 import NotificationScreen from 'screens/MyPage/Notification';
 import NotificationDetailScreen from 'screens/MyPage/Notification/Detail';
 
@@ -23,6 +24,11 @@ export default function MypageStackNavigation({ navigation }) {
           headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
         }}
       >
+        <Stack.Screen
+          name="AccountSetting"
+          component={AccountSettingScreen}
+          options={{title: '계정 설정'}}
+        />
         <Stack.Screen
           name="MyPageProfileDetail"
           component={MyPageProfileDetailScreen}
