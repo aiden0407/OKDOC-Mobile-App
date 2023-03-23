@@ -15,27 +15,27 @@ export default function AccountSettingScreen({ navigation }) {
   const { state: { accountData }, dispatch } = useContext(ApiContext);
   const windowWidth = Dimensions.get('window').width;
 
-  const handleLogout = () => {
+  function handleLogout() {
     dispatch({ type: 'LOGOUT' });
     navigation.goBack();
   }
 
-  const createLogoutAlert = () => {
-    Alert.alert('', '접속중인 기기에서 로그아웃 하시겠습니까?', [
+  function createLogoutAlert() {
+    Alert.alert('접속중인 기기에서 로그아웃 하시겠습니까?', '', [
       {
         text: '취소',
         style: 'cancel',
       },
-      { 
+      {
         text: '확인',
-        onPress: handleLogout
+        onPress: () => handleLogout()
       },
     ]);
   }
 
-  function SettingButton({ title, onPress }) {
+  function SettingButton({ title, action }) {
     return (
-      <SettingButtonRow onPress={onPress}>
+      <SettingButtonRow onPress={action}>
         <Text T5 medium>{title}</Text>
         <Ionicons name="chevron-forward" size={20} />
       </SettingButtonRow>
@@ -60,9 +60,9 @@ export default function AccountSettingScreen({ navigation }) {
         <DividingLine marginVertical={30} />
 
         <SettingButtonContainer>
-          <SettingButton title="비밀번호 변경" onPress={() => console.log('비밀번호 변경')} />
-          <SettingButton title="로그아웃" onPress={createLogoutAlert} />
-          <SettingButton title="회원탈퇴" onPress={() => console.log('회원탈퇴')} />
+          <SettingButton title="비밀번호 변경" action={() => console.log('비밀번호 변경')} />
+          <SettingButton title="로그아웃" action={() => createLogoutAlert()} />
+          <SettingButton title="회원탈퇴" action={() => console.log('회원탈퇴')} />
         </SettingButtonContainer>
 
       </Container>
@@ -78,7 +78,7 @@ const CountryCallingCodeBox = styled.View`
 `;
 
 const PhoneNumberBox = styled.View`
-  width: ${(props) => `${props.windowWidth-112}px`};
+  width: ${(props) => `${props.windowWidth - 112}px`};
   padding: 8px 0 8px 12px;
   background-color: ${COLOR.GRAY6};
   border-radius: 3px;
