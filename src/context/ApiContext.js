@@ -2,9 +2,10 @@ import { createContext, useReducer } from "react";
 
 //initial state
 const initialState = {
-  userData: {
+  accountData: {
     loginStatus: true,
     name: '이준범',
+    phoneNumber: '+82 10-2427-8139'
   },
   profileData: [
     {
@@ -35,9 +36,20 @@ const reducer = (state, action) => {
     case 'LOGIN':
       return {
         ...state,
-        userData: {
+        accountData: {
+          ...state.accountData,
           loginStatus: true,
-          name: action.userName,
+          name: action.name,
+          phoneNumber: action.phoneNumber,
+        },
+      };
+
+    case 'LOGOUT':
+      return {
+        ...state,
+        accountData: {
+          ...state.accountData,
+          loginStatus: false,
         },
       };
 
