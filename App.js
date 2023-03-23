@@ -21,7 +21,7 @@ TouchableOpacity.defaultProps.activeOpacity = 0.6;
 //navigation
 import BottomTapNavigation from 'navigation/BottomTapNavigation';
 import TelemedicineReservation from 'navigation/Home/TelemedicineReservation';
-import MyPageStackNavigation from 'navigation/MyPage';
+import MyPageStackNavigation from 'navigation/MyPage/MyPageStackNavigation';
 import LoginStackNavigation from 'navigation/LoginStackNavigation';
 import NeedLoginNavigation from 'navigation/LoginStackNavigation/NeedLoginNavigation';
 
