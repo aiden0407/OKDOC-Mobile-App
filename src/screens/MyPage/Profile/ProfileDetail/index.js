@@ -269,7 +269,7 @@ export default function ProfileDetailScreen({ navigation, route }) {
                 onChangeText={setEtcConsideration}
                 onFocus={()=>handleTextInputFocus(840)}
               />
-              <Box height={400} />
+              <Box height={200} />
             </ScrollView>
           )}
         </>
