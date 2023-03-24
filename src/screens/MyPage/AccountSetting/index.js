@@ -15,9 +15,17 @@ export default function AccountSettingScreen({ navigation }) {
   const { state: { accountData }, dispatch } = useContext(ApiContext);
   const windowWidth = Dimensions.get('window').width;
 
+  function handleChangePassword() {
+    navigation.navigate('MyPageStackNavigation', { screen: 'ChangePassword' });
+  }
+
   function handleLogout() {
     dispatch({ type: 'LOGOUT' });
     navigation.goBack();
+  }
+
+  function handleWithdrawal() {
+    navigation.navigate('MyPageStackNavigation', { screen: 'Withdrawal' });
   }
 
   function createLogoutAlert() {
@@ -60,9 +68,9 @@ export default function AccountSettingScreen({ navigation }) {
         <DividingLine marginVertical={30} />
 
         <SettingButtonContainer>
-          <SettingButton title="비밀번호 변경" action={() => console.log('비밀번호 변경')} />
+          <SettingButton title="비밀번호 변경" action={() => handleChangePassword()} />
           <SettingButton title="로그아웃" action={() => createLogoutAlert()} />
-          <SettingButton title="회원탈퇴" action={() => console.log('회원탈퇴')} />
+          <SettingButton title="회원탈퇴" action={() => handleWithdrawal()} />
         </SettingButtonContainer>
 
       </Container>
