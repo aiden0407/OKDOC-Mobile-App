@@ -24,7 +24,12 @@ export default function LoginPage({ navigation }) {
 
   function handleLogin(email, password) {
     if (email === 'test' && password === 'test') {
-      dispatch({ type: 'LOGIN', name: '이준범', phoneNumber: '+82 10-2427-8139' });
+      dispatch({ 
+        type: 'LOGIN', 
+        name: '이준범', 
+        email: 'aiden@insunginfo.co.kr', 
+        phoneNumber: '+82 10-2427-8139' 
+      });
       navigation.pop(2);
     } else {
       Alert.alert('로그인 실패');
@@ -42,7 +47,7 @@ export default function LoginPage({ navigation }) {
   return (
     <SafeArea>
       <KeyboardAvoiding>
-        <ContainerCenter paddingHorizontal={15}>
+        <ContainerCenter paddingHorizontal={20}>
 
           <Center>
             <Image source={mainLogo} width={182} height={40} />
@@ -54,7 +59,7 @@ export default function LoginPage({ navigation }) {
             value={email}
             onChangeText={setEmail}
             placeholder="이메일"
-            autoCompleteType="email"
+            autoComplete="email"
             keyboardType="email-address"
             returnKeyType="next"
             onSubmitEditing={() => {
@@ -67,6 +72,7 @@ export default function LoginPage({ navigation }) {
             onChangeText={setPassword}
             placeholder="비밀번호"
             secureTextEntry
+            autoComplete="current-password"
             returnKeyType="done"
             onSubmitEditing={() => {
               handleLogin(email, password);
