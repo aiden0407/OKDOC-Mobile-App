@@ -7,7 +7,7 @@ import styled from 'styled-components/native';
 import { COLOR } from 'constants/design';
 import { SYMPTOM, SUBJECT } from 'constants/service';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeArea, Container, Row, DividingLine } from 'components/Layout';
+import { SafeArea, Container, Row, DividingLine, PaddingContainer } from 'components/Layout';
 import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
@@ -23,7 +23,7 @@ export default function PaymentConfirmScreen({ navigation }) {
   return (
     <SafeArea>
       <Container>
-        <DevidedContainer>
+        <PaddingContainer>
           <Text T3 bold marginTop={30}>결제가 완료되었어요</Text>
           <Text T3 bold color={COLOR.MAIN} marginTop={9}>비용 120,000원</Text>
           <Row marginTop={18}>
@@ -38,11 +38,11 @@ export default function PaymentConfirmScreen({ navigation }) {
             <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
             <Text T6 color={COLOR.GRAY1}>23.04.07 (11:30)</Text>
           </Row>
-        </DevidedContainer>
+        </PaddingContainer>
 
         <DividingLine marginTop={30} />
 
-        <DevidedContainer>
+        <PaddingContainer>
           <Text T3 bold marginTop={30}>예약하신 내역을 확인해주세요</Text>
           <Row align marginTop={15}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
@@ -67,23 +67,18 @@ export default function PaymentConfirmScreen({ navigation }) {
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
             <Text T6 medium>예약자: {telemedicineReservationStatus.profileInfo.name}</Text>
           </Row>
-        </DevidedContainer>
+        </PaddingContainer>
 
         <Container />
 
-        <DevidedContainer>
+        <PaddingContainer>
           <SolidButton
             text="확인"
             marginBottom={20}
             action={() => handleConfirm()}
           />
-        </DevidedContainer>
+        </PaddingContainer>
       </Container>
     </SafeArea>
   );
 }
-
-const DevidedContainer = styled.View`
-  width: 100%;
-  padding: 0 20px;
-`;

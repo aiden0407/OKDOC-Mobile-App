@@ -7,7 +7,7 @@ import styled from 'styled-components/native';
 import { COLOR } from 'constants/design';
 import { SYMPTOM, SUBJECT } from 'constants/service';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeArea, ScrollView, Row, DividingLine } from 'components/Layout';
+import { SafeArea, ScrollView, Row, DividingLine, PaddingContainer } from 'components/Layout';
 import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
@@ -32,7 +32,7 @@ export default function PaymentNotificationScreen({ navigation }) {
   return (
     <SafeArea>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <DevidedContainer>
+        <PaddingContainer>
           <Text T3 bold marginTop={30}>진료를 위해{'\n'}예약하신 정보를 확인 해주세요</Text>
           <Row marginTop={24}>
             <Text T3 bold color={COLOR.MAIN}>비용 120,000원</Text>
@@ -61,11 +61,11 @@ export default function PaymentNotificationScreen({ navigation }) {
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6}/>
             <Text T6 medium>예약자: {telemedicineReservationStatus.profileInfo.name}</Text>
           </Row>
-        </DevidedContainer>
+        </PaddingContainer>
 
         <DividingLine marginTop={30} />
 
-        <DevidedContainer>
+        <PaddingContainer>
           <Text T3 bold marginTop={30}>진료 유의사항</Text>
           <Row marginTop={15}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
@@ -87,11 +87,11 @@ export default function PaymentNotificationScreen({ navigation }) {
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
             <Text T6 medium>진료시간 연장 시 50,000원의 추가 비용이 발생합니다.</Text>
           </Row>
-        </DevidedContainer>
+        </PaddingContainer>
 
         <DividingLine marginTop={30} />
 
-        <DevidedContainer>
+        <PaddingContainer>
           <Text T3 bold marginTop={30}>결제 내용 확인 및 결제 동의</Text>
           <Row marginTop={15} align>
             <AgreeRow onPress={()=>setPaymentAgreement(!paymentAgreement)}>
@@ -138,16 +138,11 @@ export default function PaymentNotificationScreen({ navigation }) {
             disabled={!paymentAgreement || !refundAgreement}
             action={() => handleProceedPayment()}
           />
-        </DevidedContainer>
+        </PaddingContainer>
       </ScrollView>
     </SafeArea>
   );
 }
-
-const DevidedContainer = styled.View`
-  width: 100%;
-  padding: 0 20px;
-`;
 
 const AgreeRow = styled.Pressable`
   flex-direction: row;

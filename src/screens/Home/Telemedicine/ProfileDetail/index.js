@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 //Components
 import { COLOR, BUTTON } from 'constants/design';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeArea, KeyboardAvoiding, ScrollView, Row, DividingLine } from 'components/Layout';
+import { SafeArea, KeyboardAvoiding, ScrollView, Row, DividingLine, PaddingContainer } from 'components/Layout';
 import { Text } from 'components/Text';
 import { LineInput, BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
@@ -77,7 +77,7 @@ export default function ProfileDetailScreen({ navigation }) {
           showsVerticalScrollIndicator={false}
           ref={scrollRef}
         >
-          <DevidedContainer>
+          <PaddingContainer>
             <Text T3 bold marginTop={30}>{profileInfo?.name ? '개인정보를 확인해 주세요' : '개인정보를 입력해 주세요'}</Text>
             <Text T6 bold marginTop={30}>이름</Text>
             <LineInput
@@ -134,11 +134,11 @@ export default function ProfileDetailScreen({ navigation }) {
                   </MediumSolidButtonBackground>
                 </Row>)
             }
-          </DevidedContainer>
+          </PaddingContainer>
 
           <DividingLine marginVertical={42} />
 
-          <DevidedContainer>
+          <PaddingContainer>
             <Text T3 bold>건강정보를 입력해 주세요</Text>
             <Text T6 bold marginTop={30}>키 & 몸무게</Text>
             <Row marginTop={12} align>
@@ -267,17 +267,12 @@ export default function ProfileDetailScreen({ navigation }) {
               disabled={!name || !relationship || !birth || !gender || !height || !weight || !dringkingStatus || smokingStatus === undefined}
               action={() => handleSubmitProfileDetail()}
             />
-          </DevidedContainer>
+          </PaddingContainer>
         </ScrollView>
       </KeyboardAvoiding>
     </SafeArea>
   );
 }
-
-const DevidedContainer = styled.View`
-  width: 100%;
-  padding: 0 20px;
-`;
 
 const MediumSolidButtonBackground = styled.Pressable`
   width: ${BUTTON.MEDIUM.WIDTH};
