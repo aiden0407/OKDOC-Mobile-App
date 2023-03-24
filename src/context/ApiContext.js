@@ -5,6 +5,7 @@ const initialState = {
   accountData: {
     loginStatus: true,
     name: '이준범',
+    email: 'aiden@insunginfo.co.kr',
     phoneNumber: '+82 10-2427-8139'
   },
   profileData: [
@@ -40,6 +41,7 @@ const reducer = (state, action) => {
           ...state.accountData,
           loginStatus: true,
           name: action.name,
+          email: action.email,
           phoneNumber: action.phoneNumber,
         },
       };
