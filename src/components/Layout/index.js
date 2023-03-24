@@ -63,6 +63,11 @@ export const DividingLine = styled.View`
   background-color: ${COLOR.GRAY6};
 `;
 
+export const PaddingContainer = styled.View`
+  width: 100%;
+  padding: 0 20px;
+`;
+
 export const Box = styled.View`
   width: ${(props) => `${props.width ?? 0}px`};
   height: ${(props) => `${props.height ?? 0}px`};
