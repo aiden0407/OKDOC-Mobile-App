@@ -35,7 +35,7 @@ export default function MyPageScreen({ navigation }) {
 
   function handleProfileList() {
     if(accountData.loginStatus){
-      navigation.navigate('MyPageStackNavigation', { screen: 'MyPageProfileDetail' });
+      navigation.navigate('MyPageStackNavigation', { screen: 'ProfileDetail' });
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
