@@ -38,6 +38,7 @@ export default function ChangePasswordScreen({ navigation }) {
     <SafeArea>
       <KeyboardAvoiding>
         <Container paddingHorizontal={20}>
+          <Container>
           <Text T3 bold marginTop={30}>회원 탈퇴를 위해{'\n'}비밀번호를 입력해주세요</Text>
           <Text T5 medium marginTop={24}>이메일</Text>
           <LineInput
@@ -55,8 +56,7 @@ export default function ChangePasswordScreen({ navigation }) {
             returnKeyType="done"
             onSubmitEditing={() => createWithdrawalAlert()}
           />
-
-          <Container />
+          </Container>
 
           <SolidButton
             text="탈퇴하기"

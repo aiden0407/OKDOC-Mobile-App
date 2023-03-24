@@ -23,6 +23,7 @@ export default function PaymentConfirmScreen({ navigation }) {
   return (
     <SafeArea>
       <Container>
+        <Container>
         <PaddingContainer>
           <Text T3 bold marginTop={30}>결제가 완료되었어요</Text>
           <Text T3 bold color={COLOR.MAIN} marginTop={9}>비용 120,000원</Text>
@@ -68,8 +69,7 @@ export default function PaymentConfirmScreen({ navigation }) {
             <Text T6 medium>예약자: {telemedicineReservationStatus.profileInfo.name}</Text>
           </Row>
         </PaddingContainer>
-
-        <Container />
+        </Container>
 
         <PaddingContainer>
           <SolidButton

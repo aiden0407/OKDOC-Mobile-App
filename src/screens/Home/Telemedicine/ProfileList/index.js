@@ -49,23 +49,23 @@ export default function ProfileListScreen({ navigation, route }) {
   return (
     <SafeArea>
       <Container paddingHorizontal={20}>
-        <Text T3 bold marginTop={30}>진료 받을 분을 선택해 주세요</Text>
-        <Row marginTop={42} gap={10}>
-          <Profile
-            name={profileData[0].name}
-            relationship={profileData[0].relationship}
-            isSelected={profileIndex===0}
-            action={() => setProfileIndex(0)}
-          />
-          <Profile
-            name='기타'
-            relationship='가족 / 지인'
-            isSelected={profileIndex===1}
-            action={() => setProfileIndex(1)}
-          />
-        </Row>
-
-        <Container />
+        <Container>
+          <Text T3 bold marginTop={30}>진료 받을 분을 선택해 주세요</Text>
+          <Row marginTop={42} gap={10}>
+            <Profile
+              name={profileData[0].name}
+              relationship={profileData[0].relationship}
+              isSelected={profileIndex === 0}
+              action={() => setProfileIndex(0)}
+            />
+            <Profile
+              name='기타'
+              relationship='가족 / 지인'
+              isSelected={profileIndex === 1}
+              action={() => setProfileIndex(1)}
+            />
+          </Row>
+        </Container>
 
         <SolidButton
           marginBottom={20}
