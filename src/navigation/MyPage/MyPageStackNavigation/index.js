@@ -1,6 +1,8 @@
 //Navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MyPageProfileDetailScreen from 'screens/MyPage/Profile/MyPageDetail';
+import ChangePasswordScreen from 'screens/MyPage/AccountSetting/ChangePassword';
+import WithdrawalScreen from 'screens/MyPage/AccountSetting/Withdrawal';
+import ProfileDetailScreen from 'screens/MyPage/Profile/ProfileDetail';
 import InquiryScreen from 'screens/MyPage/Inquiry';
 import PolicyScreen from 'screens/MyPage/Policy';
 import PolicyDetailScreen from 'screens/MyPage/Policy/Detail';
@@ -24,9 +26,19 @@ export default function MyPageInnerStackNavigation({ navigation }) {
         }}
       >
         <Stack.Screen
-          name="MyPageProfileDetail"
-          component={MyPageProfileDetailScreen}
-          options={{title: '프로필 정보'}}
+          name="ChangePassword"
+          component={ChangePasswordScreen}
+          options={{ title: '비밀번호 변경' }}
+        />
+        <Stack.Screen
+          name="Withdrawal"
+          component={WithdrawalScreen}
+          options={{ title: '회원탈퇴' }}
+        />
+        <Stack.Screen
+          name="ProfileDetail"
+          component={ProfileDetailScreen}
+          options={{ title: '프로필 정보' }}
         />
         <Stack.Screen
           name="Inquiry"
