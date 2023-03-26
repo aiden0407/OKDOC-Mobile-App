@@ -61,7 +61,7 @@ const reducer = (state, action) => {
         telemedicineReservationStatus: {
           ...state.telemedicineReservationStatus,
           profileType: action.profileType,
-          profileInfo: action.profileType === 'my' ? action.profileInfo : null
+          profileInfo: action.profileInfo,
         },
       };
 
