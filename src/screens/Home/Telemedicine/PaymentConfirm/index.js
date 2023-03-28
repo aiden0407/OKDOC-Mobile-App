@@ -17,7 +17,7 @@ export default function PaymentConfirmScreen({ navigation }) {
 
   function handleConfirm() {
     dispatch({ type: 'TELEMEDICINE_RESERVATION_CONFIRMED' });
-    navigation.navigate('BottomTapNavigation');
+    navigation.navigate('BottomTapNavigation', { screen: 'History'});
   }
 
   return (
