@@ -41,7 +41,7 @@ export default function LoginPage({ navigation }) {
   }
 
   function handleFindEmailPassword() {
-    Alert.alert('이메일/비밀번호 찾기 이벤트');
+    navigation.navigate('FindEmailPassword');
   }
 
   return (
