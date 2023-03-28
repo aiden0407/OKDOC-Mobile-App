@@ -1,5 +1,5 @@
 //React
-import { useState, useRef, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 
 //Components
@@ -9,7 +9,7 @@ import { Text } from 'components/Text';
 import { LineInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
-export default function ChangePasswordScreen({ navigation }) {
+export default function WithdrawalScreen({ navigation }) {
 
   const { state: { accountData }, dispatch } = useContext(ApiContext);
   const [currentPassword, setCurrentPassword] = useState();
