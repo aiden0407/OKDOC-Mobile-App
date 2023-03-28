@@ -12,7 +12,7 @@ import { SolidButton } from 'components/Button';
 
 export default function ChangePasswordScreen({ navigation }) {
 
-  const { state: { accountData } } = useContext(ApiContext);
+  const { state: { accountData }, dispatch } = useContext(ApiContext);
   const [currentPassword, setCurrentPassword] = useState();
   const [newPassword, setNewPassword] = useState();
   const [newPasswordCheck, setNewPasswordCheck] = useState();
@@ -21,9 +21,8 @@ export default function ChangePasswordScreen({ navigation }) {
 
   function handleChangePassword() {
     dispatch({ type: 'LOGOUT' });
-    navigation.goBack();
     navigation.navigate('MyPageMain');
-    navigation.navigate('Home');
+    Alert.alert('비밀번호가 변경되었습니다', '변경된 비밀번호로 다시 로그인해주시기 바랍니다.');
   }
 
   function createChangePasswordAlert() {
