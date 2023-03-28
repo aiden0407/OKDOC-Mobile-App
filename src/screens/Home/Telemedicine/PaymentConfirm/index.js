@@ -51,14 +51,7 @@ export default function PaymentConfirmScreen({ navigation }) {
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            {
-              telemedicineReservationStatus.category === 'symptom'
-              && <Text T6 medium>{SYMPTOM[telemedicineReservationStatus.item].NAME} / 진료</Text>
-            }
-            {
-              telemedicineReservationStatus.category === 'medicalSubject'
-              && <Text T6 medium>{SUBJECT[telemedicineReservationStatus.item].NAME} / 진료</Text>
-            }
+            <Text T6 medium>{telemedicineReservationStatus.doctorInfo.subject} / 진료</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
