@@ -37,7 +37,7 @@ export default function LoginPage({ navigation }) {
   }
 
   function handleRegister() {
-    Alert.alert('회원가입 이벤트');
+    navigation.navigate('RegisterPolicy');
   }
 
   function handleFindEmailPassword() {

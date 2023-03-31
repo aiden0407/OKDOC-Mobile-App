@@ -145,7 +145,7 @@ const AgreeRow = styled.Pressable`
 const PolicyDetailIconWrapper = styled.TouchableOpacity`
   position: absolute;
   right: 0;
-  bottom: -2px;
+  bottom: -3px;
   width: 30px;
   height: 30px;
   align-items: center;
@@ -165,6 +165,6 @@ const BulletPoint = styled.View`
   margin-right: 6px;
   width: 3px;
   height: 3px;
-  border-radius: 50%;
+  border-radius: 50px;
   background-color: ${COLOR.GRAY1};
 `;

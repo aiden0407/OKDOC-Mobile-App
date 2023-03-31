@@ -235,7 +235,7 @@ const BulletPoint = styled.View`
   margin-right: 14px;
   width: 4px;
   height: 4px;
-  border-radius: 50%;
+  border-radius: 50px;
   background-color: ${COLOR.GRAY3};
 `;
 

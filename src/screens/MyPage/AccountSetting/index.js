@@ -4,8 +4,8 @@ import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
 //Components
-import { Dimensions, Alert } from 'react-native';
 import { COLOR } from 'constants/design'
+import { Dimensions, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, Container, Row, DividingLine } from 'components/Layout';
 import { Text } from 'components/Text';

@@ -51,7 +51,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
   }
 
   function handleCheckCertificationNumber(certificationNumber) {
-    if (certificationNumber === '123456') {
+    if (certificationNumber === '123123') {
       Alert.alert('인증되었습니다.');
       setIsEmailCertificated(true);
     } else {
