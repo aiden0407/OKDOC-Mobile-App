@@ -287,7 +287,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
               <SolidButton
                 text="비밀번호 변경"
                 marginBottom={20}
-                disabled={!newPassword || !newPasswordCheck || newPassword !== newPasswordCheck}
+                disabled={newPassword?.length < 6 || newPassword !== newPasswordCheck}
                 action={() => handleChangePassword()}
               />
             </Container>
