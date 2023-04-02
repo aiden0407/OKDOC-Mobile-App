@@ -118,7 +118,7 @@ export default function PassportInformationScreen({ navigation }) {
             <SolidButton
               text="다음"
               marginBottom={20}
-              disabled={!name || !passportNumber || !gender || birth.toDateString()===today.toDateString() || issuanceDate.toDateString()===today.toDateString() || expirationDate.toDateString()===today.toDateString()}
+              //disabled={!name || !passportNumber || !gender || birth.toDateString()===today.toDateString() || issuanceDate.toDateString()===today.toDateString() || expirationDate.toDateString()===today.toDateString()}
               action={() => handleNextScreen()}
             />
 
