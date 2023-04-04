@@ -1,11 +1,20 @@
 //React
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
 
 //Components
 import { SafeArea, ContainerCenter } from 'components/Layout';
 import NeedLogin from 'components/NeedLogin';
 
 export default function NeedLoginScreen({ navigation, route }) {
+
+  const { state: { accountData } } = useContext(ApiContext);
+
+  useEffect(() => {
+    if (accountData.loginStatus) {
+      navigation.goBack();
+    }
+  }, [accountData]);
 
   useEffect(() => {
     navigation.setOptions({
