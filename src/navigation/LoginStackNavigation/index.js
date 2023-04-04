@@ -87,6 +87,7 @@ export default function LoginStackNavigation({ navigation }) {
           component={RegisterCompleteScreen}
           options={{
             headerShown: false,
+            gestureEnabled: false
           }}
         />
       </Stack.Group>
