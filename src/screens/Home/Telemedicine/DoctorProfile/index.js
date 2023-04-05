@@ -17,7 +17,7 @@ import starEmpty from 'assets/icons/star-empty.png';
 import starHalf from 'assets/icons/star-half.png';
 import starFull from 'assets/icons/star-full.png';
 
-export default function DoctorProfileScreen({ navigation, route }) {
+export default function DoctorProfileScreen({ navigation }) {
 
   const { state: { telemedicineReservationStatus } } = useContext(AppContext);
   const { state: { accountData } } = useContext(ApiContext);
