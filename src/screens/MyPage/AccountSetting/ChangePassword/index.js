@@ -19,6 +19,11 @@ export default function ChangePasswordScreen({ navigation }) {
   const newPasswordRef = useRef();
   const newPasswordCheckRef = useRef();
 
+  function validatePassword(password) {
+    const regExp = /^.*(?=^.{6,14}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[.?!@#$%^&*+=]).*$/;
+    return regExp.test(password);
+  }
+
   function handleChangePassword() {
     dispatch({ type: 'LOGOUT' });
     navigation.navigate('MyPageMain');
@@ -85,7 +90,7 @@ export default function ChangePasswordScreen({ navigation }) {
                 }}
               />
               {
-                newPassword && newPassword?.length < 6 && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 6자~14자 이내를 충족하지 않습니다</Text>
+                newPassword && !validatePassword(newPassword) && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 6자~14자 이내를 충족하지 않습니다</Text>
               }
               <LineInput
                 marginTop={24}
@@ -100,7 +105,7 @@ export default function ChangePasswordScreen({ navigation }) {
                 }}
               />
               {
-                newPassword && newPasswordCheck && newPassword !== newPasswordCheck && <Text T8 color='#FF0000CC' marginTop={6}>* 비밀번호가 일치하지 않습니다</Text>
+                newPasswordCheck && newPassword !== newPasswordCheck && <Text T8 color='#FF0000CC' marginTop={6}>* 비밀번호가 일치하지 않습니다</Text>
               }
             </PaddingContainer>
           </Container>
@@ -109,7 +114,7 @@ export default function ChangePasswordScreen({ navigation }) {
             <SolidButton
               text="저장"
               marginBottom={20}
-              disabled={!currentPassword || !newPassword || !newPasswordCheck || newPassword !== newPasswordCheck}
+              disabled={!currentPassword || !validatePassword(newPassword) || newPassword !== newPasswordCheck}
               action={() => createChangePasswordAlert()}
             />
           </PaddingContainer>
