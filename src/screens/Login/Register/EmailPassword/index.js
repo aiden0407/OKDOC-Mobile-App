@@ -45,7 +45,7 @@ export default function RegisterPolicyScreen({ navigation }) {
           <Text T3 bold marginTop={30}>사용하실 이메일과{'\n'}비밀번호를 입력해주세요</Text>
 
           <CustomLineInput
-            editable={!isEmailCertificated}
+            editable={!isEmailSent}
             placeholder="이메일"
             value={email}
             onChangeText={setEmail}
