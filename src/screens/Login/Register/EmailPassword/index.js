@@ -1,6 +1,7 @@
 //React
-import { useState } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { AppContext } from 'context/AppContext';
+import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
 //Components
@@ -10,14 +11,27 @@ import { SafeArea, Container, Row } from 'components/Layout';
 import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
-export default function RegisterPolicyScreen({ navigation }) {
+export default function EmailPasswordScreen({ navigation }) {
 
+  const { state: { registerStatus }, dispatch } = useContext(AppContext);
+  const { dispatch: apiContextDispatch } = useContext(ApiContext);
   const [email, setEmail] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [certificationNumber, setCertificationNumber] = useState('');
   const [isEmailCertificated, setIsEmailCertificated] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
+  const passwordCheckRef = useRef();
+
+  function validateEmail(email) {
+    const regExp = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    return regExp.test(email);
+  }
+
+  function validatePassword(password) {
+    const regExp = /^.*(?=^.{6,14}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[.?!@#$%^&*+=]).*$/;
+    return regExp.test(password);
+  }
 
   function handleRequestCertification() {
     setIsEmailSent(true);
@@ -34,6 +48,13 @@ export default function RegisterPolicyScreen({ navigation }) {
   }
 
   function handleNextScreen() {
+    apiContextDispatch({ 
+      type: 'LOGIN', 
+      name: registerStatus?.name, 
+      email: email, 
+      phoneNumber: `${registerStatus?.countryCode} ${registerStatus?.phoneNumber}`,
+    });
+    dispatch({type: 'REGISTER_COMPLETE'});
     navigation.navigate('RegisterComplete');
   }
 
@@ -54,11 +75,12 @@ export default function RegisterPolicyScreen({ navigation }) {
           />
           {!isEmailCertificated
             && <CustomOutlineButtonBackground
+              disabled={!validateEmail(email)}
               onPress={() => handleRequestCertification()}
               underlayColor={COLOR.SUB4}
               style={{ position: 'absolute', right: 16, top: 100, zIndex: 1 }}
             >
-              <Text T7 medium color={COLOR.MAIN}>{isEmailSent ? '재전송' : '인증요청'}</Text>
+              <Text T7 medium color={validateEmail(email) ? COLOR.MAIN : COLOR.GRAY1}>{isEmailSent ? '재전송' : '인증요청'}</Text>
             </CustomOutlineButtonBackground>
           }
 
@@ -91,10 +113,11 @@ export default function RegisterPolicyScreen({ navigation }) {
               onChangeText={setPassword}
               secureTextEntry
               returnKeyType="next"
-              onSubmitEditing={() => { }}
+              maxLength={14}
+              onSubmitEditing={() => passwordCheckRef.current.focus()}
             />
             {
-              password && password?.length < 6 && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 6자~14자 이내를 충족하지 않습니다</Text>
+              password && !validatePassword(password) && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 6자~14자 이내를 충족하지 않습니다</Text>
             }
             <CustomLineInput
               placeholder="비밀번호 확인"
@@ -102,10 +125,14 @@ export default function RegisterPolicyScreen({ navigation }) {
               onChangeText={setPasswordCheck}
               secureTextEntry
               returnKeyType="next"
-              onSubmitEditing={() => { }}
+              maxLength={14}
+              ref={passwordCheckRef}
+              onSubmitEditing={() => {
+                (isEmailCertificated && validatePassword(password) && password === passwordCheck) && handleNextScreen()
+              }}
             />
             {
-              password && passwordCheck && password !== passwordCheck && <Text T8 color='#FF0000CC' marginTop={6}>* 비밀번호가 일치하지 않습니다</Text>
+              passwordCheck && password !== passwordCheck && <Text T8 color='#FF0000CC' marginTop={6}>* 비밀번호가 일치하지 않습니다</Text>
             }
           </>)}
         </Container>
@@ -113,7 +140,7 @@ export default function RegisterPolicyScreen({ navigation }) {
         <SolidButton
           text="다음"
           marginBottom={20}
-          disabled={!isEmailCertificated || password?.length < 6 || password !== passwordCheck}
+          disabled={!isEmailCertificated || !validatePassword(password) || password !== passwordCheck}
           action={() => handleNextScreen()}
         />
       </Container>
