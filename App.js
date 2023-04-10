@@ -6,6 +6,7 @@ import { AppProvider } from "context/AppContext";
 import { ApiProvider } from 'context/ApiContext';
 
 //Default Settings
+import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
@@ -50,6 +51,8 @@ export default function App() {
     <AppProvider>
       <ApiProvider>
         <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+          <StatusBar animated style="dark" />
+
           <NavigationContainer>
             <Stack.Navigator>
 
