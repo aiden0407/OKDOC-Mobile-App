@@ -113,7 +113,6 @@ const LoginContainer = styled.View`
 
 const LoginButton = styled.TouchableOpacity`
   margin-left: 20px;
-  width: 180px;
   flex-direction: row;
   align-items: center;
 `;
