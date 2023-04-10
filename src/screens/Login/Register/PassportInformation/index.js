@@ -1,5 +1,5 @@
 //React
-import { useState, useRef } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
@@ -18,39 +18,27 @@ import exclamationIcon from 'assets/icons/circle-exclamation.png';
 
 export default function PassportInformationScreen({ navigation }) {
 
-  const [name, setName] = useState();
-  const [passportNumber, setPassportNumber] = useState();
-  const [gender, setGender] = useState();
+  const { state: { registerStatus }, dispatch } = useContext(AppContext);
+  const [name, setName] = useState(registerStatus?.name);
+  const [passportNumber, setPassportNumber] = useState(registerStatus?.passportNumber);
+  const [gender, setGender] = useState(registerStatus?.gender);
   
   const today = new Date();
-  const [birth, setBirth] = useState(today);
+  const [birth, setBirth] = useState(registerStatus?.birth ?? today);
   const [isBirthPickerShow, setIsBirthPickerShow] = useState(false);
   const onBirthChange = (event, selectedDate) => {
     setBirth(selectedDate);
   };
-  const [dateOfIssue, setDateOfIssue] = useState(today);
+  const [dateOfIssue, setDateOfIssue] = useState(registerStatus?.dateOfIssue ?? today);
   const [isDateOfIssuePickerShow, setIsDateOfIssuePickerShow] = useState(false);
   const onDateOfIssueChange = (event, selectedDate) => {
     setDateOfIssue(selectedDate);
   };
-  const [dateOfExpiry, setDateOfExpiry] = useState(today);
+  const [dateOfExpiry, setDateOfExpiry] = useState(registerStatus?.dateOfExpiry ?? today);
   const [isDateOfExpiryPickerShow, setIsDateOfExpiryPickerShow] = useState(false);
   const onDateOfExpiryChange = (event, selectedDate) => {
     setDateOfExpiry(selectedDate);
   };
-
-  const [passportCertifiactionState, setPassportCertifiactionState] = useState('NONE');
-  function handleNextScreen() {
-    setPassportCertifiactionState('CHECKING');
-    setTimeout(() => {
-      if(passportNumber==='123123'){
-        setPassportCertifiactionState('NONE');
-        navigation.navigate('PersonalInformation');
-      } else {
-        setPassportCertifiactionState('ERROR');
-      }
-    }, 2000);
-  }
 
   const scrollRef = useRef();
   function handleTextInputFocus(value) {
@@ -60,7 +48,32 @@ export default function PassportInformationScreen({ navigation }) {
     });
   }
 
-  
+  function validateName(name) {
+    const regExp = /^[가-힣]+$/;
+    return regExp.test(name);
+  }
+
+  const [passportCertifiactionState, setPassportCertifiactionState] = useState('NONE');
+  function handleNextScreen() {
+    setPassportCertifiactionState('CHECKING');
+    setTimeout(() => {
+      if(passportNumber==='123123'){
+        setPassportCertifiactionState('NONE');
+        dispatch({
+          type: 'REGISTER_PASSPORT_INFORMATION',
+          name: name,
+          birth: birth,
+          passportNumber: passportNumber,
+          dateOfIssue: dateOfIssue,
+          dateOfExpiry: dateOfExpiry,
+          gender: gender,
+        });
+        navigation.navigate('PersonalInformation');
+      } else {
+        setPassportCertifiactionState('ERROR');
+      }
+    }, 2000);
+  }
 
   return (
     <>
@@ -69,7 +82,6 @@ export default function PassportInformationScreen({ navigation }) {
           <ScrollView
             showsVerticalScrollIndicator={false}
             ref={scrollRef}
-
           >
             <Text T3 bold marginTop={30}>본인 여권정보를 입력해주세요</Text>
             <Text T6 color={COLOR.GRAY1} marginTop={12}>재외국민이신 경우, 여권인증이 더 수월해요{'\n'}* 재외국민 : 30일 이상 해외 체류자</Text>
@@ -118,13 +130,13 @@ export default function PassportInformationScreen({ navigation }) {
             <SolidButton
               text="다음"
               marginBottom={20}
-              //disabled={!name || !passportNumber || !gender || birth.toDateString()===today.toDateString() || issuanceDate.toDateString()===today.toDateString() || expirationDate.toDateString()===today.toDateString()}
+              disabled={ !validateName(name) || !passportNumber || !gender || birth.toDateString()===today.toDateString() || dateOfIssue.toDateString()===today.toDateString() || dateOfExpiry.toDateString()===today.toDateString()}
               action={() => handleNextScreen()}
             />
-
           </ScrollView>
         </Container>
       </SafeArea>
+
       {isBirthPickerShow && (
         <BottomSheetBackground onPress={() => setIsBirthPickerShow(false)}>
           <DateTimePickerContainer>
@@ -143,6 +155,7 @@ export default function PassportInformationScreen({ navigation }) {
           </DateTimePickerContainer>
         </BottomSheetBackground>
       )}
+
       {isDateOfIssuePickerShow && (
         <BottomSheetBackground onPress={() => setIsDateOfIssuePickerShow(false)}>
           <DateTimePickerContainer>
@@ -161,6 +174,7 @@ export default function PassportInformationScreen({ navigation }) {
           </DateTimePickerContainer>
         </BottomSheetBackground>
       )}
+
       {isDateOfExpiryPickerShow && (
         <BottomSheetBackground onPress={() => setIsDateOfExpiryPickerShow(false)}>
           <DateTimePickerContainer>
@@ -179,6 +193,7 @@ export default function PassportInformationScreen({ navigation }) {
           </DateTimePickerContainer>
         </BottomSheetBackground>
       )}
+
       {passportCertifiactionState === 'CHECKING' && (
         <BottomSheetBackground>
           <PassportCertifiactionContainer gap={30}>
@@ -187,6 +202,7 @@ export default function PassportInformationScreen({ navigation }) {
           </PassportCertifiactionContainer>
         </BottomSheetBackground>
       )}
+
       {passportCertifiactionState === 'ERROR' && (
         <BottomSheetBackground>
           <PassportCertifiactionContainer>
@@ -203,7 +219,6 @@ export default function PassportInformationScreen({ navigation }) {
           </PassportCertifiactionContainer>
         </BottomSheetBackground>
       )}
-      
     </>
   );
 }
