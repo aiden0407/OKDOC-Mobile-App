@@ -28,15 +28,15 @@ export default function PassportInformationScreen({ navigation }) {
   const onBirthChange = (event, selectedDate) => {
     setBirth(selectedDate);
   };
-  const [issuanceDate, setIssuanceDate] = useState(today);
-  const [isIssuanceDatePickerShow, setIsIssuanceDatePickerShow] = useState(false);
-  const onIssuanceDateChange = (event, selectedDate) => {
-    setIssuanceDate(selectedDate);
+  const [dateOfIssue, setDateOfIssue] = useState(today);
+  const [isDateOfIssuePickerShow, setIsDateOfIssuePickerShow] = useState(false);
+  const onDateOfIssueChange = (event, selectedDate) => {
+    setDateOfIssue(selectedDate);
   };
-  const [expirationDate, setExpirationDate] = useState(today);
-  const [isExpirationDatePickerShow, setIsExpirationDatePickerShow] = useState(false);
-  const onExpirationDateChange = (event, selectedDate) => {
-    setExpirationDate(selectedDate);
+  const [dateOfExpiry, setDateOfExpiry] = useState(today);
+  const [isDateOfExpiryPickerShow, setIsDateOfExpiryPickerShow] = useState(false);
+  const onDateOfExpiryChange = (event, selectedDate) => {
+    setDateOfExpiry(selectedDate);
   };
 
   const [passportCertifiactionState, setPassportCertifiactionState] = useState('NONE');
@@ -96,12 +96,12 @@ export default function PassportInformationScreen({ navigation }) {
               onFocus={() => handleTextInputFocus(200)}
             />
             <Text T6 bold marginTop={24}>발급일</Text>
-            <DateTimePickerOpenButton onPress={() => setIsIssuanceDatePickerShow(true)} underlayColor={COLOR.GRAY4}>
-              <Text T6 color={issuanceDate.toDateString()===today.toDateString() ? COLOR.GRAY2 : '#000000'}>{issuanceDate.toDateString()===today.toDateString() ? '발급일 숫자 8자리' : `${issuanceDate.toISOString().split('T')[0]}`}</Text>
+            <DateTimePickerOpenButton onPress={() => setIsDateOfIssuePickerShow(true)} underlayColor={COLOR.GRAY4}>
+              <Text T6 color={dateOfIssue.toDateString()===today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfIssue.toDateString()===today.toDateString() ? '발급일 숫자 8자리' : `${dateOfIssue.toISOString().split('T')[0]}`}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>기간 만료일</Text>
-            <DateTimePickerOpenButton onPress={() => setIsExpirationDatePickerShow(true)} underlayColor={COLOR.GRAY4}>
-              <Text T6 color={expirationDate.toDateString()===today.toDateString() ? COLOR.GRAY2 : '#000000'}>{expirationDate.toDateString()===today.toDateString() ? '기간 만료일 숫자 8자리' : `${expirationDate.toISOString().split('T')[0]}`}</Text>
+            <DateTimePickerOpenButton onPress={() => setIsDateOfExpiryPickerShow(true)} underlayColor={COLOR.GRAY4}>
+              <Text T6 color={dateOfExpiry.toDateString()===today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfExpiry.toDateString()===today.toDateString() ? '기간 만료일 숫자 8자리' : `${dateOfExpiry.toISOString().split('T')[0]}`}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>성별</Text>
             <Row marginTop={12} gap={12}>
@@ -143,36 +143,36 @@ export default function PassportInformationScreen({ navigation }) {
           </DateTimePickerContainer>
         </BottomSheetBackground>
       )}
-      {isIssuanceDatePickerShow && (
-        <BottomSheetBackground onPress={() => setIsIssuanceDatePickerShow(false)}>
+      {isDateOfIssuePickerShow && (
+        <BottomSheetBackground onPress={() => setIsDateOfIssuePickerShow(false)}>
           <DateTimePickerContainer>
             <DateTimePicker
               display="spinner"
-              value={issuanceDate}
-              onChange={onIssuanceDateChange}
+              value={dateOfIssue}
+              onChange={onDateOfIssueChange}
               style={{ backgroundColor: COLOR.GRAY5 }}
             />
             <CustomSolidButton
               underlayColor={COLOR.SUB1}
-              onPress={() => setIsIssuanceDatePickerShow(false)}
+              onPress={() => setIsDateOfIssuePickerShow(false)}
             >
               <Text T5 medium color="#FFFFFF">확인</Text>
             </CustomSolidButton>
           </DateTimePickerContainer>
         </BottomSheetBackground>
       )}
-      {isExpirationDatePickerShow && (
-        <BottomSheetBackground onPress={() => setIsExpirationDatePickerShow(false)}>
+      {isDateOfExpiryPickerShow && (
+        <BottomSheetBackground onPress={() => setIsDateOfExpiryPickerShow(false)}>
           <DateTimePickerContainer>
             <DateTimePicker
               display="spinner"
-              value={expirationDate}
-              onChange={onExpirationDateChange}
+              value={dateOfExpiry}
+              onChange={onDateOfExpiryChange}
               style={{ backgroundColor: COLOR.GRAY5 }}
             />
             <CustomSolidButton
               underlayColor={COLOR.SUB1}
-              onPress={() => setIsExpirationDatePickerShow(false)}
+              onPress={() => setIsDateOfExpiryPickerShow(false)}
             >
               <Text T5 medium color="#FFFFFF">확인</Text>
             </CustomSolidButton>
