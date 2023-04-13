@@ -14,7 +14,7 @@ import PaymentNotificationScreen from 'screens/Home/Telemedicine/PaymentNotifica
 import PaymentPolicyDetailScreen from 'screens/Home/Telemedicine/PaymentNotification/PaymentPolicyDetail';
 import RefundPolicyDetailScreen from 'screens/Home/Telemedicine/PaymentNotification/RefundPolicyDetail';
 import PaymentScreen from 'screens/Home/Telemedicine/Payment';
-import PaymentConfirmScreen from 'screens/Home/Telemedicine/PaymentConfirm';
+import PaymentCompleteScreen from 'screens/Home/Telemedicine/PaymentComplete';
 
 //Components
 import NavigationBackArrow from 'components/NavigationBackArrow';
@@ -117,8 +117,8 @@ export default function TelemedicineReservation({ navigation }) {
           }}
         />
         <Stack.Screen
-          name="PaymentConfirm"
-          component={PaymentConfirmScreen}
+          name="PaymentComplete"
+          component={PaymentCompleteScreen}
           options={{
             title: '결제 완료',
             headerBackVisible: false,

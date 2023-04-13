@@ -14,7 +14,7 @@ export default function PaymentScreen({ navigation }) {
 
   const callback = () => {
     if(count === 1){
-      navigation.navigate('PaymentConfirm');
+      navigation.navigate('PaymentComplete');
     }else{
       setCount(count-1);
     }
