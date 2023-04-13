@@ -5,14 +5,59 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design';
+import { Alert } from 'react-native';
 import { SafeArea, ScrollView, Container, ContainerCenter, Row, DividingLine, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
+import { SolidButton } from 'components/Button';
 import NeedLogin from 'components/NeedLogin';
+
+//Assets
+import profileCard from 'assets/icons/mypage-profile.png';
 
 export default function HistoryScreen({ navigation }) {
 
   const { state: { accountData, historyData } } = useContext(ApiContext);
+
+  function handleCancleReservation(item) {
+    Alert.alert('해당 진료 예약을 취소하시겠습니까?', '환불 규정에 따라 취소\n수수료가 발생할 수 있습니다.', [
+      {
+        text: '이전으로',
+      },
+      {
+        text: '예약 취소',
+        style: 'destructive',
+        onPress: () => handleCancleComplete()
+      },
+    ]);
+  }
+
+  function handleCancleComplete() {
+    Alert.alert('해당 예약이 정상적으로 취소되었습니다.', '', [
+      {
+        text: '확인',
+      }
+    ]);
+  }
+
+  function handleEnterTelemedicine(item) {
+    // navigation.navigate('TelemedicineProcess', { 
+    //   screen: 'SymptomDetailCheck' ,
+    //   params: { telemedicineData: item }
+    // });
+  }
+
+  function handleCheckTelemedicineDetail(item) {
+    //navigation.navigate('');
+  }
+
+  function handleMakeReservation() {
+    navigation.navigate('TelemedicineReservation', { screen: 'Category' });
+  }
+
+  function handleLogin() {
+    navigation.navigate('LoginStackNavigation');
+  }
 
   function HistoryCard({ item, type }) {
     return (
@@ -21,14 +66,14 @@ export default function HistoryScreen({ navigation }) {
           <CardTitleColumn>
             <Text T6 bold>{item.doctorInfo.subject} / {item.profileInfo.name}님 ({item.profileType})</Text>
             <Text T7 color={COLOR.GRAY1}>{item.date} ({item.time})</Text>
-            { type === 'pastHistory' && <Text T7 color={COLOR.GRAY1}>결제 120,000원</Text> }
+            {type === 'pastHistory' && <Text T7 color={COLOR.GRAY1}>결제 120,000원</Text>}
           </CardTitleColumn>
           {type === 'underReservation'
             && <CardTitleButton
               underlayColor={COLOR.GRAY5}
-              onPress={() => { }}
+              onPress={() => handleCancleReservation(item)}
             >
-              <Text T7 medium color={COLOR.GRAY1}>변경/취소</Text>
+              <Text T7 medium color={COLOR.GRAY1}>예약 취소</Text>
             </CardTitleButton>
           }
           {type === 'pastHistory'
@@ -56,7 +101,7 @@ export default function HistoryScreen({ navigation }) {
           {type === 'underReservation'
             && <CustomSolidButton
               underlayColor={COLOR.SUB1}
-              onPress={() => { }}
+              onPress={() => handleEnterTelemedicine(item)}
             >
               <Text T5 medium color="#FFFFFF">진료실 입장</Text>
             </CustomSolidButton>
@@ -64,7 +109,7 @@ export default function HistoryScreen({ navigation }) {
           {type === 'pastHistory'
             && <CustomSolidButton
               underlayColor={COLOR.SUB1}
-              onPress={() => { }}
+              onPress={() => handleCheckTelemedicineDetail(item)}
             >
               <Text T5 medium color="#FFFFFF">진료 내역</Text>
             </CustomSolidButton>
@@ -74,56 +119,60 @@ export default function HistoryScreen({ navigation }) {
     )
   }
 
-  function HistoryCardEmpty() {
-    return (
-      <HistoryCardEmptyContainer>
-        <Text T6 color={COLOR.GRAY1}>예약 / 접수 내역이 존재하지 않습니다.</Text>
-      </HistoryCardEmptyContainer>
-    )
-  }
-
   return (
     <SafeArea>
       {
         accountData.loginStatus
-          ? (<Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+          ? (<>
+            {(historyData.underReservation.length || historyData.pastHistory.length)
+              ? <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  {historyData.underReservation.length
+                    && (<>
+                      <Text T3 bold marginTop={30}>예약 / 접수 내역</Text>
+                      <HistoryColumn>
+                        {historyData.underReservation.map((item, index) =>
+                          <HistoryCard key={`underReservation${index}`} item={item} type="underReservation" />
+                        )}
+                      </HistoryColumn>
+                    </>)
+                  }
+                  {historyData.pastHistory.length
+                    && (<>
+                      <Row marginTop={30}>
+                        <Text T3 bold>지난 내역</Text>
+                        <Text T7 medium color={COLOR.GRAY1} marginLeft={6} marginTop={9}>전체 {historyData.pastHistory.length}건</Text>
+                      </Row>
+                      <HistoryColumn>
+                        {historyData.pastHistory.map((item, index) =>
+                          <HistoryCard key={`pastHistory${index}`} item={item} type="pastHistory" />
+                        )}
+                      </HistoryColumn>
+                    </>)
+                  }
+                  <Box height={40} />
+                </ScrollView>
+              </Container>
 
-              <Text T3 bold marginTop={30}>예약 / 접수 내역</Text>
-              <HistoryColumn>
-                {historyData.underReservation.length
-                  ? (<>{historyData.underReservation.map((item, index) =>
-                    <HistoryCard key={`underReservation${index}`} item={item} type="underReservation" />
-                  )}</>)
-                  : <HistoryCardEmpty />
-                }
-              </HistoryColumn>
-              
-              <Row marginTop={30}>
-                <Text T3 bold>지난 내역</Text>
-                {historyData.pastHistory.length
-                  && <Text T7 medium color={COLOR.GRAY1} marginLeft={6} marginTop={9}>전체 {historyData.pastHistory.length}건</Text>
-                }
-              </Row>
-              <HistoryColumn>
-                {historyData.pastHistory.length
-                  ? (<>{historyData.pastHistory.map((item, index) =>
-                    <HistoryCard key={`pastHistory${index}`} item={item} type="pastHistory" />
-                  )}</>)
-                  : <HistoryCardEmpty />
-                }
-              </HistoryColumn>
-
-              <Box height={100} />
-
-            </ScrollView>
-          </Container>)
-
-          : (<>
-            <ContainerCenter backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
-              <NeedLogin marginTop={-40} action={() => navigation.navigate('LoginStackNavigation')} />
-            </ContainerCenter>
+              : <ContainerCenter backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
+                <NeedReservationContainer marginTop={-40}>
+                  <Image source={profileCard} width={94} height={55} />
+                  <Text T3 bold marginTop={24}>진료 내역이 없습니다</Text>
+                  <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>해외에서도 비대면으로{'\n'}한국 대학병원 전문의를 만나보세요</Text>
+                  <SolidButton
+                    large
+                    marginTop={24}
+                    text="진료 예약"
+                    action={() => handleMakeReservation()}
+                  />
+                </NeedReservationContainer>
+              </ContainerCenter>
+            }
           </>)
+
+          : <ContainerCenter backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
+            <NeedLogin marginTop={-40} action={() => handleLogin()} />
+          </ContainerCenter>
       }
 
     </SafeArea>
@@ -140,13 +189,6 @@ const HistoryCardContainer = styled.View`
   width: 100%;
   background-color: #FFFFFF;
   border-radius: 10px;
-`;
-
-const HistoryCardEmptyContainer = styled.View`
-  width: 100%;
-  height: 100px;
-  align-items: center;
-  justify-content: center;
 `;
 
 const CardTitleSection = styled.View`
@@ -186,4 +228,12 @@ const CustomSolidButton = styled.TouchableHighlight`
   border-radius: 5px;
   align-items: center;
   justify-content: center;
+`;
+
+const NeedReservationContainer = styled.View`
+  width: 100%;
+  padding: 40px 20px;
+  border-radius: 10px;
+  background-color: #FFFFFF;
+  align-items: center;
 `;
