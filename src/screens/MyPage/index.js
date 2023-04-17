@@ -24,7 +24,9 @@ export default function MyPageScreen({ navigation }) {
 
   function handleAccountInformation() {
     if(accountData.loginStatus){
-      navigation.navigate('AccountSetting');
+      navigation.navigate('MyPageStackNavigation', {
+        screen: 'AccountSetting',
+      });
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
