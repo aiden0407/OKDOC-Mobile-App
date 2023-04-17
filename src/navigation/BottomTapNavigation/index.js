@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from 'screens/Home';
 import HistoryScreen from 'screens/History';
 import AlarmScreen from 'screens/Alarm';
-import MyPage from 'navigation/MyPage';
+import MyPageScreen from 'screens/MyPage';
 
 //Components
 import { Ionicons } from '@expo/vector-icons';
@@ -55,7 +55,7 @@ export default function BottomTapNavigation() {
         <BottomTab.Screen name="Home" component={HomeScreen} options={{ title: '홈', headerShown: false }} />
         <BottomTab.Screen name="History" component={HistoryScreen} options={{ title: '진료 내역' }} />
         <BottomTab.Screen name="Alarm" component={AlarmScreen} options={{ title: '알림' }} />
-        <BottomTab.Screen name="MyPage" component={MyPage} options={{ title: '마이페이지', headerShown: false }} />
+        <BottomTab.Screen name="MyPage" component={MyPageScreen} options={{ title: '마이페이지' }} />
       </BottomTab.Group>
     </BottomTab.Navigator>
   );
