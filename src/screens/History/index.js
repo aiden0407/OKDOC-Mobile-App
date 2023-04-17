@@ -41,10 +41,10 @@ export default function HistoryScreen({ navigation }) {
   }
 
   function handleEnterTelemedicine(item) {
-    // navigation.navigate('TelemedicineProcess', { 
-    //   screen: 'SymptomDetailCheck' ,
-    //   params: { telemedicineData: item }
-    // });
+    navigation.navigate('HistoryStackNavigation', { 
+      screen: 'SymptomDetailCheck' ,
+      params: { telemedicineData: item }
+    });
   }
 
   function handleCheckTelemedicineDetail(item) {
