@@ -122,6 +122,7 @@ export default function TelemedicineReservation({ navigation }) {
           options={{
             title: '결제 완료',
             headerBackVisible: false,
+            gestureEnabled: false,
           }}
         />
       </Stack.Group>
