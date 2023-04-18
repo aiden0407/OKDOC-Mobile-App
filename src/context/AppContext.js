@@ -23,6 +23,7 @@ const initialState = {
     countryCode: undefined,
     phoneNumber: undefined,
   },
+  historyData: undefined,
 };
 
 //create context
@@ -136,6 +137,12 @@ const reducer = (state, action) => {
           countryCode: undefined,
           phoneNumber: undefined,
         },
+      };
+
+    case 'HISTORY_DATA_ADD':
+      return {
+        ...state,
+        historyData: action.historyData
       };
 
     default:
