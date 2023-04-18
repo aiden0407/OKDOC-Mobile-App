@@ -114,6 +114,7 @@ export default function TelemedicineReservation({ navigation }) {
           component={PaymentScreen}
           options={{
             headerShown: false,
+            gestureEnabled: false,
           }}
         />
         <Stack.Screen
