@@ -1,5 +1,6 @@
 //React
 import { useContext } from 'react';
+import { AppContext } from 'context/AppContext';
 import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
@@ -17,6 +18,7 @@ import profileCard from 'assets/icons/mypage-profile.png';
 
 export default function HistoryScreen({ navigation }) {
 
+  const { dispatch } = useContext(AppContext);
   const { state: { accountData, historyData } } = useContext(ApiContext);
 
   function handleCancleReservation(item) {
@@ -41,14 +43,16 @@ export default function HistoryScreen({ navigation }) {
   }
 
   function handleEnterTelemedicine(item) {
+    dispatch({ type: 'HISTORY_DATA_ADD', historyData: item });
     navigation.navigate('HistoryStackNavigation', { 
       screen: 'SymptomDetailCheck' ,
       params: { telemedicineData: item }
     });
   }
 
-  function handleCheckTelemedicineDetail(item) {
-    //navigation.navigate('');
+  function handleViewTelemedicineDetail(item) {
+    dispatch({ type: 'HISTORY_DATA_ADD', historyData: item });
+    navigation.navigate('HistoryStackNavigation', { screen: 'TelemedicineDetail' });
   }
 
   function handleMakeReservation() {
@@ -109,7 +113,7 @@ export default function HistoryScreen({ navigation }) {
           {type === 'pastHistory'
             && <CustomSolidButton
               underlayColor={COLOR.SUB1}
-              onPress={() => handleCheckTelemedicineDetail(item)}
+              onPress={() => handleViewTelemedicineDetail(item)}
             >
               <Text T5 medium color="#FFFFFF">진료 내역</Text>
             </CustomSolidButton>
