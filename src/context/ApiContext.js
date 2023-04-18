@@ -197,6 +197,7 @@ const initialState = {
           name: '이준범'
         },
         symptom: '기침이 자주 나요',
+        opinion: 'pdf파일 링크',
       },
     ],
   },
