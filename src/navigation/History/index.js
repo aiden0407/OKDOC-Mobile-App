@@ -5,6 +5,8 @@ import TelemedicineRoomScreen from 'screens/History/Telemedicine/TelemedicineRoo
 import TelemedicineCompleteScreen from 'screens/History/Telemedicine/TelemedicineComplete';
 import PaymentScreen from 'screens/History/Telemedicine/Payment';
 import PaymentCompleteScreen from 'screens/History/Telemedicine/PaymentComplete';
+import TelemedicineDetailScreen from 'screens/History/Telemedicine/TelemedicineDetail';
+import TelemedicineOpinionScreen from 'screens/History/Telemedicine/TelemedicineOpinion';
 
 //Components
 import NavigationBackArrow from 'components/NavigationBackArrow';
@@ -55,6 +57,22 @@ export default function HistoryInnerStackNavigation({ navigation }) {
             title: '결제 완료',
             headerBackVisible: false,
             gestureEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name="TelemedicineDetail"
+          component={TelemedicineDetailScreen}
+          options={{
+            title: '진료 내역',
+            headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
+          }}
+        />
+        <Stack.Screen
+          name="TelemedicineOpinion"
+          component={TelemedicineOpinionScreen}
+          options={{
+            title: '전자 소견서',
+            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('TelemedicineDetail')} />,
           }}
         />
       </Stack.Group>
