@@ -43,7 +43,7 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
         </ContainerCenter>
 
         <SolidButton
-          text="진료 연장 요금 결제하기"
+          text="추가비용 결제하기"
           marginBottom={20}
           disabled={false}
           action={() => handleNextScreen()}
