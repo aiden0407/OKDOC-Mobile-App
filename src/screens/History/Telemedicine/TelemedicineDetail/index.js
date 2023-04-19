@@ -7,7 +7,7 @@ import styled from 'styled-components/native';
 import { COLOR, BUTTON } from 'constants/design';
 import { ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeArea, Container, Row, DividingLine, PaddingContainer, Box } from 'components/Layout';
+import { SafeArea, Container, ScrollView, Row, DividingLine, PaddingContainer, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 import { SubColorButton } from 'components/Button';
@@ -23,15 +23,16 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
   return (
     <SafeArea>
       <Container>
+        <ScrollView showsVerticalScrollIndicator={false}>
 
-        <PaddingContainer>
-          <Text T7 color={COLOR.GRAY1} marginTop={30}>{historyData.date} ({historyData.time})</Text>
-          <Text T3 bold marginTop={6}>{historyData.doctorInfo.subject} / {historyData.profileInfo.name}님 ({historyData.profileType})</Text>
+          <PaddingContainer>
+            <Text T7 color={COLOR.GRAY1} marginTop={30}>{historyData.date} ({historyData.time})</Text>
+            <Text T3 bold marginTop={6}>{historyData.doctorInfo.subject} / {historyData.profileInfo.name}님 ({historyData.profileType})</Text>
             <Text T6 medium color={COLOR.GRAY1} marginTop={12}>{historyData.symptom}</Text>
-        </PaddingContainer>
+          </PaddingContainer>
 
-        <DoctorContainer>
-          <Image source={{ uri: historyData.doctorInfo.image }} circle width={66} height={66} />
+          <DoctorContainer>
+            <Image source={{ uri: historyData.doctorInfo.image }} circle width={66} height={66} />
             <CardDoctorInfoColumn>
               <Text T4 bold>{historyData.doctorInfo.name} 의사</Text>
               <Text T7 bold color={COLOR.GRAY2}>{historyData.doctorInfo.hospital} / {historyData.doctorInfo.subject}</Text>
@@ -41,43 +42,44 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
                 )}
               </Row>
             </CardDoctorInfoColumn>
-        </DoctorContainer>
+          </DoctorContainer>
 
-        <PaddingContainer>
-          <Text T3 bold marginTop={24}>전자 소견서</Text>
-          {
-            historyData?.opinion 
-              ? <CustomSubColorButton underlayColor={COLOR.SUB2} onPress={() => handleViewTelemedicineOpinion()}>
-                <Text T5 medium color={COLOR.MAIN}>전자 소견서 보기</Text>
-              </CustomSubColorButton>
-              :(<Center>
-                <Box height={24} />
-                <ActivityIndicator size="large" color="#5500CC" />
-                <Text T3 bold marginTop={12}>전자 소견서 작성중</Text>
-                <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>담당 의사가 소견서를 작성중입니다{'\n'}잠시만 기다려주세요</Text>
-              </Center>)
-          }
-        </PaddingContainer>
+          <PaddingContainer>
+            <Text T3 bold marginTop={24}>전자 소견서</Text>
+            {
+              historyData?.opinion
+                ? <CustomSubColorButton underlayColor={COLOR.SUB2} onPress={() => handleViewTelemedicineOpinion()}>
+                  <Text T5 medium color={COLOR.MAIN}>전자 소견서 보기</Text>
+                </CustomSubColorButton>
+                : (<Center>
+                  <Box height={24} />
+                  <ActivityIndicator size="large" color="#5500CC" />
+                  <Text T3 bold marginTop={12}>전자 소견서 작성중</Text>
+                  <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>담당 의사가 소견서를 작성중입니다{'\n'}잠시만 기다려주세요</Text>
+                </Center>)
+            }
+          </PaddingContainer>
 
-        <DividingLine marginTop={36} />
+          <DividingLine marginTop={36} />
 
-        <PaddingContainer>
-          <Text T3 bold marginTop={24}>결제 내역</Text>
-          <Text T3 bold color={COLOR.MAIN} marginTop={9}>진료 연장 50,000원</Text>
-          <Row marginTop={18}>
-            <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
-            <Text T6 color={COLOR.GRAY1}>50,000원 | 일시불</Text>
-          </Row>
-          <Row marginTop={6}>
-            <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 수단</Text>
-            <Text T6 color={COLOR.GRAY1}>삼성 마스타 5188</Text>
-          </Row>
-          <Row marginTop={6}>
-            <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
-            <Text T6 color={COLOR.GRAY1}>23.04.07 (11:30)</Text>
-          </Row>
-        </PaddingContainer>
+          <PaddingContainer>
+            <Text T3 bold marginTop={24}>결제 내역</Text>
+            <Text T3 bold color={COLOR.MAIN} marginTop={9}>진료 연장 50,000원</Text>
+            <Row marginTop={18}>
+              <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
+              <Text T6 color={COLOR.GRAY1}>50,000원 | 일시불</Text>
+            </Row>
+            <Row marginTop={6}>
+              <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 수단</Text>
+              <Text T6 color={COLOR.GRAY1}>삼성 마스타 5188</Text>
+            </Row>
+            <Row marginTop={6}>
+              <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
+              <Text T6 color={COLOR.GRAY1}>23.04.07 (11:30)</Text>
+            </Row>
+          </PaddingContainer>
 
+        </ScrollView>
       </Container>
     </SafeArea>
   );
