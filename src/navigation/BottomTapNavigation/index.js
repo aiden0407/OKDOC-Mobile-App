@@ -6,6 +6,7 @@ import AlarmScreen from 'screens/Alarm';
 import MyPageScreen from 'screens/MyPage';
 
 //Components
+import * as Device from 'expo-device';
 import { Ionicons } from '@expo/vector-icons';
 import { COLOR } from 'constants/design'
 
@@ -16,9 +17,11 @@ export default function BottomTapNavigation() {
   return (
     <BottomTab.Navigator
       screenOptions={({ route }) => ({
-        tabBarStyle: {
-          paddingTop: 2,
-          height: 84, //default: 79
+        tabBarStyle: Device.osName==='Android' && {
+          height: 60,
+        },
+        tabBarLabelStyle: Device.osName==='Android' && {
+          marginBottom: 10,
         },
         tabBarActiveTintColor: COLOR.MAIN,
         tabBarInactiveTintColor: '#AAAAAA',
