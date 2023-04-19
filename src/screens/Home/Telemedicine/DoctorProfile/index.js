@@ -5,6 +5,7 @@ import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
 //Components
+import * as Device from 'expo-device';
 import { COLOR } from 'constants/design';
 import { LinearGradient } from 'expo-linear-gradient'
 import { SafeArea, ScrollView, Row, DividingLine, Box } from 'components/Layout';
@@ -59,7 +60,7 @@ export default function DoctorProfileScreen({ navigation }) {
 
   return (
     <SafeArea>
-      <LinearGradient
+      {/* <LinearGradient
         colors={['#FFFFFF', '#FFFFFF', '#FFFFFF', 'rgba(255,255,255,0)']}
         style={{
           width: '100%',
@@ -98,9 +99,10 @@ export default function DoctorProfileScreen({ navigation }) {
             </>
           )}
         </ButtonsArea>
-      </LinearGradient>
+      </LinearGradient> */}
 
-      <ScrollView showsVerticalScrollIndicator={false} paddingHorizontal={20} paddingTop={80}>
+      {/* <ScrollView showsVerticalScrollIndicator={false} paddingHorizontal={20} paddingTop={80}> */}
+      <ScrollView showsVerticalScrollIndicator={false} paddingHorizontal={20} paddingTop={0}>
         {informationCategory === 'profile' && (
           <>
             <Row align marginTop={36}>
@@ -173,7 +175,7 @@ export default function DoctorProfileScreen({ navigation }) {
         colors={['rgba(255,255,255,0)', '#FFFFFF', '#FFFFFF', '#FFFFFF']}
         style={{
           width: '100%',
-          marginBottom: 34,
+          marginBottom: Device.osName==='Android' ? 0 : 34,
           padding: 20,
           paddingTop: 70,
           position: 'absolute',
