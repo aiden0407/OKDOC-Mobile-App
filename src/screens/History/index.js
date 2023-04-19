@@ -14,7 +14,7 @@ import { SolidButton } from 'components/Button';
 import NeedLogin from 'components/NeedLogin';
 
 //Assets
-import profileCard from 'assets/icons/mypage-profile.png';
+import letterIcon from 'assets/icons/mypage-letter.png';
 
 export default function HistoryScreen({ navigation }) {
 
@@ -159,8 +159,8 @@ export default function HistoryScreen({ navigation }) {
               </Container>
 
               : <ContainerCenter backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
-                <NeedReservationContainer marginTop={-40}>
-                  <Image source={profileCard} width={94} height={55} />
+                <HistoryEmptyContainer marginTop={-40}>
+                  <Image source={letterIcon} width={70} height={74} />
                   <Text T3 bold marginTop={24}>진료 내역이 없습니다</Text>
                   <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>해외에서도 비대면으로{'\n'}한국 대학병원 전문의를 만나보세요</Text>
                   <SolidButton
@@ -169,7 +169,7 @@ export default function HistoryScreen({ navigation }) {
                     text="진료 예약"
                     action={() => handleMakeReservation()}
                   />
-                </NeedReservationContainer>
+                </HistoryEmptyContainer>
               </ContainerCenter>
             }
           </>)
@@ -234,7 +234,7 @@ const CustomSolidButton = styled.TouchableHighlight`
   justify-content: center;
 `;
 
-const NeedReservationContainer = styled.View`
+const HistoryEmptyContainer = styled.View`
   width: 100%;
   padding: 40px 20px;
   border-radius: 10px;
