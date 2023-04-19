@@ -95,7 +95,7 @@ const ButtonContainer = styled.View`
 const RedCircle = styled.TouchableHighlight`
   width: 50px;
   height: 50px;
-  border-radius: 100%;
+  border-radius: 100px;
   align-items: center;
   justify-content: center;
   background-color: #FF0000;
