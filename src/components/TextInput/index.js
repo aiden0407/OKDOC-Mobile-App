@@ -43,7 +43,7 @@ export function BoxInput({ ...props }) {
       large={props.large}
       medium={props.medium}
     >
-      <TextInput {...props} multiline={props.medium || props.large} ref={props?.propsRef} marginTop={0} />
+      <TextInput {...props} multiline={props.medium || props.large} textAlignVertical="top" ref={props?.propsRef} marginTop={0}/>
     </TextInputBackground>
   );
 }
