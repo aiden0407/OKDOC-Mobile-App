@@ -5,6 +5,7 @@ import { useIsFocused } from '@react-navigation/native';
 import styled from 'styled-components/native';
 
 //Components
+import * as Device from 'expo-device';
 import { COLOR } from 'constants/design';
 import { SYMPTOM, SUBJECT } from 'constants/service';
 import { StatusBar } from 'expo-status-bar';
@@ -98,7 +99,8 @@ export default function HomeScreen({ navigation }) {
 
 const BannerContainer = styled.View`
   width: 100%;
-  height: 130px;
+  height: ${Device.osName==='Android' ? '180px' : '130px'};
+  padding-top: ${Device.osName==='Android' ? '30px' : '0px'};;
   align-items: center;
   justify-content: center;
 `;
