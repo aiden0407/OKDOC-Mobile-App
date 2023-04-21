@@ -26,7 +26,8 @@ export default function ChangePasswordScreen({ navigation }) {
 
   function handleChangePassword() {
     dispatch({ type: 'LOGOUT' });
-    navigation.navigate('MyPageMain');
+    navigation.popToTop();
+    navigation.goBack();
     Alert.alert('비밀번호가 변경되었습니다', '변경된 비밀번호로 다시 로그인해주시기 바랍니다.');
   }
 

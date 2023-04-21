@@ -16,9 +16,10 @@ export default function WithdrawalScreen({ navigation }) {
 
   function handleWithdrawal() {
     dispatch({ type: 'LOGOUT' });
+    navigation.popToTop();
     navigation.goBack();
-    navigation.navigate('MyPageMain');
     navigation.navigate('Home');
+    Alert.alert('안내', '회원탈퇴가 정상적으로 완료되었습니다');
   }
 
   function createWithdrawalAlert() {
