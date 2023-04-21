@@ -29,7 +29,7 @@ export default function MyPageInnerStackNavigation({ navigation }) {
         <Stack.Screen
           name="AccountSetting"
           component={AccountSettingScreen}
-          options={{ title: '비밀번호 변경' }}
+          options={{ title: '계정 설정' }}
         />
         <Stack.Screen
           name="ChangePassword"
