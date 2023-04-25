@@ -3,7 +3,7 @@ import axios from 'axios';
 import getEnvVars from 'api/environment.js';
 const { apiUrl } = getEnvVars();
 
-export const loginByKauthCode = async function (id, password) {
+export const login = async function (id, password) {
 
     try {
 
