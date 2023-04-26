@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 //Components
 import { COLOR, BUTTON, INPUT_BOX } from 'constants/design';
 import { ActivityIndicator } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+//import DateTimePicker from '@react-native-community/datetimepicker';
 import { SafeArea, Container, ScrollView, Row, Center, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
