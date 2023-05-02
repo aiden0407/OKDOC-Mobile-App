@@ -3,12 +3,11 @@ import axios from 'axios';
 import getEnvVars from 'api/environment.js';
 const { apiUrl } = getEnvVars();
 
-export const login = async function (id, password) {
+export const familyLocalLogin = async function (id, password) {
 
     try {
-
         let options = {
-            url: `${apiUrl}/authentication/:authentication_type?identity=family`,
+            url: `${apiUrl}/authentication/LOGIN?identity=family`,
             method: 'POST',
             data: {
                 id: id,
@@ -16,13 +15,29 @@ export const login = async function (id, password) {
             }
         }
         const response = await axios(options);
-
         return response;
 
     } catch (error) {
+        throw error;
+    }
 
-        throw error.response;
+}
 
+export const getPatientList = async function (token) {
+
+    try {
+        let options = {
+            url: `${apiUrl}/patients/`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+        
+    } catch (error) {
+        throw error;
     }
 
 }
