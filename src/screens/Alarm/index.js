@@ -20,7 +20,7 @@ export default function AlarmScreen({ navigation }) {
   return (
     <SafeArea>
       {
-        accountData.loginStatus
+        accountData.loginToken
           ? <ContainerCenter backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
             <AlarmEmptyContainer marginTop={-40}>
               <Image source={letterIcon} width={70} height={74} />

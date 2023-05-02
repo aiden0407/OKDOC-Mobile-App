@@ -29,7 +29,7 @@ export default function DoctorProfileScreen({ navigation }) {
   const text = `안녕하세요, 인천 검단신도시 아라동에 위치한 연세튼튼치과 원장 ${doctorInfo.name}입니다.\n\n<우리가족 건강주치의>라는 슬로건 하에 바른 진료, 진심을 담은 진료 약속 드립니다.\n\n평일 진료시간이 오후 6시간 마감으로 오후 6시부터 ~  오후 6시 30분간 비대면 진료 합니다.\n\n직장 시간때문에 진료 시간내 오지못하는 경우, 거리가 멀어서 직접 못오시는 경우 진료 신청 해주시면 감사하겠습니다.`;
 
   function handleApplyReservation() {
-    if (accountData.loginStatus) {
+    if (accountData.loginToken) {
       navigation.navigate('ProfileList');
     } else {
       navigation.navigate('NeedLoginNavigation', {

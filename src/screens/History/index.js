@@ -126,7 +126,7 @@ export default function HistoryScreen({ navigation }) {
   return (
     <SafeArea>
       {
-        accountData.loginStatus
+        accountData.loginToken
           ? (<>
             {(historyData.underReservation.length || historyData.pastHistory.length)
               ? <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>

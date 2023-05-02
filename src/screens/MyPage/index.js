@@ -23,7 +23,7 @@ export default function MyPageScreen({ navigation }) {
   }
 
   function handleAccountInformation() {
-    if(accountData.loginStatus){
+    if(accountData.loginToken){
       navigation.navigate('MyPageStackNavigation', {
         screen: 'AccountSetting',
       });
@@ -36,7 +36,7 @@ export default function MyPageScreen({ navigation }) {
   }
 
   function handleProfileList() {
-    if(accountData.loginStatus){
+    if(accountData.loginToken){
       navigation.navigate('MyPageStackNavigation', { screen: 'ProfileDetail' });
     } else {
       navigation.navigate('NeedLoginNavigation', {
@@ -64,7 +64,7 @@ export default function MyPageScreen({ navigation }) {
       <ContainerTop paddingTop={30}>
         <LoginContainer>
           {
-            accountData?.loginStatus
+            accountData?.loginToken
               ? (<>
                 <LoginButton activeOpacity={1}>
                   <Text T3 bold>안녕하세요, <Text T3 bold color={COLOR.MAIN} marginRight={12}>{accountData.name}</Text>님</Text>

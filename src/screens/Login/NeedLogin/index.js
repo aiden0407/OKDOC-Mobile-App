@@ -11,7 +11,7 @@ export default function NeedLoginScreen({ navigation, route }) {
   const { state: { accountData } } = useContext(ApiContext);
 
   useEffect(() => {
-    if (accountData.loginStatus) {
+    if (accountData.loginToken) {
       navigation.goBack();
     }
   }, [accountData]);
