@@ -19,8 +19,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
   const [isEditable, setIsEditable] = useState(false);
   const [height, setHeight] = useState(profileData[0]?.height);
   const [weight, setWeight] = useState(profileData[0]?.weight);
-  const [dringkingStatus, setDringkingStatus] = useState(profileData[0]?.dringkingStatus);
-  const [smokingStatus, setSmokingStatus] = useState(profileData[0]?.smokingStatus);
+  const [dringker, setDringker] = useState(profileData[0]?.dringker);
+  const [smoker, setSmoker] = useState(profileData[0]?.smoker);
   const [medicalHistory, setMedicalHistory] = useState(profileData[0]?.medicalHistory);
   const [medicalHistoryFamily, setMedicalHistoryFamily] = useState(profileData[0]?.medicalHistoryFamily);
   const [medication, setMedication] = useState(profileData[0]?.medication);
@@ -185,20 +185,20 @@ export default function ProfileDetailScreen({ navigation, route }) {
               <Row marginTop={12} gap={12}>
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={dringkingStatus === 'frequently'}
-                  action={() => isEditable && setDringkingStatus('frequently')}
+                  isSelected={dringker === 'frequently'}
+                  action={() => isEditable && setDringker('frequently')}
                   text='자주'
                 />
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={dringkingStatus === 'sometimes'}
-                  action={() => isEditable && setDringkingStatus('sometimes')}
+                  isSelected={dringker === 'sometimes'}
+                  action={() => isEditable && setDringker('sometimes')}
                   text='가끔'
                 />
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={dringkingStatus === 'none'}
-                  action={() => isEditable && setDringkingStatus('none')}
+                  isSelected={dringker === 'none'}
+                  action={() => isEditable && setDringker('none')}
                   text='안함'
                 />
               </Row>
@@ -206,14 +206,14 @@ export default function ProfileDetailScreen({ navigation, route }) {
               <Row marginTop={12} gap={12}>
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={smokingStatus}
-                  action={() => isEditable && setSmokingStatus(true)}
+                  isSelected={smoker}
+                  action={() => isEditable && setSmoker(true)}
                   text='흡연'
                 />
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={!smokingStatus}
-                  action={() => isEditable && setSmokingStatus(false)}
+                  isSelected={!smoker}
+                  action={() => isEditable && setSmoker(false)}
                   text='비흡연'
                 />
               </Row>

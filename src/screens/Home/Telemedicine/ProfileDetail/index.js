@@ -21,8 +21,8 @@ export default function ProfileDetailScreen({ navigation }) {
   const [gender, setGender] = useState(profileInfo?.gender);
   const [height, setHeight] = useState(profileInfo?.height);
   const [weight, setWeight] = useState(profileInfo?.weight);
-  const [dringkingStatus, setDringkingStatus] = useState(profileInfo?.dringkingStatus);
-  const [smokingStatus, setSmokingStatus] = useState(profileInfo?.smokingStatus);
+  const [dringker, setDringker] = useState(profileInfo?.dringker);
+  const [smoker, setSmoker] = useState(profileInfo?.smoker);
   const [medicalHistory, setMedicalHistory] = useState(profileInfo?.medicalHistory);
   const [medicalHistoryFamily, setMedicalHistoryFamily] = useState(profileInfo?.medicalHistoryFamily);
   const [medication, setMedication] = useState(profileInfo?.medication);
@@ -58,8 +58,8 @@ export default function ProfileDetailScreen({ navigation }) {
         gender: gender,
         height: height,
         weight: weight,
-        dringkingStatus: dringkingStatus,
-        smokingStatus: smokingStatus,
+        dringker: dringker,
+        smoker: smoker,
         medicalHistory: medicalHistory,
         medicalHistoryFamily: medicalHistoryFamily,
         medication: medication,
@@ -177,31 +177,31 @@ export default function ProfileDetailScreen({ navigation }) {
             </Row>
             <Row marginTop={12} gap={12}>
               <TinySolidButton
-                isSelected={dringkingStatus === 'frequently'}
-                action={() => setDringkingStatus('frequently')}
+                isSelected={dringker === 'frequently'}
+                action={() => setDringker('frequently')}
                 text='자주'
               />
               <TinySolidButton
-                isSelected={dringkingStatus === 'sometimes'}
-                action={() => setDringkingStatus('sometimes')}
+                isSelected={dringker === 'sometimes'}
+                action={() => setDringker('sometimes')}
                 text='가끔'
               />
               <TinySolidButton
-                isSelected={dringkingStatus === 'none'}
-                action={() => setDringkingStatus('none')}
+                isSelected={dringker === 'none'}
+                action={() => setDringker('none')}
                 text='안함'
               />
             </Row>
             <Text T6 bold marginTop={30}>흡연 여부</Text>
             <Row marginTop={12} gap={12}>
               <TinySolidButton
-                isSelected={smokingStatus}
-                action={() => setSmokingStatus(true)}
+                isSelected={smoker}
+                action={() => setSmoker(true)}
                 text='흡연'
               />
               <TinySolidButton
-                isSelected={smokingStatus === false}
-                action={() => setSmokingStatus(false)}
+                isSelected={smoker === false}
+                action={() => setSmoker(false)}
                 text='비흡연'
               />
             </Row>
@@ -264,7 +264,7 @@ export default function ProfileDetailScreen({ navigation }) {
               marginTop={90}
               marginBottom={20}
               text="다음"
-              disabled={!name || !relationship || !birth || !gender || !height || !weight || !dringkingStatus || smokingStatus === undefined}
+              disabled={!name || !relationship || !birth || !gender || !height || !weight || !dringker || smoker === undefined}
               action={() => handleSubmitProfileDetail()}
             />
           </PaddingContainer>
