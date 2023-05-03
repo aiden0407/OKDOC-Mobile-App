@@ -7,7 +7,7 @@ import styled from 'styled-components/native';
 //Components
 import * as Device from 'expo-device';
 import { COLOR } from 'constants/design';
-import { SYMPTOM, SUBJECT } from 'constants/service';
+import { SYMPTOM, DEPARTMENT } from 'constants/service';
 import { StatusBar } from 'expo-status-bar';
 import { StatusBarArea, SafeArea, ContainerTop, ContainerCenter } from 'components/Layout';
 import { Text } from 'components/Text';
@@ -48,8 +48,8 @@ export default function HomeScreen({ navigation }) {
             <Text T7 medium>{SYMPTOM[item]?.NAME}</Text>
           </>)}
           {category === 'medicalSubject' && (<>
-            <Image source={SUBJECT[item]?.ICON} marginTop={6} width={48} height={48} />
-            <Text T7 medium>{SUBJECT[item]?.NAME}</Text>
+            <Image source={DEPARTMENT[item]?.ICON} marginTop={6} width={48} height={48} />
+            <Text T7 medium>{DEPARTMENT[item]?.NAME}</Text>
           </>)}
         </>
       </IconButton>

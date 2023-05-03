@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design';
-import { SYMPTOM, SUBJECT } from 'constants/service';
+import { SYMPTOM, DEPARTMENT } from 'constants/service';
 import { SafeArea, ContainerTop } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
@@ -15,7 +15,7 @@ export default function CategoryScreen({ navigation }) {
   const { dispatch } = useContext(AppContext);
   const [categoryGroup, setCategoryGroup] = useState('symptoms');
   const symptomKeys = Object.keys(SYMPTOM);
-  const medicalSubjectKeys = Object.keys(SUBJECT);
+  const medicalSubjectKeys = Object.keys(DEPARTMENT);
 
   function handleNextStep(category, item) {
     dispatch({ type: 'TELEMEDICINE_RESERVATION_CATEGORY', category: category, item: item });
@@ -34,8 +34,8 @@ export default function CategoryScreen({ navigation }) {
             <Text T6>{SYMPTOM[item]?.NAME}</Text>
           </>)}
           {category === 'medicalSubject' && (<>
-            <Image source={SUBJECT[item]?.ICON} marginTop={8} width={60} height={60} />
-            <Text T6>{SUBJECT[item]?.NAME}</Text>
+            <Image source={DEPARTMENT[item]?.ICON} marginTop={8} width={60} height={60} />
+            <Text T6>{DEPARTMENT[item]?.NAME}</Text>
           </>)}
         </>
       </IconButton>

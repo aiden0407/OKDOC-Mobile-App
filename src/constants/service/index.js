@@ -96,7 +96,7 @@ export const SYMPTOM = {
     },
 }
 
-export const SUBJECT = {
+export const DEPARTMENT = {
     internalMedicine: {
         NAME: '내과',
         ICON: internalMedicineIcon

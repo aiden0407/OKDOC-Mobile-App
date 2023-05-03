@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design';
-import { SYMPTOM, SUBJECT } from 'constants/service';
+import { SYMPTOM, DEPARTMENT } from 'constants/service';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, ScrollView, Row, DividingLine, PaddingContainer } from 'components/Layout';
 import { Text } from 'components/Text';
