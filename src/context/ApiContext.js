@@ -3,7 +3,7 @@ import { createContext, useReducer } from "react";
 //initial state
 const initialState = {
   accountData: {
-    loginStatus: true,
+    loginToken: false,
     name: '이준범',
     email: 'aiden@insunginfo.co.kr',
     phoneNumber: '+82 10-2427-8139'
@@ -16,8 +16,8 @@ const initialState = {
       gender: 'male',
       height: '170.0',
       weight: '68.0',
-      dringkingStatus: 'none',
-      smokingStatus: true,
+      dringker: 'none',
+      smoker: true,
       medicalHistory: '',
       medicalHistoryFamily: '고혈압',
       medication: '',
@@ -218,10 +218,27 @@ const reducer = (state, action) => {
         ...state,
         accountData: {
           ...state.accountData,
-          loginStatus: true,
+          loginToken: action.loginToken,
+        },
+      };
+
+    case 'PROFILE_UPDATE':
+      return {
+        ...state,
+        accountData: {
           name: action.name,
-          email: action.email,
-          phoneNumber: action.phoneNumber,
+          relationship: action.relationship,
+          birth: action.birth,
+          gender: action.gender,
+          height: action.height,
+          weight: action.weight,
+          dringker: action.dringker,
+          smoker: action.smoker,
+          medicalHistory: action.medicalHistory,
+          medicalHistoryFamily: action.medicalHistoryFamily,
+          medication: action.medication,
+          allergicReaction: action.allergicReaction,
+          etcConsideration: action.etcConsideration
         },
       };
 
@@ -230,7 +247,7 @@ const reducer = (state, action) => {
         ...state,
         accountData: {
           ...state.accountData,
-          loginStatus: false,
+          loginToken: undefined,
         },
       };
 
