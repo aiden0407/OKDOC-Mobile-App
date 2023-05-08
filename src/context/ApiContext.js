@@ -5,24 +5,24 @@ const initialState = {
   accountData: {
     loginToken: false,
     name: '이준범',
-    email: 'aiden@insunginfo.co.kr',
-    phoneNumber: '+82 10-2427-8139'
+    // email: 'aiden@insunginfo.co.kr',
+    // phoneNumber: '+82 10-2427-8139'
   },
   profileData: [
     {
-      name: '이준범',
-      relationship: '본인',
-      birth: '1998-04-07',
-      gender: 'male',
-      height: '170.0',
-      weight: '68.0',
-      dringker: 'none',
-      smoker: true,
-      medicalHistory: '',
-      medicalHistoryFamily: '고혈압',
-      medication: '',
-      allergicReaction: '',
-      etcConsideration: '없음'
+      name: undefined,
+      relationship: undefined,
+      birth: undefined,
+      gender: undefined,
+      height: undefined,
+      weight: undefined,
+      dringker: undefined,
+      smoker: undefined,
+      medicalHistory: undefined,
+      medicalHistoryFamily: undefined,
+      medication: undefined,
+      allergicReaction: undefined,
+      etcConsideration: undefined,
     }
   ],
   bookableData: [
@@ -222,24 +222,30 @@ const reducer = (state, action) => {
         },
       };
 
-    case 'PROFILE_UPDATE':
+    case 'PROFILE_UPDATE_MAIN':
       return {
         ...state,
         accountData: {
+          ...state.accountData,
           name: action.name,
-          relationship: action.relationship,
-          birth: action.birth,
-          gender: action.gender,
-          height: action.height,
-          weight: action.weight,
-          dringker: action.dringker,
-          smoker: action.smoker,
-          medicalHistory: action.medicalHistory,
-          medicalHistoryFamily: action.medicalHistoryFamily,
-          medication: action.medication,
-          allergicReaction: action.allergicReaction,
-          etcConsideration: action.etcConsideration
         },
+        profileData: [
+          {
+            name: action.name,
+            relationship: action.relationship,
+            birth: action.birth,
+            gender: action.gender,
+            height: action.height,
+            weight: action.weight,
+            dringker: action.dringker,
+            smoker: action.smoker,
+            medicalHistory: action.medicalHistory,
+            medicalHistoryFamily: action.medicalHistoryFamily,
+            medication: action.medication,
+            allergicReaction: action.allergicReaction,
+            etcConsideration: action.etcConsideration
+          }
+        ],
       };
 
     case 'LOGOUT':
@@ -260,7 +266,7 @@ const reducer = (state, action) => {
 const ApiProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
-  //console.log(`ApiContext: ${JSON.stringify(state)}`);
+  console.log(`ApiContext: ${JSON.stringify(state.profileData[0])}`);
   return <ApiContext.Provider value={value}>{children}</ApiContext.Provider>;
 };
 
