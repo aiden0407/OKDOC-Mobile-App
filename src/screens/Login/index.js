@@ -12,6 +12,9 @@ import { Image } from 'components/Image';
 import { BorderInput } from 'components/TextInput';
 import { SolidButton, OutlineButton } from 'components/Button';
 
+//Api
+import { familyLocalLogin, getPatientList } from 'api/Login';
+
 //Assets
 import mainLogo from 'assets/main/main_logo.png';
 
@@ -22,18 +25,55 @@ export default function LoginPage({ navigation }) {
   const [password, setPassword] = useState();
   const passwordRef = useRef();
 
-  function handleLogin(email, password) {
-    if (email === 'test' && password === 'test') {
-      dispatch({ 
-        type: 'LOGIN', 
-        name: '이준범', 
-        email: 'aiden@insunginfo.co.kr', 
-        phoneNumber: '+82 10-2427-8139' 
+  const handleLogin = async function (email, password) {
+    try {
+      const familyLocalLoginResponse = await familyLocalLogin('패밀리아이디', 'r7csY|T66y');
+      dispatch({
+        type: 'LOGIN',
+        loginToken: familyLocalLoginResponse.data.response.login_token,
       });
-      navigation.pop(2);
-    } else {
+
+      try {
+        const getPatientListResponse = await getPatientList(familyLocalLoginResponse.data.response.login_token);
+        mainProfile = getPatientListResponse.data.response[0];
+
+        dispatch({
+          type: 'PROFILE_UPDATE_MAIN',
+          name: mainProfile.passport.USERNAME,
+          relationship: mainProfile.relationship,
+          birth: mainProfile.passport.BIRTH,
+          gender: mainProfile.gender,
+          height: mainProfile.height,
+          weight: mainProfile.weight,
+          dringker: mainProfile.dringker,
+          smoker: mainProfile.smoker,
+          medicalHistory: mainProfile?.medicalHistory,
+          medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
+          medication: mainProfile?.medication,
+          allergicReaction: mainProfile?.allergicReaction,
+          etcConsideration: mainProfile?.etcConsideration,
+        });
+        navigation.pop(2);
+
+      } catch (error) {
+        Alert.alert('회원 정보 불러오기 실패');
+      }
+      
+    } catch (error) {
       Alert.alert('로그인 실패');
     }
+
+    // if (email === 'test' && password === 'test') {
+    //   dispatch({ 
+    //     type: 'LOGIN', 
+    //     name: '이준범', 
+    //     email: 'aiden@insunginfo.co.kr', 
+    //     phoneNumber: '+82 10-2427-8139' 
+    //   });
+    //   navigation.pop(2);
+    // } else {
+    //   Alert.alert('로그인 실패');
+    // }
   }
 
   function handleRegister() {
