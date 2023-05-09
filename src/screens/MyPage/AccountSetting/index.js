@@ -58,10 +58,10 @@ export default function AccountSettingScreen({ navigation }) {
         <Text T6 color={COLOR.GRAY2} marginTop={12} marginLeft={20}>해당 번호는 최초 가입 시 기입된 번호입니다.{'\n'}번호 변경은 고객센터 1:1 문의를 통해 문의해주세요.</Text>
         <Row marginTop={24} paddingHorizontal={20} gap={6}>
           <CountryCallingCodeBox>
-            <Text T5 color={COLOR.GRAY0}>{accountData.phoneNumber.split(' ')[0]}</Text>
+            <Text T5 color={COLOR.GRAY0}>{accountData?.phoneNumber?.split(' ')[0]}</Text>
           </CountryCallingCodeBox>
           <PhoneNumberBox windowWidth={windowWidth}>
-            <Text T5 color={COLOR.GRAY0}>{accountData.phoneNumber.split(' ')[1]}</Text>
+            <Text T5 color={COLOR.GRAY0}>{accountData?.phoneNumber?.split(' ')[1]}</Text>
           </PhoneNumberBox>
         </Row>
 

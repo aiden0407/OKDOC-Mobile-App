@@ -17,8 +17,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
   const { state: { profileData } } = useContext(ApiContext);
   const [informationCategory, setInformationCategory] = useState('personalInfo');
   const [isEditable, setIsEditable] = useState(false);
-  const [height, setHeight] = useState(profileData[0]?.height);
-  const [weight, setWeight] = useState(profileData[0]?.weight);
+  const [height, setHeight] = useState(profileData[0]?.height?.toString());
+  const [weight, setWeight] = useState(profileData[0]?.weight?.toString());
   const [dringker, setDringker] = useState(profileData[0]?.dringker);
   const [smoker, setSmoker] = useState(profileData[0]?.smoker);
   const [medicalHistory, setMedicalHistory] = useState(profileData[0]?.medicalHistory);
