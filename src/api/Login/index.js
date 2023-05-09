@@ -4,7 +4,7 @@ import getEnvVars from 'api/environment.js';
 const { apiUrl } = getEnvVars();
 
 export const familyLocalLogin = async function (id, password) {
-
+    
     try {
         let options = {
             url: `${apiUrl}/authentication/LOGIN?identity=family`,
@@ -20,7 +20,6 @@ export const familyLocalLogin = async function (id, password) {
     } catch (error) {
         throw error;
     }
-
 }
 
 export const getPatientList = async function (token) {
@@ -39,5 +38,4 @@ export const getPatientList = async function (token) {
     } catch (error) {
         throw error;
     }
-
 }
