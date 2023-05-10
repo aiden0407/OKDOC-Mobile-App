@@ -32,3 +32,21 @@ export const getDoctorsByDepartment = async function (department) {
         throw error.response;
     }
 }
+
+export const getScheduleByDoctorId = async function (loginToken, doctorId) {
+
+    try {
+        let options = {
+            url: `${apiUrl}/treatment_appointments/?doctor_id=${doctorId}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
