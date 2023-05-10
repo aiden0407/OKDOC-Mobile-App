@@ -50,3 +50,21 @@ export const getScheduleByDoctorId = async function (loginToken, doctorId) {
         throw error.response;
     }
 }
+
+export const getBiddings = async function (loginToken) {
+
+    try {
+        let options = {
+            url: `${apiUrl}/biddings/`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
