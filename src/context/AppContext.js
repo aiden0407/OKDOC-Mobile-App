@@ -154,7 +154,7 @@ const reducer = (state, action) => {
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
-  console.log(`AppContext: ${JSON.stringify(state)}`);
+  //console.log(`AppContext: ${JSON.stringify(state)}`);
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 

@@ -62,18 +62,6 @@ export default function LoginPage({ navigation }) {
     } catch (error) {
       Alert.alert('로그인 실패');
     }
-
-    // if (email === 'test' && password === 'test') {
-    //   dispatch({ 
-    //     type: 'LOGIN', 
-    //     name: '이준범', 
-    //     email: 'aiden@insunginfo.co.kr', 
-    //     phoneNumber: '+82 10-2427-8139' 
-    //   });
-    //   navigation.pop(2);
-    // } else {
-    //   Alert.alert('로그인 실패');
-    // }
   }
 
   function handleRegister() {
