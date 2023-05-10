@@ -28,14 +28,15 @@ export default function LoginPage({ navigation }) {
   const handleLogin = async function (email, password) {
     try {
       const familyLocalLoginResponse = await familyLocalLogin('패밀리아이디', 'r7csY|T66y');
+      const loginToken = familyLocalLoginResponse.data.response.login_token;
       dispatch({
         type: 'LOGIN',
-        loginToken: familyLocalLoginResponse.data.response.login_token,
+        loginToken: loginToken,
       });
 
       try {
-        const getPatientListResponse = await getPatientList(familyLocalLoginResponse.data.response.login_token);
-        mainProfile = getPatientListResponse.data.response[0];
+        const getPatientListResponse = await getPatientList(loginToken);
+        const mainProfile = getPatientListResponse.data.response[0];
 
         dispatch({
           type: 'PROFILE_UPDATE_MAIN',
