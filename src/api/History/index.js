@@ -41,3 +41,24 @@ export const modifyTreatmentAppointmentBeforeEnter = async function (loginToken,
         throw error.response;
     }
 }
+
+export const treatmentComplete = async function (loginToken, appointmentId) {
+
+    try {
+        let options = {
+            url: `${apiUrl}/treatment_appointments/${appointmentId}`,
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+            data: {
+                "status": "treatment-completion",
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
