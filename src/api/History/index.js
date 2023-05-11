@@ -62,3 +62,18 @@ export const treatmentComplete = async function (loginToken, appointmentId) {
         throw error.response;
     }
 }
+
+export const getProducts = async function () {
+
+    try {
+        let options = {
+            url: `${apiUrl}/products/`,
+            method: 'GET',
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
