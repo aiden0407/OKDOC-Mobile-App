@@ -19,7 +19,7 @@ export default function ProfileDetailScreen({ navigation, route }) {
   const [isEditable, setIsEditable] = useState(false);
   const [height, setHeight] = useState(profileData[0]?.height?.toString());
   const [weight, setWeight] = useState(profileData[0]?.weight?.toString());
-  const [dringker, setDringker] = useState(profileData[0]?.dringker);
+  const [drinker, setDrinker] = useState(profileData[0]?.drinker);
   const [smoker, setSmoker] = useState(profileData[0]?.smoker);
   const [medicalHistory, setMedicalHistory] = useState(profileData[0]?.medicalHistory);
   const [medicalHistoryFamily, setMedicalHistoryFamily] = useState(profileData[0]?.medicalHistoryFamily);
@@ -185,20 +185,20 @@ export default function ProfileDetailScreen({ navigation, route }) {
               <Row marginTop={12} gap={12}>
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={dringker === 'frequently'}
-                  action={() => isEditable && setDringker('frequently')}
+                  isSelected={drinker === 'frequently'}
+                  action={() => isEditable && setDrinker('frequently')}
                   text='자주'
                 />
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={dringker === 'sometimes'}
-                  action={() => isEditable && setDringker('sometimes')}
+                  isSelected={drinker === 'sometimes'}
+                  action={() => isEditable && setDrinker('sometimes')}
                   text='가끔'
                 />
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={dringker === 'none'}
-                  action={() => isEditable && setDringker('none')}
+                  isSelected={drinker === 'none'}
+                  action={() => isEditable && setDrinker('none')}
                   text='안함'
                 />
               </Row>

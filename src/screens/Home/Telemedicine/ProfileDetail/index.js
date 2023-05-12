@@ -21,7 +21,7 @@ export default function ProfileDetailScreen({ navigation }) {
   const [gender, setGender] = useState(profileInfo?.gender);
   const [height, setHeight] = useState(profileInfo?.height);
   const [weight, setWeight] = useState(profileInfo?.weight);
-  const [dringker, setDringker] = useState(profileInfo?.dringker);
+  const [drinker, setDrinker] = useState(profileInfo?.drinker);
   const [smoker, setSmoker] = useState(profileInfo?.smoker);
   const [medicalHistory, setMedicalHistory] = useState(profileInfo?.medicalHistory);
   const [medicalHistoryFamily, setMedicalHistoryFamily] = useState(profileInfo?.medicalHistoryFamily);
@@ -58,7 +58,7 @@ export default function ProfileDetailScreen({ navigation }) {
         gender: gender,
         height: height,
         weight: weight,
-        dringker: dringker,
+        drinker: drinker,
         smoker: smoker,
         medicalHistory: medicalHistory,
         medicalHistoryFamily: medicalHistoryFamily,
@@ -177,18 +177,18 @@ export default function ProfileDetailScreen({ navigation }) {
             </Row>
             <Row marginTop={12} gap={12}>
               <TinySolidButton
-                isSelected={dringker === 'frequently'}
-                action={() => setDringker('frequently')}
+                isSelected={drinker === 'frequently'}
+                action={() => setDrinker('frequently')}
                 text='자주'
               />
               <TinySolidButton
-                isSelected={dringker === 'sometimes'}
-                action={() => setDringker('sometimes')}
+                isSelected={drinker === 'sometimes'}
+                action={() => setDrinker('sometimes')}
                 text='가끔'
               />
               <TinySolidButton
-                isSelected={dringker === 'none'}
-                action={() => setDringker('none')}
+                isSelected={drinker === 'none'}
+                action={() => setDrinker('none')}
                 text='안함'
               />
             </Row>
@@ -264,7 +264,7 @@ export default function ProfileDetailScreen({ navigation }) {
               marginTop={90}
               marginBottom={20}
               text="다음"
-              disabled={!name || !relationship || !birth || !gender || !height || !weight || !dringker || smoker === undefined}
+              disabled={!name || !relationship || !birth || !gender || !height || !weight || !drinker || smoker === undefined}
               action={() => handleSubmitProfileDetail()}
             />
           </PaddingContainer>

@@ -46,7 +46,7 @@ export default function LoginPage({ navigation }) {
           gender: mainProfile.gender,
           height: mainProfile.height,
           weight: mainProfile.weight,
-          dringker: mainProfile.dringker,
+          drinker: mainProfile.drinker,
           smoker: mainProfile.smoker,
           medicalHistory: mainProfile?.medicalHistory,
           medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
