@@ -168,7 +168,7 @@ export default function DoctorProfileScreen({ navigation }) {
             <Review />
           </>
         )}
-        <Box height={220} />
+        <Box height={100} />
       </ScrollView>
 
       <LinearGradient
