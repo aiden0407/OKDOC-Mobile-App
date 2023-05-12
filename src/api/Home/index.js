@@ -33,6 +33,21 @@ export const getDoctorsByDepartment = async function (department) {
     }
 }
 
+export const getDoctorInformationByDoctorId = async function (doctorId) {
+
+    try {
+        let options = {
+            url: `${apiUrl}/doctor/${doctorId}`,
+            method: 'GET',
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
 export const getScheduleByDoctorId = async function (loginToken, doctorId) {
 
     try {
