@@ -13,7 +13,8 @@ import { BorderInput } from 'components/TextInput';
 import { SolidButton, OutlineButton } from 'components/Button';
 
 //Api
-import { familyLocalLogin, getPatientList } from 'api/Login';
+import { familyLocalLogin } from 'api/Login';
+import { getPatientList } from 'api/MyPage';
 
 //Assets
 import mainLogo from 'assets/main/main_logo.png';
