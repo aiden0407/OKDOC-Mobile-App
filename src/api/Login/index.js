@@ -21,3 +21,18 @@ export const familyLocalLogin = async function (id, password) {
         throw error;
     }
 }
+
+export const getRegisterTerms = async function () {
+
+    try {
+        let options = {
+            url: `${apiUrl}/terms/`,
+            method: 'GET',
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
