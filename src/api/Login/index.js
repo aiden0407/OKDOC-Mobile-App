@@ -36,3 +36,21 @@ export const getRegisterTerms = async function () {
         throw error;
     }
 }
+
+export const emailCheckOpen = async function (email) {
+
+    try {
+        let options = {
+            url: `${apiUrl}/authentication/EMAIL_CHECK_OPEN`,
+            method: 'POST',
+            data: {
+                email: email,
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
