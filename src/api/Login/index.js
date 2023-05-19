@@ -54,3 +54,22 @@ export const emailCheckOpen = async function (email) {
         throw error;
     }
 }
+
+export const emailCheckClose = async function (email, claim) {
+
+    try {
+        let options = {
+            url: `${apiUrl}/authentication/EMAIL_CHECK_CLOSE`,
+            method: 'POST',
+            data: {
+                email: email,
+                claim: claim,
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
