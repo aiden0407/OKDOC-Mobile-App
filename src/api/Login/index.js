@@ -73,3 +73,27 @@ export const emailCheckClose = async function (email, certificationNumber) {
         throw error;
     }
 }
+
+export const createFamilyAccount = async function (email, emailToken, password) {
+
+    try {
+        let options = {
+            url: `${apiUrl}/families/${email}`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${emailToken}`
+            },
+            data: {
+                password: password,
+                agreements: '1',
+                agreements: '2',
+                agreements: '3',
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
