@@ -122,3 +122,30 @@ export const checkPassportInformation = async function (loginToken, name, birth,
         throw error;
     }
 }
+
+export const createPatientProfileInit = async function (loginToken, familyId, name, birth, passportNumber, dateOfIssue, dateOfExpiry, gender) {
+
+    try {
+        let options = {
+            url: `${apiUrl}/families/${familyId}/patients/${passportNumber}`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+            data: {
+                USERNAME: name,
+                BIRTH: birth,
+                PASSPORTNUMBER: passportNumber,
+                ISSUEDATE: dateOfIssue,
+                CLOSEDATE: dateOfExpiry,
+                gender: gender,
+                relationship: '본인',
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
