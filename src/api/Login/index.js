@@ -55,7 +55,7 @@ export const emailCheckOpen = async function (email) {
     }
 }
 
-export const emailCheckClose = async function (email, claim) {
+export const emailCheckClose = async function (email, certificationNumber) {
 
     try {
         let options = {
@@ -63,7 +63,7 @@ export const emailCheckClose = async function (email, claim) {
             method: 'POST',
             data: {
                 email: email,
-                claim: claim,
+                claim: certificationNumber,
             }
         }
         const response = await axios(options);
