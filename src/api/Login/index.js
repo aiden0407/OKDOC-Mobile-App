@@ -97,3 +97,28 @@ export const createFamilyAccount = async function (email, emailToken, password) 
         throw error;
     }
 }
+
+export const checkPassportInformation = async function (loginToken, name, birth, passportNumber, dateOfIssue, dateOfExpiry) {
+
+    try {
+        let options = {
+            url: `${apiUrl}/authentication/PASSPORT_CHECK`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+            data: {
+                USERNAME: name,
+                BIRTH: birth,
+                PASSPORTNUMBER: passportNumber,
+                ISSUEDATE: dateOfIssue,
+                CLOSEDATE: dateOfExpiry,
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
