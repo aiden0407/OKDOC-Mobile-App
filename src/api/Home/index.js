@@ -33,6 +33,21 @@ export const getDepartments = async function () {
     }
 }
 
+export const getSymptoms = async function () {
+
+    try {
+        let options = {
+            url: `${apiUrl}/symptoms/`,
+            method: 'GET',
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
 export const getDoctorsByDepartment = async function (department) {
 
     try {
