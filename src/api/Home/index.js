@@ -3,6 +3,21 @@ import axios from 'axios';
 import getEnvVars from 'api/environment.js';
 const { apiUrl } = getEnvVars();
 
+export const getProducts = async function () {
+
+    try {
+        let options = {
+            url: `${apiUrl}/products/`,
+            method: 'GET',
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
 export const getDepartments = async function () {
 
     try {
