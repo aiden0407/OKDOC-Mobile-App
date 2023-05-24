@@ -28,6 +28,7 @@ export default function LoginPage({ navigation }) {
 
   const handleLogin = async function (email, password) {
     try {
+      //const familyLocalLoginResponse = await familyLocalLogin(email, password);
       const familyLocalLoginResponse = await familyLocalLogin('패밀리아이디', 'r7csY|T66y');
       const loginToken = familyLocalLoginResponse.data.response.login_token;
       dispatch({
