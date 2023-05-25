@@ -1,5 +1,5 @@
 //React
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
@@ -10,12 +10,33 @@ import { SafeArea, ContainerTop } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 
+//Api
+import { getSymptoms, getDepartments } from 'api/Home';
+
 export default function CategoryScreen({ navigation }) {
 
   const { dispatch } = useContext(AppContext);
   const [categoryGroup, setCategoryGroup] = useState('symptoms');
   const symptomKeys = Object.keys(SYMPTOM);
   const medicalSubjectKeys = Object.keys(DEPARTMENT);
+
+  useEffect(() => {
+    const initCategories = async function (email, password) {
+      try {
+        //const familyLocalLoginResponse = await familyLocalLogin(email, password);
+        const getSymptomsResponse = await getSymptoms();
+        const getDepartmentsResponse = await getDepartments();
+
+        
+
+      } catch (error) {
+        Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+      }
+    }
+
+
+
+  }, []);
 
   function handleNextStep(category, item) {
     dispatch({ type: 'TELEMEDICINE_RESERVATION_CATEGORY', category: category, item: item });
