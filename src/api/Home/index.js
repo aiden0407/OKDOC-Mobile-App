@@ -18,11 +18,11 @@ export const getProducts = async function () {
     }
 }
 
-export const getDepartments = async function () {
+export const getSymptoms = async function () {
 
     try {
         let options = {
-            url: `${apiUrl}/departments/`,
+            url: `${apiUrl}/symptoms/`,
             method: 'GET',
         }
         const response = await axios(options);
@@ -33,11 +33,11 @@ export const getDepartments = async function () {
     }
 }
 
-export const getSymptoms = async function () {
+export const getDepartments = async function () {
 
     try {
         let options = {
-            url: `${apiUrl}/symptoms/`,
+            url: `${apiUrl}/departments/`,
             method: 'GET',
         }
         const response = await axios(options);
