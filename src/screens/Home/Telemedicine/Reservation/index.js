@@ -11,6 +11,9 @@ import { SafeArea, Container, ScrollView, Row, DividingLine } from 'components/L
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 
+//Api
+import { getDoctorsByDepartment, getDoctorInformationByDoctorId, getScheduleByDoctorId } from 'api/Home';
+
 export default function ReservationScreen({ navigation, route }) {
 
   const { dispatch } = useContext(AppContext);
