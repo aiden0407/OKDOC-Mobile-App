@@ -1,5 +1,5 @@
 //React
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { AppContext } from 'context/AppContext';
 import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
@@ -17,9 +17,23 @@ import { getDoctorsByDepartment, getDoctorInformationByDoctorId, getScheduleByDo
 export default function ReservationScreen({ navigation, route }) {
 
   const { dispatch } = useContext(AppContext);
-  const { state: { bookableData } } = useContext(ApiContext);
+  const { state: { accountData: { loginToken: loginToken }, bookableData } } = useContext(ApiContext);
   const [dateIndex, setDateIndex] = useState(0);
   const [timeIndex, setTimeIndex] = useState(0);
+
+  useEffect(() => {
+    const initScheduleData = async function () {
+      try {
+        const getDoctorsByDepartmentResponse = await getDoctorsByDepartment('department');
+        const getDoctorInformationByDoctorIdResponse = await getDoctorInformationByDoctorId('doctorId');
+        const getScheduleByDoctorIdResponse = await getScheduleByDoctorId(loginToken, 'doctorId');
+
+      } catch (error) {
+        Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+      }
+    }
+
+  }, []);
 
   function handleSelectDoctor(date, time, doctorInfo) {
     dispatch({ 
