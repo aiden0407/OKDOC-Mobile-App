@@ -21,20 +21,15 @@ export default function CategoryScreen({ navigation }) {
   const medicalSubjectKeys = Object.keys(DEPARTMENT);
 
   useEffect(() => {
-    const initCategories = async function (email, password) {
+    const initCategories = async function () {
       try {
-        //const familyLocalLoginResponse = await familyLocalLogin(email, password);
         const getSymptomsResponse = await getSymptoms();
         const getDepartmentsResponse = await getDepartments();
-
-        
 
       } catch (error) {
         Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
       }
     }
-
-
 
   }, []);
 
