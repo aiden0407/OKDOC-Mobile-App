@@ -28,6 +28,12 @@ export default function ReservationScreen({ navigation, route }) {
         const getDoctorInformationByDoctorIdResponse = await getDoctorInformationByDoctorId('doctorId');
         const getScheduleByDoctorIdResponse = await getScheduleByDoctorId(loginToken, 'doctorId');
 
+        dispatch({ 
+          type: 'BOOKABLE_DATA_UPDATE', 
+          bookableData: date,
+        });
+        
+
       } catch (error) {
         Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
       }
