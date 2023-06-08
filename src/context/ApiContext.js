@@ -222,6 +222,15 @@ const reducer = (state, action) => {
         },
       };
 
+    case 'LOGOUT':
+      return {
+        ...state,
+        accountData: {
+          ...state.accountData,
+          loginToken: undefined,
+        },
+      };
+
     case 'PROFILE_UPDATE_MAIN':
       return {
         ...state,
@@ -248,13 +257,10 @@ const reducer = (state, action) => {
         ],
       };
 
-    case 'LOGOUT':
+    case 'BOOKABLE_DATA_UPDATE':
       return {
         ...state,
-        accountData: {
-          ...state.accountData,
-          loginToken: undefined,
-        },
+        bookableData: action.bookableData
       };
 
     default:
