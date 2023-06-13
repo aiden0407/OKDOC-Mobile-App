@@ -1,20 +1,23 @@
 //React
 import { useState, useContext, useRef } from 'react';
 import { AppContext } from 'context/AppContext';
-import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
 //Components
 import { COLOR, TYPOGRAPHY } from 'constants/design'
-import { Alert } from 'react-native';
+import { Alert, ActivityIndicator } from 'react-native';
 import { SafeArea, Container, Row } from 'components/Layout';
 import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
+//Api
+import { emailCheckOpen, emailCheckClose } from 'api/Login';
+
 export default function EmailPasswordScreen({ navigation }) {
 
-  const { state: { registerStatus }, dispatch } = useContext(AppContext);
-  const { dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { dispatch } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const [invitationToken, setInvitationToken] = useState('');
   const [email, setEmail] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [certificationNumber, setCertificationNumber] = useState('');
@@ -33,34 +36,54 @@ export default function EmailPasswordScreen({ navigation }) {
     return regExp.test(password);
   }
 
-  function handleRequestCertification() {
-    setIsEmailSent(true);
-    Alert.alert('인증번호 전송', '해당 이메일 주소로\n인증번호가 전송되었습니다.');
-  }
-
-  function handleCheckCertificationNumber() {
-    if (certificationNumber === '123123') {
-      Alert.alert('인증되었습니다.');
-      setIsEmailCertificated(true);
-    } else {
-      Alert.alert('인증 실패', '인증번호가 일치하지 않습니다.\n다시 입력해주시기 바랍니다.');
+  const handleRequestCertification = async function () {
+    setLoading(true);
+    try {
+      await emailCheckOpen(email);
+      setIsEmailSent(true);
+      setLoading(false);
+      Alert.alert('해당 이메일 주소로\n인증번호가 전송되었습니다.');
+    } catch (error) {
+      setLoading(false);
+      Alert.alert('인증번호 발송을 실패하였습니다.');
     }
   }
 
+  const handleCheckCertificationNumber = async function () {
+    setLoading(true);
+    try {
+      const emailCheckCloseResponse = await emailCheckClose(email, certificationNumber);
+      console.log(emailCheckCloseResponse.data.response.invitation_token);
+      setInvitationToken(emailCheckCloseResponse.data.response.invitation_token);
+      setIsEmailCertificated(true);
+      setLoading(false);
+      Alert.alert('이메일이 인증되었습니다.');
+    } catch (error) {
+      setLoading(false);
+      Alert.alert('인증번호가 일치하지 않습니다.\n다시 입력해주시기 바랍니다.');
+    }
+  }
+  console.log(invitationToken);
+
   function handleNextScreen() {
-    apiContextDispatch({ 
-      type: 'LOGIN', 
-      name: registerStatus?.name, 
-      email: email, 
-      phoneNumber: `${registerStatus?.countryCode} ${registerStatus?.phoneNumber}`,
+    dispatch({
+      type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
+      email: email,
+      password: password,
+      invitationToken: invitationToken,
     });
-    dispatch({type: 'REGISTER_COMPLETE'});
-    navigation.navigate('RegisterComplete');
+    navigation.navigate('PassportPhoneCertifiaction');
   }
 
   return (
     <SafeArea>
-
+      {
+        loading && (
+          <LoadingBackground>
+            <ActivityIndicator size="large" color="#5500CC" />
+          </LoadingBackground>
+        )
+      }
       <Container paddingHorizontal={20}>
         <Container>
           <Text T3 bold marginTop={30}>사용하실 이메일과{'\n'}비밀번호를 입력해주세요</Text>
@@ -147,6 +170,16 @@ export default function EmailPasswordScreen({ navigation }) {
     </SafeArea>
   );
 }
+
+const LoadingBackground = styled.Pressable`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const CustomLineInput = styled.TextInput`
   margin-top: 24px;
