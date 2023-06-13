@@ -43,11 +43,19 @@ export default function LoginStackNavigation({ navigation }) {
           }}
         />
         <Stack.Screen
+          name="EmailPassword"
+          component={EmailPasswordScreen}
+          options={{
+            title: '회원가입',
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('RegisterPolicy')} />,
+          }}
+        />
+        <Stack.Screen
           name="PassportPhoneCertifiaction"
           component={PassportPhoneCertifiactionScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('RegisterPolicy')} />,
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('EmailPassword')} />,
           }}
         />
         <Stack.Screen
@@ -63,20 +71,12 @@ export default function LoginStackNavigation({ navigation }) {
           component={PersonalInformationScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PassportInformation')} />,
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PassportPhoneCertifiaction')} />,
           }}
         />
         <Stack.Screen
           name="SearchCountryCode"
           component={SearchCountryCodeScreen}
-          options={{
-            title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PersonalInformation')} />,
-          }}
-        />
-        <Stack.Screen
-          name="EmailPassword"
-          component={EmailPasswordScreen}
           options={{
             title: '회원가입',
             headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PersonalInformation')} />,
