@@ -65,12 +65,12 @@ export default function LoginPage({ navigation }) {
 
       } catch (error) {
         setLoading(false);
-        Alert.alert('회원 정보 불러오기 실패');
+        Alert.alert('회원 정보 불러오기를 실패하였습니다.');
       }
 
     } catch (error) {
       setLoading(false);
-      Alert.alert('로그인 실패');
+      Alert.alert('로그인 에러가 발생했습니다.');
     }
   }
 
