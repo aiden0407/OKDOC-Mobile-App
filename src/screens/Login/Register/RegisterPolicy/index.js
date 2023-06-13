@@ -99,7 +99,7 @@ export default function RegisterPolicyScreen({ navigation }) {
   }
 
   function handleNextScreen() {
-    navigation.navigate('PassportPhoneCertifiaction');
+    navigation.navigate('EmailPassword');
   }
 
   function PolicyButton({ essential, title, content, index }) {
