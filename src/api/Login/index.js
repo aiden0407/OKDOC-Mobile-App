@@ -41,7 +41,7 @@ export const emailCheckOpen = async function (email) {
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/EMAIL_CHECK_OPEN`,
+            url: `${apiUrl}/authentication/email-check-open`,
             method: 'POST',
             data: {
                 email: email,
@@ -59,7 +59,7 @@ export const emailCheckClose = async function (email, certificationNumber) {
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/EMAIL_CHECK_CLOSE`,
+            url: `${apiUrl}/authentication/email-check-close`,
             method: 'POST',
             data: {
                 email: email,
