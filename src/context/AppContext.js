@@ -14,6 +14,9 @@ const initialState = {
     symptom: undefined,
   },
   registerStatus: {
+    email: undefined,
+    password: undefined,
+    invitationToken: undefined,
     name: undefined,
     birth: undefined,
     passportNumber: undefined,
@@ -97,6 +100,17 @@ const reducer = (state, action) => {
           profileType: undefined,
           profileInfo: undefined,
           symptom: undefined,
+        },
+      };
+
+    case 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN':
+      return {
+        ...state,
+        registerStatus: {
+          ...state.registerStatus,
+          email: action.email,
+          password: action.password,
+          invitationToken: action.invitationToken,
         },
       };
 
