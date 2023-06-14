@@ -38,6 +38,7 @@ export default function LoginPage({ navigation }) {
       dispatch({
         type: 'LOGIN',
         loginToken: loginToken,
+        email: email,
       });
 
       try {
