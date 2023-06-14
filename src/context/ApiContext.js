@@ -4,9 +4,7 @@ import { createContext, useReducer } from "react";
 const initialState = {
   accountData: {
     loginToken: false,
-    name: '이준범',
-    // email: 'aiden@insunginfo.co.kr',
-    // phoneNumber: '+82 10-2427-8139'
+    //email: 'aiden@insunginfo.co.kr',
   },
   profileData: [
     {
@@ -219,6 +217,7 @@ const reducer = (state, action) => {
         accountData: {
           ...state.accountData,
           loginToken: action.loginToken,
+          email: action.email,
         },
       };
 
