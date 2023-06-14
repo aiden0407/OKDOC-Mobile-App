@@ -14,6 +14,7 @@ const initialState = {
     symptom: undefined,
   },
   registerStatus: {
+    policy: undefined,
     email: undefined,
     password: undefined,
     invitationToken: undefined,
@@ -103,6 +104,15 @@ const reducer = (state, action) => {
         },
       };
 
+    case 'REGISTER_POLICY':
+      return {
+        ...state,
+        registerStatus: {
+          ...state.registerStatus,
+          policy: action.policy,
+        },
+      };
+
     case 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN':
       return {
         ...state,
@@ -168,7 +178,7 @@ const reducer = (state, action) => {
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
-  //console.log(`AppContext: ${JSON.stringify(state)}`);
+  console.log(`AppContext: ${JSON.stringify(state)}`);
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
