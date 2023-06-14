@@ -1,5 +1,5 @@
 //React
-import { useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
@@ -16,6 +16,7 @@ import { getRegisterTerms } from 'api/Login';
 
 export default function RegisterPolicyScreen({ navigation }) {
 
+  const { dispatch } = useContext(AppContext);
   const [policyList, setPolicyList] = useState([]);
   const [allPolicyAgreement, setAllPolicyAgreement] = useState(false);
   const [policy1Agreement, setPolicy1Agreement] = useState(false);
@@ -29,6 +30,7 @@ export default function RegisterPolicyScreen({ navigation }) {
   const [policy9Agreement, setPolicy9Agreement] = useState(false);
   const [policy10Agreement, setPolicy10Agreement] = useState(false);
   const [meetRequirement, setMeetRequirement] = useState(false);
+  const [checkedPolicies, setCheckedPolicies] = useState([]);
 
   const useStateValues = [policy1Agreement, policy2Agreement, policy3Agreement, policy4Agreement, policy5Agreement, policy6Agreement, policy7Agreement, policy8Agreement, policy9Agreement, policy10Agreement];
   const setUseStateValues = [setPolicy1Agreement, setPolicy2Agreement, setPolicy3Agreement, setPolicy4Agreement, setPolicy5Agreement, setPolicy6Agreement, setPolicy7Agreement, setPolicy8Agreement, setPolicy9Agreement, setPolicy10Agreement];
@@ -72,10 +74,29 @@ export default function RegisterPolicyScreen({ navigation }) {
       setPolicy9Agreement(true);
       setPolicy10Agreement(true);
       setMeetRequirement(true);
+      const checkedList = [];
+      for (let ii = 0; ii < policyList.length; ii++) {
+        checkedList.push(ii+1);
+      }
+      setCheckedPolicies(checkedList);
     }
   }
 
   function requiredAgreementCheck(index) {
+    const checkedList = [];
+    for (let ii = 0; ii < policyList.length; ii++) {
+      if (ii === index) {
+        if (!useStateValues[ii]) {
+          checkedList.push(ii+1);
+        }
+      } else {
+        if (useStateValues[ii]) {
+          checkedList.push(ii+1);
+        }
+      }
+    }
+    setCheckedPolicies(checkedList);
+
     for (let ii = 0; ii < policyList.length; ii++) {
       if (policyList[ii].level === 'required') {
         if (ii === index) {
@@ -99,6 +120,10 @@ export default function RegisterPolicyScreen({ navigation }) {
   }
 
   function handleNextScreen() {
+    dispatch({
+      type: 'REGISTER_POLICY',
+      policy: checkedPolicies,
+    });
     navigation.navigate('EmailPassword');
   }
 
