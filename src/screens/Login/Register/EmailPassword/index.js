@@ -63,7 +63,6 @@ export default function EmailPasswordScreen({ navigation }) {
       Alert.alert('인증번호가 일치하지 않습니다.\n다시 입력해주시기 바랍니다.');
     }
   }
-  console.log(invitationToken);
 
   function handleNextScreen() {
     dispatch({
@@ -94,7 +93,11 @@ export default function EmailPasswordScreen({ navigation }) {
             value={email}
             onChangeText={setEmail}
             returnKeyType="next"
-            onSubmitEditing={() => handleRequestCertification()}
+            onSubmitEditing={() => {
+              if (!validateEmail(email)) {
+                handleRequestCertification();
+              }
+            }}
           />
           {!isEmailCertificated
             && <CustomOutlineButtonBackground
@@ -114,7 +117,11 @@ export default function EmailPasswordScreen({ navigation }) {
               onChangeText={setCertificationNumber}
               maxLength={6}
               returnKeyType="next"
-              onSubmitEditing={() => handleCheckCertificationNumber()}
+              onSubmitEditing={() => {
+                if(certificationNumber?.length < 6) {
+                  handleCheckCertificationNumber();
+                }
+              }}
             />
             <CustomOutlineButtonBackground
               disabled={certificationNumber?.length < 6}
