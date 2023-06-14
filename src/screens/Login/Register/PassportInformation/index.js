@@ -1,28 +1,33 @@
 //React
 import { useState, useContext, useRef } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
 import { COLOR, BUTTON, INPUT_BOX } from 'constants/design';
 import { ActivityIndicator } from 'react-native';
-//import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { SafeArea, Container, ScrollView, Row, Center, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 import { BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
+//Api
+import { checkPassportInformation, createFamilyAccount, createPatientProfileInit } from 'api/Login';
+
 //Assets
 import exclamationIcon from 'assets/icons/circle-exclamation.png';
 
 export default function PassportInformationScreen({ navigation }) {
 
-  const { state: { registerStatus }, dispatch } = useContext(AppContext);
+  const { state: { accountData }, dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { state: { registerStatus }, dispatch: appContextDispatch } = useContext(AppContext);
   const [name, setName] = useState(registerStatus?.name);
   const [passportNumber, setPassportNumber] = useState(registerStatus?.passportNumber);
   const [gender, setGender] = useState(registerStatus?.gender);
-  
+
   const today = new Date();
   const [birth, setBirth] = useState(registerStatus?.birth ?? today);
   const [isBirthPickerShow, setIsBirthPickerShow] = useState(false);
@@ -54,25 +59,61 @@ export default function PassportInformationScreen({ navigation }) {
   }
 
   const [passportCertifiactionState, setPassportCertifiactionState] = useState('NONE');
-  function handleNextScreen() {
+
+  const passportCheck = async function () {
     setPassportCertifiactionState('CHECKING');
-    setTimeout(() => {
-      if(passportNumber==='123123'){
-        setPassportCertifiactionState('NONE');
-        dispatch({
-          type: 'REGISTER_PASSPORT_INFORMATION',
-          name: name,
-          birth: birth,
-          passportNumber: passportNumber,
-          dateOfIssue: dateOfIssue,
-          dateOfExpiry: dateOfExpiry,
-          gender: gender,
-        });
-        navigation.navigate('PersonalInformation');
-      } else {
-        setPassportCertifiactionState('ERROR');
-      }
-    }, 2000);
+    try {
+      const checkPassportInformationResponse = await checkPassportInformation(name, birth, passportNumber, dateOfIssue, dateOfExpiry);
+      registerFamily();
+    } catch (error) {
+      setPassportCertifiactionState('ERROR');
+      Alert.alert('여권 번호 검증에 실패하였습니다.');
+    }
+  }
+
+  const registerFamily = async function () {
+    try {
+      const createFamilyAccountResponse = await createFamilyAccount(registerStatus.email, registerStatus.invitationToken, registerStatus.password, registerStatus.policy);
+      const loginToken = createFamilyAccountResponse.data.response.login_token;
+      apiContextDispatch({ 
+        type: 'LOGIN', 
+        loginToken: loginToken,
+        email: registerStatus.email, 
+      });
+      initPatient();
+    } catch (error) {
+      setPassportCertifiactionState('ERROR');
+      Alert.alert('계정 생성에 실패하였습니다.');
+    }
+  }
+
+  const initPatient = async function () {
+    try {
+      const createPatientProfileInitResponse = await createPatientProfileInit(accountData.loginToken, registerStatus.email, name, birth, passportNumber, dateOfIssue, dateOfExpiry, gender);
+      const mainProfile = createPatientProfileInitResponse.data.response;
+      apiContextDispatch({
+        type: 'PROFILE_UPDATE_MAIN',
+        name: mainProfile.passport.USERNAME,
+        relationship: mainProfile.relationship,
+        birth: mainProfile.passport.BIRTH,
+        gender: mainProfile.gender,
+        height: mainProfile.height,
+        weight: mainProfile.weight,
+        drinker: mainProfile.drinker,
+        smoker: mainProfile.smoker,
+        medicalHistory: mainProfile?.medicalHistory,
+        medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
+        medication: mainProfile?.medication,
+        allergicReaction: mainProfile?.allergicReaction,
+        etcConsideration: mainProfile?.etcConsideration,
+      });
+      setPassportCertifiactionState('NONE');
+      appContextDispatch({type: 'REGISTER_COMPLETE'});
+      navigation.navigate('RegisterComplete');
+    } catch (error) {
+      setPassportCertifiactionState('ERROR');
+      Alert.alert('프로필 정보 생성에 실패하였습니다.');
+    }
   }
 
   return (
@@ -97,7 +138,7 @@ export default function PassportInformationScreen({ navigation }) {
             />
             <Text T6 bold marginTop={24}>생년월일</Text>
             <DateTimePickerOpenButton onPress={() => setIsBirthPickerShow(true)} underlayColor={COLOR.GRAY4}>
-              <Text T6 color={birth.toDateString()===today.toDateString() ? COLOR.GRAY2 : '#000000'}>{birth.toDateString()===today.toDateString() ? '생년월일 8자리' : `${birth.toISOString().split('T')[0]}`}</Text>
+              <Text T6 color={birth.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{birth.toDateString() === today.toDateString() ? '생년월일 8자리' : `${birth.toISOString().split('T')[0]}`}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>여권번호</Text>
             <BoxInput
@@ -109,11 +150,11 @@ export default function PassportInformationScreen({ navigation }) {
             />
             <Text T6 bold marginTop={24}>발급일</Text>
             <DateTimePickerOpenButton onPress={() => setIsDateOfIssuePickerShow(true)} underlayColor={COLOR.GRAY4}>
-              <Text T6 color={dateOfIssue.toDateString()===today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfIssue.toDateString()===today.toDateString() ? '발급일 숫자 8자리' : `${dateOfIssue.toISOString().split('T')[0]}`}</Text>
+              <Text T6 color={dateOfIssue.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfIssue.toDateString() === today.toDateString() ? '발급일 숫자 8자리' : `${dateOfIssue.toISOString().split('T')[0]}`}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>기간 만료일</Text>
             <DateTimePickerOpenButton onPress={() => setIsDateOfExpiryPickerShow(true)} underlayColor={COLOR.GRAY4}>
-              <Text T6 color={dateOfExpiry.toDateString()===today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfExpiry.toDateString()===today.toDateString() ? '기간 만료일 숫자 8자리' : `${dateOfExpiry.toISOString().split('T')[0]}`}</Text>
+              <Text T6 color={dateOfExpiry.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfExpiry.toDateString() === today.toDateString() ? '기간 만료일 숫자 8자리' : `${dateOfExpiry.toISOString().split('T')[0]}`}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>성별</Text>
             <Row marginTop={12} gap={12}>
@@ -130,8 +171,8 @@ export default function PassportInformationScreen({ navigation }) {
             <SolidButton
               text="다음"
               marginBottom={20}
-              disabled={ !validateName(name) || !passportNumber || !gender || birth.toDateString()===today.toDateString() || dateOfIssue.toDateString()===today.toDateString() || dateOfExpiry.toDateString()===today.toDateString()}
-              action={() => handleNextScreen()}
+              disabled={!validateName(name) || !passportNumber || !gender || birth.toDateString() === today.toDateString() || dateOfIssue.toDateString() === today.toDateString() || dateOfExpiry.toDateString() === today.toDateString()}
+              action={() => passportCheck()}
             />
           </ScrollView>
         </Container>
@@ -206,7 +247,7 @@ export default function PassportInformationScreen({ navigation }) {
       {passportCertifiactionState === 'ERROR' && (
         <BottomSheetBackground>
           <PassportCertifiactionContainer>
-            <Image source={exclamationIcon} width={70} height={70} marginTop={-20}/>
+            <Image source={exclamationIcon} width={70} height={70} marginTop={-20} />
             <Text T4 medium center marginTop={12}>입력하신 정보와 일치하는{'\n'}여권정보가 존재하지 않아요</Text>
             <Row gap={24} marginTop={18}>
               <CustomSolidButtonBackground onPress={() => setPassportCertifiactionState('NONE')} underlayColor={COLOR.SUB3}>
