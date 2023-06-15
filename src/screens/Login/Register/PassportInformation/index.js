@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR, BUTTON, INPUT_BOX } from 'constants/design';
-import { ActivityIndicator } from 'react-native';
+import { Alert, ActivityIndicator } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { SafeArea, Container, ScrollView, Row, Center, Box } from 'components/Layout';
 import { Text } from 'components/Text';
@@ -58,16 +58,23 @@ export default function PassportInformationScreen({ navigation }) {
     return regExp.test(name);
   }
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return Number(year + month + day);
+  }
+
   const [passportCertifiactionState, setPassportCertifiactionState] = useState('NONE');
 
   const passportCheck = async function () {
     setPassportCertifiactionState('CHECKING');
     try {
-      const checkPassportInformationResponse = await checkPassportInformation(name, birth, passportNumber, dateOfIssue, dateOfExpiry);
+      await checkPassportInformation(name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry));
       registerFamily();
     } catch (error) {
       setPassportCertifiactionState('ERROR');
-      Alert.alert('여권 번호 검증에 실패하였습니다.');
     }
   }
 
@@ -80,16 +87,17 @@ export default function PassportInformationScreen({ navigation }) {
         loginToken: loginToken,
         email: registerStatus.email, 
       });
-      initPatient();
+      setPassportCertifiactionState('NONE');
+      initPatient(loginToken);
     } catch (error) {
-      setPassportCertifiactionState('ERROR');
+      setPassportCertifiactionState('NONE');
       Alert.alert('계정 생성에 실패하였습니다.');
     }
   }
 
-  const initPatient = async function () {
+  const initPatient = async function (loginToken) {
     try {
-      const createPatientProfileInitResponse = await createPatientProfileInit(accountData.loginToken, registerStatus.email, name, birth, passportNumber, dateOfIssue, dateOfExpiry, gender);
+      const createPatientProfileInitResponse = await createPatientProfileInit(loginToken, registerStatus.email, name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry), gender);
       const mainProfile = createPatientProfileInitResponse.data.response;
       apiContextDispatch({
         type: 'PROFILE_UPDATE_MAIN',
@@ -111,7 +119,7 @@ export default function PassportInformationScreen({ navigation }) {
       appContextDispatch({type: 'REGISTER_COMPLETE'});
       navigation.navigate('RegisterComplete');
     } catch (error) {
-      setPassportCertifiactionState('ERROR');
+      setPassportCertifiactionState('NONE');
       Alert.alert('프로필 정보 생성에 실패하였습니다.');
     }
   }
