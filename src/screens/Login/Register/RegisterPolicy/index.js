@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design'
-import { ActivityIndicator } from 'react-native';
+import { Alert, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, Container, Row } from 'components/Layout';
 import { Text } from 'components/Text';
