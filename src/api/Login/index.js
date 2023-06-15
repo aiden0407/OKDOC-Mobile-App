@@ -1,7 +1,7 @@
 //API
 import axios from 'axios';
 import getEnvVars from 'api/environment.js';
-const { apiUrl, passportApiToken } = getEnvVars();
+const { apiUrl } = getEnvVars();
 
 export const familyLocalLogin = async function (id, password) {
 
@@ -55,15 +55,18 @@ export const emailCheckOpen = async function (email) {
     }
 }
 
-export const emailCheckClose = async function (email, certificationNumber) {
+export const emailCheckClose = async function (email, certificationNumber, emailToken) {
 
     try {
         let options = {
             url: `${apiUrl}/authentication/email-check-close`,
             method: 'POST',
+            headers: {
+                Authorization: `Bearer ${emailToken}`
+            },
             data: {
                 email: email,
-                claim: certificationNumber,
+                verification_number: Number(certificationNumber),
             }
         }
         const response = await axios(options);
@@ -76,14 +79,6 @@ export const emailCheckClose = async function (email, certificationNumber) {
 
 export const createFamilyAccount = async function (email, invitationToken, password, policy) {
 
-    const policyAgreementList = policy;
-    const data = {
-        password: password,
-    };
-    for (let ii = 0; ii < policyAgreementList.length; ii++) {
-        data['agreements'] = policyAgreementList[ii];
-    }
-
     try {
         let options = {
             url: `${apiUrl}/families/${email}`,
@@ -91,12 +86,18 @@ export const createFamilyAccount = async function (email, invitationToken, passw
             headers: {
                 Authorization: `Bearer ${invitationToken}`
             },
-            data: data,
+            data: {
+                password: password,
+                agreements: policy
+            },
         }
+        console.log(options);
         const response = await axios(options);
+        console.log(response.data.response);
         return response;
 
     } catch (error) {
+        console.log(error.response.data);
         throw error;
     }
 }
@@ -107,9 +108,6 @@ export const checkPassportInformation = async function (name, birth, passportNum
         let options = {
             url: `${apiUrl}/authentication/PASSPORT_CHECK`,
             method: 'POST',
-            headers: {
-                Authorization: `Bearer ${passportApiToken}`
-            },
             data: {
                 USERNAME: name,
                 BIRTH: birth,
@@ -145,10 +143,13 @@ export const createPatientProfileInit = async function (loginToken, familyId, na
                 relationship: '본인',
             }
         }
+        console.log(options);
         const response = await axios(options);
+        console.log(response.data.response);
         return response;
 
     } catch (error) {
+        console.log(error.response.data);
         throw error;
     }
 }
