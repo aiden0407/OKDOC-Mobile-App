@@ -39,7 +39,8 @@ export default function EmailPasswordScreen({ navigation }) {
   const handleRequestCertification = async function () {
     setLoading(true);
     try {
-      await emailCheckOpen(email);
+      const emailCheckOpenResponse = await emailCheckOpen(email);
+      setInvitationToken(emailCheckOpenResponse.data.response.message)
       setIsEmailSent(true);
       setLoading(false);
       Alert.alert('해당 이메일 주소로\n인증번호가 전송되었습니다.');
@@ -52,9 +53,7 @@ export default function EmailPasswordScreen({ navigation }) {
   const handleCheckCertificationNumber = async function () {
     setLoading(true);
     try {
-      const emailCheckCloseResponse = await emailCheckClose(email, certificationNumber);
-      console.log(emailCheckCloseResponse.data.response.invitation_token);
-      setInvitationToken(emailCheckCloseResponse.data.response.invitation_token);
+      await emailCheckClose(email, certificationNumber, invitationToken);
       setIsEmailCertificated(true);
       setLoading(false);
       Alert.alert('이메일이 인증되었습니다.');
