@@ -6,6 +6,7 @@ import styled from 'styled-components/native';
 //Components
 import { COLOR } from 'constants/design';
 import { SYMPTOM, DEPARTMENT } from 'constants/service';
+import { Alert } from 'react-native';
 import { SafeArea, ContainerTop } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
@@ -30,6 +31,8 @@ export default function CategoryScreen({ navigation }) {
         Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
       }
     }
+
+    initCategories();
 
   }, []);
 
