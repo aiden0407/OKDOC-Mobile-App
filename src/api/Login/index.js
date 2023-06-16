@@ -77,27 +77,22 @@ export const emailCheckClose = async function (email, certificationNumber, email
     }
 }
 
-export const createFamilyAccount = async function (email, invitationToken, password, policy) {
+export const createFamilyAccount = async function (email, password, policy) {
 
     try {
         let options = {
-            url: `${apiUrl}/families/${email}`,
+            url: `${apiUrl}/authentication/sign-up`,
             method: 'POST',
-            headers: {
-                Authorization: `Bearer ${invitationToken}`
-            },
             data: {
+                id: email,
                 password: password,
                 agreements: policy
             },
         }
-        console.log(options);
         const response = await axios(options);
-        console.log(response.data.response);
         return response;
 
     } catch (error) {
-        console.log(error.response.data);
         throw error;
     }
 }
