@@ -1,9 +1,10 @@
 //React
-import { useCallback } from 'react';
+import { useCallback, useEffect, useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AppProvider } from "context/AppContext";
-import { ApiProvider } from 'context/ApiContext';
+import { AppProvider } from 'context/AppContext';
+import { ApiProvider, ApiContext } from 'context/ApiContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Default Settings
 import { StatusBar } from 'expo-status-bar';
@@ -31,6 +32,28 @@ SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
+  const { dispatch } = useContext(ApiContext);
+
+  useEffect(() => {
+    const fetchAccountData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('accountData');
+        if (jsonValue !== null) {
+          const accountData = JSON.parse(jsonValue);
+          dispatch({
+            type: 'LOGIN',
+            loginToken: accountData.loginToken,
+            email: accountData.email,
+          });
+        }
+      } catch (error) {
+        console.log('앱을 실행하는 과정에서 문제가 발생했습니다.');
+      }
+    };
+
+    fetchAccountData();
+  }, []);
 
   const [fontsLoaded] = useFonts({
     "Pretendard-Bold": require('assets/fonts/Pretendard-Bold.otf'),
