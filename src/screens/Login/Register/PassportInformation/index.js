@@ -2,6 +2,7 @@
 import { useState, useContext, useRef } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 
 //Components
@@ -66,12 +67,20 @@ export default function PassportInformationScreen({ navigation }) {
     return Number(year + month + day);
   }
 
+  function formatDate2(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   const [passportCertifiactionState, setPassportCertifiactionState] = useState('NONE');
 
   const passportCheck = async function () {
     setPassportCertifiactionState('CHECKING');
     try {
-      await checkPassportInformation(name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry));
+      //await checkPassportInformation(name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry));
       registerFamily();
     } catch (error) {
       setPassportCertifiactionState('ERROR');
@@ -80,13 +89,22 @@ export default function PassportInformationScreen({ navigation }) {
 
   const registerFamily = async function () {
     try {
-      const createFamilyAccountResponse = await createFamilyAccount(registerStatus.email, registerStatus.invitationToken, registerStatus.password, registerStatus.policy);
+      const createFamilyAccountResponse = await createFamilyAccount(registerStatus.email, registerStatus.password, registerStatus.policy);
       const loginToken = createFamilyAccountResponse.data.response.login_token;
       apiContextDispatch({ 
         type: 'LOGIN', 
         loginToken: loginToken,
         email: registerStatus.email, 
       });
+      try {
+        const accountData = {
+          loginToken: loginToken,
+          email: email,
+        };
+        await AsyncStorage.setItem('accountData', JSON.stringify(accountData));
+      } catch (error) {
+        console.log(error);
+      }
       setPassportCertifiactionState('NONE');
       initPatient(loginToken);
     } catch (error) {
@@ -146,7 +164,7 @@ export default function PassportInformationScreen({ navigation }) {
             />
             <Text T6 bold marginTop={24}>생년월일</Text>
             <DateTimePickerOpenButton onPress={() => setIsBirthPickerShow(true)} underlayColor={COLOR.GRAY4}>
-              <Text T6 color={birth.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{birth.toDateString() === today.toDateString() ? '생년월일 8자리' : `${birth.toISOString().split('T')[0]}`}</Text>
+              <Text T6 color={birth.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{birth.toDateString() === today.toDateString() ? '생년월일 8자리' : formatDate2(birth)}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>여권번호</Text>
             <BoxInput
@@ -158,11 +176,11 @@ export default function PassportInformationScreen({ navigation }) {
             />
             <Text T6 bold marginTop={24}>발급일</Text>
             <DateTimePickerOpenButton onPress={() => setIsDateOfIssuePickerShow(true)} underlayColor={COLOR.GRAY4}>
-              <Text T6 color={dateOfIssue.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfIssue.toDateString() === today.toDateString() ? '발급일 숫자 8자리' : `${dateOfIssue.toISOString().split('T')[0]}`}</Text>
+              <Text T6 color={dateOfIssue.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfIssue.toDateString() === today.toDateString() ? '발급일 숫자 8자리' : formatDate2(dateOfIssue)}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>기간 만료일</Text>
             <DateTimePickerOpenButton onPress={() => setIsDateOfExpiryPickerShow(true)} underlayColor={COLOR.GRAY4}>
-              <Text T6 color={dateOfExpiry.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfExpiry.toDateString() === today.toDateString() ? '기간 만료일 숫자 8자리' : `${dateOfExpiry.toISOString().split('T')[0]}`}</Text>
+              <Text T6 color={dateOfExpiry.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfExpiry.toDateString() === today.toDateString() ? '기간 만료일 숫자 8자리' : formatDate2(dateOfExpiry)}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>성별</Text>
             <Row marginTop={12} gap={12}>
