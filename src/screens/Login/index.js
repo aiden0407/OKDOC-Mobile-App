@@ -1,6 +1,7 @@
 //React
 import { useState, useRef, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 
 //Components
@@ -40,6 +41,15 @@ export default function LoginPage({ navigation }) {
         loginToken: loginToken,
         email: email,
       });
+      try {
+        const accountData = {
+          loginToken: loginToken,
+          email: email,
+        };
+        await AsyncStorage.setItem('accountData', JSON.stringify(accountData));
+      } catch (error) {
+        console.log(error);
+      }
 
       try {
         const getPatientListResponse = await getPatientList(loginToken);
@@ -71,7 +81,7 @@ export default function LoginPage({ navigation }) {
 
     } catch (error) {
       setLoading(false);
-      Alert.alert('로그인 에러가 발생했습니다.');
+      Alert.alert('이메일과 비밀번호를 다시 확인해 주시기 바랍니다.');
     }
   }
 
