@@ -4,7 +4,7 @@ import { createContext, useReducer } from "react";
 const initialState = {
   accountData: {
     loginToken: false,
-    //email: 'aiden@insunginfo.co.kr',
+    email: undefined,
   },
   profileData: [
     {
@@ -271,7 +271,7 @@ const reducer = (state, action) => {
 const ApiProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
-  //console.log(`ApiContext: ${JSON.stringify(state.profileData[0])}`);
+  console.log(`ApiContext: ${JSON.stringify(state.profileData[0])}`);
   //console.log(`ApiContext: ${JSON.stringify(state.accountData)}`);
   return <ApiContext.Provider value={value}>{children}</ApiContext.Provider>;
 };
