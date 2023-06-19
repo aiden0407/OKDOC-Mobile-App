@@ -121,13 +121,16 @@ export const postPaymentRequest = async function () {
         let options = {
             url: `https://mobile.inicis.com/smart/payment/`,
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
             data: {
                 P_INI_PAYMENT: 'CARD',
                 P_MID: 'insungif01',
                 P_OID: '123123123123123',
                 P_AMT: Number(5000),
-                P_GOODS: '[진료]홍길동의사-김길동환자, 2023년3월3일/수요일/오후3시30분 ~ 오후3시45분',
-                P_UNAME: '구매자패밀리명(환자명)',
+                P_GOODS: encodeURIComponent('상품명'),
+                P_UNAME: encodeURIComponent('환자명'),
                 P_NEXT_URL: 'https://m.ok-doc.com/',
                 P_MOBILE: '01012345678',
                 P_EMAIL: 'test@test.com',
