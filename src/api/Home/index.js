@@ -134,6 +134,7 @@ export const postPaymentRequest = async function () {
                 P_NEXT_URL: 'https://m.ok-doc.com/',
                 P_MOBILE: '01012345678',
                 P_EMAIL: 'test@test.com',
+                P_RESERVED: 'global_visa3d=Y'
             },
             // data: {
             //     P_INI_PAYMENT: 'CARD',
