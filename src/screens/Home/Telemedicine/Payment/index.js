@@ -1,42 +1,66 @@
 //React
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { AppContext } from 'context/AppContext';
-import styled from 'styled-components/native';
+import cheerio from 'cheerio';
 
 //Components
-import { SafeArea, ContainerCenter } from 'components/Layout';
-import { Text } from 'components/Text';
+import { SafeArea } from 'components/Layout';
+import { Alert } from 'react-native';
+import { WebView } from 'react-native-webview';
+
+//Api
+import { postPaymentRequest } from 'api/Home';
 
 export default function PaymentScreen({ navigation }) {
 
-  const [count, setCount] = useState(3);
-  const savedCallback = useRef();
+  const { state: { telemedicineReservationStatus } } = useContext(AppContext);
+  const [htmlContent, setHtmlContent] = useState('');
 
-  const callback = () => {
-    if(count === 1){
-      navigation.navigate('PaymentComplete');
-    }else{
-      setCount(count-1);
+  useEffect(() => {
+    paymentRequest();
+  }, []);
+
+  const paymentRequest = async function () {
+    try {
+      const response = await postPaymentRequest();
+      var htmlDecoded = decodeValues(response.data);
+      setHtmlContent(htmlDecoded);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('결제 요청에 실패하였습니다. 다시 시도해주세요.');
+      navigation.goBack();
     }
   }
 
-  useEffect(() => {
-    savedCallback.current = callback;
-  });
+  const decodeValues = (html) => {
+    const $ = cheerio.load(html);
 
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
+    const pUnameInput = $('input[name="P_UNAME"]');
+    if (pUnameInput) {
+      const decodedValue = decodeURIComponent(pUnameInput.attr('value'));
+      pUnameInput.attr('value', decodedValue);
     }
-    const timer = setInterval(tick, 1000);
-    return () => clearInterval(timer);
-  }, []);
+
+    const pGoodsInput = $('input[name="P_GOODS"]');
+    if (pGoodsInput) {
+      const decodedValue = decodeURIComponent(pGoodsInput.attr('value'));
+      pGoodsInput.attr('value', decodedValue);
+    }
+
+    return $.html();
+  };
+  
 
   return (
     <SafeArea>
-      <ContainerCenter>
-        <Text T5 bold>PG사 결제창 스크린: {count}초</Text>
-      </ContainerCenter>
+      <WebView
+        source={{ html: htmlContent }}
+        originWhitelist={['*']}
+        scalesPageToFit
+        onError={() => {
+          navigation.goBack();
+        }}
+      />
     </SafeArea>
   );
 }
