@@ -4,8 +4,8 @@ import { createContext, useReducer } from "react";
 const initialState = {
   isHomeShorcutUsed: false,
   telemedicineReservationStatus: {
-    category: undefined,
-    item: undefined,
+    product: undefined,
+    department: undefined,
     date: undefined,
     time: undefined,
     doctorInfo: undefined,
@@ -49,13 +49,21 @@ const reducer = (state, action) => {
         isHomeShorcutUsed: false,
       };
 
-    case 'TELEMEDICINE_RESERVATION_CATEGORY':
+    case 'TELEMEDICINE_RESERVATION_PRODUCT':
       return {
         ...state,
         telemedicineReservationStatus: {
           ...state.telemedicineReservationStatus,
-          category: action.category,
-          item: action.item,
+          product: action.product,
+        },
+      };
+
+    case 'TELEMEDICINE_RESERVATION_DEPARTMENT':
+      return {
+        ...state,
+        telemedicineReservationStatus: {
+          ...state.telemedicineReservationStatus,
+          department: action.department,
         },
       };
 
