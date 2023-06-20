@@ -48,50 +48,62 @@ import radiologyIcon from 'assets/icons/medical-subjects/radiology.png';
 export const SYMPTOM = {
     '감기': {
         NAME: 'flu',
+        DEPARTMENT: ['내과', '이비인후과'],
         ICON: fluIcon
     },
     '두통': {
         NAME: 'headache',
+        DEPARTMENT: ['내과', '이비인후과'],
         ICON: headacheIcon
     },
     '고열/미열': {
         NAME: 'highFever',
+        DEPARTMENT: ['내과', '이비인후과'],
         ICON: highFeverIcon
     },
     '복통': {
         NAME: 'stomachache',
+        DEPARTMENT: ['내과'],
         ICON: stomachacheIcon
     },
     '소화불량': {
         NAME: 'indigestion',
+        DEPARTMENT: ['내과'],
         ICON: indigestionIcon
     },
     '몸살': {
         NAME: 'ache',
+        DEPARTMENT: ['내과', '이비인후과'],
         ICON: acheIcon
     },
     '오한': {
         NAME: 'chill',
+        DEPARTMENT: ['내과', '이비인후과'],
         ICON: chillIcon
     },
     '변비': {
         NAME: 'constipation',
+        DEPARTMENT: ['내과'],
         ICON: constipationIcon
     },
     '설사': {
         NAME: 'diarrhea',
+        DEPARTMENT: ['내과'],
         ICON: diarrheaIcon
     },
     '속쓰림': {
         NAME: 'heartburn',
+        DEPARTMENT: ['내과'],
         ICON: heartburnIcon
     },
     '근육통': {
         NAME: 'muscularPain',
+        DEPARTMENT: ['내과', '정형외과'],
         ICON: muscularPainIcon
     },
     '관절통': {
         NAME: 'arthralgia',
+        DEPARTMENT: ['정형외과'],
         ICON: arthralgiaIcon
     },
 }
