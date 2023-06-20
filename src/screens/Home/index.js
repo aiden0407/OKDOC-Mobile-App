@@ -50,6 +50,34 @@ export default function HomeScreen({ navigation }) {
           email: accountData.email,
         });
       }
+
+      // try {
+      //   const getPatientListResponse = await getPatientList(loginToken);
+      //   const mainProfile = getPatientListResponse.data.response[0];
+
+      //   dispatch({
+      //     type: 'PROFILE_UPDATE_MAIN',
+      //     name: mainProfile.passport.USERNAME,
+      //     relationship: mainProfile.relationship,
+      //     birth: mainProfile.passport.BIRTH,
+      //     gender: mainProfile.gender,
+      //     height: mainProfile.height,
+      //     weight: mainProfile.weight,
+      //     drinker: mainProfile.drinker,
+      //     smoker: mainProfile.smoker,
+      //     medicalHistory: mainProfile?.medicalHistory,
+      //     medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
+      //     medication: mainProfile?.medication,
+      //     allergicReaction: mainProfile?.allergicReaction,
+      //     etcConsideration: mainProfile?.etcConsideration,
+      //   });
+      //   navigation.pop(2);
+      //   setLoading(false);
+      // } catch (error) {
+      //   setLoading(false);
+      //   Alert.alert('회원 정보 불러오기를 실패하였습니다.');
+      // }
+
     } catch (error) {
       console.log('로그인하는 과정에서 문제가 발생했습니다.');
     }
@@ -66,14 +94,14 @@ export default function HomeScreen({ navigation }) {
 
   function handleNextStep(category, name) {
     let department;
-    if(category==='symptom'){
+    if (category === 'symptom') {
       department = SYMPTOM[name]?.DEPARTMENT;
     } else {
       department = [name];
     }
     appContextDispatch({ type: 'TELEMEDICINE_RESERVATION_DEPARTMENT', department: department });
     appContextDispatch({ type: 'USE_SHORTCUT' });
-    navigation.navigate('TelemedicineReservation', {screen: 'Reservation'});
+    navigation.navigate('TelemedicineReservation', { screen: 'Reservation' });
   }
 
   function handleFullCategory() {
@@ -144,8 +172,8 @@ export default function HomeScreen({ navigation }) {
 
 const BannerContainer = styled.View`
   width: 100%;
-  height: ${Device.osName==='Android' ? '180px' : '130px'};
-  padding-top: ${Device.osName==='Android' ? '30px' : '0px'};;
+  height: ${Device.osName === 'Android' ? '180px' : '130px'};
+  padding-top: ${Device.osName === 'Android' ? '30px' : '0px'};;
   align-items: center;
   justify-content: center;
 `;
