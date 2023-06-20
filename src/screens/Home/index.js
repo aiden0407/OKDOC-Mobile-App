@@ -1,5 +1,5 @@
 //React
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { AppContext } from 'context/AppContext';
 import { useIsFocused } from '@react-navigation/native';
 import styled from 'styled-components/native';
@@ -13,6 +13,9 @@ import { StatusBarArea, SafeArea, ContainerTop, ContainerCenter } from 'componen
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 
+//Api
+import { getProducts } from 'api/Home';
+
 //Assets
 import bannerImage1 from 'assets/images/banner_image1.png';
 
@@ -25,8 +28,27 @@ export default function HomeScreen({ navigation }) {
 
   const { dispatch } = useContext(AppContext);
 
-  function handleNextStep(category, item) {
-    dispatch({ type: 'TELEMEDICINE_RESERVATION_CATEGORY', category: category, item: item });
+  useEffect(() => {
+    initProducts();
+  }, []);
+
+  const initProducts = async function () {
+    try {
+      const getProductsResponse = await getProducts();
+      dispatch({ type: 'TELEMEDICINE_RESERVATION_PRODUCT', product: getProductsResponse.data.response[0] });
+    } catch (error) {
+      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    }
+  }
+
+  function handleNextStep(category, name) {
+    let department;
+    if(category==='symptom'){
+      department = SYMPTOM[name]?.DEPARTMENT;
+    } else {
+      department = [name];
+    }
+    dispatch({ type: 'TELEMEDICINE_RESERVATION_DEPARTMENT', department: department });
     dispatch({ type: 'USE_SHORTCUT' });
     navigation.navigate('TelemedicineReservation', {screen: 'Reservation'});
   }
@@ -36,20 +58,20 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate('TelemedicineReservation', { screen: 'Category' });
   }
 
-  function Icon({ category, item }) {
+  function Icon({ category, name }) {
     return (
       <IconButton
         underlayColor={COLOR.GRAY5}
-        onPress={() => handleNextStep(category, item)}
+        onPress={() => handleNextStep(category, name)}
       >
         <>
           {category === 'symptom' && (<>
-            <Image source={SYMPTOM[item]?.ICON} marginTop={6} width={48} height={48} />
-            <Text T7 medium>{SYMPTOM[item]?.NAME}</Text>
+            <Image source={SYMPTOM[name]?.ICON} marginTop={6} width={48} height={48} />
+            <Text T7 medium>{name}</Text>
           </>)}
           {category === 'medicalSubject' && (<>
-            <Image source={DEPARTMENT[item]?.ICON} marginTop={6} width={48} height={48} />
-            <Text T7 medium>{DEPARTMENT[item]?.NAME}</Text>
+            <Image source={DEPARTMENT[name]?.ICON} marginTop={6} width={48} height={48} />
+            <Text T7 medium>{name}</Text>
           </>)}
         </>
       </IconButton>
@@ -75,15 +97,15 @@ export default function HomeScreen({ navigation }) {
 
             <ContainerCenter>
               <IconsWrapper>
-                <Icon category="symptom" item="flu" />
-                <Icon category="symptom" item="headache" />
-                <Icon category="symptom" item="highFever" />
-                <Icon category="symptom" item="stomachache" />
-                <Icon category="symptom" item="indigestion" />
-                <Icon category="symptom" item="ache" />
-                <Icon category="medicalSubject" item="internalMedicine" />
-                <Icon category="medicalSubject" item="otolaryngology" />
-                <Icon category="medicalSubject" item="ophthalmology" />
+                <Icon category="symptom" name="감기" />
+                <Icon category="symptom" name="두통" />
+                <Icon category="symptom" name="고열/미열" />
+                <Icon category="symptom" name="복통" />
+                <Icon category="symptom" name="소화불량" />
+                <Icon category="symptom" name="몸살" />
+                <Icon category="medicalSubject" name="내과" />
+                <Icon category="medicalSubject" name="이비인후과" />
+                <Icon category="medicalSubject" name="안과" />
               </IconsWrapper>
 
               <FullCategoryButton underlayColor={COLOR.GRAY5} onPress={() => handleFullCategory()}>
