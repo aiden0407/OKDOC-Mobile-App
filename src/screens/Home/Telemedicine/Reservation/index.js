@@ -16,36 +16,49 @@ import { getDoctorsByDepartment, getDoctorInformationByDoctorId, getScheduleByDo
 
 export default function ReservationScreen({ navigation, route }) {
 
-  const { dispatch } = useContext(AppContext);
+  const { state: { telemedicineReservationStatus }, dispatch } = useContext(AppContext);
   const { state: { accountData: { loginToken: loginToken }, bookableData } } = useContext(ApiContext);
   const [dateIndex, setDateIndex] = useState(0);
   const [timeIndex, setTimeIndex] = useState(0);
 
   useEffect(() => {
-    const initScheduleData = async function () {
-      try {
-        const getDoctorsByDepartmentResponse = await getDoctorsByDepartment('department');
-        const getDoctorInformationByDoctorIdResponse = await getDoctorInformationByDoctorId('doctorId');
-        const getScheduleByDoctorIdResponse = await getScheduleByDoctorId(loginToken, 'doctorId');
-
-        dispatch({ 
-          type: 'BOOKABLE_DATA_UPDATE', 
-          bookableData: date,
-        });
-        
-
-      } catch (error) {
-        Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
-      }
-    }
-
+    initScheduleData()
   }, []);
 
+
+  const initScheduleData = async function () {
+    try {
+      const departmentsList = telemedicineReservationStatus.department;
+      let doctorsList = [];
+      let doctorsScheduleList = [];
+
+      for (let ii = 0; ii < departmentsList.length; ii++) {
+        const response = await getDoctorsByDepartment(departmentsList[ii]);
+        doctorsList = doctorsList.concat(response.data.response);
+      }
+
+      console.log(doctorsList);
+      console.log(doctorsList.length);
+
+      for (let jj = 0; jj < doctorsList.length; jj++) {
+        //const doctorScheduleResponse = await getScheduleByDoctorId(doctorsList[jj]._id);
+      }
+
+      // dispatch({
+      //   type: 'BOOKABLE_DATA_UPDATE',
+      //   bookableData: doctorsScheduleList,
+      // });
+
+    } catch (error) {
+      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    }
+  }
+
   function handleSelectDoctor(date, time, doctorInfo) {
-    dispatch({ 
-      type: 'TELEMEDICINE_RESERVATION_DOCTOR', 
-      date: date, 
-      time: time, 
+    dispatch({
+      type: 'TELEMEDICINE_RESERVATION_DOCTOR',
+      date: date,
+      time: time,
       doctorInfo: doctorInfo,
     });
     navigation.navigate('DoctorProfile');
@@ -113,12 +126,12 @@ export default function ReservationScreen({ navigation, route }) {
                   <Text T4 bold>{item.name} 의사</Text>
                   <Text T7 medium color={COLOR.GRAY1}>{item.hospital} / {item.subject}</Text>
                   <Row marginTop={12}>
-                    { item.medicalField.map((item, index) => 
+                    {item.medicalField.map((item, index) =>
                       <Text key={`field${index}`} T7 color={COLOR.GRAY1}>#{item} </Text>
                     )}
                   </Row>
                 </DoctorColumn>
-                <Ionicons name="chevron-forward" size={24} color={COLOR.MAIN}/>
+                <Ionicons name="chevron-forward" size={24} color={COLOR.MAIN} />
               </DoctorRow>
             )}
           </DoctorContainer>
