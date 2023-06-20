@@ -33,9 +33,8 @@ export default function LoginPage({ navigation }) {
     setLoading(true);
 
     try {
-      //const familyLocalLoginResponse = await familyLocalLogin(email, password);
-      const familyLocalLoginResponse = await familyLocalLogin('패밀리아이디', 'r7csY|T66y');
-      const loginToken = familyLocalLoginResponse.data.response.login_token;
+      const familyLocalLoginResponse = await familyLocalLogin(email, password);
+      const loginToken = familyLocalLoginResponse.data.response.accessToken;
       dispatch({
         type: 'LOGIN',
         loginToken: loginToken,
