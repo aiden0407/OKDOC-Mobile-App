@@ -209,7 +209,7 @@ export const DEPARTMENT = {
         NAME: 'plasticSurgery',
         ICON: plasticSurgeryIcon
     },
-    '혈액종양내과': {
+    '혈액내과': {
         NAME: 'hematoOncology',
         ICON: hematoOncologyIcon
     },
