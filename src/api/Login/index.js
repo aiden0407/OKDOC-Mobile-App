@@ -7,7 +7,7 @@ export const familyLocalLogin = async function (id, password) {
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/LOGIN?identity=family`,
+            url: `${apiUrl}/authentication/sign-in`,
             method: 'POST',
             data: {
                 id: id,
