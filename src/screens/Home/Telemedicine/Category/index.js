@@ -18,43 +18,49 @@ export default function CategoryScreen({ navigation }) {
 
   const { dispatch } = useContext(AppContext);
   const [categoryGroup, setCategoryGroup] = useState('symptoms');
-  const symptomKeys = Object.keys(SYMPTOM);
-  const medicalSubjectKeys = Object.keys(DEPARTMENT);
+  const [symptomsData, setSymptomsData] = useState([]);
+  const [departmentsData, setdepartmentsData] = useState([]);
 
   useEffect(() => {
-    const initCategories = async function () {
-      try {
-        const getSymptomsResponse = await getSymptoms();
-        const getDepartmentsResponse = await getDepartments();
-
-      } catch (error) {
-        Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
-      }
-    }
-
     initCategories();
-
   }, []);
 
-  function handleNextStep(category, item) {
-    dispatch({ type: 'TELEMEDICINE_RESERVATION_CATEGORY', category: category, item: item });
+  const initCategories = async function () {
+    try {
+      const getSymptomsResponse = await getSymptoms();
+      setSymptomsData(getSymptomsResponse.data.response);
+      const getDepartmentsResponse = await getDepartments();
+      setdepartmentsData(getDepartmentsResponse.data.response);
+    } catch (error) {
+      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    }
+  }
+
+  function handleNextStep(category, name) {
+    let department;
+    if(category==='symptom'){
+      department = SYMPTOM[name]?.DEPARTMENT;
+    } else {
+      department = [name];
+    }
+    dispatch({ type: 'TELEMEDICINE_RESERVATION_DEPARTMENT', department: department });
     navigation.navigate('Reservation');
   }
 
-  function Icon({ category, item }) {
+  function Icon({ category, name }) {
     return (
       <IconButton
         underlayColor={COLOR.GRAY5}
-        onPress={() => handleNextStep(category, item)}
+        onPress={() => handleNextStep(category, name)}
       >
         <>
           {category === 'symptom' && (<>
-            <Image source={SYMPTOM[item]?.ICON} marginTop={8} width={60} height={60} />
-            <Text T6>{SYMPTOM[item]?.NAME}</Text>
+            <Image source={SYMPTOM[name]?.ICON} marginTop={8} width={60} height={60} />
+            <Text T6>{name}</Text>
           </>)}
           {category === 'medicalSubject' && (<>
-            <Image source={DEPARTMENT[item]?.ICON} marginTop={8} width={60} height={60} />
-            <Text T6>{DEPARTMENT[item]?.NAME}</Text>
+            <Image source={DEPARTMENT[name]?.ICON} marginTop={8} width={60} height={60} />
+            <Text T6>{name}</Text>
           </>)}
         </>
       </IconButton>
@@ -96,10 +102,10 @@ export default function CategoryScreen({ navigation }) {
         <IconsContainer showsVerticalScrollIndicator={false}>
           <IconsWrapper>
             {categoryGroup === 'symptoms' && (
-              symptomKeys.map((item) => <Icon key={item} category="symptom" item={item} />)
+              symptomsData.map((item) => <Icon key={item.name} category="symptom" name={item.name} />)
             )}
             {categoryGroup === 'subjects' && (
-              medicalSubjectKeys.map((item) => <Icon key={item} category="medicalSubject" item={item} />)
+              departmentsData.map((item) => <Icon key={item.name} category="medicalSubject" name={item.name} />)
             )}
           </IconsWrapper>
         </IconsContainer>
