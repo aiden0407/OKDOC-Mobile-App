@@ -1,6 +1,8 @@
 //React
 import { useEffect, useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import styled from 'styled-components/native';
 
@@ -26,16 +28,37 @@ function FocusAwareStatusBar(props) {
 
 export default function HomeScreen({ navigation }) {
 
-  const { dispatch } = useContext(AppContext);
+  const { state: { accountData }, dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { state: { registerStatus }, dispatch: appContextDispatch } = useContext(AppContext);
 
   useEffect(() => {
+    autoLogin();
     initProducts();
   }, []);
+
+  const autoLogin = async function () {
+    try {
+      console.log('실행');
+      const jsonValue = await AsyncStorage.getItem('accountData');
+      console.log(jsonValue);
+      if (jsonValue !== null) {
+        const accountData = JSON.parse(jsonValue);
+        console.log(accountData);
+        apiContextDispatch({
+          type: 'LOGIN',
+          loginToken: accountData.loginToken,
+          email: accountData.email,
+        });
+      }
+    } catch (error) {
+      console.log('로그인하는 과정에서 문제가 발생했습니다.');
+    }
+  };
 
   const initProducts = async function () {
     try {
       const getProductsResponse = await getProducts();
-      dispatch({ type: 'TELEMEDICINE_RESERVATION_PRODUCT', product: getProductsResponse.data.response[0] });
+      appContextDispatch({ type: 'TELEMEDICINE_RESERVATION_PRODUCT', product: getProductsResponse.data.response[0] });
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }
@@ -48,13 +71,13 @@ export default function HomeScreen({ navigation }) {
     } else {
       department = [name];
     }
-    dispatch({ type: 'TELEMEDICINE_RESERVATION_DEPARTMENT', department: department });
-    dispatch({ type: 'USE_SHORTCUT' });
+    appContextDispatch({ type: 'TELEMEDICINE_RESERVATION_DEPARTMENT', department: department });
+    appContextDispatch({ type: 'USE_SHORTCUT' });
     navigation.navigate('TelemedicineReservation', {screen: 'Reservation'});
   }
 
   function handleFullCategory() {
-    dispatch({ type: 'DELETE_SHORTCUT' });
+    appContextDispatch({ type: 'DELETE_SHORTCUT' });
     navigation.navigate('TelemedicineReservation', { screen: 'Category' });
   }
 
