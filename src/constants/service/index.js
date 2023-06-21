@@ -49,6 +49,27 @@ export const POLICY = {
     'TERMS_OF_SERVICE': {
         TITLE: 'OK DOC 서비스 이용약관',
     },
+    'PRIVACY_POLICY': {
+        TITLE: 'OK DOC 개인정보 처리방침',
+    },
+    'LOCATION_OF_SERVICE': {
+        TITLE: '위치기반서비스 이용약관',
+    },
+    'SIGNUP_OF_SERVICE': {
+        TITLE: '회원가입 유의사항',
+    },
+    'UNIQUE_IDENTIFICATION_POLICY': {
+        TITLE: '고유 식별정보 수집 및 이용동의',
+    },
+    'COLLECT_PRIVACY_POLICY': {
+        TITLE: '개인정보 수집 및 이용동의',
+    },
+    'SENSITIVE_INFOMATION_POLICY': {
+        TITLE: '민감정보 수집 및 이용동의',
+    },
+    'MARKETING_OF_SERVICE': {
+        TITLE: '마케팅 정보 활용 동의',
+    },
 }
 
 export const SYMPTOM = {
