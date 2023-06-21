@@ -170,7 +170,7 @@ export default function RegisterPolicyScreen({ navigation }) {
             <PolicyButton
               key={`policy${index}`}
               essential={item.level === 'required'}
-              title={POLICY[item.type].TITLE}
+              title={POLICY[item.type]?.TITLE ?? item.type}
               content={item.html}
               index={index}
             />
