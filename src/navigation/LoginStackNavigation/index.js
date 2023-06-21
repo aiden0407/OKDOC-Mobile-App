@@ -1,15 +1,15 @@
 //Navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from 'screens/Login';
+import FindEmailPasswordScreen from 'screens/Login/FindEmailPassword';
 import RegisterPolicyScreen from 'screens/Login/Register/RegisterPolicy';
 import RegisterPolicyDetailScreen from 'screens/Login/Register/RegisterPolicy/Detail';
+import EmailPasswordScreen from 'screens/Login/Register/EmailPassword';
 // import PassportPhoneCertifiactionScreen from 'screens/Login/Register/PassportPhoneCertifiaction';
 import PassportInformationScreen from 'screens/Login/Register/PassportInformation';
 import PhoneInformationScreen from 'screens/Login/Register/PhoneInformation';
-import SearchCountryCodeScreen from 'screens/Login/Register/SearchCountryCode';
-import EmailPasswordScreen from 'screens/Login/Register/EmailPassword';
+// import SearchCountryCodeScreen from 'screens/Login/Register/SearchCountryCode';
 import RegisterCompleteScreen from 'screens/Login/Register/RegisterComplete';
-import FindEmailPasswordScreen from 'screens/Login/FindEmailPassword';
 
 //Components
 import NavigationBackArrow from 'components/NavigationBackArrow';
@@ -80,17 +80,17 @@ export default function LoginStackNavigation({ navigation }) {
           component={PhoneInformationScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PassportPhoneCertifiaction')} />,
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PassportInformation')} />,
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="SearchCountryCode"
           component={SearchCountryCodeScreen}
           options={{
             title: '회원가입',
             headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PhoneInformation')} />,
           }}
-        />
+        /> */}
         <Stack.Screen
           name="RegisterComplete"
           component={RegisterCompleteScreen}
