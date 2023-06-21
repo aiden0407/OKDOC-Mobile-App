@@ -5,6 +5,7 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design'
+import { POLICY } from 'constants/service';
 import { Alert, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, Container, Row } from 'components/Layout';
@@ -36,17 +37,17 @@ export default function RegisterPolicyScreen({ navigation }) {
   const setUseStateValues = [setPolicy1Agreement, setPolicy2Agreement, setPolicy3Agreement, setPolicy4Agreement, setPolicy5Agreement, setPolicy6Agreement, setPolicy7Agreement, setPolicy8Agreement, setPolicy9Agreement, setPolicy10Agreement];
 
   useEffect(() => {
-    const initPolicy = async function () {
-      try {
-        const getRegisterTermsResponse = await getRegisterTerms();
-        setPolicyList(getRegisterTermsResponse.data.response);
-      } catch (error) {
-        Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
-      }
-    }
-
     initPolicy();
   }, []);
+
+  const initPolicy = async function () {
+    try {
+      const getRegisterTermsResponse = await getRegisterTerms();
+      setPolicyList(getRegisterTermsResponse.data.response);
+    } catch (error) {
+      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    }
+  }
 
   function handleAgreeAllPolicy() {
     setAllPolicyAgreement(!allPolicyAgreement);
@@ -115,8 +116,10 @@ export default function RegisterPolicyScreen({ navigation }) {
     setMeetRequirement(true);
   }
 
-  function handleDetailScreen() {
-    navigation.navigate('');
+  function handleDetailScreen(content) {
+    navigation.navigate('RegisterPolicyDetail', {
+      content: content,
+    })
   }
 
   function handleNextScreen() {
@@ -137,7 +140,7 @@ export default function RegisterPolicyScreen({ navigation }) {
           <Ionicons name="checkmark-sharp" size={22} color={useStateValues[index] ? COLOR.MAIN : COLOR.GRAY3} marginLeft={3} marginRight={12} marginTop={1} />
           <Text T6 medium color={COLOR.GRAY0}>{essential ? '[필수] ' : '[선택] '}{title}</Text>
         </AgreeRow>
-        <PolicyDetailIconWrapper onPress={() => { handleDetailScreen(title, content) }}>
+        <PolicyDetailIconWrapper onPress={() => { handleDetailScreen(content) }}>
           <Ionicons name="chevron-forward" size={22} />
         </PolicyDetailIconWrapper>
       </Row>
@@ -167,8 +170,8 @@ export default function RegisterPolicyScreen({ navigation }) {
             <PolicyButton
               key={`policy${index}`}
               essential={item.level === 'required'}
-              title={item.title}
-              content={item.content}
+              title={POLICY[item.type].TITLE}
+              content={item.html}
               index={index}
             />
           )}
