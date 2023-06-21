@@ -26,7 +26,6 @@ export default function PaymentScreen({ navigation }) {
       var htmlDecoded = decodeValues(response.data);
       setHtmlContent(htmlDecoded);
     } catch (error) {
-      console.log(error);
       Alert.alert('결제 요청에 실패하였습니다. 다시 시도해주세요.');
       navigation.goBack();
     }
