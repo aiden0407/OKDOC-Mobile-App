@@ -4,7 +4,7 @@ import LoginScreen from 'screens/Login';
 import RegisterPolicyScreen from 'screens/Login/Register/RegisterPolicy';
 import PassportPhoneCertifiactionScreen from 'screens/Login/Register/PassportPhoneCertifiaction';
 import PassportInformationScreen from 'screens/Login/Register/PassportInformation';
-import PersonalInformationScreen from 'screens/Login/Register/PersonalInformation';
+import PhoneInformationScreen from 'screens/Login/Register/PhoneInformation';
 import SearchCountryCodeScreen from 'screens/Login/Register/SearchCountryCode';
 import EmailPasswordScreen from 'screens/Login/Register/EmailPassword';
 import RegisterCompleteScreen from 'screens/Login/Register/RegisterComplete';
@@ -67,8 +67,8 @@ export default function LoginStackNavigation({ navigation }) {
           }}
         />
         <Stack.Screen
-          name="PersonalInformation"
-          component={PersonalInformationScreen}
+          name="PhoneInformation"
+          component={PhoneInformationScreen}
           options={{
             title: '회원가입',
             headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PassportPhoneCertifiaction')} />,
@@ -79,7 +79,7 @@ export default function LoginStackNavigation({ navigation }) {
           component={SearchCountryCodeScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PersonalInformation')} />,
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PhoneInformation')} />,
           }}
         />
         <Stack.Screen
