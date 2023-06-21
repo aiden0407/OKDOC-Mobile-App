@@ -1,6 +1,7 @@
 //React
 import { useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 
 //Components
@@ -19,8 +20,13 @@ export default function AccountSettingScreen({ navigation }) {
     navigation.navigate('MyPageStackNavigation', { screen: 'ChangePassword' });
   }
 
-  function handleLogout() {
+  const handleLogout = async function () {
     dispatch({ type: 'LOGOUT' });
+    try {
+      await AsyncStorage.removeItem('accountData');
+    } catch (error) {
+      console.log(error);
+    }
     navigation.goBack();
   }
 
