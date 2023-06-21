@@ -1,101 +1,169 @@
 //React
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
-import { COLOR, TYPOGRAPHY, INPUT_BOX } from 'constants/design';
-import { Dimensions } from 'react-native';
-import { SafeArea, KeyboardAvoiding, Container, Row } from 'components/Layout';
+import { COLOR, TYPOGRAPHY } from 'constants/design'
+import { Alert, ActivityIndicator } from 'react-native';
+import { SafeArea, Container, Row } from 'components/Layout';
 import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
-export default function RegisterPolicyScreen({ navigation }) {
+//Api
+import { emailCheckOpen } from 'api/Login';
+
+export default function EmailPasswordScreen({ navigation }) {
 
   const { state: { registerStatus }, dispatch } = useContext(AppContext);
-  const [countryCode, setCountryCode] = useState('+82');
-  const [phoneNumber, setPhoneNumber] = useState(registerStatus?.phoneNumber);
-  const windowWidth = Dimensions.get('window').width;
+  const [loading, setLoading] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [isMessageSent, setIsMessageSent] = useState(false);
+  const [certificationNumber, setCertificationNumber] = useState('');
+  const [isPhoneNumberCertificated, setIsPhoneNumberCertificated] = useState(false);
+
+  const handleRequestCertification = async function () {
+    setLoading(true);
+    try {
+      //const emailCheckOpenResponse = await emailCheckOpen(email);
+      //setInvitationToken(emailCheckOpenResponse.data.response.message)
+      setIsMessageSent(true);
+      setLoading(false);
+      Alert.alert('해당 전화 번호로\n인증번호가 전송되었습니다.');
+    } catch (error) {
+      setLoading(false);
+      Alert.alert('인증번호 발송을 실패하였습니다.');
+    }
+  }
+
+  const handleCheckCertificationNumber = async function () {
+    setLoading(true);
+    try {
+      //await emailCheckClose(email, certificationNumber, invitationToken);
+      setIsPhoneNumberCertificated(true);
+      setLoading(false);
+      Alert.alert('인증되었습니다.');
+    } catch (error) {
+      setLoading(false);
+      Alert.alert('인증번호가 일치하지 않습니다.\n다시 입력해주시기 바랍니다.');
+    }
+  }
 
   function handleNextScreen() {
-    dispatch({
-      type: 'REGISTER_PASSPORT_PHONE_NUMBER',
-      countryCode: countryCode,
-      phoneNumber: phoneNumber,
-    });
-    navigation.navigate('EmailPassword');
+    // dispatch({
+    //   type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
+    //   email: email,
+    //   password: password,
+    //   invitationToken: invitationToken,
+    // });
+    // navigation.navigate('RegisterComplete');
   }
 
   return (
     <SafeArea>
-      <KeyboardAvoiding>
-        <Container paddingHorizontal={20}>
-          <Container>
+      {
+        loading && (
+          <LoadingBackground>
+            <ActivityIndicator size="large" color="#5500CC" />
+          </LoadingBackground>
+        )
+      }
+      <Container paddingHorizontal={20}>
+        <Container>
+          <Text T3 bold marginTop={30}>휴대폰 번호를 입력해주세요</Text>
 
-            <Text T3 bold marginTop={30}>인증된 아래 정보들을 확인해주세요</Text>
-            <Text T6 color={COLOR.GRAY1} marginTop={12}>국가번호와 전화번호를 정확히 입력해주세요</Text>
-
-            <Text T6 bold marginTop={30}>한글 성명</Text>
-            <TextBox>
-              <Text T5>{registerStatus?.name ?? ' '}</Text>
-            </TextBox>
-            <Text T6 bold marginTop={30}>생년월일</Text>
-            <TextBox>
-              <Text T5>{registerStatus?.birth?.toISOString()?.split('T')[0] ?? ' '}</Text>
-            </TextBox>
-            {/* <Text T6 bold marginTop={30}>성별</Text>
-            <Row marginTop={12} gap={12}>
-              <SolidButton medium text="남성" disabled={false} />
-              <SolidButton medium text="여성" disabled={true} />
-            </Row> */}
-            <Text T6 bold marginTop={30}>전화번호</Text>
-            <Row marginTop={12} gap={6}>
-              <CountryCallingCodeBox>
-                <Text T5>{countryCode}</Text>
-              </CountryCallingCodeBox>
-              <PhoneNumberBox
-                placeholder="전화번호"
-                windowWidth={windowWidth}
-                value={phoneNumber}
-                onChangeText={setPhoneNumber}
-                inputMode="numeric"
-              />
-            </Row>
-
-          </Container>
-
-          <SolidButton
-            text="다음"
-            marginBottom={20}
-            disabled={!phoneNumber}
-            action={() => handleNextScreen()}
+          <CustomLineInput
+            editable={!isMessageSent}
+            placeholder="01012345678"
+            inputMode="numeric"
+            maxLength={11}
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              if (phoneNumber?.length === 11) {
+                handleRequestCertification();
+              }
+            }}
           />
+          {
+            !isPhoneNumberCertificated &&
+            <CustomOutlineButtonBackground
+              disabled={phoneNumber?.length !== 11}
+              onPress={() => handleRequestCertification()}
+              underlayColor={COLOR.SUB4}
+              style={{ position: 'absolute', right: 6, top: 72, zIndex: 1 }}
+            >
+              <Text T7 medium color={phoneNumber?.length === 11 ? COLOR.MAIN : COLOR.GRAY1}>{isMessageSent ? '재전송' : '인증요청'}</Text>
+            </CustomOutlineButtonBackground>
+          }
+          {
+            isMessageSent && !isPhoneNumberCertificated &&
+            (<>
+              <CustomLineInput
+                placeholder="인증번호 6자리"
+                inputMode="numeric"
+                maxLength={6}
+                value={certificationNumber}
+                onChangeText={setCertificationNumber}
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  if (certificationNumber?.length === 6) {
+                    handleCheckCertificationNumber();
+                  }
+                }}
+              />
+              <CustomOutlineButtonBackground
+                disabled={certificationNumber?.length < 6}
+                onPress={() => handleCheckCertificationNumber()}
+                underlayColor={COLOR.SUB4}
+                style={{ position: 'absolute', right: 6, top: 129, zIndex: 1 }}
+              >
+                <Text T7 medium color={certificationNumber?.length < 6 ? COLOR.GRAY2 : COLOR.MAIN}>인증확인</Text>
+              </CustomOutlineButtonBackground>
+            </>)
+          }
         </Container>
-      </KeyboardAvoiding>
+
+        <SolidButton
+          text="다음"
+          marginBottom={20}
+          disabled={!isPhoneNumberCertificated}
+          action={() => handleNextScreen()}
+        />
+      </Container>
     </SafeArea>
   );
 }
 
-const TextBox = styled.TouchableHighlight`
-  margin-top: 12px;
+const LoadingBackground = styled.Pressable`
+  position: absolute;
   width: 100%;
-  padding: ${INPUT_BOX.DEFAULT.BACKGROUND_PADDING};
-  background-color: ${COLOR.GRAY4};
-  border-radius: 5px;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-const CountryCallingCodeBox = styled.Pressable`
-  width: 66px;
-  padding: 8px 0 8px 12px;
-  background-color: ${COLOR.GRAY6};
-  border-radius: 3px;
-`;
-
-const PhoneNumberBox = styled.TextInput`
-  width: ${(props) => `${props.windowWidth - 112}px`};
-  padding: 0 0 0 14px;
-  background-color: ${COLOR.GRAY6};
-  border-radius: 3px;
+const CustomLineInput = styled.TextInput`
+  margin-top: 24px;
+  width: 100%;
+  padding: 0 0 12px 8px;
+  border-bottom-width: 1.5px;
+  border-color: ${(props) => props.editable === false ? COLOR.MAIN : COLOR.GRAY3};
   font-family: 'Pretendard-Regular';
   font-size: ${TYPOGRAPHY.T5.SIZE};
+  color: ${(props) => props.editable === false ? COLOR.GRAY0 : '#000000'};
+`;
+
+const CustomOutlineButtonBackground = styled.TouchableHighlight`
+  width: 72px;
+  height: 36px;
+  border-width: 1px;
+  border-radius: 5px;
+  border-color: ${(props) => props.disabled ? COLOR.GRAY3 : COLOR.MAIN};
+  background-color: #FFFFFF;
+  align-items: center;
+  justify-content: center;
 `;
