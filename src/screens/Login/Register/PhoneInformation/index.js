@@ -1,6 +1,8 @@
 //React
 import { useState, useContext, useRef } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 
 //Components
@@ -11,13 +13,15 @@ import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { emailCheckOpen } from 'api/Login';
+import { phoneCheckOpen, phoneCheckClose, createFamilyAccount, createPatientProfileInit } from 'api/Login';
 
 export default function EmailPasswordScreen({ navigation }) {
 
-  const { state: { registerStatus }, dispatch } = useContext(AppContext);
+  const { dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { state: { registerStatus }, dispatch: appContextDispatch } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneToken, setPhoneToken] = useState('');
   const [isMessageSent, setIsMessageSent] = useState(false);
   const [certificationNumber, setCertificationNumber] = useState('');
   const [isPhoneNumberCertificated, setIsPhoneNumberCertificated] = useState(false);
@@ -25,8 +29,8 @@ export default function EmailPasswordScreen({ navigation }) {
   const handleRequestCertification = async function () {
     setLoading(true);
     try {
-      //const emailCheckOpenResponse = await emailCheckOpen(email);
-      //setInvitationToken(emailCheckOpenResponse.data.response.message)
+      //const phoneCheckOpenResponse = await phoneCheckOpen(phoneNumber);
+      //setPhoneToken(phoneCheckOpenResponse.data.response.message)
       setIsMessageSent(true);
       setLoading(false);
       Alert.alert('해당 전화 번호로\n인증번호가 전송되었습니다.');
@@ -39,7 +43,7 @@ export default function EmailPasswordScreen({ navigation }) {
   const handleCheckCertificationNumber = async function () {
     setLoading(true);
     try {
-      //await emailCheckClose(email, certificationNumber, invitationToken);
+      //await phoneCheckClose(phoneNumber, certificationNumber, phoneToken);
       setIsPhoneNumberCertificated(true);
       setLoading(false);
       Alert.alert('인증되었습니다.');
@@ -49,14 +53,55 @@ export default function EmailPasswordScreen({ navigation }) {
     }
   }
 
-  function handleNextScreen() {
-    // dispatch({
-    //   type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
-    //   email: email,
-    //   password: password,
-    //   invitationToken: invitationToken,
-    // });
-    // navigation.navigate('RegisterComplete');
+  const handleNextScreen = async function () {
+    try {
+      const createFamilyAccountResponse = await createFamilyAccount(registerStatus.email, registerStatus.password, registerStatus.policy);
+      const loginToken = createFamilyAccountResponse.data.response.login_token;
+      apiContextDispatch({ 
+        type: 'LOGIN', 
+        loginToken: loginToken,
+        email: registerStatus.email, 
+      });
+      try {
+        const accountData = {
+          loginToken: loginToken,
+          email: registerStatus.email,
+        };
+        await AsyncStorage.setItem('accountData', JSON.stringify(accountData));
+      } catch (error) {
+        console.log(error);
+      }
+      initPatient(loginToken);
+    } catch (error) {
+      Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주세요.');
+    }
+  }
+
+  const initPatient = async function (loginToken) {
+    try {
+      const createPatientProfileInitResponse = await createPatientProfileInit(loginToken, registerStatus.email, registerStatus.name, formatDate(registerStatus.birth), registerStatus.passportNumber, formatDate(registerStatus.dateOfIssue), formatDate(registerStatus.dateOfExpiry), registerStatus.gender);
+      const mainProfile = createPatientProfileInitResponse.data.response;
+      apiContextDispatch({
+        type: 'PROFILE_UPDATE_MAIN',
+        name: mainProfile.passport.USERNAME,
+        relationship: mainProfile.relationship,
+        birth: mainProfile.passport.BIRTH,
+        gender: mainProfile.gender,
+        height: mainProfile.height,
+        weight: mainProfile.weight,
+        drinker: mainProfile.drinker,
+        smoker: mainProfile.smoker,
+        medicalHistory: mainProfile?.medicalHistory,
+        medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
+        medication: mainProfile?.medication,
+        allergicReaction: mainProfile?.allergicReaction,
+        etcConsideration: mainProfile?.etcConsideration,
+      });
+      appContextDispatch({type: 'REGISTER_COMPLETE'});
+      navigation.navigate('RegisterComplete');
+    } catch (error) {
+      Alert.alert('프로필 정보 생성에 실패하였습니다. 다시 시도해 주세요.');
+    }
   }
 
   return (
