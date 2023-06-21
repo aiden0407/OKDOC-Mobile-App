@@ -70,7 +70,7 @@ export default function EmailPasswordScreen({ navigation }) {
       password: password,
       invitationToken: invitationToken,
     });
-    navigation.navigate('PassportPhoneCertifiaction');
+    navigation.navigate('PassportInformation');
   }
 
   return (
