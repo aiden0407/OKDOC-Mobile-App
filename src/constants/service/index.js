@@ -45,6 +45,12 @@ import neurosurgeryIcon from 'assets/icons/medical-subjects/neurosurgery.png';
 import nephrologyIcon from 'assets/icons/medical-subjects/nephrology.png';
 import radiologyIcon from 'assets/icons/medical-subjects/radiology.png';
 
+export const POLICY = {
+    'TERMS_OF_SERVICE': {
+        TITLE: 'OK DOC 서비스 이용약관',
+    },
+}
+
 export const SYMPTOM = {
     '감기': {
         NAME: 'flu',
