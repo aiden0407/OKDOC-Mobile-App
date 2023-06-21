@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR, BUTTON, INPUT_BOX } from 'constants/design';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { SafeArea, Container, ScrollView, Row, Center, Box } from 'components/Layout';
 import { Text } from 'components/Text';
@@ -80,7 +80,10 @@ export default function PassportInformationScreen({ navigation }) {
       const response = await checkPassportInformation(name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry));
       if(response.data.response?.result==='ERROR'){
         setPassportCertifiactionState('COUNT_LIMIT_ERROR');
+      } else if(response.data.response?.data?.RESULTYN==='N') {
+        setPassportCertifiactionState('WRONG_INFORMATION_ERROR');
       } else {
+        setPassportCertifiactionState('NONE');
         dispatch({
           type: 'REGISTER_PASSPORT_INFORMATION',
           name: name,
@@ -93,7 +96,8 @@ export default function PassportInformationScreen({ navigation }) {
         navigation.navigate('PhoneInformation');
       }
     } catch (error) {
-      setPassportCertifiactionState('WRONG_INFORMATION_ERROR');
+      setPassportCertifiactionState('NONE');
+      Alert.alert('여권 번호 확인에 실패했습니다. 다시 시도해주세요.');
     }
   }
 
