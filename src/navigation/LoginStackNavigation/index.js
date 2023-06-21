@@ -2,7 +2,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from 'screens/Login';
 import RegisterPolicyScreen from 'screens/Login/Register/RegisterPolicy';
-import PassportPhoneCertifiactionScreen from 'screens/Login/Register/PassportPhoneCertifiaction';
+import RegisterPolicyDetailScreen from 'screens/Login/Register/RegisterPolicy/Detail';
+// import PassportPhoneCertifiactionScreen from 'screens/Login/Register/PassportPhoneCertifiaction';
 import PassportInformationScreen from 'screens/Login/Register/PassportInformation';
 import PhoneInformationScreen from 'screens/Login/Register/PhoneInformation';
 import SearchCountryCodeScreen from 'screens/Login/Register/SearchCountryCode';
@@ -43,6 +44,14 @@ export default function LoginStackNavigation({ navigation }) {
           }}
         />
         <Stack.Screen
+          name="RegisterPolicyDetail"
+          component={RegisterPolicyDetailScreen}
+          options={{
+            title: '회원가입',
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('RegisterPolicy')} />,
+          }}
+        />
+        <Stack.Screen
           name="EmailPassword"
           component={EmailPasswordScreen}
           options={{
@@ -50,20 +59,20 @@ export default function LoginStackNavigation({ navigation }) {
             headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('RegisterPolicy')} />,
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="PassportPhoneCertifiaction"
           component={PassportPhoneCertifiactionScreen}
           options={{
             title: '회원가입',
             headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('EmailPassword')} />,
           }}
-        />
+        /> */}
         <Stack.Screen
           name="PassportInformation"
           component={PassportInformationScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PassportPhoneCertifiaction')} />,
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('EmailPassword')} />,
           }}
         />
         <Stack.Screen
