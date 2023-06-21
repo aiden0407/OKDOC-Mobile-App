@@ -101,14 +101,17 @@ export const checkPassportInformation = async function (name, birth, passportNum
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/PASSPORT_CHECK`,
+            url: `${apiUrl}/authentication/passport-check`,
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
             data: {
-                USERNAME: name,
-                BIRTH: birth,
-                PASSPORTNUMBER: passportNumber,
-                ISSUEDATE: dateOfIssue,
-                CLOSEDATE: dateOfExpiry,
+                user_name: name,
+                birth: birth,
+                passport_number: passportNumber,
+                issue_date: dateOfIssue,
+                close_date: dateOfExpiry,
             }
         }
         const response = await axios(options);
