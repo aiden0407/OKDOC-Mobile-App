@@ -10,6 +10,7 @@ import styled from 'styled-components/native';
 import * as Device from 'expo-device';
 import { COLOR } from 'constants/design';
 import { SYMPTOM, DEPARTMENT } from 'constants/service';
+import { Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { StatusBarArea, SafeArea, ContainerTop, ContainerCenter } from 'components/Layout';
 import { Text } from 'components/Text';
@@ -38,12 +39,9 @@ export default function HomeScreen({ navigation }) {
 
   const autoLogin = async function () {
     try {
-      console.log('실행');
       const jsonValue = await AsyncStorage.getItem('accountData');
-      console.log(jsonValue);
       if (jsonValue !== null) {
         const accountData = JSON.parse(jsonValue);
-        console.log(accountData);
         apiContextDispatch({
           type: 'LOGIN',
           loginToken: accountData.loginToken,
@@ -79,7 +77,7 @@ export default function HomeScreen({ navigation }) {
       // }
 
     } catch (error) {
-      console.log('로그인하는 과정에서 문제가 발생했습니다.');
+      Alert.alert('로그인하는 과정에서 문제가 발생했습니다.');
     }
   };
 
