@@ -152,9 +152,9 @@ export default function HomeScreen({ navigation }) {
                 <Icon category="symptom" name="복통" />
                 <Icon category="symptom" name="소화불량" />
                 <Icon category="symptom" name="몸살" />
-                <Icon category="medicalSubject" name="내과" />
                 <Icon category="medicalSubject" name="이비인후과" />
                 <Icon category="medicalSubject" name="안과" />
+                <Icon category="medicalSubject" name="소아청소년과" />
               </IconsWrapper>
 
               <FullCategoryButton underlayColor={COLOR.GRAY5} onPress={() => handleFullCategory()}>
