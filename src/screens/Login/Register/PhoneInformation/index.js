@@ -43,13 +43,18 @@ export default function EmailPasswordScreen({ navigation }) {
   const handleCheckCertificationNumber = async function () {
     setLoading(true);
     try {
-      await phoneCheckClose(phoneNumber, certificationNumber, phoneToken);
-      setIsPhoneNumberCertificated(true);
-      setLoading(false);
-      Alert.alert('인증되었습니다.');
+      const phoneCheckCloseResponse = await phoneCheckClose(phoneNumber, certificationNumber, phoneToken);
+      if(phoneCheckCloseResponse.data.response.message === '휴대폰 인증 실패') {
+        setLoading(false);
+        Alert.alert('인증번호가 일치하지 않습니다.\n다시 입력해주시기 바랍니다.');
+      } else {
+        setIsPhoneNumberCertificated(true);
+        setLoading(false);
+        Alert.alert('인증되었습니다.');
+      }
     } catch (error) {
       setLoading(false);
-      Alert.alert('인증번호가 일치하지 않습니다.\n다시 입력해주시기 바랍니다.');
+      Alert.alert('네트워크 상태가 좋지 않습니다. 다시 입력해주시기 바랍니다.');
     }
   }
 
