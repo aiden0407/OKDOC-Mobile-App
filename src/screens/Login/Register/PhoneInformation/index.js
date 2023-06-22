@@ -29,8 +29,8 @@ export default function EmailPasswordScreen({ navigation }) {
   const handleRequestCertification = async function () {
     setLoading(true);
     try {
-      //const phoneCheckOpenResponse = await phoneCheckOpen(phoneNumber);
-      //setPhoneToken(phoneCheckOpenResponse.data.response.message)
+      const phoneCheckOpenResponse = await phoneCheckOpen(phoneNumber);
+      setPhoneToken(phoneCheckOpenResponse.data.response.message)
       setIsMessageSent(true);
       setLoading(false);
       Alert.alert('해당 전화 번호로\n인증번호가 전송되었습니다.');
@@ -43,7 +43,7 @@ export default function EmailPasswordScreen({ navigation }) {
   const handleCheckCertificationNumber = async function () {
     setLoading(true);
     try {
-      //await phoneCheckClose(phoneNumber, certificationNumber, phoneToken);
+      await phoneCheckClose(phoneNumber, certificationNumber, phoneToken);
       setIsPhoneNumberCertificated(true);
       setLoading(false);
       Alert.alert('인증되었습니다.');
