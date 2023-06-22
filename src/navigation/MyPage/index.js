@@ -73,6 +73,7 @@ export default function MyPageInnerStackNavigation({ navigation }) {
           name="PolicyDetail"
           component={PolicyDetailScreen}
           options={{
+            title: '서비스 약관 & 정책',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Policy')} />,
           }}
         />
