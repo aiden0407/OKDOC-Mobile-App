@@ -81,7 +81,7 @@ export const phoneCheckOpen = async function (phone) {
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/phone-check-open`,
+            url: `${apiUrl}/authentication/sms-check-open`,
             method: 'POST',
             data: {
                 phone: phone,
@@ -99,7 +99,7 @@ export const phoneCheckClose = async function (phone, certificationNumber, phone
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/phone-check-close`,
+            url: `${apiUrl}/authentication/sms-check-close`,
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${phoneToken}`
