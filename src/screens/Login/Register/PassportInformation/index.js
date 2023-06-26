@@ -14,7 +14,7 @@ import { BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { checkPassportInformation, createFamilyAccount, createPatientProfileInit } from 'api/Login';
+import { checkPassportInformation } from 'api/Login';
 
 //Assets
 import exclamationIcon from 'assets/icons/circle-exclamation.png';
