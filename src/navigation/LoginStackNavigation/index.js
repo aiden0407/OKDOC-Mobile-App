@@ -32,7 +32,9 @@ export default function LoginStackNavigation({ navigation }) {
           name="FindEmailPassword"
           component={FindEmailPasswordScreen}
           options={{
-            headerShown: false,
+            title: '이메일/비밀번호 찾기 문의',
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('Login')} />,
+            //headerShown: false,
           }}
         />
         <Stack.Screen
