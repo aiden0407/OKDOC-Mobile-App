@@ -191,3 +191,22 @@ export const createPatientProfileInit = async function (loginToken, familyId, na
         throw error;
     }
 }
+
+export const findFamilyAccount = async function (birth, name) {
+
+    try {
+        let options = {
+            url: `${apiUrl}/authentication/email-find`,
+            method: 'POST',
+            data: {
+                birth: birth,
+                name: name,
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
