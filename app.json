@@ -2,7 +2,7 @@
   "expo": {
     "name": "OK-DOC-Mobile-App",
     "slug": "OK-DOC-Mobile-App",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./src/assets/main/main_icon.png",
     "userInterfaceStyle": "light",
@@ -15,7 +15,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "1.0.1",
+      "bundleIdentifier": "app.okdoc"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,6 +27,11 @@
     },
     "web": {
       "favicon": "./src/assets/main/main_icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3fbc60d4-7480-42b7-9573-17fb087c1d50"
+      }
     }
   }
 }

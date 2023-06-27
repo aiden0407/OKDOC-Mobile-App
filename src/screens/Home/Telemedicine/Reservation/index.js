@@ -38,6 +38,7 @@ export default function ReservationScreen({ navigation, route }) {
       }
 
       for (let jj = 0; jj < doctorsList.length; jj++) {
+        console.log(doctorsList[jj].name);
         //const doctorScheduleResponse = await getScheduleByDoctorId(doctorsList[jj]._id);
       }
 
