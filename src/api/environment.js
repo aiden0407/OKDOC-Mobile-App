@@ -6,10 +6,10 @@ const ENV = {
         apiUrl: 'https://api.okdoc.app',
     },
     staging: {
-        apiUrl: 'https://58715333-07ae-429d-a6d0-cfdc916aba7d.mock.pstmn.io',
+        apiUrl: 'https://api.okdoc.app',
     },
     prod: {
-        apiUrl: "[your.production.api.here]",
+        apiUrl: 'https://api.okdoc.app',
     }
 };
 
