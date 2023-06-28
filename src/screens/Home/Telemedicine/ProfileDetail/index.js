@@ -120,7 +120,7 @@ export default function ProfileDetailScreen({ navigation }) {
             />
             <Text T6 bold marginTop={30}>성별</Text>
             {
-              profileInfo
+              profileInfo?.gender
                 ? (<Row marginTop={12} gap={12}>
                   <SolidButton medium text="남성" disabled={gender !== 'MALE'} />
                   <SolidButton medium text="여성" disabled={gender !== 'FEMALE'} />
@@ -177,31 +177,31 @@ export default function ProfileDetailScreen({ navigation }) {
             </Row>
             <Row marginTop={12} gap={12}>
               <TinySolidButton
-                isSelected={drinker === 'frequently'}
-                action={() => setDrinker('frequently')}
+                isSelected={drinker === 'FREQUENTLY'}
+                action={() => setDrinker('FREQUENTLY')}
                 text='자주'
               />
               <TinySolidButton
-                isSelected={drinker === 'sometimes'}
-                action={() => setDrinker('sometimes')}
+                isSelected={drinker === 'SOMETIMES'}
+                action={() => setDrinker('SOMETIMES')}
                 text='가끔'
               />
               <TinySolidButton
-                isSelected={drinker === 'none'}
-                action={() => setDrinker('none')}
+                isSelected={drinker === 'NONE'}
+                action={() => setDrinker('NONE')}
                 text='안함'
               />
             </Row>
             <Text T6 bold marginTop={30}>흡연 여부</Text>
             <Row marginTop={12} gap={12}>
               <TinySolidButton
-                isSelected={smoker}
-                action={() => setSmoker(true)}
+                isSelected={smoker === 'FREQUENTLY'}
+                action={() => setSmoker('FREQUENTLY')}
                 text='흡연'
               />
               <TinySolidButton
-                isSelected={smoker === false}
-                action={() => setSmoker(false)}
+                isSelected={smoker === 'NONE'}
+                action={() => setSmoker('NONE')}
                 text='비흡연'
               />
             </Row>

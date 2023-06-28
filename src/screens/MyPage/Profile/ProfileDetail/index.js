@@ -185,20 +185,20 @@ export default function ProfileDetailScreen({ navigation, route }) {
               <Row marginTop={12} gap={12}>
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={drinker === 'frequently'}
-                  action={() => isEditable && setDrinker('frequently')}
+                  isSelected={drinker === 'FREQUENTLY'}
+                  action={() => isEditable && setDrinker('FREQUENTLY')}
                   text='자주'
                 />
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={drinker === 'sometimes'}
-                  action={() => isEditable && setDrinker('sometimes')}
+                  isSelected={drinker === 'SOMETIMES'}
+                  action={() => isEditable && setDrinker('SOMETIMES')}
                   text='가끔'
                 />
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={drinker === 'none'}
-                  action={() => isEditable && setDrinker('none')}
+                  isSelected={drinker === 'NONE'}
+                  action={() => isEditable && setDrinker('NONE')}
                   text='안함'
                 />
               </Row>
@@ -206,14 +206,14 @@ export default function ProfileDetailScreen({ navigation, route }) {
               <Row marginTop={12} gap={12}>
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={smoker}
-                  action={() => isEditable && setSmoker(true)}
+                  isSelected={smoker === 'FREQUENTLY'}
+                  action={() => isEditable && setSmoker('FREQUENTLY')}
                   text='흡연'
                 />
                 <TinySolidButton
                   isEditable={isEditable}
-                  isSelected={!smoker}
-                  action={() => isEditable && setSmoker(false)}
+                  isSelected={smoker === 'NONE'}
+                  action={() => isEditable && setSmoker('NONE')}
                   text='비흡연'
                 />
               </Row>
