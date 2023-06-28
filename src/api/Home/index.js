@@ -1,13 +1,12 @@
 //API
 import axios from 'axios';
-import getEnvVars from 'api/environment.js';
-const { apiUrl } = getEnvVars();
+import { APIURL } from 'constants/api'
 
 export const getProducts = async function () {
 
     try {
         let options = {
-            url: `${apiUrl}/products/`,
+            url: `${APIURL}/products/`,
             method: 'GET',
         }
         const response = await axios(options);
@@ -22,7 +21,7 @@ export const getSymptoms = async function () {
 
     try {
         let options = {
-            url: `${apiUrl}/symptoms/`,
+            url: `${APIURL}/symptoms/`,
             method: 'GET',
         }
         const response = await axios(options);
@@ -37,7 +36,7 @@ export const getDepartments = async function () {
 
     try {
         let options = {
-            url: `${apiUrl}/departments/`,
+            url: `${APIURL}/departments/`,
             method: 'GET',
         }
         const response = await axios(options);
@@ -52,7 +51,7 @@ export const getDoctorsByDepartment = async function (department) {
 
     try {
         let options = {
-            url: `${apiUrl}/doctors/?department=${department}`,
+            url: `${APIURL}/doctors/?department=${department}`,
             method: 'GET',
         }
         const response = await axios(options);
@@ -67,7 +66,7 @@ export const getDoctorInformationByDoctorId = async function (doctorId) {
 
     try {
         let options = {
-            url: `${apiUrl}/doctor/${doctorId}`,
+            url: `${APIURL}/doctor/${doctorId}`,
             method: 'GET',
         }
         const response = await axios(options);
@@ -82,7 +81,7 @@ export const getScheduleByDoctorId = async function (loginToken, doctorId) {
 
     try {
         let options = {
-            url: `${apiUrl}/treatment_appointments/?doctor_id=${doctorId}`,
+            url: `${APIURL}/treatment_appointments/?doctor_id=${doctorId}`,
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${loginToken}`
@@ -100,7 +99,7 @@ export const getBiddings = async function (loginToken) {
 
     try {
         let options = {
-            url: `${apiUrl}/biddings/`,
+            url: `${APIURL}/biddings/`,
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${loginToken}`

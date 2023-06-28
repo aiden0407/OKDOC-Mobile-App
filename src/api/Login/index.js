@@ -1,13 +1,12 @@
 //API
 import axios from 'axios';
-import getEnvVars from 'api/environment.js';
-const { apiUrl } = getEnvVars();
+import { APIURL } from 'constants/api'
 
 export const familyLocalLogin = async function (id, password) {
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/sign-in`,
+            url: `${APIURL}/authentication/sign-in`,
             method: 'POST',
             data: {
                 id: id,
@@ -26,7 +25,7 @@ export const getRegisterTerms = async function () {
 
     try {
         let options = {
-            url: `${apiUrl}/terms/`,
+            url: `${APIURL}/terms/`,
             method: 'GET',
         }
         const response = await axios(options);
@@ -41,7 +40,7 @@ export const emailCheckOpen = async function (email) {
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/email-check-open`,
+            url: `${APIURL}/authentication/email-check-open`,
             method: 'POST',
             data: {
                 email: email,
@@ -59,7 +58,7 @@ export const emailCheckClose = async function (email, certificationNumber, email
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/email-check-close`,
+            url: `${APIURL}/authentication/email-check-close`,
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${emailToken}`
@@ -81,7 +80,7 @@ export const phoneCheckOpen = async function (phone) {
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/sms-check-open`,
+            url: `${APIURL}/authentication/sms-check-open`,
             method: 'POST',
             data: {
                 phone: phone,
@@ -99,7 +98,7 @@ export const phoneCheckClose = async function (phone, certificationNumber, phone
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/sms-check-close`,
+            url: `${APIURL}/authentication/sms-check-close`,
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${phoneToken}`
@@ -121,7 +120,7 @@ export const createFamilyAccount = async function (email, password, policy) {
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/sign-up`,
+            url: `${APIURL}/authentication/sign-up`,
             method: 'POST',
             data: {
                 id: email,
@@ -141,7 +140,7 @@ export const checkPassportInformation = async function (name, birth, passportNum
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/passport-check`,
+            url: `${APIURL}/authentication/passport-check`,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -166,7 +165,7 @@ export const createPatientProfileInit = async function (loginToken, familyId, na
 
     try {
         let options = {
-            url: `${apiUrl}/families/${familyId}/patients/${passportNumber}`,
+            url: `${APIURL}/families/${familyId}/patients/${passportNumber}`,
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${loginToken}`
@@ -196,7 +195,7 @@ export const findFamilyAccount = async function (birth, name) {
 
     try {
         let options = {
-            url: `${apiUrl}/authentication/email-find`,
+            url: `${APIURL}/authentication/email-find`,
             method: 'POST',
             data: {
                 birth: birth,

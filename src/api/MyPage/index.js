@@ -1,13 +1,12 @@
 //API
 import axios from 'axios';
-import getEnvVars from 'api/environment.js';
-const { apiUrl } = getEnvVars();
+import { APIURL } from 'constants/api'
 
 export const getPatientList = async function (loginToken) {
 
     try {
         let options = {
-            url: `${apiUrl}/patients/`,
+            url: `${APIURL}/patients/`,
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${loginToken}`
@@ -25,7 +24,7 @@ export const modifyPatientInformation = async function (loginToken, patientId, p
 
     try {
         let options = {
-            url: `${apiUrl}/patients/${patientId}`,
+            url: `${APIURL}/patients/${patientId}`,
             method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${loginToken}`

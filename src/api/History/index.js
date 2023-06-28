@@ -1,13 +1,12 @@
 //API
 import axios from 'axios';
-import getEnvVars from 'api/environment.js';
-const { apiUrl } = getEnvVars();
+import { APIURL } from 'constants/api'
 
 export const getScheduleByPatientId = async function (loginToken, patientId) {
 
     try {
         let options = {
-            url: `${apiUrl}/treatment_appointments/?patient_id=${patientId}`,
+            url: `${APIURL}/treatment_appointments/?patient_id=${patientId}`,
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${loginToken}`
@@ -25,7 +24,7 @@ export const modifyTreatmentAppointmentBeforeEnter = async function (loginToken,
 
     try {
         let options = {
-            url: `${apiUrl}/treatment_appointments/${appointmentId}`,
+            url: `${APIURL}/treatment_appointments/${appointmentId}`,
             method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${loginToken}`
@@ -46,7 +45,7 @@ export const treatmentComplete = async function (loginToken, appointmentId) {
 
     try {
         let options = {
-            url: `${apiUrl}/treatment_appointments/${appointmentId}`,
+            url: `${APIURL}/treatment_appointments/${appointmentId}`,
             method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${loginToken}`
