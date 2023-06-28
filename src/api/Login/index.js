@@ -161,21 +161,21 @@ export const checkPassportInformation = async function (name, birth, passportNum
     }
 }
 
-export const createPatientProfileInit = async function (loginToken, familyId, name, birth, passportNumber, dateOfIssue, dateOfExpiry, gender) {
+export const createPatientProfileInit = async function (loginToken, name, birth, passportNumber, dateOfIssue, dateOfExpiry, gender) {
 
     try {
         let options = {
-            url: `${APIURL}/families/${familyId}/patients/${passportNumber}`,
+            url: `${APIURL}/patients/${passportNumber}`,
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${loginToken}`
             },
             data: {
-                USERNAME: name,
-                BIRTH: birth,
-                PASSPORTNUMBER: passportNumber,
-                ISSUEDATE: dateOfIssue,
-                CLOSEDATE: dateOfExpiry,
+                user_name: name,
+                birth: birth,
+                passport_number: passportNumber,
+                issue_date: dateOfIssue,
+                close_date: dateOfExpiry,
                 gender: gender,
                 relationship: '본인',
             }
