@@ -15,8 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "buildNumber": "6",
+      "supportsTablet": false,
+      "buildNumber": "7",
       "bundleIdentifier": "app.okdoc",
       "icon": "./src/assets/main/main_icon.png"
     },
