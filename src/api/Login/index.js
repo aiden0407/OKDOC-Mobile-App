@@ -116,26 +116,6 @@ export const phoneCheckClose = async function (phone, certificationNumber, phone
     }
 }
 
-export const createFamilyAccount = async function (email, password, policy) {
-
-    try {
-        let options = {
-            url: `${APIURL}/authentication/sign-up`,
-            method: 'POST',
-            data: {
-                id: email,
-                password: password,
-                agreements: policy
-            },
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error;
-    }
-}
-
 export const checkPassportInformation = async function (name, birth, passportNumber, dateOfIssue, dateOfExpiry) {
 
     try {
@@ -152,6 +132,26 @@ export const checkPassportInformation = async function (name, birth, passportNum
                 issue_date: dateOfIssue,
                 close_date: dateOfExpiry,
             }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const createFamilyAccount = async function (email, password, policy) {
+
+    try {
+        let options = {
+            url: `${APIURL}/authentication/sign-up`,
+            method: 'POST',
+            data: {
+                id: email,
+                password: password,
+                agreements: policy
+            },
         }
         const response = await axios(options);
         return response;
@@ -180,28 +180,6 @@ export const createPatientProfileInit = async function (loginToken, name, birth,
                 relationship: '본인',
             }
         }
-        console.log(options);
-        const response = await axios(options);
-        console.log(response.data.response);
-        return response;
-
-    } catch (error) {
-        console.log(error.response.data);
-        throw error;
-    }
-}
-
-export const findFamilyAccount = async function (birth, name) {
-
-    try {
-        let options = {
-            url: `${APIURL}/authentication/email-find`,
-            method: 'POST',
-            data: {
-                birth: birth,
-                name: name,
-            },
-        }
         const response = await axios(options);
         return response;
 
@@ -209,3 +187,22 @@ export const findFamilyAccount = async function (birth, name) {
         throw error;
     }
 }
+
+// export const findFamilyAccount = async function (birth, name) {
+
+//     try {
+//         let options = {
+//             url: `${APIURL}/authentication/email-find`,
+//             method: 'POST',
+//             data: {
+//                 birth: birth,
+//                 name: name,
+//             },
+//         }
+//         const response = await axios(options);
+//         return response;
+
+//     } catch (error) {
+//         throw error;
+//     }
+// }
