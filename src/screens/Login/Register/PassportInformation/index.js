@@ -61,7 +61,7 @@ export default function PassportInformationScreen({ navigation }) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    return year + month + day;
+    return Number(year + month + day);
   }
 
   function formatDateString(dateString) {
@@ -150,7 +150,7 @@ export default function PassportInformationScreen({ navigation }) {
               </MediumSolidButtonBackground>
             </Row>
 
-            <Box height={100} />
+            <Box height={40} />
 
             <SolidButton
               text="다음"
