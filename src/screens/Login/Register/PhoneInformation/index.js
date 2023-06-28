@@ -45,7 +45,7 @@ export default function EmailPasswordScreen({ navigation }) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    return year + month + day;
+    return Number(year + month + day);
   }
 
   const handleCheckCertificationNumber = async function () {
@@ -92,18 +92,18 @@ export default function EmailPasswordScreen({ navigation }) {
 
   const initPatient = async function (loginToken) {
     try {
-      const createPatientProfileInitResponse = await createPatientProfileInit(loginToken, registerStatus.email, registerStatus.name, formatDate(registerStatus.birth), registerStatus.passportNumber, formatDate(registerStatus.dateOfIssue), formatDate(registerStatus.dateOfExpiry), registerStatus.gender);
+      const createPatientProfileInitResponse = await createPatientProfileInit(loginToken, registerStatus.name, formatDate(registerStatus.birth), registerStatus.passportNumber, formatDate(registerStatus.dateOfIssue), formatDate(registerStatus.dateOfExpiry), registerStatus.gender);
       const mainProfile = createPatientProfileInitResponse.data.response;
       apiContextDispatch({
         type: 'PROFILE_UPDATE_MAIN',
-        name: mainProfile.passport.USERNAME,
+        name: mainProfile.passport.user_name,
         relationship: mainProfile.relationship,
-        birth: mainProfile.passport.BIRTH,
+        birth: mainProfile.passport.birth,
         gender: mainProfile.gender,
-        height: mainProfile.height,
-        weight: mainProfile.weight,
-        drinker: mainProfile.drinker,
-        smoker: mainProfile.smoker,
+        height: mainProfile?.height,
+        weight: mainProfile?.weight,
+        drinker: mainProfile?.drinker,
+        smoker: mainProfile?.smoker,
         medicalHistory: mainProfile?.medicalHistory,
         medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
         medication: mainProfile?.medication,
