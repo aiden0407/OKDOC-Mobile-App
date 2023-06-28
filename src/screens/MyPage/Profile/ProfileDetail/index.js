@@ -12,9 +12,12 @@ import { Text } from 'components/Text';
 import { LineInput, BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
-export default function ProfileDetailScreen({ navigation, route }) {
+//Api
+import { modifyPatientInformation } from 'api/MyPage';
 
-  const { state: { profileData } } = useContext(ApiContext);
+export default function ProfileDetailScreen({ navigation }) {
+
+  const { state: { profileData }, dispatch } = useContext(ApiContext);
   const [informationCategory, setInformationCategory] = useState('personalInfo');
   const [isEditable, setIsEditable] = useState(false);
   const [height, setHeight] = useState(profileData[0]?.height?.toString());
@@ -33,7 +36,7 @@ export default function ProfileDetailScreen({ navigation, route }) {
         if (informationCategory === 'healthInfo') {
           if (isEditable) {
             return (
-              <EditButton onPress={() => setIsEditable(false)}>
+              <EditButton onPress={() => handleModifyPatientInformation()}>
                 <Text T6 bold color={COLOR.MAIN}>완료</Text>
               </EditButton>
             )
@@ -55,6 +58,32 @@ export default function ProfileDetailScreen({ navigation, route }) {
       y: value,
       animated: true,
     });
+  }
+
+  const handleModifyPatientInformation = async function (loginToken) {
+    try {
+      // const modifyPatientInformationResponse = await modifyPatientInformation(loginToken, profileData[0]?.height?.passport.passport_number, {});
+      // const mainProfile = modifyPatientInformationResponse.data.response;
+      // dispatch({
+      //   type: 'PROFILE_UPDATE_MAIN',
+      //   name: mainProfile.passport.user_name,
+      //   relationship: mainProfile.relationship,
+      //   birth: mainProfile.passport.birth,
+      //   gender: mainProfile.gender,
+      //   height: mainProfile?.height,
+      //   weight: mainProfile?.weight,
+      //   drinker: mainProfile?.drinker,
+      //   smoker: mainProfile?.smoker,
+      //   medicalHistory: mainProfile?.medicalHistory,
+      //   medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
+      //   medication: mainProfile?.medication,
+      //   allergicReaction: mainProfile?.allergicReaction,
+      //   etcConsideration: mainProfile?.etcConsideration,
+      // });
+      setIsEditable(false)
+    } catch (error) {
+      Alert.alert('프로필 정보 업데이트에 실패하였습니다. 다시 시도해 주세요.');
+    }
   }
 
   function TinySolidButton({ isEditable, isSelected, action, text }) {
@@ -98,7 +127,7 @@ export default function ProfileDetailScreen({ navigation, route }) {
                 <>
                   <UnsellectedButtonLeft
                     underlayColor='transparent'
-                    onPress={() => setInformationCategory('personalInfo')}
+                    onPress={() => !isEditable && setInformationCategory('personalInfo')}
                   >
                     <Text T5 color={COLOR.GRAY1}>개인정보</Text>
                   </UnsellectedButtonLeft>
