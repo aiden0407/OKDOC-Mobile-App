@@ -61,20 +61,20 @@ export default function TelemedicineReservation({ navigation }) {
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Reservation')} />,
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="ProfileList"
           component={ProfileListScreen}
           options={{
             title: '프로필 선택',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('DoctorProfile')} />,
           }}
-        />
+        /> */}
         <Stack.Screen
           name="ProfileDetail"
           component={ProfileDetailScreen}
           options={{
             title: '프로필 정보',
-            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('ProfileList')} />,
+            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('DoctorProfile')} />,
           }}
         />
         <Stack.Screen
