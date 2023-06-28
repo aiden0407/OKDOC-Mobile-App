@@ -8,6 +8,7 @@ const initialState = {
   },
   profileData: [
     {
+      id: undefined,
       name: undefined,
       relationship: undefined,
       birth: undefined,
@@ -230,28 +231,34 @@ const reducer = (state, action) => {
         },
       };
 
-    case 'PROFILE_UPDATE_MAIN':
+    case 'PROFILE_CREATE_MAIN':
       return {
         ...state,
-        accountData: {
-          ...state.accountData,
-          name: action.name,
-        },
         profileData: [
           {
+            id: action.id,
             name: action.name,
             relationship: action.relationship,
             birth: action.birth,
             gender: action.gender,
-            height: action.height,
-            weight: action.weight,
-            drinker: action.drinker,
-            smoker: action.smoker,
-            medicalHistory: action.medicalHistory,
-            medicalHistoryFamily: action.medicalHistoryFamily,
-            medication: action.medication,
-            allergicReaction: action.allergicReaction,
-            etcConsideration: action.etcConsideration
+            height: undefined,
+            weight: undefined,
+            drinker: undefined,
+            smoker: undefined,
+            medicalHistory: undefined,
+            medicalHistoryFamily: undefined,
+            medication: undefined,
+            allergicReaction: undefined,
+            etcConsideration: undefined,
+            // height: action.height,
+            // weight: action.weight,
+            // drinker: action.drinker,
+            // smoker: action.smoker,
+            // medicalHistory: action.medicalHistory,
+            // medicalHistoryFamily: action.medicalHistoryFamily,
+            // medication: action.medication,
+            // allergicReaction: action.allergicReaction,
+            // etcConsideration: action.etcConsideration
           }
         ],
       };
@@ -271,8 +278,8 @@ const reducer = (state, action) => {
 const ApiProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
-  //console.log(`ApiContext: ${JSON.stringify(state.profileData[0])}`);
-  console.log(`ApiContext: ${JSON.stringify(state.accountData)}`);
+  //console.log(`ApiContext: ${JSON.stringify(state.accountData)}`);
+  console.log(`ApiContext: ${JSON.stringify(state.profileData[0])}`);
   return <ApiContext.Provider value={value}>{children}</ApiContext.Provider>;
 };
 
