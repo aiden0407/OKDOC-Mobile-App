@@ -170,6 +170,7 @@ export default function PassportInformationScreen({ navigation }) {
               value={birth}
               onChange={onBirthChange}
               style={{ backgroundColor: COLOR.GRAY5 }}
+              locale="ko-KO"
             />
             <CustomSolidButton
               underlayColor={COLOR.SUB1}
@@ -189,6 +190,7 @@ export default function PassportInformationScreen({ navigation }) {
               value={dateOfIssue}
               onChange={onDateOfIssueChange}
               style={{ backgroundColor: COLOR.GRAY5 }}
+              locale="ko-KO"
             />
             <CustomSolidButton
               underlayColor={COLOR.SUB1}
@@ -208,6 +210,7 @@ export default function PassportInformationScreen({ navigation }) {
               value={dateOfExpiry}
               onChange={onDateOfExpiryChange}
               style={{ backgroundColor: COLOR.GRAY5 }}
+              locale="ko-KO"
             />
             <CustomSolidButton
               underlayColor={COLOR.SUB1}
