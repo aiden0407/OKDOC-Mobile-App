@@ -1,5 +1,5 @@
 //React
-import { useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AppProvider } from 'context/AppContext';
@@ -32,6 +32,15 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const [fontsLoaded] = useFonts({
     "Pretendard-Bold": require('assets/fonts/Pretendard-Bold.otf'),
     "Pretendard-Medium": require('assets/fonts/Pretendard-Medium.otf'),
@@ -48,6 +57,10 @@ export default function App() {
     return null;
   }
 
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <AppProvider>
       <ApiProvider>
@@ -56,7 +69,6 @@ export default function App() {
 
           <NavigationContainer>
             <Stack.Navigator>
-
               <Stack.Group screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="BottomTapNavigation" component={BottomTapNavigation} />
                 <Stack.Screen name="TelemedicineReservation" component={TelemedicineReservation} />
@@ -68,7 +80,6 @@ export default function App() {
               <Stack.Group screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>
                 <Stack.Screen name="LoginStackNavigation" component={LoginStackNavigation} />
               </Stack.Group>
-
             </Stack.Navigator>
           </NavigationContainer>
         </View>
