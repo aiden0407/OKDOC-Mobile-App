@@ -146,7 +146,7 @@ export default function HomeScreen({ navigation }) {
 
             <ContainerCenter>
               <IconsWrapper>
-                <Icon category="symptom" name="감기" />
+                {/* <Icon category="symptom" name="감기" />
                 <Icon category="symptom" name="두통" />
                 <Icon category="symptom" name="고열/미열" />
                 <Icon category="symptom" name="복통" />
@@ -154,7 +154,16 @@ export default function HomeScreen({ navigation }) {
                 <Icon category="symptom" name="몸살" />
                 <Icon category="medicalSubject" name="이비인후과" />
                 <Icon category="medicalSubject" name="안과" />
-                <Icon category="medicalSubject" name="소아청소년과" />
+                <Icon category="medicalSubject" name="소아청소년과" /> */}
+                <Icon category="symptom" name="근육통" />
+                <Icon category="medicalSubject" name="정형외과" />
+                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
+                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
+                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
+                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
+                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
+                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
+                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
               </IconsWrapper>
 
               <FullCategoryButton underlayColor={COLOR.GRAY5} onPress={() => handleFullCategory()}>
