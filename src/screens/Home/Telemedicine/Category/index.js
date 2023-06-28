@@ -101,11 +101,17 @@ export default function CategoryScreen({ navigation }) {
 
         <IconsContainer showsVerticalScrollIndicator={false}>
           <IconsWrapper>
-            {categoryGroup === 'symptoms' && (
+            {/* {categoryGroup === 'symptoms' && (
               symptomsData.map((item) => <Icon key={item.name} category="symptom" name={item.name} />)
             )}
             {categoryGroup === 'subjects' && (
               departmentsData.map((item) => <Icon key={item.name} category="medicalSubject" name={item.name} />)
+            )} */}
+            {categoryGroup === 'symptoms' && (
+              <Icon category="symptom" name="근육통" />
+            )}
+            {categoryGroup === 'subjects' && (
+              <Icon category="medicalSubject" name="정형외과" />
             )}
           </IconsWrapper>
         </IconsContainer>
