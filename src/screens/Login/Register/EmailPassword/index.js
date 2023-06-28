@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 //Components
 import { COLOR, TYPOGRAPHY } from 'constants/design'
 import { Alert, ActivityIndicator } from 'react-native';
-import { SafeArea, Container, Row } from 'components/Layout';
+import { SafeArea, KeyboardAvoiding, Container } from 'components/Layout';
 import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
@@ -82,97 +82,101 @@ export default function EmailPasswordScreen({ navigation }) {
           </LoadingBackground>
         )
       }
-      <Container paddingHorizontal={20}>
-        <Container>
-          <Text T3 bold marginTop={30}>사용하실 이메일과{'\n'}비밀번호를 입력해주세요</Text>
+      <KeyboardAvoiding>
+        <Container paddingHorizontal={20}>
+          <Container>
+            <Text T3 bold marginTop={30}>사용하실 이메일과{'\n'}비밀번호를 입력해주세요</Text>
 
-          <CustomLineInput
-            editable={!isEmailSent}
-            placeholder="이메일"
-            value={email}
-            onChangeText={setEmail}
-            returnKeyType="next"
-            onSubmitEditing={() => {
-              if (!validateEmail(email)) {
-                handleRequestCertification();
-              }
-            }}
-          />
-          {!isEmailCertificated
-            && <CustomOutlineButtonBackground
-              disabled={!validateEmail(email)}
-              onPress={() => handleRequestCertification()}
-              underlayColor={COLOR.SUB4}
-              style={{ position: 'absolute', right: 16, top: 100, zIndex: 1 }}
-            >
-              <Text T7 medium color={validateEmail(email) ? COLOR.MAIN : COLOR.GRAY1}>{isEmailSent ? '재전송' : '인증요청'}</Text>
-            </CustomOutlineButtonBackground>
-          }
-
-          {isEmailSent && !isEmailCertificated && (<>
             <CustomLineInput
-              placeholder="인증번호 6자리"
-              value={certificationNumber}
-              onChangeText={setCertificationNumber}
-              maxLength={6}
+              editable={!isEmailSent}
+              placeholder="이메일"
+              value={email}
+              onChangeText={setEmail}
+              inputMode="email"
               returnKeyType="next"
               onSubmitEditing={() => {
-                if(certificationNumber?.length < 6) {
-                  handleCheckCertificationNumber();
+                if (!validateEmail(email)) {
+                  handleRequestCertification();
                 }
               }}
             />
-            <CustomOutlineButtonBackground
-              disabled={certificationNumber?.length < 6}
-              onPress={() => handleCheckCertificationNumber()}
-              underlayColor={COLOR.SUB4}
-              style={{ position: 'absolute', right: 16, top: 157, zIndex: 1 }}
-            >
-              <Text T7 medium color={certificationNumber?.length < 6 ? COLOR.GRAY2 : COLOR.MAIN}>인증확인</Text>
-            </CustomOutlineButtonBackground>
-          </>)}
+            {!isEmailCertificated
+              && <CustomOutlineButtonBackground
+                disabled={!validateEmail(email)}
+                onPress={() => handleRequestCertification()}
+                underlayColor={COLOR.SUB4}
+                style={{ position: 'absolute', right: 16, top: 100, zIndex: 1 }}
+              >
+                <Text T7 medium color={validateEmail(email) ? COLOR.MAIN : COLOR.GRAY1}>{isEmailSent ? '재전송' : '인증요청'}</Text>
+              </CustomOutlineButtonBackground>
+            }
 
-          {isEmailCertificated && (<>
-            {
-              !password && <Text T8 color={COLOR.GRAY1} style={{ position: 'absolute', top: 170, left: 98 }}>(영어, 숫자, 특수문자 포함 6자~14자 이내)</Text>
-            }
-            <CustomLineInput
-              placeholder="비밀번호 입력"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              returnKeyType="next"
-              maxLength={14}
-              onSubmitEditing={() => passwordCheckRef.current.focus()}
-            />
-            {
-              password && !validatePassword(password) && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 6자~14자 이내를 충족하지 않습니다</Text>
-            }
-            <CustomLineInput
-              placeholder="비밀번호 확인"
-              value={passwordCheck}
-              onChangeText={setPasswordCheck}
-              secureTextEntry
-              returnKeyType="next"
-              maxLength={14}
-              ref={passwordCheckRef}
-              onSubmitEditing={() => {
-                (isEmailCertificated && validatePassword(password) && password === passwordCheck) && handleNextScreen()
-              }}
-            />
-            {
-              passwordCheck && password !== passwordCheck && <Text T8 color='#FF0000CC' marginTop={6}>* 비밀번호가 일치하지 않습니다</Text>
-            }
-          </>)}
+            {isEmailSent && !isEmailCertificated && (<>
+              <CustomLineInput
+                placeholder="인증번호 6자리"
+                value={certificationNumber}
+                onChangeText={setCertificationNumber}
+                inputMode="numeric"
+                maxLength={6}
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  if (certificationNumber?.length < 6) {
+                    handleCheckCertificationNumber();
+                  }
+                }}
+              />
+              <CustomOutlineButtonBackground
+                disabled={certificationNumber?.length < 6}
+                onPress={() => handleCheckCertificationNumber()}
+                underlayColor={COLOR.SUB4}
+                style={{ position: 'absolute', right: 16, top: 157, zIndex: 1 }}
+              >
+                <Text T7 medium color={certificationNumber?.length < 6 ? COLOR.GRAY2 : COLOR.MAIN}>인증확인</Text>
+              </CustomOutlineButtonBackground>
+            </>)}
+
+            {isEmailCertificated && (<>
+              {
+                !password && <Text T8 color={COLOR.GRAY1} style={{ position: 'absolute', top: 170, left: 98 }}>(영어, 숫자, 특수문자 포함 6자~14자 이내)</Text>
+              }
+              <CustomLineInput
+                placeholder="비밀번호 입력"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                returnKeyType="next"
+                maxLength={14}
+                onSubmitEditing={() => passwordCheckRef.current.focus()}
+              />
+              {
+                password && !validatePassword(password) && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 6자~14자 이내를 충족하지 않습니다</Text>
+              }
+              <CustomLineInput
+                placeholder="비밀번호 확인"
+                value={passwordCheck}
+                onChangeText={setPasswordCheck}
+                secureTextEntry
+                returnKeyType="next"
+                maxLength={14}
+                ref={passwordCheckRef}
+                onSubmitEditing={() => {
+                  (isEmailCertificated && validatePassword(password) && password === passwordCheck) && handleNextScreen()
+                }}
+              />
+              {
+                passwordCheck && password !== passwordCheck && <Text T8 color='#FF0000CC' marginTop={6}>* 비밀번호가 일치하지 않습니다</Text>
+              }
+            </>)}
+          </Container>
+
+          <SolidButton
+            text="다음"
+            marginBottom={20}
+            disabled={!isEmailCertificated || !validatePassword(password) || password !== passwordCheck}
+            action={() => handleNextScreen()}
+          />
         </Container>
-
-        <SolidButton
-          text="다음"
-          marginBottom={20}
-          disabled={!isEmailCertificated || !validatePassword(password) || password !== passwordCheck}
-          action={() => handleNextScreen()}
-        />
-      </Container>
+      </KeyboardAvoiding>
     </SafeArea>
   );
 }
