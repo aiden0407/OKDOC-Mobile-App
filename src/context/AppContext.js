@@ -23,7 +23,7 @@ const initialState = {
     passportNumber: 'M477Y2913',
     dateOfIssue: undefined,
     dateOfExpiry: undefined,
-    gender: 'male',
+    gender: 'MALE',
     countryCode: undefined,
     phoneNumber: undefined,
   },

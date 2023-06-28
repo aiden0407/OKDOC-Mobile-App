@@ -122,15 +122,15 @@ export default function ProfileDetailScreen({ navigation }) {
             {
               profileInfo
                 ? (<Row marginTop={12} gap={12}>
-                  <SolidButton medium text="남성" disabled={gender !== 'male'} />
-                  <SolidButton medium text="여성" disabled={gender !== 'female'} />
+                  <SolidButton medium text="남성" disabled={gender !== 'MALE'} />
+                  <SolidButton medium text="여성" disabled={gender !== 'FEMALE'} />
                 </Row>)
                 : (<Row marginTop={12} gap={12}>
-                  <MediumSolidButtonBackground isSelected={gender === 'male'} onPress={() => setGender('male')}>
-                    <Text T6 medium={!gender === 'male'} bold={gender === 'male'} color={gender === 'male' ? '#FFFFFF' : COLOR.GRAY2}>남성</Text>
+                  <MediumSolidButtonBackground isSelected={gender === 'MALE'} onPress={() => setGender('MALE')}>
+                    <Text T6 medium={!gender === 'MALE'} bold={gender === 'MALE'} color={gender === 'MALE' ? '#FFFFFF' : COLOR.GRAY2}>남성</Text>
                   </MediumSolidButtonBackground>
-                  <MediumSolidButtonBackground isSelected={gender === 'female'} onPress={() => setGender('female')}>
-                    <Text T6 medium={!gender === 'female'} bold={gender === 'female'} color={gender === 'female' ? '#FFFFFF' : COLOR.GRAY2}>여성</Text>
+                  <MediumSolidButtonBackground isSelected={gender === 'FEMALE'} onPress={() => setGender('FEMALE')}>
+                    <Text T6 medium={!gender === 'FEMALE'} bold={gender === 'FEMALE'} color={gender === 'FEMALE' ? '#FFFFFF' : COLOR.GRAY2}>여성</Text>
                   </MediumSolidButtonBackground>
                 </Row>)
             }

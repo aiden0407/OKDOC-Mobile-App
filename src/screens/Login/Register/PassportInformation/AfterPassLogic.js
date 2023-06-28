@@ -184,11 +184,11 @@ export default function PassportInformationScreen({ navigation }) {
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>성별</Text>
             <Row marginTop={12} gap={12}>
-              <MediumSolidButtonBackground isSelected={gender === 'male'} onPress={() => setGender('male')}>
-                <Text T6 medium={!gender === 'male'} bold={gender === 'male'} color={gender === 'male' ? '#FFFFFF' : COLOR.GRAY2}>남성</Text>
+              <MediumSolidButtonBackground isSelected={gender === 'MALE'} onPress={() => setGender('MALE')}>
+                <Text T6 medium={!gender === 'MALE'} bold={gender === 'MALE'} color={gender === 'MALE' ? '#FFFFFF' : COLOR.GRAY2}>남성</Text>
               </MediumSolidButtonBackground>
-              <MediumSolidButtonBackground isSelected={gender === 'female'} onPress={() => setGender('female')}>
-                <Text T6 medium={!gender === 'female'} bold={gender === 'female'} color={gender === 'female' ? '#FFFFFF' : COLOR.GRAY2}>여성</Text>
+              <MediumSolidButtonBackground isSelected={gender === 'FEMALE'} onPress={() => setGender('FEMALE')}>
+                <Text T6 medium={!gender === 'FEMALE'} bold={gender === 'FEMALE'} color={gender === 'FEMALE' ? '#FFFFFF' : COLOR.GRAY2}>여성</Text>
               </MediumSolidButtonBackground>
             </Row>
 

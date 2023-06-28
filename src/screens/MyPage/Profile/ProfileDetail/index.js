@@ -132,8 +132,8 @@ export default function ProfileDetailScreen({ navigation, route }) {
               />
               <Text T6 bold marginTop={30}>성별</Text>
               <Row marginTop={12} gap={12}>
-                <SolidButton medium text="남성" disabled={profileData[0]?.gender !== 'male'} />
-                <SolidButton medium text="여성" disabled={profileData[0]?.gender !== 'female'} />
+                <SolidButton medium text="남성" disabled={profileData[0]?.gender !== 'MALE'} />
+                <SolidButton medium text="여성" disabled={profileData[0]?.gender !== 'FEMALE'} />
               </Row>
             </Container>
           )}
