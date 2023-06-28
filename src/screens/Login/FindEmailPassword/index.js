@@ -13,7 +13,7 @@ export default function InquiryScreen() {
   return (
     <SafeArea>
       <WebView
-        source={{ uri: `http://localhost:5500/inquiry/?userName=${ApiContextState.profileData[0].name}&userEmail=${ApiContextState.accountData.email}` }}
+        source={{ uri: `https://zoom.okdoc.app/inquiry/?userName=${ApiContextState.profileData[0].name}&userEmail=${ApiContextState.accountData.email}` }}
       />
     </SafeArea>
   );
