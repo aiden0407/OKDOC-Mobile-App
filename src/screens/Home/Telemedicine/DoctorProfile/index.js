@@ -20,8 +20,8 @@ import starFull from 'assets/icons/star-full.png';
 
 export default function DoctorProfileScreen({ navigation }) {
 
-  const { state: { telemedicineReservationStatus } } = useContext(AppContext);
-  const { state: { accountData } } = useContext(ApiContext);
+  const { state: { telemedicineReservationStatus }, dispatch } = useContext(AppContext);
+  const { state: { accountData, profileData } } = useContext(ApiContext);
   const [informationCategory, setInformationCategory] = useState('profile');
   const doctorInfo = telemedicineReservationStatus.doctorInfo
 
@@ -30,7 +30,9 @@ export default function DoctorProfileScreen({ navigation }) {
 
   function handleApplyReservation() {
     if (accountData.loginToken) {
-      navigation.navigate('ProfileList');
+      // navigation.navigate('ProfileList');
+      dispatch({ type: 'TELEMEDICINE_RESERVATION_PROFILE', profileType: 'my', profileInfo: profileData[0] });
+      navigation.navigate('ProfileDetail');
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
