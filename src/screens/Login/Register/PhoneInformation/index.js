@@ -69,7 +69,7 @@ export default function EmailPasswordScreen({ navigation }) {
   const handleNextScreen = async function () {
     try {
       const createFamilyAccountResponse = await createFamilyAccount(registerStatus.email, registerStatus.password, registerStatus.policy);
-      const loginToken = createFamilyAccountResponse.data.response.login_token;
+      const loginToken = createFamilyAccountResponse.data.response.accessToken;
       apiContextDispatch({ 
         type: 'LOGIN', 
         loginToken: loginToken,
@@ -95,20 +95,12 @@ export default function EmailPasswordScreen({ navigation }) {
       const createPatientProfileInitResponse = await createPatientProfileInit(loginToken, registerStatus.name, formatDate(registerStatus.birth), registerStatus.passportNumber, formatDate(registerStatus.dateOfIssue), formatDate(registerStatus.dateOfExpiry), registerStatus.gender);
       const mainProfile = createPatientProfileInitResponse.data.response;
       apiContextDispatch({
-        type: 'PROFILE_UPDATE_MAIN',
+        type: 'PROFILE_CREATE_MAIN',
+        id: mainProfile.id,
         name: mainProfile.passport.user_name,
         relationship: mainProfile.relationship,
         birth: mainProfile.passport.birth,
         gender: mainProfile.gender,
-        height: mainProfile?.height,
-        weight: mainProfile?.weight,
-        drinker: mainProfile?.drinker,
-        smoker: mainProfile?.smoker,
-        medicalHistory: mainProfile?.medicalHistory,
-        medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
-        medication: mainProfile?.medication,
-        allergicReaction: mainProfile?.allergicReaction,
-        etcConsideration: mainProfile?.etcConsideration,
       });
       appContextDispatch({type: 'REGISTER_COMPLETE'});
       navigation.navigate('RegisterComplete');
