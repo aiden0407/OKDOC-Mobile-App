@@ -6,11 +6,12 @@ import { AppProvider } from 'context/AppContext';
 import { ApiProvider } from 'context/ApiContext';
 
 //Default Settings
+import { COLOR } from 'constants/design'
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { COLOR } from 'constants/design'
+import { RootSiblingParent } from 'react-native-root-siblings';
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
 TextInput.defaultProps = TextInput.defaultProps || {};
@@ -37,7 +38,7 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 1500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -62,28 +63,30 @@ export default function App() {
   }
 
   return (
-    <AppProvider>
-      <ApiProvider>
-        <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
-          <StatusBar animated style="dark" />
+    <RootSiblingParent>
+      <AppProvider>
+        <ApiProvider>
+          <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+            <StatusBar animated style="dark" />
 
-          <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Group screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="BottomTapNavigation" component={BottomTapNavigation} />
-                <Stack.Screen name="TelemedicineReservation" component={TelemedicineReservation} />
-                <Stack.Screen name="HistoryStackNavigation" component={HistoryStackNavigation} />
-                <Stack.Screen name="MyPageStackNavigation" component={MyPageStackNavigation} />
-                <Stack.Screen name="NeedLoginNavigation" component={NeedLoginNavigation} />
-              </Stack.Group>
+            <NavigationContainer>
+              <Stack.Navigator>
+                <Stack.Group screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="BottomTapNavigation" component={BottomTapNavigation} />
+                  <Stack.Screen name="TelemedicineReservation" component={TelemedicineReservation} />
+                  <Stack.Screen name="HistoryStackNavigation" component={HistoryStackNavigation} />
+                  <Stack.Screen name="MyPageStackNavigation" component={MyPageStackNavigation} />
+                  <Stack.Screen name="NeedLoginNavigation" component={NeedLoginNavigation} />
+                </Stack.Group>
 
-              <Stack.Group screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>
-                <Stack.Screen name="LoginStackNavigation" component={LoginStackNavigation} />
-              </Stack.Group>
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
-      </ApiProvider>
-    </AppProvider>
+                <Stack.Group screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>
+                  <Stack.Screen name="LoginStackNavigation" component={LoginStackNavigation} />
+                </Stack.Group>
+              </Stack.Navigator>
+            </NavigationContainer>
+          </View>
+        </ApiProvider>
+      </AppProvider>
+    </RootSiblingParent>
   );
 }
