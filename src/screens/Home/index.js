@@ -1,8 +1,6 @@
 //React
 import { useEffect, useContext } from 'react';
-import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import styled from 'styled-components/native';
 
@@ -29,57 +27,11 @@ function FocusAwareStatusBar(props) {
 
 export default function HomeScreen({ navigation }) {
 
-  const { state: { accountData }, dispatch: apiContextDispatch } = useContext(ApiContext);
-  const { state: { registerStatus }, dispatch: appContextDispatch } = useContext(AppContext);
+  const { dispatch: appContextDispatch } = useContext(AppContext);
 
   useEffect(() => {
-    autoLogin();
     initProducts();
   }, []);
-
-  const autoLogin = async function () {
-    try {
-      const jsonValue = await AsyncStorage.getItem('accountData');
-      if (jsonValue !== null) {
-        const accountData = JSON.parse(jsonValue);
-        apiContextDispatch({
-          type: 'LOGIN',
-          loginToken: accountData.loginToken,
-          email: accountData.email,
-        });
-      }
-
-      // try {
-      //   const getPatientListResponse = await getPatientList(loginToken);
-      //   const mainProfile = getPatientListResponse.data.response[0];
-
-      //   dispatch({
-      //     type: 'PROFILE_UPDATE_MAIN',
-      //     name: mainProfile.passport.USERNAME,
-      //     relationship: mainProfile.relationship,
-      //     birth: mainProfile.passport.BIRTH,
-      //     gender: mainProfile.gender,
-      //     height: mainProfile.height,
-      //     weight: mainProfile.weight,
-      //     drinker: mainProfile.drinker,
-      //     smoker: mainProfile.smoker,
-      //     medicalHistory: mainProfile?.medicalHistory,
-      //     medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
-      //     medication: mainProfile?.medication,
-      //     allergicReaction: mainProfile?.allergicReaction,
-      //     etcConsideration: mainProfile?.etcConsideration,
-      //   });
-      //   navigation.pop(2);
-      //   setLoading(false);
-      // } catch (error) {
-      //   setLoading(false);
-      //   Alert.alert('회원 정보 불러오기를 실패하였습니다.');
-      // }
-
-    } catch (error) {
-      Alert.alert('로그인하는 과정에서 문제가 발생했습니다.');
-    }
-  };
 
   const initProducts = async function () {
     try {
