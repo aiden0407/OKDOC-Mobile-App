@@ -12,6 +12,7 @@ import { SafeArea, KeyboardAvoiding, Container, ScrollView, Row, Box } from 'com
 import { Text } from 'components/Text';
 import { LineInput, BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
+import Toast from 'react-native-root-toast';
 
 //Api
 import { modifyPatientInformation } from 'api/MyPage';
@@ -29,7 +30,7 @@ export default function ProfileDetailScreen({ navigation }) {
   const [medicalHistory, setMedicalHistory] = useState(mainProfile?.medicalHistory);
   const [medicalHistoryFamily, setMedicalHistoryFamily] = useState(mainProfile?.medicalHistoryFamily);
   const [medication, setMedication] = useState(mainProfile?.medication);
-  const [allergyReaction, setAllergyReaction] = useState(mainProfile?.allergyReaction);
+  const [allergicReaction, setAllergicReaction] = useState(mainProfile?.allergicReaction);
   const [etcConsideration, setEtcConsideration] = useState(mainProfile?.etcConsideration);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export default function ProfileDetailScreen({ navigation }) {
         }
       }
     });
-  }, [navigation, isEditable, informationCategory, height, weight, drinker, smoker, medicalHistory, medicalHistoryFamily, medication, allergyReaction, etcConsideration]);
+  }, [navigation, isEditable, informationCategory, height, weight, drinker, smoker, medicalHistory, medicalHistoryFamily, medication, allergicReaction, etcConsideration]);
 
   const scrollRef = useRef();
   function handleTextInputFocus(value) {
@@ -84,7 +85,7 @@ export default function ProfileDetailScreen({ navigation }) {
         medical_history: medicalHistory ?? '',
         family_medical_history: medicalHistoryFamily ?? '',
         medication: medication ?? '',
-        allergic_reaction: allergyReaction ?? '',
+        allergic_reaction: allergicReaction ?? '',
         consideration: etcConsideration ?? '',
       }
       const response = await modifyPatientInformation(accountData.loginToken, mainProfile.id, data);
@@ -106,7 +107,11 @@ export default function ProfileDetailScreen({ navigation }) {
         allergicReaction: modifiedProfile?.allergic_reaction,
         etcConsideration: modifiedProfile?.consideration,
       });
-      setIsEditable(false)
+      setIsEditable(false);
+      Toast.show('건강정보가 저장되었습니다', {
+        duration: 500,
+        position: -50,
+      });
     } catch (error) {
       Alert.alert('프로필 수정', '프로필 정보 업데이트에 실패하였습니다. 다시 시도해 주세요.');
     }
@@ -310,8 +315,8 @@ export default function ProfileDetailScreen({ navigation }) {
                 marginTop={12}
                 editable={isEditable}
                 placeholder="본인에게 알러지를 유발하는 음식이나 환경이 있다면 알러지 반응과 함께 입력해 주세요."
-                value={allergyReaction}
-                onChangeText={setAllergyReaction}
+                value={allergicReaction}
+                onChangeText={setAllergicReaction}
                 onFocus={() => handleTextInputFocus(680)}
               />
               <Text T6 bold marginTop={30}>기타 사항</Text>
