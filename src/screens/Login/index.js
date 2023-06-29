@@ -40,42 +40,17 @@ export default function LoginPage({ navigation }) {
         loginToken: loginToken,
         email: email,
       });
+      
       try {
         const accountData = {
           loginToken: loginToken,
           email: email,
         };
         await AsyncStorage.setItem('accountData', JSON.stringify(accountData));
-      } catch (error) {
-        console.log(error);
-      }
-
-      try {
-        const getPatientListResponse = await getPatientList(loginToken);
-        const mainProfile = getPatientListResponse.data.response[0];
-
-        dispatch({
-          type: 'PROFILE_UPDATE_MAIN',
-          name: mainProfile.passport.USERNAME,
-          relationship: mainProfile.relationship,
-          birth: mainProfile.passport.BIRTH,
-          gender: mainProfile.gender,
-          height: mainProfile.height,
-          weight: mainProfile.weight,
-          drinker: mainProfile.drinker,
-          smoker: mainProfile.smoker,
-          medicalHistory: mainProfile?.medicalHistory,
-          medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
-          medication: mainProfile?.medication,
-          allergicReaction: mainProfile?.allergicReaction,
-          etcConsideration: mainProfile?.etcConsideration,
-        });
         navigation.pop(2);
         setLoading(false);
-
       } catch (error) {
-        setLoading(false);
-        Alert.alert('회원 정보 불러오기를 실패하였습니다.');
+        console.log(error);
       }
 
     } catch (error) {
