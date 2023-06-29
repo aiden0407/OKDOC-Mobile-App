@@ -250,15 +250,29 @@ const reducer = (state, action) => {
             medication: undefined,
             allergicReaction: undefined,
             etcConsideration: undefined,
-            // height: action.height,
-            // weight: action.weight,
-            // drinker: action.drinker,
-            // smoker: action.smoker,
-            // medicalHistory: action.medicalHistory,
-            // medicalHistoryFamily: action.medicalHistoryFamily,
-            // medication: action.medication,
-            // allergicReaction: action.allergicReaction,
-            // etcConsideration: action.etcConsideration
+          }
+        ],
+      };
+
+    case 'PROFILE_UPDATE_MAIN':
+      return {
+        ...state,
+        profileData: [
+          {
+            id: action.id,
+            name: action.name,
+            relationship: action.relationship,
+            birth: action.birth,
+            gender: action.gender,
+            height: action?.height,
+            weight: action?.weight,
+            drinker: action?.drinker,
+            smoker: action?.smoker,
+            medicalHistory: action?.medicalHistory,
+            medicalHistoryFamily: action?.medicalHistoryFamily,
+            medication: action?.medication,
+            allergicReaction: action?.allergicReaction,
+            etcConsideration: action?.etcConsideration
           }
         ],
       };
@@ -267,6 +281,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         bookableData: action.bookableData
+      };
+
+    case 'HISTORY_DATA_UPDATE':
+      return {
+        ...state,
+        historyData: action.historyData
       };
 
     default:
@@ -278,7 +298,7 @@ const reducer = (state, action) => {
 const ApiProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
-  //console.log(`ApiContext: ${JSON.stringify(state.accountData)}`);
+  console.log(`ApiContext: ${JSON.stringify(state.accountData)}`);
   console.log(`ApiContext: ${JSON.stringify(state.profileData[0])}`);
   return <ApiContext.Provider value={value}>{children}</ApiContext.Provider>;
 };
