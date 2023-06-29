@@ -1,5 +1,6 @@
 //React
 import { useState, useContext, useRef } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
@@ -11,16 +12,22 @@ import { Text } from 'components/Text';
 import { LineInput, BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
+//Api
+import { modifyPatientInformation } from 'api/MyPage';
+
 export default function ProfileDetailScreen({ navigation }) {
 
-  const { state: { telemedicineReservationStatus }, dispatch } = useContext(AppContext);
+  const { state: { accountData, profileData }, dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { state: { telemedicineReservationStatus }, dispatch: appContextDispatch } = useContext(AppContext);
+  const mainProfile = profileData?.[0]
+
   const profileInfo = telemedicineReservationStatus?.profileInfo;
   const [name, setName] = useState(profileInfo?.name);
   const [relationship, setRelationship] = useState(profileInfo?.relationship);
-  const [birth, setBirth] = useState(profileInfo?.birth);
+  const [birth, setBirth] = useState(formatDate(profileInfo?.birth));
   const [gender, setGender] = useState(profileInfo?.gender);
-  const [height, setHeight] = useState(profileInfo?.height);
-  const [weight, setWeight] = useState(profileInfo?.weight);
+  const [height, setHeight] = useState(profileInfo?.height?.toString());
+  const [weight, setWeight] = useState(profileInfo?.weight?.toString());
   const [drinker, setDrinker] = useState(profileInfo?.drinker);
   const [smoker, setSmoker] = useState(profileInfo?.smoker);
   const [medicalHistory, setMedicalHistory] = useState(profileInfo?.medicalHistory);
@@ -39,6 +46,13 @@ export default function ProfileDetailScreen({ navigation }) {
     });
   }
 
+  function formatDate(date) {
+    const year = date.toString().slice(0, 4);
+    const month = date.toString().slice(4, 6);
+    const day = date.toString().slice(6, 8);
+    return `${year}-${month}-${day}`;
+  }
+
   function TinySolidButton({ isSelected, action, text }) {
     return (
       <TinySolidButtonBackground isSelected={isSelected} onPress={action}>
@@ -47,27 +61,61 @@ export default function ProfileDetailScreen({ navigation }) {
     )
   }
 
-  function handleSubmitProfileDetail() {
-    dispatch({
-      type: 'TELEMEDICINE_RESERVATION_PROFILE',
-      profileType: telemedicineReservationStatus.profileType,
-      profileInfo: {
-        name: name,
-        relationship: relationship,
-        birth: birth,
-        gender: gender,
+  const handleSubmitProfileDetail = async function () {
+    try {
+      const data = {
         height: height,
         weight: weight,
         drinker: drinker,
         smoker: smoker,
-        medicalHistory: medicalHistory,
-        medicalHistoryFamily: medicalHistoryFamily,
-        medication: medication,
-        allergicReaction: allergicReaction,
-        etcConsideration: etcConsideration
-      },
-    });
-    navigation.navigate('SymptomDetail');
+        medical_history: medicalHistory ?? '',
+        family_medical_history: medicalHistoryFamily ?? '',
+        medication: medication ?? '',
+        allergic_reaction: allergicReaction ?? '',
+        consideration: etcConsideration ?? '',
+      }
+      const response = await modifyPatientInformation(accountData.loginToken, mainProfile.id, data);
+      const modifiedProfile = response.data.response;
+      apiContextDispatch({
+        type: 'PROFILE_UPDATE_MAIN',
+        id: mainProfile.id,
+        name: mainProfile.name,
+        relationship: mainProfile.relationship,
+        birth: mainProfile.birth,
+        gender: mainProfile.gender,
+        height: modifiedProfile?.height,
+        weight: modifiedProfile?.weight,
+        drinker: modifiedProfile?.drinker,
+        smoker: modifiedProfile?.smoker,
+        medicalHistory: modifiedProfile?.medical_history,
+        medicalHistoryFamily: modifiedProfile?.family_medical_history,
+        medication: modifiedProfile?.medication,
+        allergicReaction: modifiedProfile?.allergic_reaction,
+        etcConsideration: modifiedProfile?.consideration,
+      });
+      appContextDispatch({
+        type: 'TELEMEDICINE_RESERVATION_PROFILE',
+        profileType: telemedicineReservationStatus.profileType,
+        profileInfo: {
+          name: name,
+          relationship: relationship,
+          birth: birth,
+          gender: gender,
+          height: height,
+          weight: weight,
+          drinker: drinker,
+          smoker: smoker,
+          medicalHistory: medicalHistory,
+          medicalHistoryFamily: medicalHistoryFamily,
+          medication: medication,
+          allergicReaction: allergicReaction,
+          etcConsideration: etcConsideration
+        },
+      });
+      navigation.navigate('SymptomDetail');
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
