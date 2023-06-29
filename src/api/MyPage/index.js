@@ -29,25 +29,26 @@ export const modifyPatientInformation = async function (loginToken, patientId, p
             headers: {
                 Authorization: `Bearer ${loginToken}`
             },
-            data: patientInformation,
-            // patientInformation 객체 데이터 형식
-            // {
-            //     "height": 178,
-            //     "weight": 65,
-            //     "drinker": "heavy",
-            //     "smoker": true,
-            //     "medical_history": "코로나 걸렸었음.",
-            //     "family_medical_history": "당뇨",
-            //     "medication": "탁센, 타이레놀",
-            //     "allergic_reaction": "새우 알러지",
-            //     "consideration": "기관지가 안좋음",
-            // }
+            data: {
+                height: patientInformation.height,
+                weight: patientInformation.weight,
+                drinker: patientInformation.drinker,
+                smoker: patientInformation.smoker,
+                medical_history: patientInformation.medical_history,
+                family_medical_history: patientInformation.family_medical_history,
+                medication: patientInformation.medication,
+                allergic_reaction: patientInformation.allergic_reaction,
+                consideration: patientInformation.consideration,
+            }
             
         }
+        console.log(options);
         const response = await axios(options);
+        console.log(response.data.response);
         return response;
 
     } catch (error) {
-        throw error.response;
+        console.log(error.response.data);
+        throw error;
     }
 }
