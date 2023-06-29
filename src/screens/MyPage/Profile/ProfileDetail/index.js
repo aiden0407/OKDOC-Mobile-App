@@ -5,6 +5,7 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design';
+import { Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
 import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, KeyboardAvoiding, Container, ScrollView, Row, Box } from 'components/Layout';
@@ -17,18 +18,19 @@ import { modifyPatientInformation } from 'api/MyPage';
 
 export default function ProfileDetailScreen({ navigation }) {
 
-  const { state: { profileData }, dispatch } = useContext(ApiContext);
+  const { state: { accountData, profileData }, dispatch } = useContext(ApiContext);
+  const mainProfile = profileData?.[0]
   const [informationCategory, setInformationCategory] = useState('personalInfo');
   const [isEditable, setIsEditable] = useState(false);
-  const [height, setHeight] = useState(profileData[0]?.height?.toString());
-  const [weight, setWeight] = useState(profileData[0]?.weight?.toString());
-  const [drinker, setDrinker] = useState(profileData[0]?.drinker);
-  const [smoker, setSmoker] = useState(profileData[0]?.smoker);
-  const [medicalHistory, setMedicalHistory] = useState(profileData[0]?.medicalHistory);
-  const [medicalHistoryFamily, setMedicalHistoryFamily] = useState(profileData[0]?.medicalHistoryFamily);
-  const [medication, setMedication] = useState(profileData[0]?.medication);
-  const [allergyReaction, setAllergyReaction] = useState(profileData[0]?.allergyReaction);
-  const [etcConsideration, setEtcConsideration] = useState(profileData[0]?.etcConsideration);
+  const [height, setHeight] = useState(mainProfile?.height?.toString());
+  const [weight, setWeight] = useState(mainProfile?.weight?.toString());
+  const [drinker, setDrinker] = useState(mainProfile?.drinker);
+  const [smoker, setSmoker] = useState(mainProfile?.smoker);
+  const [medicalHistory, setMedicalHistory] = useState(mainProfile?.medicalHistory);
+  const [medicalHistoryFamily, setMedicalHistoryFamily] = useState(mainProfile?.medicalHistoryFamily);
+  const [medication, setMedication] = useState(mainProfile?.medication);
+  const [allergyReaction, setAllergyReaction] = useState(mainProfile?.allergyReaction);
+  const [etcConsideration, setEtcConsideration] = useState(mainProfile?.etcConsideration);
 
   useEffect(() => {
     navigation.setOptions({
@@ -50,39 +52,63 @@ export default function ProfileDetailScreen({ navigation }) {
         }
       }
     });
-  }, [navigation, isEditable, informationCategory]);
+  }, [navigation, isEditable, informationCategory, height, weight, drinker, smoker, medicalHistory, medicalHistoryFamily, medication, allergyReaction, etcConsideration]);
 
   const scrollRef = useRef();
-  function handleTextInputFocus(value){
+  function handleTextInputFocus(value) {
     scrollRef.current?.scrollTo({
       y: value,
       animated: true,
     });
   }
 
-  const handleModifyPatientInformation = async function (loginToken) {
+  function formatDate(date) {
+    const year = date.toString().slice(0, 4);
+    const month = date.toString().slice(4, 6);
+    const day = date.toString().slice(6, 8);
+    return `${year}-${month}-${day}`;
+  }
+
+  const handleModifyPatientInformation = async function () {
+    if(!height || !weight || !drinker || !smoker){
+      Alert.alert('프로필 수정', '키/몸무게/음주 여부/흡연 여부는 필수 정보입니다.');
+      return null;
+    }
+
     try {
-      // const modifyPatientInformationResponse = await modifyPatientInformation(loginToken, profileData[0]?.height?.passport.passport_number, {});
-      // const mainProfile = modifyPatientInformationResponse.data.response;
-      // dispatch({
-      //   type: 'PROFILE_UPDATE_MAIN',
-      //   name: mainProfile.passport.user_name,
-      //   relationship: mainProfile.relationship,
-      //   birth: mainProfile.passport.birth,
-      //   gender: mainProfile.gender,
-      //   height: mainProfile?.height,
-      //   weight: mainProfile?.weight,
-      //   drinker: mainProfile?.drinker,
-      //   smoker: mainProfile?.smoker,
-      //   medicalHistory: mainProfile?.medicalHistory,
-      //   medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
-      //   medication: mainProfile?.medication,
-      //   allergicReaction: mainProfile?.allergicReaction,
-      //   etcConsideration: mainProfile?.etcConsideration,
-      // });
+      const data = {
+        height: height,
+        weight: weight,
+        drinker: drinker,
+        smoker: smoker,
+        medical_history: medicalHistory ?? '',
+        family_medical_history: medicalHistoryFamily ?? '',
+        medication: medication ?? '',
+        allergic_reaction: allergyReaction ?? '',
+        consideration: etcConsideration ?? '',
+      }
+      const response = await modifyPatientInformation(accountData.loginToken, mainProfile.id, data);
+      const modifiedProfile = response.data.response;
+      dispatch({
+        type: 'PROFILE_UPDATE_MAIN',
+        id: mainProfile.id,
+        name: mainProfile.name,
+        relationship: mainProfile.relationship,
+        birth: mainProfile.birth,
+        gender: mainProfile.gender,
+        height: modifiedProfile?.height,
+        weight: modifiedProfile?.weight,
+        drinker: modifiedProfile?.drinker,
+        smoker: modifiedProfile?.smoker,
+        medicalHistory: modifiedProfile?.medical_history,
+        medicalHistoryFamily: modifiedProfile?.family_medical_history,
+        medication: modifiedProfile?.medication,
+        allergicReaction: modifiedProfile?.allergic_reaction,
+        etcConsideration: modifiedProfile?.consideration,
+      });
       setIsEditable(false)
     } catch (error) {
-      Alert.alert('프로필 정보 업데이트에 실패하였습니다. 다시 시도해 주세요.');
+      Alert.alert('프로필 수정', '프로필 정보 업데이트에 실패하였습니다. 다시 시도해 주세요.');
     }
   }
 
@@ -144,33 +170,33 @@ export default function ProfileDetailScreen({ navigation }) {
               <Text T6 bold marginTop={30}>이름</Text>
               <LineInput
                 marginTop={12}
-                value={profileData[0]?.name}
+                value={mainProfile?.name}
                 editable={false}
               />
               <Text T6 bold marginTop={30}>관계</Text>
               <LineInput
                 marginTop={12}
-                value={profileData[0]?.relationship}
+                value={mainProfile?.relationship}
                 editable={false}
               />
               <Text T6 bold marginTop={30}>생년월일</Text>
               <LineInput
                 marginTop={12}
-                value={profileData[0]?.birth}
+                value={formatDate(mainProfile?.birth)}
                 editable={false}
               />
               <Text T6 bold marginTop={30}>성별</Text>
               <Row marginTop={12} gap={12}>
-                <SolidButton medium text="남성" disabled={profileData[0]?.gender !== 'MALE'} />
-                <SolidButton medium text="여성" disabled={profileData[0]?.gender !== 'FEMALE'} />
+                <SolidButton medium text="남성" disabled={mainProfile?.gender !== 'MALE'} />
+                <SolidButton medium text="여성" disabled={mainProfile?.gender !== 'FEMALE'} />
               </Row>
             </Container>
           )}
 
           {informationCategory === 'healthInfo' && (
-            <ScrollView 
-              showsVerticalScrollIndicator={false} 
-              paddingHorizontal={20} 
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              paddingHorizontal={20}
               paddingTop={80}
               ref={scrollRef}
             >
@@ -179,14 +205,14 @@ export default function ProfileDetailScreen({ navigation }) {
                 <LineInput
                   value={height}
                   onChangeText={setHeight}
-                  onBlur={() => 
+                  onBlur={() =>
                     height?.replace(/[^0-9.]/g, '')
-                      ? setHeight(parseFloat(height.replace(/[^0-9.]/g, '')).toFixed(1)) 
+                      ? setHeight(parseFloat(height.replace(/[^0-9.]/g, '')).toFixed(1))
                       : setHeight('')
                   }
                   editable={isEditable}
                   style={{ width: 100 }}
-                  placeholder="몸무게"
+                  placeholder="키"
                   inputMode="decimal"
                 />
                 <Text T5 medium marginLeft={6}>cm</Text>
@@ -194,14 +220,14 @@ export default function ProfileDetailScreen({ navigation }) {
                   marginLeft={30}
                   value={weight}
                   onChangeText={setWeight}
-                  onBlur={() => 
+                  onBlur={() =>
                     weight?.replace(/[^0-9.]/g, '')
-                      ? setWeight(parseFloat(weight.replace(/[^0-9.]/g, '')).toFixed(1)) 
+                      ? setWeight(parseFloat(weight.replace(/[^0-9.]/g, '')).toFixed(1))
                       : setWeight('')
                   }
                   editable={isEditable}
                   style={{ width: 100 }}
-                  placeholder="키"
+                  placeholder="몸무게"
                   inputMode="decimal"
                 />
                 <Text T5 medium marginLeft={6}>kg</Text>
@@ -254,7 +280,7 @@ export default function ProfileDetailScreen({ navigation }) {
                 placeholder="현재 앓고 있는 병이나 과거에 앓았던 질병이 있으면 병명을 입력해 주세요."
                 value={medicalHistory}
                 onChangeText={setMedicalHistory}
-                onFocus={()=>handleTextInputFocus(200)}
+                onFocus={() => handleTextInputFocus(200)}
               />
               <Text T6 bold marginTop={30}>가족 병력</Text>
               <BoxInput
@@ -264,7 +290,7 @@ export default function ProfileDetailScreen({ navigation }) {
                 placeholder="부모, 형제 등 직계 가족이 앓고 있거나 과거에 앓았던 질병이 있으면 병명을 입력해 주세요."
                 value={medicalHistoryFamily}
                 onChangeText={setMedicalHistoryFamily}
-                onFocus={()=>handleTextInputFocus(360)}
+                onFocus={() => handleTextInputFocus(360)}
               />
               <Text T6 bold marginTop={30}>현재 복용중인 약</Text>
               <BoxInput
@@ -274,7 +300,7 @@ export default function ProfileDetailScreen({ navigation }) {
                 placeholder="현재 복용중인 약을 입력해 주세요."
                 value={medication}
                 onChangeText={setMedication}
-                onFocus={()=>handleTextInputFocus(520)}
+                onFocus={() => handleTextInputFocus(520)}
               />
               <Row marginTop={30} align>
                 <Text T6 bold>알러지 유무</Text>
@@ -296,7 +322,7 @@ export default function ProfileDetailScreen({ navigation }) {
                 placeholder="의사 선생님이 알아야 하는 기타 사항이 있다면 입력해 주세요."
                 value={etcConsideration}
                 onChangeText={setEtcConsideration}
-                onFocus={()=>handleTextInputFocus(840)}
+                onFocus={() => handleTextInputFocus(840)}
               />
               <Box height={200} />
             </ScrollView>
