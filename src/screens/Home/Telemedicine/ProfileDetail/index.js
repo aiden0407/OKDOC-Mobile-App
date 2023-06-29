@@ -264,7 +264,7 @@ export default function ProfileDetailScreen({ navigation }) {
               marginTop={90}
               marginBottom={20}
               text="다음"
-              disabled={!name || !relationship || !birth || !gender || !height || !weight || !drinker || smoker === undefined}
+              disabled={!name || !relationship || !birth || !gender || !height || !weight || !drinker || !smoker}
               action={() => handleSubmitProfileDetail()}
             />
           </PaddingContainer>
