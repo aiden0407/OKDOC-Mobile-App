@@ -40,15 +40,11 @@ export const modifyPatientInformation = async function (loginToken, patientId, p
                 allergic_reaction: patientInformation.allergic_reaction,
                 consideration: patientInformation.consideration,
             }
-            
         }
-        console.log(options);
         const response = await axios(options);
-        console.log(response.data.response);
         return response;
 
     } catch (error) {
-        console.log(error.response.data);
         throw error;
     }
 }
