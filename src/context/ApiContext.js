@@ -298,8 +298,8 @@ const reducer = (state, action) => {
 const ApiProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
-  console.log(`ApiContext: ${JSON.stringify(state.accountData)}`);
-  console.log(`ApiContext: ${JSON.stringify(state.profileData[0])}`);
+  //console.log(`ApiContext: ${JSON.stringify(state.accountData)}`);
+  //console.log(`ApiContext: ${JSON.stringify(state.profileData[0])}`);
   return <ApiContext.Provider value={value}>{children}</ApiContext.Provider>;
 };
 

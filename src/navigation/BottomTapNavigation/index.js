@@ -27,21 +27,18 @@ export default function BottomTapNavigation() {
   const mounted = useRef(false);
 
   useEffect(() => {
-    console.log('1');
     autoLogin();
   }, []);
 
   useEffect(() => {
     if (accountData.loginToken) {
-      console.log('2');
       getPatientInformation();
     }
   }, [accountData.loginToken]);
 
   useEffect(() => {
     if (profileData?.[0]?.id) {
-      console.log('3');
-      getAppointmentHistory();
+      //getAppointmentHistory();
     }
   }, [profileData?.[0]?.id]);
 
@@ -76,11 +73,11 @@ export default function BottomTapNavigation() {
         weight: mainProfile?.weight,
         drinker: mainProfile?.drinker,
         smoker: mainProfile?.smoker,
-        medicalHistory: mainProfile?.medicalHistory,
-        medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
+        medicalHistory: mainProfile?.medical_history,
+        medicalHistoryFamily: mainProfile?.family_medical_history,
         medication: mainProfile?.medication,
-        allergicReaction: mainProfile?.allergicReaction,
-        etcConsideration: mainProfile?.etcConsideration,
+        allergicReaction: mainProfile?.allergic_reaction,
+        etcConsideration: mainProfile?.consideration,
       });
     } catch (error) {
       console.log(error.data);
