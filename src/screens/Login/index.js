@@ -23,8 +23,8 @@ import mainLogo from 'assets/main/main_logo.png';
 export default function LoginPage({ navigation }) {
 
   const { dispatch } = useContext(ApiContext);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('aiden@insunginfo.co.kr');
+  const [password, setPassword] = useState('qwe123!');
   const [loading, setLoading] = useState(false);
   const passwordRef = useRef();
 
