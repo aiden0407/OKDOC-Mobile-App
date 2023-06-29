@@ -1,8 +1,17 @@
+//React
+import { useEffect, useContext, useRef } from 'react';
+import { ApiContext } from 'context/ApiContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//Api
+import { getPatientList } from 'api/MyPage';
+import { getScheduleByPatientId } from 'api/History';
+
 //Navigation
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from 'screens/Home';
 import HistoryScreen from 'screens/History';
-import AlarmScreen from 'screens/Alarm';
+//import AlarmScreen from 'screens/Alarm';
 import MyPageScreen from 'screens/MyPage';
 
 //Components
@@ -14,13 +23,90 @@ const BottomTab = createBottomTabNavigator();
 
 export default function BottomTapNavigation() {
 
+  const { state: { accountData, profileData }, dispatch } = useContext(ApiContext);
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    console.log('1');
+    autoLogin();
+  }, []);
+
+  useEffect(() => {
+    if (accountData.loginToken) {
+      console.log('2');
+      getPatientInformation();
+    }
+  }, [accountData.loginToken]);
+
+  useEffect(() => {
+    if (profileData?.[0]?.id) {
+      console.log('3');
+      getAppointmentHistory();
+    }
+  }, [profileData?.[0]?.id]);
+
+  const autoLogin = async function () {
+    try {
+      const jsonValue = await AsyncStorage.getItem('accountData');
+      if (jsonValue !== null) {
+        const accountData = JSON.parse(jsonValue);
+        dispatch({
+          type: 'LOGIN',
+          loginToken: accountData.loginToken,
+          email: accountData.email,
+        });
+      }
+    } catch (error) {
+      console.log(error.data);
+    }
+  };
+
+  const getPatientInformation = async function () {
+    try {
+      const response = await getPatientList(accountData.loginToken);
+      const mainProfile = response.data.response[0];
+      dispatch({
+        type: 'PROFILE_UPDATE_MAIN',
+        id: mainProfile.id,
+        name: mainProfile.passport.user_name,
+        relationship: mainProfile.relationship,
+        birth: mainProfile.passport.birth,
+        gender: mainProfile.gender,
+        height: mainProfile?.height,
+        weight: mainProfile?.weight,
+        drinker: mainProfile?.drinker,
+        smoker: mainProfile?.smoker,
+        medicalHistory: mainProfile?.medicalHistory,
+        medicalHistoryFamily: mainProfile?.medicalHistoryFamily,
+        medication: mainProfile?.medication,
+        allergicReaction: mainProfile?.allergicReaction,
+        etcConsideration: mainProfile?.etcConsideration,
+      });
+    } catch (error) {
+      console.log(error.data);
+    }
+  };
+
+  const getAppointmentHistory = async function () {
+    try {
+      const response = await getScheduleByPatientId(accountData.loginToken, profileData?.[0]?.id);
+      console.log(response.data.response);
+      // dispatch({
+      //   type: 'HISTORY_DATA_UPDATE',
+      //   historyData: historyData
+      // });
+    } catch (error) {
+      console.log(error.data);
+    }
+  };
+
   return (
     <BottomTab.Navigator
       screenOptions={({ route }) => ({
-        tabBarStyle: Device.osName==='Android' && {
+        tabBarStyle: Device.osName === 'Android' && {
           height: 60,
         },
-        tabBarLabelStyle: Device.osName==='Android' && {
+        tabBarLabelStyle: Device.osName === 'Android' && {
           marginBottom: 10,
         },
         tabBarActiveTintColor: COLOR.MAIN,
@@ -47,11 +133,11 @@ export default function BottomTapNavigation() {
               ? 'person-outline'
               : 'person-outline';
           }
-          return <Ionicons name={iconName} size={24} color={color} marginLeft={2}/>;
+          return <Ionicons name={iconName} size={24} color={color} marginLeft={2} />;
         },
       })}
     >
-      <BottomTab.Group screenOptions={{ 
+      <BottomTab.Group screenOptions={{
         headerTitleAlign: 'center',
         headerShadowVisible: false,
       }}>
