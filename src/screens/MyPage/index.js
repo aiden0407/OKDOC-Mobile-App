@@ -18,7 +18,8 @@ import profileCard from 'assets/icons/mypage-profile.png';
 
 export default function MyPageScreen({ navigation }) {
 
-  const { state: { accountData }, dispatch } = useContext(ApiContext);
+  const { state: { accountData, profileData }, dispatch } = useContext(ApiContext);
+  const mainProfile = profileData?.[0]
 
   function handleLogin() {
     navigation.navigate('LoginStackNavigation');
@@ -88,7 +89,7 @@ export default function MyPageScreen({ navigation }) {
             accountData?.loginToken
               ? (<>
                 <LoginButton activeOpacity={1}>
-                  <Text T3 bold>안녕하세요, <Text T3 bold color={COLOR.MAIN} marginRight={12}>{accountData.name}</Text>님</Text>
+                  <Text T3 bold>안녕하세요, <Text T3 bold color={COLOR.MAIN} marginRight={12}>{mainProfile.name}</Text>님</Text>
                 </LoginButton>
               </>)
               : (<>
