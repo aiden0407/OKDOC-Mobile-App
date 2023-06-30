@@ -7,14 +7,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CategoryScreen from 'screens/Home/Telemedicine/Category';
 import ReservationScreen from 'screens/Home/Telemedicine/Reservation';
 import DoctorProfileScreen from 'screens/Home/Telemedicine/DoctorProfile';
-import ProfileListScreen from 'screens/Home/Telemedicine/ProfileList';
+//import ProfileListScreen from 'screens/Home/Telemedicine/ProfileList';
 import ProfileDetailScreen from 'screens/Home/Telemedicine/ProfileDetail';
 import SymptomDetailScreen from 'screens/Home/Telemedicine/SymptomDetail';
 import PaymentNotificationScreen from 'screens/Home/Telemedicine/PaymentNotification';
 import PaymentPolicyDetailScreen from 'screens/Home/Telemedicine/PaymentNotification/PaymentPolicyDetail';
 import RefundPolicyDetailScreen from 'screens/Home/Telemedicine/PaymentNotification/RefundPolicyDetail';
-import PaymentScreen from 'screens/Home/Telemedicine/Payment';
-import PaymentCompleteScreen from 'screens/Home/Telemedicine/PaymentComplete';
 
 //Components
 import NavigationBackArrow from 'components/NavigationBackArrow';
@@ -107,23 +105,6 @@ export default function TelemedicineReservation({ navigation }) {
           options={{
             title: '취소 및 환불 규정',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('PaymentNotification')} />,
-          }}
-        />
-        <Stack.Screen
-          name="Payment"
-          component={PaymentScreen}
-          options={{
-            headerShown: false,
-            gestureEnabled: false,
-          }}
-        />
-        <Stack.Screen
-          name="PaymentComplete"
-          component={PaymentCompleteScreen}
-          options={{
-            title: '결제 완료',
-            headerBackVisible: false,
-            gestureEnabled: false,
           }}
         />
       </Stack.Group>
