@@ -4,6 +4,7 @@ import { createContext, useReducer } from "react";
 const initialState = {
   isHomeShorcutUsed: false,
   telemedicineReservationStatus: {
+    biddingId: undefined,
     product: undefined,
     department: undefined,
     date: undefined,
@@ -97,6 +98,15 @@ const reducer = (state, action) => {
         },
       };
 
+    case 'TELEMEDICINE_RESERVATION_BIDDING_ID':
+      return {
+        ...state,
+        telemedicineReservationStatus: {
+          ...state.telemedicineReservationStatus,
+          biddingId: action.biddingId,
+        },
+      };
+
     case 'TELEMEDICINE_RESERVATION_CONFIRMED':
       return {
         ...state,
@@ -186,7 +196,7 @@ const reducer = (state, action) => {
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
-  //console.log(`AppContext: ${JSON.stringify(state.registerStatus)}`);
+  console.log(`AppContext: ${JSON.stringify(state.telemedicineReservationStatus)}`);
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
