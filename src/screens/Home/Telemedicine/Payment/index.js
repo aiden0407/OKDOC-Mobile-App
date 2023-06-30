@@ -1,5 +1,6 @@
 //React
 import { useState, useEffect, useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import cheerio from 'cheerio';
 
@@ -13,6 +14,7 @@ import { postPaymentRequest } from 'api/Home';
 
 export default function PaymentScreen({ navigation }) {
 
+  const { state: { accountData } } = useContext(ApiContext);
   const { state: { telemedicineReservationStatus } } = useContext(AppContext);
   const [htmlContent, setHtmlContent] = useState('');
 
@@ -22,7 +24,7 @@ export default function PaymentScreen({ navigation }) {
 
   const paymentRequest = async function () {
     try {
-      const response = await postPaymentRequest();
+      const response = await postPaymentRequest(telemedicineReservationStatus, accountData.email);
       var htmlDecoded = decodeValues(response.data);
       setHtmlContent(htmlDecoded);
     } catch (error) {
@@ -58,6 +60,7 @@ export default function PaymentScreen({ navigation }) {
         scalesPageToFit
         onError={() => {
           navigation.goBack();
+          Alert.alert('결제 취소', '결제 중 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
         }}
       />
     </SafeArea>
