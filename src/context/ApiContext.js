@@ -24,127 +24,129 @@ const initialState = {
       etcConsideration: undefined,
     }
   ],
-  bookableData: [
-    ['27일', '목요일', [
-      ['11:00', [
-        {
-          name: '이준범',
-          image: 'https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*',
-          hospital: '을지대병원',
-          subject: '외과',
-          medicalField: ['외과 수술', '13년차', '전문의'],
-        },
-        {
-          name: '김형도',
-          image: 'https://www.pinnaclecare.com/wp-content/uploads/2017/12/bigstock-African-young-doctor-portrait-28825394.jpg',
-          hospital: '을지대병원',
-          subject: '내과',
-          medicalField: ['내과 수술', '20년차', '베테랑'],
-        },
-      ]],
-      ['11:30', [
-        {
-          name: '이준범',
-          image: 'https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*',
-          hospital: '을지대병원',
-          subject: '외과',
-          medicalField: ['외과 수술', '13년차', '전문의'],
-        },
-        {
-          name: '장윤희',
-          image: 'https://media.istockphoto.com/id/1189304032/photo/doctor-holding-digital-tablet-at-meeting-room.jpg?s=612x612&w=0&k=20&c=RtQn8w_vhzGYbflSa1B5ea9Ji70O8wHpSgGBSh0anUg=',
-          hospital: '을지대병원',
-          subject: '산부인과',
-          medicalField: ['5년차', '전문의'],
-        },
-        {
-          name: '김형도',
-          image: 'https://www.pinnaclecare.com/wp-content/uploads/2017/12/bigstock-African-young-doctor-portrait-28825394.jpg',
-          hospital: '을지대병원',
-          subject: '내과',
-          medicalField: ['내과 수술', '20년차', '베테랑'],
-        },
-        {
-          name: '해밍턴',
-          image: 'https://cdn.houstonpublicmedia.org/wp-content/uploads/2015/09/22105535/Nuila.Ricardo.E.143882.Internal.Med_.jpg',
-          hospital: '을지대병원',
-          subject: '신경외과',
-          medicalField: ['정신과 상담', '신경 수술', , '17년차', '베테랑'],
-        },
-      ]]
-    ]],
-    ['28일', '금요일', [
-      ['12:30', [
-        {
-          name: '해밍턴',
-          image: 'https://cdn.houstonpublicmedia.org/wp-content/uploads/2015/09/22105535/Nuila.Ricardo.E.143882.Internal.Med_.jpg',
-          hospital: '을지대병원',
-          subject: '신경외과',
-          medicalField: ['정신과 상담', '신경 수술', , '17년차', '베테랑'],
-        },
-        {
-          name: '이준범',
-          image: 'https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*',
-          hospital: '을지대병원',
-          subject: '외과',
-          medicalField: ['외과 수술', '13년차', '전문의'],
-        },
-        {
-          name: '김형도',
-          image: 'https://www.pinnaclecare.com/wp-content/uploads/2017/12/bigstock-African-young-doctor-portrait-28825394.jpg',
-          hospital: '을지대병원',
-          subject: '내과',
-          medicalField: ['내과 수술', '20년차', '베테랑'],
-        },
-      ]],
-      ['16:00', [
-        {
-          name: '이준범',
-          image: 'https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*',
-          hospital: '을지대병원',
-          subject: '외과',
-          medicalField: ['외과 수술', '13년차', '전문의'],
-        },
-        {
-          name: '장윤희',
-          image: 'https://media.istockphoto.com/id/1189304032/photo/doctor-holding-digital-tablet-at-meeting-room.jpg?s=612x612&w=0&k=20&c=RtQn8w_vhzGYbflSa1B5ea9Ji70O8wHpSgGBSh0anUg=',
-          hospital: '을지대병원',
-          subject: '산부인과',
-          medicalField: ['5년차', '전문의'],
-        },
-        {
-          name: '김형도',
-          image: 'https://www.pinnaclecare.com/wp-content/uploads/2017/12/bigstock-African-young-doctor-portrait-28825394.jpg',
-          hospital: '을지대병원',
-          subject: '내과',
-          medicalField: ['내과 수술', '20년차', '베테랑'],
-        },
-        {
-          name: '해밍턴',
-          image: 'https://cdn.houstonpublicmedia.org/wp-content/uploads/2015/09/22105535/Nuila.Ricardo.E.143882.Internal.Med_.jpg',
-          hospital: '을지대병원',
-          subject: '신경외과',
-          medicalField: ['정신과 상담', '신경 수술', , '17년차', '베테랑'],
-        },
-      ]],
-      ['18:30', [
-        {
-          name: '해밍턴',
-          image: 'https://cdn.houstonpublicmedia.org/wp-content/uploads/2015/09/22105535/Nuila.Ricardo.E.143882.Internal.Med_.jpg',
-          hospital: '을지대병원',
-          subject: '신경외과',
-          medicalField: ['정신과 상담', '신경 수술', , '17년차', '베테랑'],
-        },
-        {
-          name: '장윤희',
-          image: 'https://media.istockphoto.com/id/1189304032/photo/doctor-holding-digital-tablet-at-meeting-room.jpg?s=612x612&w=0&k=20&c=RtQn8w_vhzGYbflSa1B5ea9Ji70O8wHpSgGBSh0anUg=',
-          hospital: '을지대병원',
-          subject: '산부인과',
-          medicalField: ['5년차', '전문의'],
-        },
-      ]]
-    ]],
-  ],
+  bookableData: [],
+  // bookableData 형식
+  // [
+  //   ['07/03', '월요일', [
+  //     ['11:00', [
+  //       {
+  //         name: '이준범',
+  //         image: 'https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*',
+  //         hospital: '을지대병원',
+  //         subject: '외과',
+  //         medicalField: ['외과 수술', '13년차', '전문의'],
+  //       },
+  //       {
+  //         name: '김형도',
+  //         image: 'https://www.pinnaclecare.com/wp-content/uploads/2017/12/bigstock-African-young-doctor-portrait-28825394.jpg',
+  //         hospital: '을지대병원',
+  //         subject: '내과',
+  //         medicalField: ['내과 수술', '20년차', '베테랑'],
+  //       },
+  //     ]],
+  //     ['11:30', [
+  //       {
+  //         name: '이준범',
+  //         image: 'https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*',
+  //         hospital: '을지대병원',
+  //         subject: '외과',
+  //         medicalField: ['외과 수술', '13년차', '전문의'],
+  //       },
+  //       {
+  //         name: '장윤희',
+  //         image: 'https://media.istockphoto.com/id/1189304032/photo/doctor-holding-digital-tablet-at-meeting-room.jpg?s=612x612&w=0&k=20&c=RtQn8w_vhzGYbflSa1B5ea9Ji70O8wHpSgGBSh0anUg=',
+  //         hospital: '을지대병원',
+  //         subject: '산부인과',
+  //         medicalField: ['5년차', '전문의'],
+  //       },
+  //       {
+  //         name: '김형도',
+  //         image: 'https://www.pinnaclecare.com/wp-content/uploads/2017/12/bigstock-African-young-doctor-portrait-28825394.jpg',
+  //         hospital: '을지대병원',
+  //         subject: '내과',
+  //         medicalField: ['내과 수술', '20년차', '베테랑'],
+  //       },
+  //       {
+  //         name: '해밍턴',
+  //         image: 'https://cdn.houstonpublicmedia.org/wp-content/uploads/2015/09/22105535/Nuila.Ricardo.E.143882.Internal.Med_.jpg',
+  //         hospital: '을지대병원',
+  //         subject: '신경외과',
+  //         medicalField: ['정신과 상담', '신경 수술', , '17년차', '베테랑'],
+  //       },
+  //     ]]
+  //   ]],
+  //   ['07/04', '화요일', [
+  //     ['12:00', [
+  //       {
+  //         name: '해밍턴',
+  //         image: 'https://cdn.houstonpublicmedia.org/wp-content/uploads/2015/09/22105535/Nuila.Ricardo.E.143882.Internal.Med_.jpg',
+  //         hospital: '을지대병원',
+  //         subject: '신경외과',
+  //         medicalField: ['정신과 상담', '신경 수술', , '17년차', '베테랑'],
+  //       },
+  //       {
+  //         name: '이준범',
+  //         image: 'https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*',
+  //         hospital: '을지대병원',
+  //         subject: '외과',
+  //         medicalField: ['외과 수술', '13년차', '전문의'],
+  //       },
+  //       {
+  //         name: '김형도',
+  //         image: 'https://www.pinnaclecare.com/wp-content/uploads/2017/12/bigstock-African-young-doctor-portrait-28825394.jpg',
+  //         hospital: '을지대병원',
+  //         subject: '내과',
+  //         medicalField: ['내과 수술', '20년차', '베테랑'],
+  //       },
+  //     ]],
+  //     ['18:00', [
+  //       {
+  //         name: '이준범',
+  //         image: 'https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*',
+  //         hospital: '을지대병원',
+  //         subject: '외과',
+  //         medicalField: ['외과 수술', '13년차', '전문의'],
+  //       },
+  //       {
+  //         name: '장윤희',
+  //         image: 'https://media.istockphoto.com/id/1189304032/photo/doctor-holding-digital-tablet-at-meeting-room.jpg?s=612x612&w=0&k=20&c=RtQn8w_vhzGYbflSa1B5ea9Ji70O8wHpSgGBSh0anUg=',
+  //         hospital: '을지대병원',
+  //         subject: '산부인과',
+  //         medicalField: ['5년차', '전문의'],
+  //       },
+  //       {
+  //         name: '김형도',
+  //         image: 'https://www.pinnaclecare.com/wp-content/uploads/2017/12/bigstock-African-young-doctor-portrait-28825394.jpg',
+  //         hospital: '을지대병원',
+  //         subject: '내과',
+  //         medicalField: ['내과 수술', '20년차', '베테랑'],
+  //       },
+  //       {
+  //         name: '해밍턴',
+  //         image: 'https://cdn.houstonpublicmedia.org/wp-content/uploads/2015/09/22105535/Nuila.Ricardo.E.143882.Internal.Med_.jpg',
+  //         hospital: '을지대병원',
+  //         subject: '신경외과',
+  //         medicalField: ['정신과 상담', '신경 수술', , '17년차', '베테랑'],
+  //       },
+  //     ]],
+  //     ['20:30', [
+  //       {
+  //         name: '해밍턴',
+  //         image: 'https://cdn.houstonpublicmedia.org/wp-content/uploads/2015/09/22105535/Nuila.Ricardo.E.143882.Internal.Med_.jpg',
+  //         hospital: '을지대병원',
+  //         subject: '신경외과',
+  //         medicalField: ['정신과 상담', '신경 수술', , '17년차', '베테랑'],
+  //       },
+  //       {
+  //         name: '장윤희',
+  //         image: 'https://media.istockphoto.com/id/1189304032/photo/doctor-holding-digital-tablet-at-meeting-room.jpg?s=612x612&w=0&k=20&c=RtQn8w_vhzGYbflSa1B5ea9Ji70O8wHpSgGBSh0anUg=',
+  //         hospital: '을지대병원',
+  //         subject: '산부인과',
+  //         medicalField: ['5년차', '전문의'],
+  //       },
+  //     ]]
+  //   ]],
+  // ]
   historyData: {
     underReservation: [
       {
