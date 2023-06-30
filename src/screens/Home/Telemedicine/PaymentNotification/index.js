@@ -18,11 +18,15 @@ export default function PaymentNotificationScreen({ navigation }) {
   const [refundAgreement, setRefundAgreement] = useState(false);
 
   function handlePaymentPolicyDetail() {
-    navigation.navigate('PaymentPolicyDetail');
+    // navigation.navigate('PaymentPolicyDetail', {
+    //   content: policyHTML,
+    // })
   }
 
   function handleRefundPolicyDetail() {
-    navigation.navigate('RefundPolicyDetail');
+    // navigation.navigate('PaymentPolicyDetail', {
+    //   content: refundHTML,
+    // })
   }
 
   function handleProceedPayment() {
