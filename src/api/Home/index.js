@@ -1,6 +1,7 @@
 //API
 import axios from 'axios';
 import { APIURL } from 'constants/api'
+import uuid from 'react-native-uuid';
 
 export const getProducts = async function () {
     try {
@@ -73,7 +74,6 @@ export const getDoctorsByDepartment = async function (department) {
 // }
 
 export const getScheduleByDoctorId = async function (doctorId) {
-
     try {
         let options = {
             url: `${APIURL}/treatment_appointments/?doctor_id=${doctorId}`,
@@ -83,6 +83,34 @@ export const getScheduleByDoctorId = async function (doctorId) {
         return response;
 
     } catch (error) {
+        throw error.response;
+    }
+}
+
+export const createBidding = async function (loginToken, reservationInfo) {
+    const formData = new FormData();
+    formData.append('doctor_id', reservationInfo.doctorInfo.doctorId);
+    formData.append('patient_id', reservationInfo.profileInfo.id);
+    formData.append('wish_at', reservationInfo.doctorInfo.scheduleTime);
+    formData.append('explain_symptom', reservationInfo.symptom);
+
+    try {
+        let options = {
+            url: `${APIURL}/products/1/biddings/${uuid.v4()}`,
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${loginToken}`,
+                'Content-Type': 'multipart/form-data'
+            },
+            data: formData,
+        }
+        //console.log(formData);
+        //const response = await axios(options);
+        //console.log(response.data.response);
+        //return response;
+
+    } catch (error) {
+        console.log(error.response);
         throw error.response;
     }
 }
@@ -104,8 +132,7 @@ export const getBiddings = async function (loginToken) {
     }
 }
 
-export const postPaymentRequest = async function () {
-//export const postPaymentRequest = async function (orderNumber, productPrice, productName, patientName, patientPhone, patientEmail) {
+export const postPaymentRequest = async function (reservationInfo, email) {
     try {
         let options = {
             url: `https://mobile.inicis.com/smart/payment/`,
@@ -116,12 +143,12 @@ export const postPaymentRequest = async function () {
             data: {
                 P_INI_PAYMENT: 'CARD',
                 P_MID: 'insungif01',
-                P_OID: 'uuid',
+                P_OID: uuid.v4(),
                 P_AMT: Number(1000),
-                P_GOODS: encodeURIComponent('을지대병원 진료 예약'),
-                P_UNAME: encodeURIComponent('이준범'),
+                P_GOODS: encodeURIComponent('오케이닥 진료예약'),
+                P_UNAME: encodeURIComponent(reservationInfo.profileInfo.name),
                 P_NEXT_URL: 'https://m.ok-doc.com/',
-                P_EMAIL: 'aiden@insunginfo.co.kr',
+                P_EMAIL: email,
                 P_RESERVED: 'global_visa3d=Y',
             },
             // data: {
