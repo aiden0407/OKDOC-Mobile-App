@@ -76,7 +76,7 @@ export const getScheduleByDoctorId = async function (doctorId) {
 
     try {
         let options = {
-            url: `${APIURL}/treatment-appointments/?doctor_id=${doctorId}`,
+            url: `${APIURL}/treatment_appointments/?doctor_id=${doctorId}`,
             method: 'GET',
         }
         const response = await axios(options);
