@@ -18,7 +18,7 @@ import { createBidding } from 'api/Home';
 export default function PaymentNotificationScreen({ navigation }) {
 
   const { state: { accountData } } = useContext(ApiContext);
-  const { state: { telemedicineReservationStatus } } = useContext(AppContext);
+  const { state: { telemedicineReservationStatus }, dispatch } = useContext(AppContext);
   const [paymentAgreement, setPaymentAgreement] = useState(false);
   const [refundAgreement, setRefundAgreement] = useState(false);
 
@@ -37,6 +37,11 @@ export default function PaymentNotificationScreen({ navigation }) {
   const handleProceedPayment = async function () {
     try {
       const response = await createBidding(accountData.loginToken, telemedicineReservationStatus);
+      console.log(response.data.response[0].id);
+      dispatch({
+        type: 'TELEMEDICINE_RESERVATION_BIDDING_ID',
+        biddingId: response.data.response[0].id,
+      });
       navigation.navigate('TelemedicineReservationPayment', { screen: 'Payment' });
     } catch (error) {
       Alert.alert('예약 오류', '진료 예약 중 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
@@ -88,12 +93,16 @@ export default function PaymentNotificationScreen({ navigation }) {
           </Row>
           <Row marginTop={15}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
+            <Text T6 medium>진료시간은 10분입니다.</Text>
+          </Row>
+          {/* <Row marginTop={15}>
+            <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
             <Text T6 medium>기본 진료시간은 10분이며, 추가로 5분 연장 가능합니다.</Text>
           </Row>
           <Row marginTop={15}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
             <Text T6 medium>진료시간 연장 시 50,000원의 추가 비용이 발생합니다.</Text>
-          </Row>
+          </Row> */}
         </PaddingContainer>
 
         <DividingLine marginTop={30} />
