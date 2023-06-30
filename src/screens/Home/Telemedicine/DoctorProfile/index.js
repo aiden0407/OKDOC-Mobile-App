@@ -25,8 +25,8 @@ export default function DoctorProfileScreen({ navigation }) {
   const [informationCategory, setInformationCategory] = useState('profile');
   const doctorInfo = telemedicineReservationStatus.doctorInfo
 
-  const title = `연세튼튼치과/내과 건강검진센터 병원장\n${doctorInfo.name}입니다.`
-  const text = `안녕하세요, 인천 검단신도시 아라동에 위치한 연세튼튼치과 원장 ${doctorInfo.name}입니다.\n\n<우리가족 건강주치의>라는 슬로건 하에 바른 진료, 진심을 담은 진료 약속 드립니다.\n\n평일 진료시간이 오후 6시간 마감으로 오후 6시부터 ~  오후 6시 30분간 비대면 진료 합니다.\n\n직장 시간때문에 진료 시간내 오지못하는 경우, 거리가 멀어서 직접 못오시는 경우 진료 신청 해주시면 감사하겠습니다.`;
+  const title = doctorInfo?.selfIntrodectionTitle;
+  const text = doctorInfo?.selfIntrodectionDetale;
 
   function handleApplyReservation() {
     if (accountData.loginToken) {
@@ -41,24 +41,24 @@ export default function DoctorProfileScreen({ navigation }) {
     }
   }
 
-  function Review() {
-    return (<>
-      <Row marginTop={24} align>
-        <ServiceSection>
-          <Text T8 medium color={COLOR.MAIN}>진료</Text>
-        </ServiceSection>
-        <Row marginLeft={6} gap={2}>
-          <Image source={starFull} width={12} height={12} />
-          <Image source={starFull} width={12} height={12} />
-          <Image source={starFull} width={12} height={12} />
-          <Image source={starFull} width={12} height={12} />
-          <Image source={starFull} width={12} height={12} />
-        </Row>
-      </Row>
-      <Text T6 marginTop={12}>친절하시고 책임감 있으신거 같아요. {'\n'}만족할 때까지상담해주셨어요.</Text>
-      <Text T7 medium marginTop={12} color={COLOR.GRAY1}>전**님 | 23.04.07</Text>
-    </>)
-  }
+  // function Review() {
+  //   return (<>
+  //     <Row marginTop={24} align>
+  //       <ServiceSection>
+  //         <Text T8 medium color={COLOR.MAIN}>진료</Text>
+  //       </ServiceSection>
+  //       <Row marginLeft={6} gap={2}>
+  //         <Image source={starFull} width={12} height={12} />
+  //         <Image source={starFull} width={12} height={12} />
+  //         <Image source={starFull} width={12} height={12} />
+  //         <Image source={starFull} width={12} height={12} />
+  //         <Image source={starFull} width={12} height={12} />
+  //       </Row>
+  //     </Row>
+  //     <Text T6 marginTop={12}>친절하시고 책임감 있으신거 같아요. {'\n'}만족할 때까지상담해주셨어요.</Text>
+  //     <Text T7 medium marginTop={12} color={COLOR.GRAY1}>전**님 | 23.04.07</Text>
+  //   </>)
+  // }
 
   return (
     <SafeArea>
@@ -113,7 +113,7 @@ export default function DoctorProfileScreen({ navigation }) {
                 <Text T4 bold>{doctorInfo.name} 의사</Text>
                 <Text T7 medium color={COLOR.GRAY1}>{doctorInfo.hospital} / {doctorInfo.subject}</Text>
                 <Row marginTop={12}>
-                  {doctorInfo.medicalField.map((item, index) =>
+                  {doctorInfo?.strength?.map((item, index) =>
                     <Text key={`field${index}`} T7 color={COLOR.GRAY2}>#{item} </Text>
                   )}
                 </Row>
@@ -123,30 +123,29 @@ export default function DoctorProfileScreen({ navigation }) {
             <DividingLine thin marginTop={24} />
 
             <Text T4 bold marginTop={24} marginBottom={3}>학력 및 이력</Text>
-            <Row align marginTop={9}>
-              <BulletPoint />
-              <Text T6 color={COLOR.GRAY1}>연세대학교 의과대학 졸업</Text>
-            </Row>
-            <Row align marginTop={9}>
-              <BulletPoint />
-              <Text T6 color={COLOR.GRAY1}>제너럴닥터 원장</Text>
-            </Row>
-            <Row align marginTop={9}>
-              <BulletPoint />
-              <Text T6 color={COLOR.GRAY1}>연세장튼튼의원 설립, 대표원장</Text>
-            </Row>
-            <Row align marginTop={9}>
-              <BulletPoint />
-              <Text T6 color={COLOR.GRAY1}>안산의료재단 인선요양병원, 병원장</Text>
-            </Row>
+            {doctorInfo?.field?.map((item, index) =>
+              <Row align marginTop={9} key={`date${index}`}>
+                <BulletPoint />
+                <Text T6 color={COLOR.GRAY1}>{item}</Text>
+              </Row>
+            )}
 
             <DividingLine thin marginTop={24} />
 
-            <Text T4 bold marginTop={36}>{title}</Text>
-            <Text T6 marginTop={18} marginBottom={60}>{text}</Text>
+            {
+              title
+                ? <Text T4 bold marginTop={36}>{title}</Text>
+                : <Text T4 bold marginTop={36}>{doctorInfo.hospital} {doctorInfo.subject} {doctorInfo.name}입니다</Text>
+            }
+
+            {
+              text
+                ? <Text T6 marginTop={18} marginBottom={60}>{text}</Text>
+                : <Text T6 marginTop={18} marginBottom={60}>바른 진료, 진심을 담은 진료 약속 드립니다.</Text>
+            }
           </>
         )}
-        {informationCategory === 'review' && (
+        {/* {informationCategory === 'review' && (
           <>
             <ReviewContainer>
               <Text T1 bold>4.5</Text>
@@ -169,7 +168,7 @@ export default function DoctorProfileScreen({ navigation }) {
             <Review />
             <Review />
           </>
-        )}
+        )} */}
         <Box height={100} />
       </ScrollView>
 
