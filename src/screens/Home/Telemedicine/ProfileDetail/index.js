@@ -97,6 +97,7 @@ export default function ProfileDetailScreen({ navigation }) {
         type: 'TELEMEDICINE_RESERVATION_PROFILE',
         profileType: telemedicineReservationStatus.profileType,
         profileInfo: {
+          id: mainProfile.id,
           name: name,
           relationship: relationship,
           birth: birth,
