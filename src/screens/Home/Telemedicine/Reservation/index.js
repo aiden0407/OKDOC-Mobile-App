@@ -6,25 +6,26 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design';
+import { Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, Container, ScrollView, Row, DividingLine } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 
 //Api
-import { getDoctorsByDepartment, getDoctorInformationByDoctorId, getScheduleByDoctorId } from 'api/Home';
+import { getDoctorsByDepartment, getScheduleByDoctorId } from 'api/Home';
 
 export default function ReservationScreen({ navigation, route }) {
 
-  const { state: { telemedicineReservationStatus }, dispatch } = useContext(AppContext);
-  const { state: { accountData: { loginToken: loginToken }, bookableData } } = useContext(ApiContext);
+  const { state: { bookableData }, dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { state: { telemedicineReservationStatus }, dispatch: appContextDispatch } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(true);
   const [dateIndex, setDateIndex] = useState(0);
   const [timeIndex, setTimeIndex] = useState(0);
 
   useEffect(() => {
     initScheduleData()
   }, []);
-
 
   const initScheduleData = async function () {
     try {
@@ -38,14 +39,96 @@ export default function ReservationScreen({ navigation, route }) {
       }
 
       for (let jj = 0; jj < doctorsList.length; jj++) {
-        console.log(doctorsList[jj].name);
-        //const doctorScheduleResponse = await getScheduleByDoctorId(doctorsList[jj]._id);
+        const response = await getScheduleByDoctorId(doctorsList[jj].id);
+        const appointmentsList = response.data.response;
+        const updatedSchedule = doctorsList[jj].schedules.filter((slot) => {
+          return !appointmentsList.some((appt) => appt.wish_at === slot.open_at);
+        });
+        doctorsList[jj].schedules = updatedSchedule;
       }
 
-      // dispatch({
-      //   type: 'BOOKABLE_DATA_UPDATE',
-      //   bookableData: doctorsScheduleList,
-      // });
+      doctorsList.forEach((doctor) => {
+        doctor.schedules.forEach((schedule) => {
+          const date = new Date(schedule.open_at);
+          const day = date.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }).replace('.', '/').replace('.', '').replace(' ', '');
+          const weekday = date.toLocaleDateString('ko-KR', { weekday: 'long' }).slice(-3);
+          let time = date.toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit' });
+          if (time.startsWith('24:')) {
+            time = time.replace('24:', '00:');
+          }
+
+          const existingEntry = doctorsScheduleList.find((entry) => entry[0] === day);
+          if (existingEntry) {
+            const existingTimeSlot = existingEntry[2].find((slot) => slot[0] === time);
+            if (existingTimeSlot) {
+              existingTimeSlot[1].push({
+                doctorId: doctor.id,
+                name: doctor.name,
+                image: doctor?.photo,
+                hospital: doctor.hospital,
+                subject: doctor.department,
+                strength: doctor?.strength,
+                field: doctor?.field,
+                selfIntrodectionTitle: doctor?.self_introduction_title,
+                selfIntrodectionDetale: doctor?.self_introduction,
+                scheduleId: schedule.id,
+                scheduleTime: schedule.open_at,
+              });
+            } else {
+              existingEntry[2].push([time, [{
+                doctorId: doctor.id,
+                name: doctor.name,
+                image: doctor?.photo,
+                hospital: doctor.hospital,
+                subject: doctor.department,
+                strength: doctor?.strength,
+                field: doctor?.field,
+                selfIntrodectionTitle: doctor?.self_introduction_title,
+                selfIntrodectionDetale: doctor?.self_introduction,
+                scheduleId: schedule.id,
+                scheduleTime: schedule.open_at,
+              }]]);
+            }
+          } else {
+            doctorsScheduleList.push([day, weekday, [[time, [{
+              doctorId: doctor.id,
+              name: doctor.name,
+              image: doctor?.photo,
+              hospital: doctor.hospital,
+              subject: doctor.department,
+              strength: doctor?.strength,
+              field: doctor?.field,
+              selfIntrodectionTitle: doctor?.self_introduction_title,
+              selfIntrodectionDetale: doctor?.self_introduction,
+              scheduleId: schedule.id,
+              scheduleTime: schedule.open_at,
+            }]]]]);
+          }
+        });
+      });
+
+      function sortByTime(a, b) {
+        const timeA = parseInt(a[0].replace(':', ''));
+        const timeB = parseInt(b[0].replace(':', ''));
+        return timeA - timeB;
+      }
+      
+      function transformData(doctorsScheduleList) {
+        for (let ii = 0; ii < doctorsScheduleList.length; ii++) {
+          const daySchedule = doctorsScheduleList[ii][2];
+          daySchedule.sort(sortByTime);
+        }
+        return doctorsScheduleList;
+      }
+
+      transformData(doctorsScheduleList);
+
+      apiContextDispatch({
+        type: 'BOOKABLE_DATA_UPDATE',
+        bookableData: doctorsScheduleList,
+      });
+
+      setIsLoading(false);
 
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
@@ -53,13 +136,17 @@ export default function ReservationScreen({ navigation, route }) {
   }
 
   function handleSelectDoctor(date, time, doctorInfo) {
-    dispatch({
+    appContextDispatch({
       type: 'TELEMEDICINE_RESERVATION_DOCTOR',
       date: date,
       time: time,
       doctorInfo: doctorInfo,
     });
     navigation.navigate('DoctorProfile');
+  }
+
+  if (isLoading) {
+    return null;
   }
 
   return (
@@ -85,7 +172,7 @@ export default function ReservationScreen({ navigation, route }) {
                     underlayColor={dateIndex !== index && COLOR.GRAY5}
                   >
                     <>
-                      <Text T4 bold color={dateIndex === index ? COLOR.MAIN : COLOR.GRAY1}>{item[0]}</Text>
+                      <Text T5 bold color={dateIndex === index ? COLOR.MAIN : COLOR.GRAY1}>{item[0]}</Text>
                       <Text T7 color={dateIndex === index ? COLOR.MAIN : COLOR.GRAY2}>{item[1]}</Text>
                     </>
                   </DateButton>
@@ -124,7 +211,7 @@ export default function ReservationScreen({ navigation, route }) {
                   <Text T4 bold>{item.name} 의사</Text>
                   <Text T7 medium color={COLOR.GRAY1}>{item.hospital} / {item.subject}</Text>
                   <Row marginTop={12}>
-                    {item.medicalField.map((item, index) =>
+                    {item?.strength?.map((item, index) =>
                       <Text key={`field${index}`} T7 color={COLOR.GRAY1}>#{item} </Text>
                     )}
                   </Row>
