@@ -11,7 +11,7 @@ import { SafeArea, Container, Row, DividingLine, PaddingContainer } from 'compon
 import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
-export default function PaymentConfirmScreen({ navigation }) {
+export default function PaymentCompleteScreen({ navigation }) {
 
   const { state: { telemedicineReservationStatus }, dispatch } = useContext(AppContext);
 
@@ -47,19 +47,19 @@ export default function PaymentConfirmScreen({ navigation }) {
           <Text T3 bold marginTop={30}>예약하신 내역을 확인해주세요</Text>
           <Row align marginTop={15}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>{telemedicineReservationStatus.doctorInfo.name} 의사 (을지대학교병원)</Text>
+            <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.name} 의사 (을지대학교병원)</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>{telemedicineReservationStatus.doctorInfo.subject} / 진료</Text>
+            <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.subject} / 진료</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>2023년 4월 {telemedicineReservationStatus.date} ({telemedicineReservationStatus.time})</Text>
+            <Text T6 medium>2023년 4월 {telemedicineReservationStatus?.date} ({telemedicineReservationStatus?.time})</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>예약자: {telemedicineReservationStatus.profileInfo.name}</Text>
+            <Text T6 medium>예약자: {telemedicineReservationStatus?.profileInfo?.name}</Text>
           </Row>
         </PaddingContainer>
         </Container>
