@@ -14,7 +14,8 @@ export default function TelemedicineReservation({ navigation }) {
           name="Payment"
           component={PaymentScreen}
           options={{
-            headerShown: false,
+            title: '',
+            headerBackVisible: false,
           }}
         />
         <Stack.Screen
