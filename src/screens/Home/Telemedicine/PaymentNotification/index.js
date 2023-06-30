@@ -26,7 +26,7 @@ export default function PaymentNotificationScreen({ navigation }) {
   }
 
   function handleProceedPayment() {
-    navigation.navigate('Payment');
+    navigation.navigate('TelemedicineReservationPayment', { screen: 'Payment' });
   }
 
   return (
