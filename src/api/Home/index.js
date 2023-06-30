@@ -3,7 +3,6 @@ import axios from 'axios';
 import { APIURL } from 'constants/api'
 
 export const getProducts = async function () {
-
     try {
         let options = {
             url: `${APIURL}/products/`,
@@ -18,7 +17,6 @@ export const getProducts = async function () {
 }
 
 export const getSymptoms = async function () {
-
     try {
         let options = {
             url: `${APIURL}/symptoms/`,
@@ -33,7 +31,6 @@ export const getSymptoms = async function () {
 }
 
 export const getDepartments = async function () {
-
     try {
         let options = {
             url: `${APIURL}/departments/`,
@@ -48,7 +45,6 @@ export const getDepartments = async function () {
 }
 
 export const getDoctorsByDepartment = async function (department) {
-
     try {
         let options = {
             url: `${APIURL}/doctors/?department=${department}`,
@@ -62,30 +58,26 @@ export const getDoctorsByDepartment = async function (department) {
     }
 }
 
-export const getDoctorInformationByDoctorId = async function (doctorId) {
+// export const getDoctorInformationByDoctorId = async function (doctorId) {
+//     try {
+//         let options = {
+//             url: `${APIURL}/doctor/${doctorId}`,
+//             method: 'GET',
+//         }
+//         const response = await axios(options);
+//         return response;
+
+//     } catch (error) {
+//         throw error.response;
+//     }
+// }
+
+export const getScheduleByDoctorId = async function (doctorId) {
 
     try {
         let options = {
-            url: `${APIURL}/doctor/${doctorId}`,
+            url: `${APIURL}/treatment-appointments/?doctor_id=${doctorId}`,
             method: 'GET',
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error.response;
-    }
-}
-
-export const getScheduleByDoctorId = async function (loginToken, doctorId) {
-
-    try {
-        let options = {
-            url: `${APIURL}/treatment_appointments/?doctor_id=${doctorId}`,
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${loginToken}`
-            }
         }
         const response = await axios(options);
         return response;
@@ -96,7 +88,6 @@ export const getScheduleByDoctorId = async function (loginToken, doctorId) {
 }
 
 export const getBiddings = async function (loginToken) {
-
     try {
         let options = {
             url: `${APIURL}/biddings/`,
@@ -115,7 +106,6 @@ export const getBiddings = async function (loginToken) {
 
 export const postPaymentRequest = async function () {
 //export const postPaymentRequest = async function (orderNumber, productPrice, productName, patientName, patientPhone, patientEmail) {
-
     try {
         let options = {
             url: `https://mobile.inicis.com/smart/payment/`,
@@ -126,12 +116,11 @@ export const postPaymentRequest = async function () {
             data: {
                 P_INI_PAYMENT: 'CARD',
                 P_MID: 'insungif01',
-                P_OID: '123123123123123',
+                P_OID: 'uuid',
                 P_AMT: Number(1000),
-                P_GOODS: encodeURIComponent('진료 예약'),
+                P_GOODS: encodeURIComponent('을지대병원 진료 예약'),
                 P_UNAME: encodeURIComponent('이준범'),
                 P_NEXT_URL: 'https://m.ok-doc.com/',
-                P_MOBILE: '01024278139',
                 P_EMAIL: 'aiden@insunginfo.co.kr',
                 P_RESERVED: 'global_visa3d=Y',
             },
