@@ -75,13 +75,13 @@ export default function App() {
                 <Stack.Group screenOptions={{ headerShown: false }}>
                   <Stack.Screen name="BottomTapNavigation" component={BottomTapNavigation} />
                   <Stack.Screen name="TelemedicineReservation" component={TelemedicineReservation} />
-                  <Stack.Screen name="TelemedicineReservationPayment" component={TelemedicineReservationPayment} options={{ gestureEnabled: false }} />
                   <Stack.Screen name="HistoryStackNavigation" component={HistoryStackNavigation} />
                   <Stack.Screen name="MyPageStackNavigation" component={MyPageStackNavigation} />
                   <Stack.Screen name="NeedLoginNavigation" component={NeedLoginNavigation} />
                 </Stack.Group>
 
                 <Stack.Group screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>
+                  <Stack.Screen name="TelemedicineReservationPayment" component={TelemedicineReservationPayment} options={{ gestureEnabled: false }} />
                   <Stack.Screen name="LoginStackNavigation" component={LoginStackNavigation} />
                 </Stack.Group>
               </Stack.Navigator>
