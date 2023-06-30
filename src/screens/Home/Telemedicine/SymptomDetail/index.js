@@ -79,7 +79,7 @@ export default function SymptomDetailScreen({ navigation }) {
   );
 }
 
-const IconContainer = styled.Pressable`
+const IconContainer = styled.View`
   margin-top: 24px;
   width: 100%;
   flex-direction: row;
