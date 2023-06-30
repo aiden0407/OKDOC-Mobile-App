@@ -169,7 +169,7 @@ export const postPaymentRequest = async function (reservationInfo, email) {
                 P_INI_PAYMENT: 'CARD',
                 P_MID: 'insungif01',
                 P_OID: uuid.v4(),
-                P_NOTI: reservationInfo.UUID,
+                P_NOTI: reservationInfo.biddingId,
                 P_AMT: Number(1000),
                 P_GOODS: encodeURIComponent('오케이닥 진료예약'),
                 P_UNAME: encodeURIComponent(reservationInfo.profileInfo.name),
@@ -177,17 +177,6 @@ export const postPaymentRequest = async function (reservationInfo, email) {
                 P_EMAIL: email,
                 P_RESERVED: 'global_visa3d=Y',
             },
-            // data: {
-            //     P_INI_PAYMENT: 'CARD',
-            //     P_MID: 'insungif01',
-            //     P_OID: orderNumber,
-            //     P_AMT: Number(productPrice),
-            //     P_GOODS: productName,
-            //     P_UNAME: patientName,
-            //     P_NEXT_URL: 'https://m.ok-doc.com/',
-            //     P_MOBILE: patientPhone,
-            //     P_EMAIL: patientEmail,
-            // },
         }
         const response = await axios(options);
         return response;
