@@ -3,11 +3,13 @@ import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import cheerio from 'cheerio';
+import styled from 'styled-components/native';
 
 //Components
 import { SafeArea } from 'components/Layout';
 import { Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { Text } from 'components/Text';
 
 //Api
 import { postPaymentRequest } from 'api/Home';
@@ -16,7 +18,23 @@ export default function PaymentScreen({ navigation }) {
 
   const { state: { accountData } } = useContext(ApiContext);
   const { state: { telemedicineReservationStatus } } = useContext(AppContext);
+  const [canGoBack, setCanGoBack] = useState(false);
   const [htmlContent, setHtmlContent] = useState('');
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: canGoBack,
+      headerRight: () => {
+        return (
+          <EditButton onPress={() => {
+            navigation.goBack();
+          }}>
+            <Text T5 bold>X</Text>
+          </EditButton>
+        );
+      }
+    });
+  }, [navigation, canGoBack]);
 
   useEffect(() => {
     paymentRequest();
@@ -56,13 +74,18 @@ export default function PaymentScreen({ navigation }) {
     <SafeArea>
       <WebView
         source={{ html: htmlContent }}
-        originWhitelist={['*']}
-        scalesPageToFit
+        onNavigationStateChange={(navState) => {
+          if(navState.canGoBack){
+            setCanGoBack(true);
+          }
+        }}
         onError={() => {
           navigation.goBack();
-          Alert.alert('결제 취소', '결제 중 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
         }}
       />
     </SafeArea>
   );
 }
+
+const EditButton = styled.Pressable`
+`;
