@@ -11,8 +11,7 @@ import DoctorProfileScreen from 'screens/Home/Telemedicine/DoctorProfile';
 import ProfileDetailScreen from 'screens/Home/Telemedicine/ProfileDetail';
 import SymptomDetailScreen from 'screens/Home/Telemedicine/SymptomDetail';
 import PaymentNotificationScreen from 'screens/Home/Telemedicine/PaymentNotification';
-import PaymentPolicyDetailScreen from 'screens/Home/Telemedicine/PaymentNotification/PaymentPolicyDetail';
-import RefundPolicyDetailScreen from 'screens/Home/Telemedicine/PaymentNotification/RefundPolicyDetail';
+import PaymentPolicyDetailScreen from 'screens/Home/Telemedicine/PaymentNotification/Detail';
 
 //Components
 import NavigationBackArrow from 'components/NavigationBackArrow';
@@ -95,15 +94,7 @@ export default function TelemedicineReservation({ navigation }) {
           name="PaymentPolicyDetail"
           component={PaymentPolicyDetailScreen}
           options={{
-            title: '결제 대행 서비스 이용 약관',
-            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('PaymentNotification')} />,
-          }}
-        />
-        <Stack.Screen
-          name="RefundPolicyDetail"
-          component={RefundPolicyDetailScreen}
-          options={{
-            title: '취소 및 환불 규정',
+            title: '결제 안내',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('PaymentNotification')} />,
           }}
         />
