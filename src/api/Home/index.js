@@ -100,7 +100,6 @@ export const createBidding = async function (loginToken, reservationInfo) {
                 patient_id: reservationInfo.profileInfo.id,
                 wish_at: reservationInfo.doctorInfo.scheduleTime,
                 department: reservationInfo.doctorInfo.subject,
-                similar_symptom: reservationInfo.symptom,
                 explain_symptom: reservationInfo.symptom,
             },
         }
@@ -173,7 +172,7 @@ export const postPaymentRequest = async function (reservationInfo, email) {
                 P_AMT: Number(1000),
                 P_GOODS: encodeURIComponent('오케이닥 진료예약'),
                 P_UNAME: encodeURIComponent(reservationInfo.profileInfo.name),
-                P_NEXT_URL: 'https://m.ok-doc.com/',
+                P_NEXT_URL: 'https://api.okdoc.app/payment-webhook/',
                 P_EMAIL: email,
                 P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
             },
