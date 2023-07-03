@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import cheerio from 'cheerio';
+import * as Linking from 'expo-linking';
 import styled from 'styled-components/native';
 
 //Components
@@ -68,7 +69,17 @@ export default function PaymentScreen({ navigation }) {
 
     return $.html();
   };
-  
+
+  const onShouldStartLoadWithRequest = (navState) => {
+    if (navState.url.startsWith('http://') || navState.url.startsWith('https://') || navState.url.startsWith('about:blank')) {
+      return true;
+    } else {
+      Linking.openURL(navState.url).catch((error) => {
+        Alert.alert('결제 안내', '앱 실행에 실패했습니다. 설치가 되어있지 않은 경우 설치하기 버튼을 눌러주세요.');
+      });
+      return false;
+    }
+  };
 
   return (
     <SafeArea>
@@ -79,6 +90,9 @@ export default function PaymentScreen({ navigation }) {
           if(navState.canGoBack){
             setCanGoBack(true);
           }
+        }}
+        onShouldStartLoadWithRequest={(navState) => {
+          return onShouldStartLoadWithRequest(navState);
         }}
         onError={(error) => {
           if(error.nativeEvent.code===-1003){
