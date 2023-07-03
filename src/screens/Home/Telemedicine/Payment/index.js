@@ -74,13 +74,16 @@ export default function PaymentScreen({ navigation }) {
     <SafeArea>
       <WebView
         source={{ html: htmlContent }}
+        originWhitelist={['*']}
         onNavigationStateChange={(navState) => {
           if(navState.canGoBack){
             setCanGoBack(true);
           }
         }}
-        onError={() => {
-          navigation.goBack();
+        onError={(error) => {
+          if(error.nativeEvent.code===-1003){
+            navigation.goBack();
+          }
         }}
       />
     </SafeArea>
