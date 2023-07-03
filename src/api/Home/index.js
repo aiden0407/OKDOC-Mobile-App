@@ -175,7 +175,7 @@ export const postPaymentRequest = async function (reservationInfo, email) {
                 P_UNAME: encodeURIComponent(reservationInfo.profileInfo.name),
                 P_NEXT_URL: 'https://m.ok-doc.com/',
                 P_EMAIL: email,
-                P_RESERVED: 'global_visa3d=Y',
+                P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
             },
         }
         const response = await axios(options);
