@@ -1,58 +1,134 @@
 //React
-import { useContext } from 'react';
-import { AppContext } from 'context/AppContext';
+import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
+import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design';
-import { Alert } from 'react-native';
+import { Alert, RefreshControl } from 'react-native';
 import { SafeArea, ScrollView, Container, ContainerCenter, Row, DividingLine, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 import { SolidButton } from 'components/Button';
 import NeedLogin from 'components/NeedLogin';
 
+//Api
+import { getScheduleByPatientId } from 'api/History';
+
 //Assets
 import letterIcon from 'assets/icons/mypage-letter.png';
 
 export default function HistoryScreen({ navigation }) {
 
-  const { dispatch } = useContext(AppContext);
-  const { state: { accountData, historyData } } = useContext(ApiContext);
+  const { state: { accountData, profileData, historyData }, dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { dispatch: appContextDispatch } = useContext(AppContext);
+  const [refreshing, setRefreshing] = useState(false);
 
-  function handleCancleReservation(item) {
-    Alert.alert('해당 진료 예약을 취소하시겠습니까?', '환불 규정에 따라 취소\n수수료가 발생할 수 있습니다.', [
-      {
-        text: '이전으로',
-      },
-      {
-        text: '예약 취소',
-        style: 'destructive',
-        onPress: () => handleCancleComplete()
-      },
-    ]);
+  useEffect(() => {
+    getAppointmentHistory();
+  }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    getAppointmentHistory();
+  };
+
+  function renameKey(obj, oldKey, newKey) {
+    if (oldKey === newKey) {
+      return obj;
+    }
+    if (obj.hasOwnProperty(oldKey)) {
+      obj[newKey] = obj[oldKey];
+      delete obj[oldKey];
+    }
+    return obj;
   }
 
-  function handleCancleComplete() {
-    Alert.alert('해당 예약이 정상적으로 취소되었습니다.', '', [
-      {
-        text: '확인',
-      }
-    ]);
+  const getAppointmentHistory = async function () {
+    try {
+      const response = await getScheduleByPatientId(accountData.loginToken, profileData?.[0]?.id);
+      const historyList = response.data.response;
+      const contextHistorySet = {
+        underReservation: [
+        ],
+        pastHistory: [
+        ],
+      };
+
+      historyList.forEach((history) => {
+        renameKey(history, 'doctor', 'doctorInfo');
+        renameKey(history, 'patient', 'profileInfo');
+        const date = new Date(history.wish_at);
+        const day = date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll(' ', '').slice(0, -1);
+        let time = date.toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit' });
+        if (time.startsWith('24:')) {
+          time = time.replace('24:', '00:');
+        }
+        history.date = day;
+        history.time = time;
+
+        if (history.status === 'RESERVATION_CONFIRMED') {
+          contextHistorySet.underReservation.push(history)
+        } else if (history.status === 'TREATMENT_COMPLETION') {
+          contextHistorySet.pastHistory.push(history)
+        }
+      });
+
+      apiContextDispatch({
+        type: 'HISTORY_DATA_UPDATE',
+        historyData: contextHistorySet,
+      });
+      setRefreshing(false);
+    } catch (error) {
+      Alert.alert('에러', '진료 목록 정보 불러오기를 실패하였습니다. 다시 시도해주시기 바랍니다.');
+      setRefreshing(false);
+    }
+  };
+
+  function getRemainingTime(wishAt) {
+    const wishTime = new Date(wishAt).getTime();
+    const currentTime = Date.now();
+    const remainingTime = wishTime - currentTime;
+    const remainingSeconds = Math.floor(remainingTime / 1000);
+    return remainingSeconds;
   }
+
+  // function handleCancleReservation(item) {
+  //   Alert.alert('해당 진료 예약을 취소하시겠습니까?', '환불 규정에 따라 취소\n수수료가 발생할 수 있습니다.', [
+  //     {
+  //       text: '이전으로',
+  //     },
+  //     {
+  //       text: '예약 취소',
+  //       style: 'destructive',
+  //       onPress: () => handleCancleComplete()
+  //     },
+  //   ]);
+  // }
+
+  // function handleCancleComplete() {
+  //   Alert.alert('해당 예약이 정상적으로 취소되었습니다.', '', [
+  //     {
+  //       text: '확인',
+  //     }
+  //   ]);
+  // }
 
   function handleEnterTelemedicine(item) {
-    dispatch({ type: 'HISTORY_DATA_ADD', historyData: item });
-    navigation.navigate('HistoryStackNavigation', { 
-      screen: 'SymptomDetailCheck' ,
+    appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: item.id });
+    navigation.navigate('HistoryStackNavigation', {
+      screen: 'SymptomDetailCheck',
       params: { telemedicineData: item }
     });
   }
 
   function handleViewTelemedicineDetail(item) {
-    dispatch({ type: 'HISTORY_DATA_ADD', historyData: item });
-    navigation.navigate('HistoryStackNavigation', { screen: 'TelemedicineDetail' });
+    appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: item.id });
+    navigation.navigate('HistoryStackNavigation', { 
+      screen: 'TelemedicineDetail',
+      params: { telemedicineData: item }
+    });
   }
 
   function handleMakeReservation() {
@@ -68,22 +144,28 @@ export default function HistoryScreen({ navigation }) {
       <HistoryCardContainer>
         <CardTitleSection>
           <CardTitleColumn>
-            <Text T6 bold>{item.doctorInfo.subject} / {item.profileInfo.name}님 ({item.profileType})</Text>
-            <Text T7 color={COLOR.GRAY1}>{item.date} ({item.time})</Text>
-            {type === 'pastHistory' && <Text T7 color={COLOR.GRAY1}>결제 120,000원</Text>}
+            <Text T6 bold>
+              {item.doctorInfo.department} / {item.profileInfo.passport?.user_name}님 ({item.profileInfo.relationship})
+            </Text>
+            <Text T7 color={COLOR.GRAY1}>
+              {item.date} ({item.time})
+            </Text>
+            {type === 'pastHistory' ? <Text T7 color={COLOR.GRAY1}>결제 120,000원</Text> : null}
           </CardTitleColumn>
-          {type === 'underReservation'
-            && <CardTitleButton
+          {/* {type === 'underReservation'
+            ? <CardTitleButton
               underlayColor={COLOR.GRAY5}
               onPress={() => handleCancleReservation(item)}
             >
               <Text T7 medium color={COLOR.GRAY1}>예약 취소</Text>
             </CardTitleButton>
-          }
+            : null
+          } */}
           {type === 'pastHistory'
-            && <CardTitleButton>
+            ? <CardTitleButton>
               <Text T7 medium color={COLOR.GRAY1}>완료</Text>
             </CardTitleButton>
+            : null
           }
         </CardTitleSection>
 
@@ -91,32 +173,43 @@ export default function HistoryScreen({ navigation }) {
 
         <CardDoctorInfoSection>
           <Row>
-            <Image source={{ uri: item.doctorInfo.image }} width={66} height={66} circle />
+            <Image source={{ uri: item.doctorInfo.photo }} width={66} height={66} circle />
             <CardDoctorInfoColumn>
               <Text T4 bold>{item.doctorInfo.name} 의사</Text>
-              <Text T7 bold color={COLOR.GRAY2}>{item.doctorInfo.hospital} / {item.doctorInfo.subject}</Text>
+              <Text T7 bold color={COLOR.GRAY2}>
+                {item.doctorInfo.hospital} / {item.doctorInfo.department}
+              </Text>
               <Row marginTop={12}>
-                {item.doctorInfo.medicalField.map((item, index) =>
+                {item.doctorInfo.strength?.map((item, index) =>
                   <Text key={`field${index}`} T7 color={COLOR.GRAY1}>#{item} </Text>
                 )}
               </Row>
             </CardDoctorInfoColumn>
           </Row>
           {type === 'underReservation'
-            && <CustomSolidButton
-              underlayColor={COLOR.SUB1}
-              onPress={() => handleEnterTelemedicine(item)}
-            >
-              <Text T5 medium color="#FFFFFF">진료실 입장</Text>
-            </CustomSolidButton>
+            //? getRemainingTime(item?.wish_at) < 600
+            ? getRemainingTime(item?.wish_at) > 600
+              ? <CustomSolidButton
+                underlayColor={COLOR.SUB1}
+                onPress={() => handleEnterTelemedicine(item)}
+              >
+                <Text T5 medium color="#FFFFFF">진료실 입장</Text>
+              </CustomSolidButton>
+              : <CustomSolidButton
+                style={{ backgroundColor: COLOR.GRAY3 }}
+              >
+                <Text T5 medium color="#FFFFFF">진료실 입장</Text>
+              </CustomSolidButton>
+            : null
           }
           {type === 'pastHistory'
-            && <CustomSolidButton
+            ? <CustomSolidButton
               underlayColor={COLOR.SUB1}
               onPress={() => handleViewTelemedicineDetail(item)}
             >
               <Text T5 medium color="#FFFFFF">진료 내역</Text>
             </CustomSolidButton>
+            : null
           }
         </CardDoctorInfoSection>
       </HistoryCardContainer>
@@ -130,29 +223,36 @@ export default function HistoryScreen({ navigation }) {
           ? (<>
             {(historyData.underReservation.length || historyData.pastHistory.length)
               ? <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                  {historyData.underReservation.length
-                    && (<>
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                  }
+                >
+                  {historyData?.underReservation?.length
+                    ? (<>
                       <Text T3 bold marginTop={30}>예약 / 접수 내역</Text>
                       <HistoryColumn>
-                        {historyData.underReservation.map((item, index) =>
+                        {historyData?.underReservation?.map((item, index) =>
                           <HistoryCard key={`underReservation${index}`} item={item} type="underReservation" />
                         )}
                       </HistoryColumn>
                     </>)
+                    : null
                   }
-                  {historyData.pastHistory.length
-                    && (<>
+                  {historyData?.pastHistory?.length
+                    ? (<>
                       <Row marginTop={30}>
                         <Text T3 bold>지난 내역</Text>
                         <Text T7 medium color={COLOR.GRAY1} marginLeft={6} marginTop={9}>전체 {historyData.pastHistory.length}건</Text>
                       </Row>
                       <HistoryColumn>
-                        {historyData.pastHistory.map((item, index) =>
+                        {historyData?.pastHistory?.map((item, index) =>
                           <HistoryCard key={`pastHistory${index}`} item={item} type="pastHistory" />
                         )}
                       </HistoryColumn>
                     </>)
+                    : null
                   }
                   <Box height={40} />
                 </ScrollView>
