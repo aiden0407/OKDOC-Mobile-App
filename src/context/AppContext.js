@@ -28,7 +28,7 @@ const initialState = {
     countryCode: undefined,
     phoneNumber: undefined,
   },
-  historyData: undefined,
+  historyDataId: undefined,
 };
 
 //create context
@@ -111,8 +111,9 @@ const reducer = (state, action) => {
       return {
         ...state,
         telemedicineReservationStatus: {
-          category: undefined,
-          item: undefined,
+          biddingId: undefined,
+          product: undefined,
+          department: undefined,
           date: undefined,
           time: undefined,
           doctorInfo: undefined,
@@ -170,6 +171,10 @@ const reducer = (state, action) => {
       return {
         ...state,
         registerStatus: {
+          policy: undefined,
+          email: undefined,
+          password: undefined,
+          invitationToken: undefined,
           name: undefined,
           birth: undefined,
           passportNumber: undefined,
@@ -181,10 +186,10 @@ const reducer = (state, action) => {
         },
       };
 
-    case 'HISTORY_DATA_ADD':
+    case 'HISTORY_DATA_ID_ADD':
       return {
         ...state,
-        historyData: action.historyData
+        historyDataId: action.historyDataId
       };
 
     default:
