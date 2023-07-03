@@ -94,11 +94,11 @@ export default function PaymentScreen({ navigation }) {
         onShouldStartLoadWithRequest={(navState) => {
           return onShouldStartLoadWithRequest(navState);
         }}
-        onError={(error) => {
-          if(error.nativeEvent.code===-1003){
-            navigation.goBack();
-          }
-        }}
+        // onError={(error) => {
+        //   if(error.nativeEvent.code===-1003){
+        //     navigation.goBack();
+        //   }
+        // }}
       />
     </SafeArea>
   );
