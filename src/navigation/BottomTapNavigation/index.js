@@ -1,11 +1,10 @@
 //React
-import { useEffect, useContext, useRef } from 'react';
+import { useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Api
 import { getPatientList } from 'api/MyPage';
-import { getScheduleByPatientId } from 'api/History';
 
 //Navigation
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -23,8 +22,7 @@ const BottomTab = createBottomTabNavigator();
 
 export default function BottomTapNavigation() {
 
-  const { state: { accountData, profileData }, dispatch } = useContext(ApiContext);
-  const mounted = useRef(false);
+  const { state: { accountData }, dispatch } = useContext(ApiContext);
 
   useEffect(() => {
     autoLogin();
@@ -35,12 +33,6 @@ export default function BottomTapNavigation() {
       getPatientInformation();
     }
   }, [accountData.loginToken]);
-
-  useEffect(() => {
-    if (profileData?.[0]?.id) {
-      //getAppointmentHistory();
-    }
-  }, [profileData?.[0]?.id]);
 
   const autoLogin = async function () {
     try {
@@ -79,19 +71,6 @@ export default function BottomTapNavigation() {
         allergicReaction: mainProfile?.allergic_reaction,
         etcConsideration: mainProfile?.consideration,
       });
-    } catch (error) {
-      console.log(error.data);
-    }
-  };
-
-  const getAppointmentHistory = async function () {
-    try {
-      const response = await getScheduleByPatientId(accountData.loginToken, profileData?.[0]?.id);
-      console.log(response.data.response);
-      // dispatch({
-      //   type: 'HISTORY_DATA_UPDATE',
-      //   historyData: historyData
-      // });
     } catch (error) {
       console.log(error.data);
     }
