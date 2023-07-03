@@ -37,7 +37,6 @@ export default function PaymentNotificationScreen({ navigation }) {
   const handleProceedPayment = async function () {
     try {
       const response = await createBidding(accountData.loginToken, telemedicineReservationStatus);
-      console.log(response.data.response[0].id);
       dispatch({
         type: 'TELEMEDICINE_RESERVATION_BIDDING_ID',
         biddingId: response.data.response[0].id,
