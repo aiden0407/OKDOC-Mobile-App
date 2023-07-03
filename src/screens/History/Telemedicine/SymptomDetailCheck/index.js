@@ -1,6 +1,5 @@
 //React
 import { useState, useContext } from 'react';
-import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
@@ -19,7 +18,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
 
   const telemedicineData = route.params.telemedicineData;
 
-  const [symptom, setSymptom] = useState(telemedicineData.symptom);
+  const [symptom, setSymptom] = useState(telemedicineData.explain_symptom);
 
   function handleEnterTelemedicineRoom() {
     navigation.navigate('TelemedicineRoom', {
