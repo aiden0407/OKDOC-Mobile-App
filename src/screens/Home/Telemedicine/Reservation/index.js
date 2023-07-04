@@ -1,7 +1,7 @@
 //React
 import { useState, useEffect, useContext } from 'react';
-import { AppContext } from 'context/AppContext';
 import { ApiContext } from 'context/ApiContext';
+import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
@@ -49,6 +49,13 @@ export default function ReservationScreen({ navigation, route }) {
 
       doctorsList.forEach((doctor) => {
         doctor.schedules.forEach((schedule) => {
+
+          const wishTime = new Date(schedule.open_at).getTime();
+          const currentTime = Date.now();
+          if (wishTime - currentTime < 86400000) {
+            return null;
+          }
+
           const date = new Date(schedule.open_at);
           const day = date.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }).replace('.', '/').replace('.', '').replace(' ', '');
           const weekday = date.toLocaleDateString('ko-KR', { weekday: 'long' }).slice(-3);
