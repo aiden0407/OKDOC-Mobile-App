@@ -111,8 +111,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         telemedicineReservationStatus: {
+          ...state.telemedicineReservationStatus,
           biddingId: undefined,
-          product: undefined,
           department: undefined,
           date: undefined,
           time: undefined,
@@ -201,7 +201,7 @@ const reducer = (state, action) => {
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
-  console.log(`AppContext: ${JSON.stringify(state.telemedicineReservationStatus)}`);
+  //console.log(`AppContext: ${JSON.stringify(state.historyDataId)}`);
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
