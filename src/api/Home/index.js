@@ -139,24 +139,7 @@ export const createBidding = async function (loginToken, reservationInfo) {
 //     }
 // }
 
-export const getBiddings = async function (loginToken) {
-    try {
-        let options = {
-            url: `${APIURL}/biddings/`,
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${loginToken}`
-            }
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error.response;
-    }
-}
-
-export const postPaymentRequest = async function (reservationInfo, email) {
+export const createPaymentRequest = async function (reservationInfo, email) {
     try {
         let options = {
             url: `https://mobile.inicis.com/smart/payment/`,
@@ -176,6 +159,23 @@ export const postPaymentRequest = async function (reservationInfo, email) {
                 P_EMAIL: email,
                 P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
             },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
+export const getBiddingInformation = async function (loginToken, biddingId) {
+    try {
+        let options = {
+            url: `${APIURL}/biddings/${biddingId}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
         }
         const response = await axios(options);
         return response;
