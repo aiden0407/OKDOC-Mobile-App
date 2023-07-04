@@ -13,7 +13,7 @@ import { WebView } from 'react-native-webview';
 import { Text } from 'components/Text';
 
 //Api
-import { postPaymentRequest } from 'api/Home';
+import { createPaymentRequest } from 'api/Home';
 
 export default function PaymentScreen({ navigation }) {
 
@@ -43,7 +43,7 @@ export default function PaymentScreen({ navigation }) {
 
   const paymentRequest = async function () {
     try {
-      const response = await postPaymentRequest(telemedicineReservationStatus, accountData.email);
+      const response = await createPaymentRequest(telemedicineReservationStatus, accountData.email);
       var htmlDecoded = decodeValues(response.data);
       setHtmlContent(htmlDecoded);
     } catch (error) {
@@ -81,6 +81,12 @@ export default function PaymentScreen({ navigation }) {
     }
   };
 
+  function handlePaymentComplete(biddingId) {
+    navigation.replace('PaymentComplete', {
+      biddingId: biddingId,
+    });
+  }
+
   return (
     <SafeArea>
       <WebView
@@ -90,15 +96,18 @@ export default function PaymentScreen({ navigation }) {
           if(navState.canGoBack){
             setCanGoBack(true);
           }
+          if(navState.url.includes("https://zoom.okdoc.app/reservation")){
+            handlePaymentComplete(navState.url.split('?bidding_id=')[1]);
+          }
         }}
         onShouldStartLoadWithRequest={(navState) => {
           return onShouldStartLoadWithRequest(navState);
         }}
-        // onError={(error) => {
-        //   if(error.nativeEvent.code===-1003){
-        //     navigation.goBack();
-        //   }
-        // }}
+        onError={(error) => {
+          if(error.nativeEvent.code===-1003){
+            navigation.goBack();
+          }
+        }}
       />
     </SafeArea>
   );
