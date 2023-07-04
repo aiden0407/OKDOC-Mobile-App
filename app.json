@@ -16,9 +16,12 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "buildNumber": "17",
+      "buildNumber": "18",
       "bundleIdentifier": "app.okdoc",
-      "icon": "./src/assets/main/main_icon.png"
+      "icon": "./src/assets/main/main_icon.png",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to take a telemedicine."
+      }
     },
     "android": {
       "adaptiveIcon": {
