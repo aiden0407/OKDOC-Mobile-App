@@ -19,12 +19,12 @@ const initialState = {
     email: undefined,
     password: undefined,
     invitationToken: undefined,
-    name: '이준범',
+    name: undefined,
     birth: undefined,
-    passportNumber: 'M477Y2913',
+    passportNumber: undefined,
     dateOfIssue: undefined,
     dateOfExpiry: undefined,
-    gender: 'MALE',
+    gender: undefined,
     countryCode: undefined,
     phoneNumber: undefined,
   },
@@ -190,6 +190,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         historyDataId: action.historyDataId
+      };
+
+    case 'HISTORY_DATA_ID_DELETE':
+      return {
+        ...state,
+        historyDataId: undefined
       };
 
     default:
