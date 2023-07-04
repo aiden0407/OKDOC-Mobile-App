@@ -23,6 +23,9 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
             handleTelemedicineComplete();
           }
         }}
+        onError={(error) => {
+          throw error;
+        }}
       />
     </SafeArea>
   );
