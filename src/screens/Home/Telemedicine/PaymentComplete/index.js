@@ -28,22 +28,26 @@ export default function PaymentCompleteScreen({ navigation, route }) {
     initBiddingData()
   }, []);
 
-  const initPaymentData = async function () {
+  const initBiddingData = async function () {
     try {
-      const getBiddingInformationResponse = await getBiddingInformation(accountData.loginToken, biddingId);
-      const P_TID = getBiddingInformationResponse.data.response.P_TID
-      console.log(P_TID);
-
-      // try {
-      //   const response = await getPaymentInformation(accountData.loginToken, P_TID);
-  
-      //   setIsLoading(false);
-      // } catch (error) {
-      //   Alert.alert('결제 정보를 불러오지 못했습니다.');
-      // }
-
+      const response = await getBiddingInformation(accountData.loginToken, biddingId);
+      setBiddingData(response.data.response);
+      initPaymentData(response.data.response.P_TID);
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    }
+  }
+
+  const initPaymentData = async function (P_TID) {
+    try {
+      console.log(P_TID);
+      const response = await getPaymentInformation(P_TID);
+      console.log(response.data);
+      setPaymentData(response.data.response);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('결제 정보를 불러오지 못했습니다.');
     }
   }
 
@@ -83,19 +87,19 @@ export default function PaymentCompleteScreen({ navigation, route }) {
           <Text T3 bold marginTop={30}>예약하신 내역을 확인해주세요</Text>
           <Row align marginTop={15}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>{paymentData?.doctorInfo?.name} 의사 (을지대학교병원)</Text>
+            <Text T6 medium>{biddingData?.doctorInfo?.name} 의사 (을지대학교병원)</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>{paymentData?.doctorInfo?.subject} / 진료</Text>
+            <Text T6 medium>{biddingData?.doctorInfo?.subject} / 진료</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>2023년 4월 {paymentData?.date} ({paymentData?.time})</Text>
+            <Text T6 medium>2023년 4월 {biddingData?.date} ({biddingData?.time})</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>예약자: {paymentData?.profileInfo?.name}</Text>
+            <Text T6 medium>예약자: {biddingData?.profileInfo?.name}</Text>
           </Row>
         </PaddingContainer>
         </Container>
