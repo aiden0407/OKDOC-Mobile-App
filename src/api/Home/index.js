@@ -184,3 +184,20 @@ export const getBiddingInformation = async function (loginToken, biddingId) {
         throw error.response;
     }
 }
+
+export const getPaymentInformation = async function (P_TID) {
+    try {
+        let options = {
+            url: `${APIURL}/payment/inquiry`,
+            method: 'POST',
+            data: {
+                originalTid: P_TID,
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
