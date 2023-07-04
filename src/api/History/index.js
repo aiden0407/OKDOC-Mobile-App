@@ -51,7 +51,7 @@ export const treatmentComplete = async function (loginToken, appointmentId) {
                 Authorization: `Bearer ${loginToken}`
             },
             data: {
-                "status": "treatment-completion",
+                "status": "TREATMENT_COMPLETION",
             },
         }
         const response = await axios(options);
