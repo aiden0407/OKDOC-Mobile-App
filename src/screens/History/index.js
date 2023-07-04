@@ -23,6 +23,7 @@ export default function HistoryScreen({ navigation }) {
 
   const { state: { accountData, profileData, historyData }, dispatch: apiContextDispatch } = useContext(ApiContext);
   const { dispatch: appContextDispatch } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
@@ -80,6 +81,7 @@ export default function HistoryScreen({ navigation }) {
         historyData: contextHistorySet,
       });
       setRefreshing(false);
+      setIsLoading(false);
     } catch (error) {
       Alert.alert('에러', '진료 목록 정보 불러오기를 실패하였습니다. 다시 시도해주시기 바랍니다.');
       setRefreshing(false);
@@ -187,8 +189,7 @@ export default function HistoryScreen({ navigation }) {
             </CardDoctorInfoColumn>
           </Row>
           {type === 'underReservation'
-            //? getRemainingTime(item?.wish_at) < 600
-            ? getRemainingTime(item?.wish_at) > 600
+            ? getRemainingTime(item?.wish_at) < 600
               ? <CustomSolidButton
                 underlayColor={COLOR.SUB1}
                 onPress={() => handleEnterTelemedicine(item)}
@@ -216,12 +217,16 @@ export default function HistoryScreen({ navigation }) {
     )
   }
 
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <SafeArea>
       {
         accountData.loginToken
           ? (<>
-            {(historyData.underReservation.length || historyData.pastHistory.length)
+            {(historyData?.underReservation?.length || historyData?.pastHistory?.length)
               ? <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
                 <ScrollView
                   showsVerticalScrollIndicator={false}
