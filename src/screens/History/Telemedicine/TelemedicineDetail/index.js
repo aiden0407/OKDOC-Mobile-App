@@ -19,6 +19,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
 
   const { state: { accountData } } = useContext(ApiContext);
   const [isLoading, setIsLoading] = useState(true);
+  const [biddingData, setBiddingData] = useState();
   const [paymentData, setPaymentData] = useState();
   const telemedicineData = route.params.telemedicineData;
   const biddingId = telemedicineData.bidding_id;
@@ -30,6 +31,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
   const initBiddingData = async function () {
     try {
       const response = await getBiddingInformation(accountData.loginToken, biddingId);
+      setBiddingData(response.data.response);
       initPaymentData(response.data.response.P_TID);
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
@@ -38,15 +40,23 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
 
   const initPaymentData = async function (P_TID) {
     try {
-      console.log(P_TID);
       const response = await getPaymentInformation(P_TID);
-      console.log(response.data);
       setPaymentData(response.data.response);
       setIsLoading(false);
     } catch (error) {
-      console.log(error.data);
       Alert.alert('결제 정보를 불러오지 못했습니다.');
     }
+  }
+
+  function formatDate(inputDate) {
+    const year = inputDate.slice(0, 4);
+    const month = inputDate.slice(4, 6);
+    const day = inputDate.slice(6, 8);
+    const hour = inputDate.slice(8, 10);
+    const minute = inputDate.slice(10, 12);
+    
+    const formattedDate = `${year}.${month}.${day} (${hour}:${minute})`;
+    return formattedDate;
   }
 
   function handleViewTelemedicineOpinion() {
@@ -64,7 +74,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
 
           <PaddingContainer>
             <Text T7 color={COLOR.GRAY1} marginTop={30}>{telemedicineData.date} ({telemedicineData.time})</Text>
-            <Text T3 bold marginTop={6}>{telemedicineData.doctorInfo.department} / {telemedicineData.profileInfo.passport?.user_name}님 ({telemedicineData.relationship})</Text>
+            <Text T3 bold marginTop={6}>{telemedicineData.doctorInfo.department} / {telemedicineData.profileInfo.passport?.user_name}님 ({telemedicineData.profileInfo.relationship})</Text>
             <Text T6 medium color={COLOR.GRAY1} marginTop={12}>{telemedicineData?.explain_symptom}</Text>
           </PaddingContainer>
 
@@ -101,18 +111,18 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
 
           <PaddingContainer>
             <Text T3 bold marginTop={24}>결제 내역</Text>
-            <Text T3 bold color={COLOR.MAIN} marginTop={9}>진료 연장 50,000원</Text>
+            <Text T3 bold color={COLOR.MAIN} marginTop={9}>진료 예약 {Number(paymentData.price)?.toLocaleString()}원</Text>
             <Row marginTop={18}>
               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
-              <Text T6 color={COLOR.GRAY1}>50,000원 | 일시불</Text>
+              <Text T6 color={COLOR.GRAY1}>{Number(paymentData.price)?.toLocaleString()}원 | 일시불</Text>
             </Row>
             <Row marginTop={6}>
               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 수단</Text>
-              <Text T6 color={COLOR.GRAY1}>삼성 마스타 5188</Text>
+              <Text T6 color={COLOR.GRAY1}>신용카드</Text>
             </Row>
             <Row marginTop={6}>
               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
-              <Text T6 color={COLOR.GRAY1}>23.04.07 (11:30)</Text>
+              <Text T6 color={COLOR.GRAY1}>{formatDate(biddingData?.P_AUTH_DT)}</Text>
             </Row>
           </PaddingContainer>
 
