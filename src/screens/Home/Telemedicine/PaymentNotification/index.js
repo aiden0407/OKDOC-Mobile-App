@@ -23,15 +23,17 @@ export default function PaymentNotificationScreen({ navigation }) {
   const [refundAgreement, setRefundAgreement] = useState(false);
 
   function handlePaymentPolicyDetail() {
-    // navigation.navigate('PaymentPolicyDetail', {
-    //   content: policyHTML,
-    // })
+    navigation.navigate('PaymentPolicyDetail', {
+      //content: policyHTML,
+      content: 'https://insunginfo.notion.site/e1b8271a91034f87b0c1c49a5b0408c2?pvs=4',
+    })
   }
 
   function handleRefundPolicyDetail() {
-    // navigation.navigate('PaymentPolicyDetail', {
-    //   content: refundHTML,
-    // })
+    navigation.navigate('PaymentPolicyDetail', {
+      //content: refundHTML,
+      content: 'https://insunginfo.notion.site/bfd7d33b62d54458ad81a28de6b5e2c9?pvs=4',
+    })
   }
 
   const handleProceedPayment = async function () {
