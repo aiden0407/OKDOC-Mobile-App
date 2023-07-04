@@ -1,23 +1,59 @@
 //React
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design';
-import { SYMPTOM, DEPARTMENT } from 'constants/service';
+import { Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, Container, Row, DividingLine, PaddingContainer } from 'components/Layout';
 import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
-export default function PaymentCompleteScreen({ navigation }) {
+//Api
+import { getBiddingInformation, getPaymentInformation } from 'api/Home';
 
-  const { state: { telemedicineReservationStatus }, dispatch } = useContext(AppContext);
+export default function PaymentCompleteScreen({ navigation, route }) {
+
+  const { state: { accountData } } = useContext(ApiContext);
+  const { dispatch } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const [biddingData, setBiddingData] = useState();
+  const [paymentData, setPaymentData] = useState();
+  const biddingId = route.params.biddingId;
+
+  useEffect(() => {
+    initBiddingData()
+  }, []);
+
+  const initPaymentData = async function () {
+    try {
+      const getBiddingInformationResponse = await getBiddingInformation(accountData.loginToken, biddingId);
+      const P_TID = getBiddingInformationResponse.data.response.P_TID
+      console.log(P_TID);
+
+      // try {
+      //   const response = await getPaymentInformation(accountData.loginToken, P_TID);
+  
+      //   setIsLoading(false);
+      // } catch (error) {
+      //   Alert.alert('결제 정보를 불러오지 못했습니다.');
+      // }
+
+    } catch (error) {
+      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    }
+  }
 
   function handleConfirm() {
     dispatch({ type: 'TELEMEDICINE_RESERVATION_CONFIRMED' });
     navigation.navigate('BottomTapNavigation', { screen: 'History'});
+  }
+
+  if (isLoading) {
+    return null;
   }
 
   return (
@@ -47,19 +83,19 @@ export default function PaymentCompleteScreen({ navigation }) {
           <Text T3 bold marginTop={30}>예약하신 내역을 확인해주세요</Text>
           <Row align marginTop={15}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.name} 의사 (을지대학교병원)</Text>
+            <Text T6 medium>{paymentData?.doctorInfo?.name} 의사 (을지대학교병원)</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.subject} / 진료</Text>
+            <Text T6 medium>{paymentData?.doctorInfo?.subject} / 진료</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>2023년 4월 {telemedicineReservationStatus?.date} ({telemedicineReservationStatus?.time})</Text>
+            <Text T6 medium>2023년 4월 {paymentData?.date} ({paymentData?.time})</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>예약자: {telemedicineReservationStatus?.profileInfo?.name}</Text>
+            <Text T6 medium>예약자: {paymentData?.profileInfo?.name}</Text>
           </Row>
         </PaddingContainer>
         </Container>
