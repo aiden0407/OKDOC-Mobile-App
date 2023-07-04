@@ -20,7 +20,7 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
   }
 
   function handleNextScreen() {
-    navigation.navigate('Payment', {
+    navigation.navigate('TelemedicineDetail', {
       telemedicineData: telemedicineData,
     });
   }
@@ -33,17 +33,17 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
           <Image source={checkIcon} width={70} height={70} />
           <Text T2 bold marginTop={18}>진료가 종료되었습니다</Text>
           <Text T6 center color={COLOR.GRAY1} marginTop={18}>진료 중 좋았던 점이나{'\n'}불편한 점이 있었다면  알려주세요</Text>
-          <OutlineButton
+          {/* <OutlineButton
             large
             marginTop={24}
             text="진료 후기 남기기"
             action={() => handleFeedback()}
-          />
+          /> */}
 
         </ContainerCenter>
 
         <SolidButton
-          text="추가비용 결제하기"
+          text="다음으로"
           marginBottom={20}
           disabled={false}
           action={() => handleNextScreen()}
