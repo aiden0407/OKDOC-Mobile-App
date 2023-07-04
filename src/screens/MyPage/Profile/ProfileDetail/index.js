@@ -277,7 +277,9 @@ export default function ProfileDetailScreen({ navigation }) {
                   text='비흡연'
                 />
               </Row>
-              <Text T6 bold marginTop={30}>본인 병력</Text>
+              <Row marginTop={30}>
+                <Text T6 bold>본인 병력</Text><Text T6 medium color={COLOR.GRAY2} marginLeft={2}>(선택)</Text>
+              </Row>
               <BoxInput
                 medium
                 marginTop={12}
@@ -287,7 +289,9 @@ export default function ProfileDetailScreen({ navigation }) {
                 onChangeText={setMedicalHistory}
                 onFocus={() => handleTextInputFocus(200)}
               />
-              <Text T6 bold marginTop={30}>가족 병력</Text>
+              <Row marginTop={30}>
+                <Text T6 bold>가족 병력</Text><Text T6 medium color={COLOR.GRAY2} marginLeft={2}>(선택)</Text>
+              </Row>
               <BoxInput
                 medium
                 marginTop={12}
@@ -297,7 +301,9 @@ export default function ProfileDetailScreen({ navigation }) {
                 onChangeText={setMedicalHistoryFamily}
                 onFocus={() => handleTextInputFocus(360)}
               />
-              <Text T6 bold marginTop={30}>현재 복용중인 약</Text>
+              <Row marginTop={30}>
+                <Text T6 bold>현재 복용중인 약</Text><Text T6 medium color={COLOR.GRAY2} marginLeft={2}>(선택)</Text>
+              </Row>
               <BoxInput
                 medium
                 marginTop={12}
@@ -307,8 +313,8 @@ export default function ProfileDetailScreen({ navigation }) {
                 onChangeText={setMedication}
                 onFocus={() => handleTextInputFocus(520)}
               />
-              <Row marginTop={30} align>
-                <Text T6 bold>알러지 유무</Text>
+              <Row marginTop={30}>
+                <Text T6 bold>알러지 유무</Text><Text T6 medium color={COLOR.GRAY2} marginLeft={2}>(선택)</Text>
               </Row>
               <BoxInput
                 medium
@@ -319,7 +325,9 @@ export default function ProfileDetailScreen({ navigation }) {
                 onChangeText={setAllergicReaction}
                 onFocus={() => handleTextInputFocus(680)}
               />
-              <Text T6 bold marginTop={30}>기타 사항</Text>
+              <Row marginTop={30}>
+                <Text T6 bold>기타 사항</Text><Text T6 medium color={COLOR.GRAY2} marginLeft={2}>(선택)</Text>
+              </Row>
               <BoxInput
                 medium
                 marginTop={12}
