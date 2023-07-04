@@ -1,23 +1,60 @@
 //React
-import { useState, useContext } from 'react';
-import { AppContext } from 'context/AppContext';
+import { useState, useEffect, useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
 //Components
 import { COLOR, BUTTON } from 'constants/design';
+import { Alert } from 'react-native';
 import { ActivityIndicator } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, Container, ScrollView, Row, DividingLine, PaddingContainer, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 import { SubColorButton } from 'components/Button';
 
+//Api
+import { getBiddingInformation, getPaymentInformation } from 'api/Home';
+
 export default function TelemedicineDetailScreen({ navigation, route }) {
 
+  const { state: { accountData } } = useContext(ApiContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const [paymentData, setPaymentData] = useState();
   const telemedicineData = route.params.telemedicineData;
+  const biddingId = telemedicineData.bidding_id;
+
+  useEffect(() => {
+    initBiddingData()
+  }, []);
+
+  const initBiddingData = async function () {
+    try {
+      const response = await getBiddingInformation(accountData.loginToken, biddingId);
+      initPaymentData(response.data.response.P_TID);
+    } catch (error) {
+      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    }
+  }
+
+  const initPaymentData = async function (P_TID) {
+    try {
+      console.log(P_TID);
+      const response = await getPaymentInformation(P_TID);
+      console.log(response.data);
+      setPaymentData(response.data.response);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error.data);
+      Alert.alert('결제 정보를 불러오지 못했습니다.');
+    }
+  }
 
   function handleViewTelemedicineOpinion() {
     navigation.navigate('TelemedicineOpinion');
+  }
+
+  if (isLoading) {
+    return null;
   }
 
   return (
