@@ -2,7 +2,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
-import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design';
@@ -18,7 +17,7 @@ import { getBiddingInformation, getPaymentInformation } from 'api/Home';
 export default function PaymentCompleteScreen({ navigation, route }) {
 
   const { state: { accountData } } = useContext(ApiContext);
-  const { dispatch } = useContext(AppContext);
+  const { state: { telemedicineReservationStatus }, dispatch } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const [biddingData, setBiddingData] = useState();
   const [paymentData, setPaymentData] = useState();
@@ -51,8 +50,20 @@ export default function PaymentCompleteScreen({ navigation, route }) {
     }
   }
 
+  function formatDate(inputDate) {
+    const year = inputDate.slice(0, 4);
+    const month = inputDate.slice(4, 6);
+    const day = inputDate.slice(6, 8);
+    const hour = inputDate.slice(8, 10);
+    const minute = inputDate.slice(10, 12);
+    
+    const formattedDate = `${year}.${month}.${day} (${hour}:${minute})`;
+    return formattedDate;
+  }
+
   function handleConfirm() {
     dispatch({ type: 'TELEMEDICINE_RESERVATION_CONFIRMED' });
+    dispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: biddingId });
     navigation.navigate('BottomTapNavigation', { screen: 'History'});
   }
 
@@ -66,18 +77,18 @@ export default function PaymentCompleteScreen({ navigation, route }) {
         <Container>
         <PaddingContainer>
           <Text T3 bold marginTop={30}>결제가 완료되었어요</Text>
-          <Text T3 bold color={COLOR.MAIN} marginTop={9}>비용 120,000원</Text>
+          <Text T3 bold color={COLOR.MAIN} marginTop={9}>비용 {Number(paymentData.price)?.toLocaleString()}원</Text>
           <Row marginTop={18}>
             <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
-            <Text T6 color={COLOR.GRAY1}>120,000원 | 일시불</Text>
+            <Text T6 color={COLOR.GRAY1}>{Number(paymentData.price)?.toLocaleString()}원 | 일시불</Text>
           </Row>
           <Row marginTop={6}>
             <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 수단</Text>
-            <Text T6 color={COLOR.GRAY1}>삼성 마스타 5188</Text>
+            <Text T6 color={COLOR.GRAY1}>신용카드</Text>
           </Row>
           <Row marginTop={6}>
             <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
-            <Text T6 color={COLOR.GRAY1}>23.04.07 (11:30)</Text>
+            <Text T6 color={COLOR.GRAY1}>{formatDate(biddingData?.P_AUTH_DT)}</Text>
           </Row>
         </PaddingContainer>
 
@@ -87,19 +98,19 @@ export default function PaymentCompleteScreen({ navigation, route }) {
           <Text T3 bold marginTop={30}>예약하신 내역을 확인해주세요</Text>
           <Row align marginTop={15}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>{biddingData?.doctorInfo?.name} 의사 (을지대학교병원)</Text>
+            <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.name} 의사 ({telemedicineReservationStatus?.doctorInfo?.hospital})</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>{biddingData?.doctorInfo?.subject} / 진료</Text>
+            <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.department} / 진료</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>2023년 4월 {biddingData?.date} ({biddingData?.time})</Text>
+            <Text T6 medium>2023/{telemedicineReservationStatus?.date} ({telemedicineReservationStatus?.time})</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>예약자: {biddingData?.profileInfo?.name}</Text>
+            <Text T6 medium>예약자: {telemedicineReservationStatus?.profileInfo?.name}</Text>
           </Row>
         </PaddingContainer>
         </Container>
