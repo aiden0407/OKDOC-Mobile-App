@@ -14,7 +14,7 @@ import { SubColorButton } from 'components/Button';
 
 export default function TelemedicineDetailScreen({ navigation, route }) {
 
-  const { state: { historyData } } = useContext(AppContext);
+  const telemedicineData = route.params.telemedicineData;
 
   function handleViewTelemedicineOpinion() {
     navigation.navigate('TelemedicineOpinion');
@@ -26,18 +26,18 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
         <ScrollView showsVerticalScrollIndicator={false}>
 
           <PaddingContainer>
-            <Text T7 color={COLOR.GRAY1} marginTop={30}>{historyData.date} ({historyData.time})</Text>
-            <Text T3 bold marginTop={6}>{historyData.doctorInfo.subject} / {historyData.profileInfo.name}님 ({historyData.profileType})</Text>
-            <Text T6 medium color={COLOR.GRAY1} marginTop={12}>{historyData.symptom}</Text>
+            <Text T7 color={COLOR.GRAY1} marginTop={30}>{telemedicineData.date} ({telemedicineData.time})</Text>
+            <Text T3 bold marginTop={6}>{telemedicineData.doctorInfo.department} / {telemedicineData.profileInfo.passport?.user_name}님 ({telemedicineData.relationship})</Text>
+            <Text T6 medium color={COLOR.GRAY1} marginTop={12}>{telemedicineData?.explain_symptom}</Text>
           </PaddingContainer>
 
           <DoctorContainer>
-            <Image source={{ uri: historyData.doctorInfo.image }} circle width={66} height={66} />
+            <Image source={{ uri: telemedicineData.doctorInfo.photo }} circle width={66} height={66} />
             <CardDoctorInfoColumn>
-              <Text T4 bold>{historyData.doctorInfo.name} 의사</Text>
-              <Text T7 bold color={COLOR.GRAY2}>{historyData.doctorInfo.hospital} / {historyData.doctorInfo.subject}</Text>
+              <Text T4 bold>{telemedicineData.doctorInfo.name} 의사</Text>
+              <Text T7 bold color={COLOR.GRAY2}>{telemedicineData.doctorInfo.hospital} / {telemedicineData.doctorInfo.department}</Text>
               <Row marginTop={12}>
-                {historyData.doctorInfo.medicalField.map((item, index) =>
+                {telemedicineData.doctorInfo.strength?.map((item, index) =>
                   <Text key={`field${index}`} T7 color={COLOR.GRAY1}>#{item} </Text>
                 )}
               </Row>
@@ -47,7 +47,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
           <PaddingContainer>
             <Text T3 bold marginTop={24}>전자 소견서</Text>
             {
-              historyData?.opinion
+              telemedicineData?.opinion
                 ? <CustomSubColorButton underlayColor={COLOR.SUB2} onPress={() => handleViewTelemedicineOpinion()}>
                   <Text T5 medium color={COLOR.MAIN}>전자 소견서 보기</Text>
                 </CustomSubColorButton>
