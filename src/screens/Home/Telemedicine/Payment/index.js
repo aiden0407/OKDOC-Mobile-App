@@ -81,10 +81,14 @@ export default function PaymentScreen({ navigation }) {
     }
   };
 
-  function handlePaymentComplete(biddingId) {
-    navigation.replace('PaymentComplete', {
-      biddingId: biddingId,
-    });
+  function handlePaymentComplete(url) {
+    if (url?.split('?bidding_id=')[1]) {
+      navigation.replace('PaymentComplete', {
+        biddingId: url?.split('?bidding_id=')[1],
+      });
+    } else {
+      navigation.goBack();
+    }
   }
 
   return (
@@ -97,7 +101,7 @@ export default function PaymentScreen({ navigation }) {
             setCanGoBack(true);
           }
           if(navState.url.includes("https://zoom.okdoc.app/reservation")){
-            handlePaymentComplete(navState.url.split('?bidding_id=')[1]);
+            handlePaymentComplete(navState.url);
           }
         }}
         onShouldStartLoadWithRequest={(navState) => {
