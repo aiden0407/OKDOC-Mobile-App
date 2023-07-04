@@ -22,13 +22,13 @@ import letterIcon from 'assets/icons/mypage-letter.png';
 export default function HistoryScreen({ navigation }) {
 
   const { state: { accountData, profileData, historyData }, dispatch: apiContextDispatch } = useContext(ApiContext);
-  const { dispatch: appContextDispatch } = useContext(AppContext);
+  const { state: { historyDataId }, dispatch: appContextDispatch } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     getAppointmentHistory();
-  }, []);
+  }, [historyDataId]);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -189,7 +189,8 @@ export default function HistoryScreen({ navigation }) {
             </CardDoctorInfoColumn>
           </Row>
           {type === 'underReservation'
-            ? getRemainingTime(item?.wish_at) < 600
+            //? getRemainingTime(item?.wish_at) < 600
+            ? true
               ? <CustomSolidButton
                 underlayColor={COLOR.SUB1}
                 onPress={() => handleEnterTelemedicine(item)}
