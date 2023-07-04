@@ -1,9 +1,11 @@
 //React
-import { useEffect } from 'react';
-import styled from 'styled-components/native';
+import { useEffect, useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
+import { AppContext } from 'context/AppContext';
 
 //Components
 import { COLOR } from 'constants/design'
+import { Alert } from 'react-native';
 import { SafeArea, Container, ContainerCenter, Row } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
@@ -12,12 +14,31 @@ import { SolidButton, OutlineButton } from 'components/Button';
 //Assets
 import checkIcon from 'assets/icons/circle-check.png';
 
+//Api
+import { treatmentComplete } from 'api/History';
+
 export default function TelemedicineCompleteScreen({ navigation, route }) {
 
+  const { state: { accountData } } = useContext(ApiContext);
+  const { dispatch } = useContext(AppContext);
   const telemedicineData = route.params.telemedicineData;
 
-  function handleFeedback() {
+  useEffect(() => {
+    initCompleteTreatment()
+  }, []);
+
+  const initCompleteTreatment = async function () {
+    try {
+      await treatmentComplete(accountData.loginToken, telemedicineData.id);
+      dispatch({ type: 'HISTORY_DATA_ID_DELETE' });
+    } catch (error) {
+      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    }
   }
+
+  // function handleFeedback() {
+  //
+  // }
 
   function handleNextScreen() {
     navigation.navigate('TelemedicineDetail', {
