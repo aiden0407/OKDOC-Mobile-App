@@ -102,7 +102,7 @@ export default function PaymentCompleteScreen({ navigation, route }) {
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.department} / 진료</Text>
+            <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.subject} / 진료</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
