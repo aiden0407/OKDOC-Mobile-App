@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design';
+import { Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, KeyboardAvoiding, Row, Container } from 'components/Layout';
 import { Text } from 'components/Text';
@@ -21,8 +22,22 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   const [symptom, setSymptom] = useState(telemedicineData.explain_symptom);
 
   function handleEnterTelemedicineRoom() {
-    navigation.navigate('TelemedicineRoom', {
-      telemedicineData: telemedicineData,
+    Alert.alert('진료실에 입장하시겠습니까?', '진료를 받기 위해서는 카메라와 마이크 사용 권한을 허가해야 합니다,', [
+      {
+        text: '취소',
+        style: 'cancel',
+      },
+      {
+        text: '확인',
+        onPress: () => handleConfirm()
+      },
+    ]);
+  }
+
+  function handleConfirm() {
+    navigation.navigate('TelemedicineRoomNavigation', { 
+      screen: 'TelemedicineRoom',
+      params: { telemedicineData: telemedicineData }
     });
   }
 
