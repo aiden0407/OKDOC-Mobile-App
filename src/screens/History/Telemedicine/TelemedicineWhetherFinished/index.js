@@ -11,12 +11,12 @@ import { SolidButton, OutlineButton } from 'components/Button';
 export default function TelemedicineWhetherFinishedScreen({ navigation, route }) {
 
   const telemedicineData = route.params.telemedicineData;
-  const [count, setCount] = useState(900);
+  const [count, setCount] = useState(600);
   const savedCallback = useRef();
 
   useEffect(() => {
     const originalTime = new Date(telemedicineData.wish_at);
-    const addedTime = new Date(originalTime.getTime() + 15 * 60 * 1000);
+    const addedTime = new Date(originalTime.getTime() + 10 * 60 * 1000);
     const currentTime = new Date();
     const remainingTime = Math.floor((addedTime - currentTime) / 1000);
     setCount(remainingTime);
@@ -60,7 +60,7 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
   }
 
   function handleFinish() {
-    if(count < 900){
+    if(count < 600){
       navigation.navigate('TelemedicineComplete', {
         telemedicineData: telemedicineData,
       });
