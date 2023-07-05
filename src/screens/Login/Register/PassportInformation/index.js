@@ -56,6 +56,11 @@ export default function PassportInformationScreen({ navigation }) {
     return regExp.test(name);
   }
 
+  const handlePassportNumberChange = (inputText) => {
+    const filteredText = inputText.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    setPassportNumber(filteredText);
+  };
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -127,9 +132,10 @@ export default function PassportInformationScreen({ navigation }) {
             <Text T6 bold marginTop={24}>여권번호</Text>
             <BoxInput
               marginTop={12}
-              placeholder="알파벳+숫자 8자리"
+              placeholder="알파벳+숫자 총 9자리"
+              maxLength={9}
               value={passportNumber}
-              onChangeText={setPassportNumber}
+              onChangeText={handlePassportNumberChange}
               onFocus={() => handleTextInputFocus(200)}
             />
             <Text T6 bold marginTop={24}>발급일</Text>
