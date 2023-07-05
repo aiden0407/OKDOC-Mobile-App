@@ -41,8 +41,9 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
   // }
 
   function handleNextScreen() {
-    navigation.navigate('TelemedicineDetail', {
-      telemedicineData: telemedicineData,
+    navigation.navigate('HistoryStackNavigation', { 
+      screen: 'TelemedicineDetail',
+      params: { telemedicineData: telemedicineData }
     });
   }
 
