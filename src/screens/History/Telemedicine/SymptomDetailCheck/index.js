@@ -21,12 +21,21 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
 
   const [symptom, setSymptom] = useState(telemedicineData.explain_symptom);
 
-  function handleEnterTelemedicineRoom() {
-    Alert.alert('진료실에 입장하시겠습니까?', '진료를 받기 위해서는 카메라와 마이크 사용 권한을 허가해야 합니다,', [
+  function handleNotice1() {
+    Alert.alert('진료실에 입장하시겠습니까?', '진료는 예약하신 시간부터 시작됩니다.', [
       {
         text: '취소',
         style: 'cancel',
       },
+      {
+        text: '확인',
+        onPress: () => handleNotice2()
+      },
+    ]);
+  }
+
+  function handleNotice2() {
+    Alert.alert('안내', '화상 진료를 받기 위해서는 카메라와 마이크 사용 권한을 허가해야 합니다.', [
       {
         text: '확인',
         onPress: () => handleConfirm()
@@ -83,7 +92,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
             text="진료실 입장하기"
             marginBottom={20}
             disabled={!symptom}
-            action={() => handleEnterTelemedicineRoom()}
+            action={() => handleNotice1()}
           />
         </Container>
       </KeyboardAvoiding>
