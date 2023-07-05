@@ -15,8 +15,8 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
   return (
     <SafeArea>
       <WebView
-        //source={{ uri: `https://zoom.okdoc.app/meeting/patient/?meetingNumber=${telemedicineData.hospital_treatment_room.pmi}&userName=${telemedicineData.profileInfo.passport.user_name}` }}
-        source={{ uri: `https://schmich.github.io/instascan/` }}
+        source={{ uri: `https://zoom.okdoc.app/meeting/patient/?meetingNumber=${telemedicineData.hospital_treatment_room.pmi}&userName=${telemedicineData.profileInfo.passport.user_name}` }}
+        //source={{ uri: `https://schmich.github.io/instascan/` }}
         originWhitelist={['*']}
         useWebkit
         bounces
