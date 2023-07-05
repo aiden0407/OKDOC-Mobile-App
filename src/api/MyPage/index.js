@@ -2,11 +2,11 @@
 import axios from 'axios';
 import { APIURL } from 'constants/api'
 
-export const getPatientList = async function (loginToken) {
+export const getPatientList = async function (loginToken, email) {
 
     try {
         let options = {
-            url: `${APIURL}/patients/`,
+            url: `${APIURL}/patients/?family_id=${email}`,
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${loginToken}`
