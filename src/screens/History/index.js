@@ -84,8 +84,10 @@ export default function HistoryScreen({ navigation }) {
         type: 'HISTORY_DATA_UPDATE',
         historyData: contextHistorySet,
       });
-      setRefreshing(false);
-      setIsLoading(false);
+      setTimeout(function() {
+        setRefreshing(false);
+        setIsLoading(false);
+      }, 2000);
     } catch (error) {
       Alert.alert('에러', '진료 목록 정보 불러오기를 실패하였습니다. 다시 시도해주시기 바랍니다.');
       setRefreshing(false);
@@ -232,11 +234,11 @@ export default function HistoryScreen({ navigation }) {
         accountData.loginToken
           ? (<>
             {(historyData?.underReservation?.length || historyData?.pastHistory?.length)
-              ? <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
+              ? <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20} paddingTop={refreshing ? 30 : 0}>
                 <ScrollView
                   showsVerticalScrollIndicator={false}
                   refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLOR.MAIN} />
                   }
                 >
                   {historyData?.underReservation?.length
