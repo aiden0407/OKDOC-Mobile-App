@@ -46,13 +46,13 @@ export default function BottomTapNavigation() {
         });
       }
     } catch (error) {
-      console.log(error.data);
+      console.log(error);
     }
   };
 
   const getPatientInformation = async function () {
     try {
-      const response = await getPatientList(accountData.loginToken);
+      const response = await getPatientList(accountData.loginToken, accountData.email);
       const mainProfile = response.data.response[0];
       dispatch({
         type: 'PROFILE_UPDATE_MAIN',
@@ -72,7 +72,7 @@ export default function BottomTapNavigation() {
         etcConsideration: mainProfile?.consideration,
       });
     } catch (error) {
-      console.log(error.data);
+      console.log(error);
     }
   };
 
