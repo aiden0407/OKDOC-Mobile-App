@@ -27,8 +27,12 @@ export default function HistoryScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    getAppointmentHistory();
-  }, [historyDataId]);
+    if(accountData.loginToken){
+      getAppointmentHistory();
+    } else {
+      setIsLoading(false);
+    }
+  }, [profileData, historyDataId]);
 
   const onRefresh = () => {
     setRefreshing(true);
