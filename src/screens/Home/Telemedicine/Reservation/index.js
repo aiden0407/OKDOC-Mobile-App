@@ -8,7 +8,7 @@ import styled from 'styled-components/native';
 import { COLOR } from 'constants/design';
 import { Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeArea, Container, ScrollView, Row, DividingLine } from 'components/Layout';
+import { SafeArea, Container, ScrollView, Row, DividingLine, ContainerCenter } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 
@@ -119,7 +119,7 @@ export default function ReservationScreen({ navigation, route }) {
         const timeB = parseInt(b[0].replace(':', ''));
         return timeA - timeB;
       }
-      
+
       function transformData(doctorsScheduleList) {
         for (let ii = 0; ii < doctorsScheduleList.length; ii++) {
           const daySchedule = doctorsScheduleList[ii][2];
@@ -159,76 +159,82 @@ export default function ReservationScreen({ navigation, route }) {
   return (
     <SafeArea>
       <Container>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        {
+          bookableData.length
+            ? <ScrollView showsVerticalScrollIndicator={false}>
 
-          <ReservationContainer>
-            <Text T3 bold marginTop={30}>진료시간을 선택해주세요</Text>
-            <Text T6 medium marginTop={36}>날짜선택</Text>
-            <DateContainer>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {bookableData.map((item, index) =>
-                  <DateButton
-                    key={`date${index}`}
-                    isSelected={dateIndex === index}
-                    onPress={() => {
-                      if (dateIndex !== index) {
-                        setDateIndex(index);
-                        setTimeIndex(0);
-                      }
-                    }}
-                    underlayColor={dateIndex !== index && COLOR.GRAY5}
-                  >
-                    <>
-                      <Text T5 bold color={dateIndex === index ? COLOR.MAIN : COLOR.GRAY1}>{item[0]}</Text>
-                      <Text T7 color={dateIndex === index ? COLOR.MAIN : COLOR.GRAY2}>{item[1]}</Text>
-                    </>
-                  </DateButton>
-                )}
-              </ScrollView>
-            </DateContainer>
-
-            <Text T6 medium marginTop={24}>시간선택</Text>
-            <TimeContainer>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {bookableData[dateIndex][2].map((item, index) =>
-                  <TimeButton
-                    key={`time${index}`}
-                    isSelected={timeIndex === index}
-                    onPress={() => setTimeIndex(index)}
-                    underlayColor={timeIndex !== index && COLOR.GRAY5}
-                  >
-                    <Text T6 bold color={timeIndex === index ? COLOR.MAIN : COLOR.GRAY1}>{item[0]}</Text>
-                  </TimeButton>
-                )}
-              </ScrollView>
-            </TimeContainer>
-          </ReservationContainer>
-
-          <DividingLine marginTop={42} />
-
-          <DoctorContainer>
-            <Text T6 medium>진료 가능 의사 선택</Text>
-            {bookableData[dateIndex][2][timeIndex][1].map((item, index) =>
-              <DoctorRow
-                key={`doctor${index}`}
-                onPress={() => handleSelectDoctor(bookableData[dateIndex][0], bookableData[dateIndex][2][timeIndex][0], item)}
-              >
-                <Image source={{ uri: item.image }} width={66} height={66} circle />
-                <DoctorColumn>
-                  <Text T4 bold>{item.name} 의사</Text>
-                  <Text T7 medium color={COLOR.GRAY1}>{item.hospital} / {item.subject}</Text>
-                  <Row marginTop={12}>
-                    {item?.strength?.map((item, index) =>
-                      <Text key={`field${index}`} T7 color={COLOR.GRAY1}>#{item} </Text>
+              <ReservationContainer>
+                <Text T3 bold marginTop={30}>진료시간을 선택해주세요</Text>
+                <Text T6 medium marginTop={36}>날짜선택</Text>
+                <DateContainer>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {bookableData.map((item, index) =>
+                      <DateButton
+                        key={`date${index}`}
+                        isSelected={dateIndex === index}
+                        onPress={() => {
+                          if (dateIndex !== index) {
+                            setDateIndex(index);
+                            setTimeIndex(0);
+                          }
+                        }}
+                        underlayColor={dateIndex !== index && COLOR.GRAY5}
+                      >
+                        <>
+                          <Text T5 bold color={dateIndex === index ? COLOR.MAIN : COLOR.GRAY1}>{item[0]}</Text>
+                          <Text T7 color={dateIndex === index ? COLOR.MAIN : COLOR.GRAY2}>{item[1]}</Text>
+                        </>
+                      </DateButton>
                     )}
-                  </Row>
-                </DoctorColumn>
-                <Ionicons name="chevron-forward" size={24} color={COLOR.MAIN} />
-              </DoctorRow>
-            )}
-          </DoctorContainer>
+                  </ScrollView>
+                </DateContainer>
 
-        </ScrollView>
+                <Text T6 medium marginTop={24}>시간선택</Text>
+                <TimeContainer>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {bookableData[dateIndex]?.[2]?.map((item, index) =>
+                      <TimeButton
+                        key={`time${index}`}
+                        isSelected={timeIndex === index}
+                        onPress={() => setTimeIndex(index)}
+                        underlayColor={timeIndex !== index && COLOR.GRAY5}
+                      >
+                        <Text T6 bold color={timeIndex === index ? COLOR.MAIN : COLOR.GRAY1}>{item[0]}</Text>
+                      </TimeButton>
+                    )}
+                  </ScrollView>
+                </TimeContainer>
+              </ReservationContainer>
+
+              <DividingLine marginTop={42} />
+
+              <DoctorContainer>
+                <Text T6 medium>진료 가능 의사 선택</Text>
+                {bookableData[dateIndex]?.[2]?.[timeIndex]?.[1]?.map((item, index) =>
+                  <DoctorRow
+                    key={`doctor${index}`}
+                    onPress={() => handleSelectDoctor(bookableData[dateIndex][0], bookableData[dateIndex][2][timeIndex][0], item)}
+                  >
+                    <Image source={{ uri: item.image }} width={66} height={66} circle />
+                    <DoctorColumn>
+                      <Text T4 bold>{item.name} 의사</Text>
+                      <Text T7 medium color={COLOR.GRAY1}>{item.hospital} / {item.subject}</Text>
+                      <Row marginTop={12}>
+                        {item?.strength?.map((item, index) =>
+                          <Text key={`field${index}`} T7 color={COLOR.GRAY1}>#{item} </Text>
+                        )}
+                      </Row>
+                    </DoctorColumn>
+                    <Ionicons name="chevron-forward" size={24} color={COLOR.MAIN} />
+                  </DoctorRow>
+                )}
+              </DoctorContainer>
+
+            </ScrollView>
+            : <ContainerCenter>
+              <Text T4 bold center>해당 증상 또는 진료과로{'\n'}예약 가능한 일정이 존재하지 않습니다</Text>
+            </ContainerCenter>
+        }
       </Container>
     </SafeArea>
   );
