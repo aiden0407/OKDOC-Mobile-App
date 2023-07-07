@@ -9,17 +9,30 @@ import { Text } from 'components/Text';
 import { LineInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
+//Api
+import { deleteFamilyAccout } from 'api/Login';
+
 export default function WithdrawalScreen({ navigation }) {
 
   const { state: { accountData }, dispatch } = useContext(ApiContext);
   const [currentPassword, setCurrentPassword] = useState();
 
-  function handleWithdrawal() {
-    dispatch({ type: 'LOGOUT' });
-    navigation.popToTop();
-    navigation.goBack();
-    navigation.navigate('Home');
-    Alert.alert('안내', '회원탈퇴가 정상적으로 완료되었습니다');
+  const handleWithdrawal = async function () {
+    try {
+      await deleteFamilyAccout(accountData.loginToken, accountData.email);
+      dispatch({ type: 'LOGOUT' });
+      try {
+        await AsyncStorage.removeItem('accountData');
+      } catch (error) {
+        console.log(error);
+      }
+      navigation.popToTop();
+      navigation.goBack();
+      navigation.navigate('Home');
+      Alert.alert('안내', '회원탈퇴가 정상적으로 완료되었습니다');
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function createWithdrawalAlert() {
