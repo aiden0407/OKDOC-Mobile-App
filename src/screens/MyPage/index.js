@@ -1,12 +1,10 @@
 //React
 import { useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design'
-import { Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, ContainerTop, DividingLine } from 'components/Layout';
 import { Text } from 'components/Text';
@@ -18,37 +16,18 @@ import profileCard from 'assets/icons/mypage-profile.png';
 
 export default function MyPageScreen({ navigation }) {
 
-  const { state: { accountData, profileData }, dispatch } = useContext(ApiContext);
+  const { state: { accountData, profileData } } = useContext(ApiContext);
   const mainProfile = profileData?.[0]
 
   function handleLogin() {
     navigation.navigate('LoginStackNavigation');
   }
 
-  const handleLogout = async function () {
-    dispatch({ type: 'LOGOUT' });
-    try {
-      await AsyncStorage.removeItem('accountData');
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   function handleAccountInformation() {
     if (accountData.loginToken) {
-      // navigation.navigate('MyPageStackNavigation', {
-      //   screen: 'AccountSetting',
-      // });
-      Alert.alert('접속중인 기기에서 로그아웃 하시겠습니까?', '', [
-        {
-          text: '취소',
-          style: 'cancel',
-        },
-        {
-          text: '확인',
-          onPress: () => handleLogout()
-        },
-      ]);
+      navigation.navigate('MyPageStackNavigation', {
+        screen: 'AccountSetting',
+      });
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
@@ -102,17 +81,12 @@ export default function MyPageScreen({ navigation }) {
         </LoginContainer>
 
         <InformationContainer>
-          {
-            accountData?.loginToken
-            && (<>
-              <InformationButton underlayColor={COLOR.GRAY5} onPress={() => handleAccountInformation()}>
-                <>
-                  <Image source={accountPerson} width={35} height={40.25} marginTop={13} />
-                  <Text T6 marginTop={11}>로그아웃</Text>
-                </>
-              </InformationButton>
-            </>)
-          }
+          <InformationButton underlayColor={COLOR.GRAY5} onPress={() => handleAccountInformation()}>
+            <>
+              <Image source={accountPerson} width={35} height={40.25} marginTop={13} />
+              <Text T6 marginTop={11}>계정 설정</Text>
+            </>
+          </InformationButton>
 
           <InformationButton underlayColor={COLOR.GRAY5} onPress={() => handleProfileList()}>
             <>
