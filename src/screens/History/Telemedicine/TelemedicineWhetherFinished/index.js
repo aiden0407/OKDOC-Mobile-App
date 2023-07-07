@@ -11,6 +11,7 @@ import { SolidButton, OutlineButton } from 'components/Button';
 export default function TelemedicineWhetherFinishedScreen({ navigation, route }) {
 
   const telemedicineData = route.params.telemedicineData;
+  const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(600);
   const savedCallback = useRef();
 
@@ -19,7 +20,17 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
     const addedTime = new Date(originalTime.getTime() + 10 * 60 * 1000);
     const currentTime = new Date();
     const remainingTime = Math.floor((addedTime - currentTime) / 1000);
-    setCount(remainingTime);
+
+    if (remainingTime < 0){
+      setTimeout(() => {
+        navigation.navigate('TelemedicineComplete', {
+          telemedicineData: telemedicineData,
+        });
+      }, 500);
+    } else {
+      setCount(remainingTime);
+      setIsLoading(false);
+    }
 
     function tick() {
       savedCallback.current();
@@ -67,6 +78,10 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
     } else {
       Alert.alert('진료 종료 확정 불가', '진료 입장 시간 전의 스케줄은 종료할 수 없습니다.');
     }
+  }
+
+  if (isLoading) {
+    return null;
   }
 
   return (
