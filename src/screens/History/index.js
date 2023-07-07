@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design';
-import { Alert, RefreshControl } from 'react-native';
+import { Alert, ActivityIndicator, RefreshControl } from 'react-native';
 import { SafeArea, ScrollView, Container, ContainerCenter, Row, DividingLine, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
@@ -80,11 +80,11 @@ export default function HistoryScreen({ navigation }) {
         }
       });
 
-      apiContextDispatch({
-        type: 'HISTORY_DATA_UPDATE',
-        historyData: contextHistorySet,
-      });
       setTimeout(function() {
+        apiContextDispatch({
+          type: 'HISTORY_DATA_UPDATE',
+          historyData: contextHistorySet,
+        });
         setRefreshing(false);
         setIsLoading(false);
       }, 2000);
@@ -225,7 +225,11 @@ export default function HistoryScreen({ navigation }) {
   }
 
   if (isLoading) {
-    return null;
+    return (
+      <LoadingBackground>
+        <ActivityIndicator size="large" color="#5500CC" />
+      </LoadingBackground>
+    )
   }
 
   return (
@@ -294,6 +298,17 @@ export default function HistoryScreen({ navigation }) {
     </SafeArea>
   );
 }
+
+const LoadingBackground = styled.View`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: ${COLOR.GRAY6};
+`;
 
 const HistoryColumn = styled.View`
   margin-top: 30px;
