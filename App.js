@@ -27,8 +27,9 @@ import TelemedicineReservationPayment from 'navigation/Home/TelemedicineReservat
 import HistoryStackNavigation from 'navigation/History';
 import TelemedicineRoomNavigation from 'navigation/History/TelemedicineRoom';
 import MyPageStackNavigation from 'navigation/MyPage';
-import LoginStackNavigation from 'navigation/LoginStackNavigation';
-import NeedLoginNavigation from 'navigation/LoginStackNavigation/NeedLoginNavigation';
+import LoginStackNavigation from 'navigation/Login';
+import NeedLoginNavigation from 'navigation/Login/NeedLoginNavigation';
+import InquiryStackNavigation from 'navigation/Inquiry';
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
@@ -85,6 +86,7 @@ export default function App() {
                 <Stack.Group screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>
                   <Stack.Screen name="TelemedicineReservationPayment" component={TelemedicineReservationPayment} options={{ gestureEnabled: false }} />
                   <Stack.Screen name="LoginStackNavigation" component={LoginStackNavigation} />
+                  <Stack.Screen name="InquiryStackNavigation" component={InquiryStackNavigation} />
                 </Stack.Group>
               </Stack.Navigator>
             </NavigationContainer>
