@@ -31,7 +31,8 @@ export default function AccountSettingScreen({ navigation }) {
   }
 
   function handleWithdrawal() {
-    navigation.navigate('MyPageStackNavigation', { screen: 'Withdrawal' });
+    //navigation.navigate('MyPageStackNavigation', { screen: 'Withdrawal' });
+    Alert.alert('안내', '회원탈퇴는 고객센터 1:1 문의를 통해 진행해주세요.');
   }
 
   function createLogoutAlert() {
@@ -60,7 +61,7 @@ export default function AccountSettingScreen({ navigation }) {
     <SafeArea>
       <Container>
 
-        <Text T3 bold marginTop={30} marginLeft={20}>등록된 전화번호</Text>
+        {/* <Text T3 bold marginTop={30} marginLeft={20}>등록된 전화번호</Text>
         <Text T6 color={COLOR.GRAY2} marginTop={12} marginLeft={20}>해당 번호는 최초 가입 시 기입된 번호입니다.{'\n'}번호 변경은 고객센터 1:1 문의를 통해 문의해주세요.</Text>
         <Row marginTop={24} paddingHorizontal={20} gap={6}>
           <CountryCallingCodeBox>
@@ -69,12 +70,20 @@ export default function AccountSettingScreen({ navigation }) {
           <PhoneNumberBox windowWidth={windowWidth}>
             <Text T5 color={COLOR.GRAY0}>{accountData?.phoneNumber?.split(' ')[1]}</Text>
           </PhoneNumberBox>
+        </Row> */}
+
+        <Text T3 bold marginTop={30} marginLeft={20}>계정 이메일</Text>
+        <Text T6 color={COLOR.GRAY2} marginTop={12} marginLeft={20}>해당 이메일은 가입 시 기입된 정보입니다.{'\n'}개인정보 관련 문의는 고객센터 1:1 문의를 통해 전달해주세요.</Text>
+        <Row marginTop={24} paddingHorizontal={20} gap={6}>
+          <PhoneNumberBox style={{width: '100%'}}>
+            <Text T5>{accountData?.email}</Text>
+          </PhoneNumberBox>
         </Row>
 
         <DividingLine marginVertical={30} />
 
         <SettingButtonContainer>
-          <SettingButton title="비밀번호 변경" action={() => handleChangePassword()} />
+          {/* <SettingButton title="비밀번호 변경" action={() => handleChangePassword()} /> */}
           <SettingButton title="로그아웃" action={() => createLogoutAlert()} />
           <SettingButton title="회원탈퇴" action={() => handleWithdrawal()} />
         </SettingButtonContainer>
