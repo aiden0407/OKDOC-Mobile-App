@@ -48,3 +48,21 @@ export const modifyPatientInformation = async function (loginToken, patientId, p
         throw error;
     }
 }
+
+export const deleteFamilyAccout = async function (loginToken, email) {
+
+    try {
+        let options = {
+            url: `${APIURL}/families/${email}`,
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
