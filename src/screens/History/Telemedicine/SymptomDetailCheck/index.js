@@ -1,5 +1,7 @@
 //React
 import { useState, useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
+import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
@@ -15,11 +17,26 @@ import { SolidButton } from 'components/Button';
 //Assets
 import addImageIcon from 'assets/icons/add-image.png';
 
+//Api
+import { modifyTreatmentAppointmentBeforeEnter } from 'api/History';
+
 export default function SymptomDetailCheckScreen({ navigation, route }) {
 
+  const { state: { accountData } } = useContext(ApiContext);
+  const { dispatch } = useContext(AppContext);
   const telemedicineData = route.params.telemedicineData;
-
   const [symptom, setSymptom] = useState(telemedicineData.explain_symptom);
+
+  const submitSymptomDetail = async function () {
+    try {
+      await modifyTreatmentAppointmentBeforeEnter(accountData.loginToken, telemedicineData.id, symptom);
+      dispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: undefined });
+      dispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: telemedicineData.id });
+      handleNotice1();
+    } catch (error) {
+      Alert.alert('네트워크 오류로 인해 증상을 업데이트하지 못했습니다.');
+    }
+  }
 
   function handleNotice1() {
     Alert.alert('진료실에 입장하시겠습니까?', '진료는 예약하신 시간부터 시작됩니다.', [
@@ -92,7 +109,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
             text="진료실 입장하기"
             marginBottom={20}
             disabled={!symptom}
-            action={() => handleNotice1()}
+            action={() => submitSymptomDetail()}
           />
         </Container>
       </KeyboardAvoiding>
