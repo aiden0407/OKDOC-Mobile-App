@@ -37,11 +37,6 @@ export default function MyPageInnerStackNavigation({ navigation }) {
           options={{ title: '비밀번호 변경' }}
         />
         <Stack.Screen
-          name="Withdrawal"
-          component={WithdrawalScreen}
-          options={{ title: '회원탈퇴' }}
-        />
-        <Stack.Screen
           name="ProfileDetail"
           component={ProfileDetailScreen}
           options={{ title: '프로필 정보' }}
@@ -69,6 +64,14 @@ export default function MyPageInnerStackNavigation({ navigation }) {
       </Stack.Group>
 
       <Stack.Group screenOptions={{ headerLargeTitleShadowVisible: false }}>
+        <Stack.Screen
+          name="Withdrawal"
+          component={WithdrawalScreen}
+          options={{ 
+            title: '회원탈퇴',
+            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('AccountSetting')} />,
+          }}
+        />
         <Stack.Screen
           name="PolicyDetail"
           component={PolicyDetailScreen}
