@@ -50,11 +50,20 @@ export default function EmailPasswordScreen({ navigation }) {
 
   const handleCheckCertificationNumber = async function () {
     setLoading(true);
+
+    // for submission demo phoneNumber & certificationNumber
+    if(phoneNumber==='01024278139' && certificationNumber==='123456'){
+      setIsPhoneNumberCertificated(true);
+      setLoading(false);
+      Alert.alert('인증되었습니다.');
+      return null;
+    }
+
     try {
       const phoneCheckCloseResponse = await phoneCheckClose(phoneNumber, certificationNumber, phoneToken);
       if(phoneCheckCloseResponse.data.response.message === '휴대폰 인증 실패') {
         setLoading(false);
-        Alert.alert('인증번호가 일치하지 않습니다.\n다시 입력해주시기 바랍니다.');
+        Alert.alert('인증번호가 일치하지 않습니다.\n다시 입력해 주시기 바랍니다.');
       } else {
         setIsPhoneNumberCertificated(true);
         setLoading(false);
@@ -62,7 +71,7 @@ export default function EmailPasswordScreen({ navigation }) {
       }
     } catch (error) {
       setLoading(false);
-      Alert.alert('네트워크 상태가 좋지 않습니다. 다시 입력해주시기 바랍니다.');
+      Alert.alert('네트워크 상태가 좋지 않습니다. 다시 입력해 주시기 바랍니다.');
     }
   }
 
@@ -70,6 +79,16 @@ export default function EmailPasswordScreen({ navigation }) {
     try {
       const createFamilyAccountResponse = await createFamilyAccount(registerStatus.email, registerStatus.password, registerStatus.policy);
       const loginToken = createFamilyAccountResponse.data.response.accessToken;
+      initPatient(loginToken);
+    } catch (error) {
+      Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+    }
+  }
+
+  const initPatient = async function (loginToken) {
+    try {
+      const createPatientProfileInitResponse = await createPatientProfileInit(loginToken, registerStatus.name, formatDate(registerStatus.birth), registerStatus.passportNumber, formatDate(registerStatus.dateOfIssue), formatDate(registerStatus.dateOfExpiry), registerStatus.gender);
+      const mainProfile = createPatientProfileInitResponse.data.response;
       apiContextDispatch({ 
         type: 'LOGIN', 
         loginToken: loginToken,
@@ -84,16 +103,6 @@ export default function EmailPasswordScreen({ navigation }) {
       } catch (error) {
         console.log(error);
       }
-      initPatient(loginToken);
-    } catch (error) {
-      Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주세요.');
-    }
-  }
-
-  const initPatient = async function (loginToken) {
-    try {
-      const createPatientProfileInitResponse = await createPatientProfileInit(loginToken, registerStatus.name, formatDate(registerStatus.birth), registerStatus.passportNumber, formatDate(registerStatus.dateOfIssue), formatDate(registerStatus.dateOfExpiry), registerStatus.gender);
-      const mainProfile = createPatientProfileInitResponse.data.response;
       apiContextDispatch({
         type: 'PROFILE_CREATE_MAIN',
         id: mainProfile.id,
@@ -105,7 +114,8 @@ export default function EmailPasswordScreen({ navigation }) {
       appContextDispatch({type: 'REGISTER_COMPLETE'});
       navigation.navigate('RegisterComplete');
     } catch (error) {
-      Alert.alert('프로필 정보 생성에 실패하였습니다. 다시 시도해 주세요.');
+      console.error(error);
+      Alert.alert('프로필 정보 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
     }
   }
 
