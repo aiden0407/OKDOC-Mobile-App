@@ -52,7 +52,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   }
 
   function handleNotice2() {
-    Alert.alert('안내', '화상 진료를 받기 위해서는 카메라와 마이크 사용 권한을 허가해야 합니다.', [
+    Alert.alert('안내', '화상 진료를 받기 위해서는 카메라와 마이크 사용 권한을 허가해야 합니다. 또한 정확한 의료 진단을 위해 화상 진료 녹화를 허가해야 합니다다.', [
       {
         text: '확인',
         onPress: () => handleConfirm()
