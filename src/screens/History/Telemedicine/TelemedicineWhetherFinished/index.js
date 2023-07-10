@@ -103,7 +103,7 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
           <OutlineButton
             large
             marginTop={24}
-            text="돌아가기"
+            text="진료실 재입장 하기"
             action={() => handleNotFinish()}
           />
           <SolidButton
