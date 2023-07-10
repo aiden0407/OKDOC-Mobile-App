@@ -113,7 +113,7 @@ export default function ProfileDetailScreen({ navigation }) {
         position: -50,
       });
     } catch (error) {
-      Alert.alert('프로필 수정', '프로필 정보 업데이트에 실패하였습니다. 다시 시도해 주세요.');
+      Alert.alert('네트워크 에러', '프로필 정보 업데이트에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
     }
   }
 

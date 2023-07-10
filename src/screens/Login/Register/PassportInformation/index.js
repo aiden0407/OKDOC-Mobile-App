@@ -102,7 +102,7 @@ export default function PassportInformationScreen({ navigation }) {
       }
     } catch (error) {
       setPassportCertifiactionState('NONE');
-      Alert.alert('여권 번호 확인에 실패했습니다. 다시 시도해주세요.');
+      Alert.alert('네트워크 에러', '여권 번호 확인에 실패했습니다. 다시 시도해 주시기 바랍니다.');
     }
   }
 

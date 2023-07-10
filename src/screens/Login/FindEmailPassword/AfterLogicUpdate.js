@@ -55,7 +55,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
       Alert.alert('인증되었습니다.');
       setIsEmailCertificated(true);
     } else {
-      Alert.alert('인증 실패', '인증번호가 일치하지 않습니다.\n다시 입력해주시기 바랍니다.');
+      Alert.alert('인증 실패', '인증번호가 일치하지 않습니다.\n다시 입력해 주시기 바랍니다.');
     }
   }
 
