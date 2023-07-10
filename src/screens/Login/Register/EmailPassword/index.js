@@ -46,7 +46,11 @@ export default function EmailPasswordScreen({ navigation }) {
       Alert.alert('해당 이메일 주소로\n인증번호가 전송되었습니다.');
     } catch (error) {
       setLoading(false);
-      Alert.alert('인증번호 발송을 실패하였습니다.');
+      if(error.response.data.message === '이미 가입한 유저') {
+        Alert.alert('안내', '이미 가입된 이메일입니다. 다른 이메일로 시도해 주시기 바랍니다.');
+      } else {
+        Alert.alert('인증요청 실패', '네트워크 오류로 인해 인증번호 발송을 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+      }
     }
   }
 
@@ -59,7 +63,7 @@ export default function EmailPasswordScreen({ navigation }) {
       Alert.alert('이메일이 인증되었습니다.');
     } catch (error) {
       setLoading(false);
-      Alert.alert('인증번호가 일치하지 않습니다.\n다시 입력해주시기 바랍니다.');
+      Alert.alert('인증 실패', '인증번호가 일치하지 않습니다. 다시 입력해 주시기 바랍니다.');
     }
   }
 
