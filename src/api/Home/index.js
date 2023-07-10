@@ -152,7 +152,7 @@ export const createPaymentRequest = async function (reservationInfo, email) {
                 P_MID: 'insungif01',
                 P_OID: uuid.v4(),
                 P_NOTI: reservationInfo.biddingId,
-                P_AMT: Number(120000),
+                P_AMT: email==='aiden@insunginfo.co.kr' ? Number(1000) : Number(120000),
                 P_GOODS: encodeURIComponent('오케이닥 진료예약'),
                 P_UNAME: encodeURIComponent(reservationInfo.profileInfo.name),
                 P_NEXT_URL: 'https://api.okdoc.app/payment-webhook/',
