@@ -195,19 +195,31 @@ export default function HistoryScreen({ navigation }) {
             </CardDoctorInfoColumn>
           </Row>
           {type === 'underReservation'
-            //? getRemainingTime(item?.wish_at) < 600
-            ? true
+            ? accountData.email === 'aiden@insunginfo.co.kr'
               ? <CustomSolidButton
                 underlayColor={COLOR.SUB1}
                 onPress={() => handleEnterTelemedicine(item)}
               >
                 <Text T5 medium color="#FFFFFF">진료실 입장</Text>
               </CustomSolidButton>
-              : <CustomSolidButton
-                style={{ backgroundColor: COLOR.GRAY3 }}
-              >
-                <Text T5 medium color="#FFFFFF">진료실 입장</Text>
-              </CustomSolidButton>
+              : getRemainingTime(item?.wish_at) > 300
+                ? <CustomSolidButton
+                  style={{ backgroundColor: COLOR.GRAY3 }}
+                >
+                  <Text T5 medium color="#FFFFFF">진료실 입장</Text>
+                </CustomSolidButton>
+                : getRemainingTime(item?.wish_at) > -600
+                  ? <CustomSolidButton
+                    underlayColor={COLOR.SUB1}
+                    onPress={() => handleEnterTelemedicine(item)}
+                  >
+                    <Text T5 medium color="#FFFFFF">진료실 입장</Text>
+                  </CustomSolidButton>
+                  : <CustomSolidButton
+                    style={{ backgroundColor: COLOR.GRAY3 }}
+                  >
+                    <Text T5 medium color="#FFFFFF">입장 시간 초과</Text>
+                  </CustomSolidButton>
             : null
           }
           {type === 'pastHistory'
