@@ -7,6 +7,7 @@ import * as Linking from 'expo-linking';
 import styled from 'styled-components/native';
 
 //Components
+import * as Device from 'expo-device';
 import { SafeArea } from 'components/Layout';
 import { Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
@@ -24,15 +25,27 @@ export default function PaymentScreen({ navigation }) {
 
   useEffect(() => {
     navigation.setOptions({
-      headerShown: canGoBack,
+      headerShown: Device.osName === 'iOS' ? canGoBack : true,
       headerRight: () => {
-        return (
-          <EditButton onPress={() => {
-            navigation.goBack();
-          }}>
-            <Text T5 bold>X</Text>
-          </EditButton>
-        );
+        if(Device.osName === 'iOS'){
+          return (
+            <EditButton onPress={() => {
+              navigation.goBack();
+            }}>
+              <Text T5 bold>X</Text>
+            </EditButton>
+          );
+        }else{
+          if(canGoBack){
+            return (
+              <EditButton onPress={() => {
+                navigation.goBack();
+              }}>
+                <Text T5 bold>X</Text>
+              </EditButton>
+            );
+          }
+        }
       }
     });
   }, [navigation, canGoBack]);
@@ -97,9 +110,18 @@ export default function PaymentScreen({ navigation }) {
         source={{ html: htmlContent }}
         originWhitelist={['*']}
         onNavigationStateChange={(navState) => {
-          if(navState.canGoBack){
+          if(Device.osName === 'iOS' && navState.canGoBack){
             setCanGoBack(true);
           }
+
+          if (Device.osName === 'Android') {
+            if (navState.url.includes("https://ksmobile.inicis.com/smart/payment/") || navState.url.includes("about:blank")) {
+              setCanGoBack(false);
+            } else {
+              setCanGoBack(true);
+            }
+          }
+
           if(navState.url.includes("https://zoom.okdoc.app/reservation")){
             handlePaymentComplete(navState.url);
           }
