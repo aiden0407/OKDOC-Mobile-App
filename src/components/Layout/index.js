@@ -2,6 +2,7 @@
 import styled from 'styled-components/native';
 
 //Components
+import * as Device from 'expo-device';
 import { COLOR } from 'constants/design';
 import {
   KeyboardAvoidingView,
@@ -11,7 +12,7 @@ import {
 
 export function KeyboardAvoiding({ children }) {
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex:1}}>
+    <KeyboardAvoidingView behavior={Device.osName === 'Android' ? 'height' : 'padding'} style={{flex:1}}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         {children}
       </TouchableWithoutFeedback>
