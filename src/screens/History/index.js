@@ -5,6 +5,7 @@ import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
+import * as Device from 'expo-device';
 import { COLOR } from 'constants/design';
 import { Alert, ActivityIndicator, RefreshControl } from 'react-native';
 import { SafeArea, ScrollView, Container, ContainerCenter, Row, DividingLine, Box } from 'components/Layout';
@@ -250,12 +251,13 @@ export default function HistoryScreen({ navigation }) {
         accountData.loginToken
           ? (<>
             {(historyData?.underReservation?.length || historyData?.pastHistory?.length)
-              ? <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20} paddingTop={refreshing ? 30 : 0}>
+              ? <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20} paddingTop={Device.osName === 'iOS' && refreshing ? 30 : 0}>
                 <ScrollView
                   showsVerticalScrollIndicator={false}
                   refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLOR.MAIN} />
                   }
+                  overScrollMode='never'
                 >
                   {historyData?.underReservation?.length
                     ? (<>
