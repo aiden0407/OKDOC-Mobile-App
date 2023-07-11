@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 
 //Components
+import * as Device from 'expo-device';
 import { COLOR, TYPOGRAPHY } from 'constants/design'
 import { Alert, ActivityIndicator } from 'react-native';
 import { SafeArea, Container, Row } from 'components/Layout';
@@ -132,34 +133,37 @@ export default function EmailPasswordScreen({ navigation }) {
         <Container>
           <Text T3 bold marginTop={30}>휴대폰 번호를 입력해주세요</Text>
 
-          <CustomLineInput
-            editable={!isMessageSent}
-            placeholder="01012345678"
-            inputMode="numeric"
-            maxLength={11}
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-            returnKeyType="next"
-            onSubmitEditing={() => {
-              if (phoneNumber?.length === 11) {
-                handleRequestCertification();
-              }
-            }}
-          />
-          {
-            !isPhoneNumberCertificated &&
-            <CustomOutlineButtonBackground
-              disabled={phoneNumber?.length !== 11}
-              onPress={() => handleRequestCertification()}
-              underlayColor={COLOR.SUB4}
-              style={{ position: 'absolute', right: 6, top: 72, zIndex: 1 }}
-            >
-              <Text T7 medium color={phoneNumber?.length === 11 ? COLOR.MAIN : COLOR.GRAY1}>{isMessageSent ? '재전송' : '인증요청'}</Text>
-            </CustomOutlineButtonBackground>
-          }
+          <InputContainer>
+            <CustomLineInput
+              editable={!isMessageSent}
+              placeholder="01012345678"
+              inputMode="numeric"
+              maxLength={11}
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              returnKeyType="next"
+              onSubmitEditing={() => {
+                if (phoneNumber?.length === 11) {
+                  handleRequestCertification();
+                }
+              }}
+            />
+            {
+              !isPhoneNumberCertificated &&
+              <CustomOutlineButtonBackground
+                disabled={phoneNumber?.length !== 11}
+                onPress={() => handleRequestCertification()}
+                underlayColor={COLOR.SUB4}
+                style={{ position: 'absolute', right: 4, top: Device.osName === 'Android' ? 21 : 13, zIndex: 1 }}
+              >
+                <Text T7 medium color={phoneNumber?.length === 11 ? COLOR.MAIN : COLOR.GRAY1}>{isMessageSent ? '재전송' : '인증요청'}</Text>
+              </CustomOutlineButtonBackground>
+            }
+          </InputContainer>
+          
           {
             isMessageSent && !isPhoneNumberCertificated &&
-            (<>
+            (<InputContainer>
               <CustomLineInput
                 placeholder="인증번호 6자리"
                 inputMode="numeric"
@@ -177,11 +181,11 @@ export default function EmailPasswordScreen({ navigation }) {
                 disabled={certificationNumber?.length < 6}
                 onPress={() => handleCheckCertificationNumber()}
                 underlayColor={COLOR.SUB4}
-                style={{ position: 'absolute', right: 6, top: 129, zIndex: 1 }}
+                style={{ position: 'absolute', right: 4, top: Device.osName === 'Android' ? 22 : 14, zIndex: 1 }}
               >
                 <Text T7 medium color={certificationNumber?.length < 6 ? COLOR.GRAY2 : COLOR.MAIN}>인증확인</Text>
               </CustomOutlineButtonBackground>
-            </>)
+            </InputContainer>)
           }
         </Container>
 
@@ -204,6 +208,11 @@ const LoadingBackground = styled.Pressable`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const InputContainer = styled.View`
+  width: 100%;
+  position: relative;
 `;
 
 const CustomLineInput = styled.TextInput`
