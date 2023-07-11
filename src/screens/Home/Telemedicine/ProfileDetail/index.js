@@ -125,6 +125,7 @@ export default function ProfileDetailScreen({ navigation }) {
         <ScrollView
           showsVerticalScrollIndicator={false}
           ref={scrollRef}
+          overScrollMode='never'
         >
           <PaddingContainer>
             <Text T3 bold marginTop={30}>{profileInfo?.name ? '개인정보를 확인해 주세요' : '개인정보를 입력해 주세요'}</Text>
@@ -165,7 +166,6 @@ export default function ProfileDetailScreen({ navigation }) {
               onFocus={() => handleTextInputFocus(0)}
               ref={birthRef}
               inputMode="numeric"
-              maxLength={8}
             />
             <Text T6 bold marginTop={30}>성별</Text>
             {

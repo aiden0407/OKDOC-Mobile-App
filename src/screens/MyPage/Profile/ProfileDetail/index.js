@@ -204,6 +204,7 @@ export default function ProfileDetailScreen({ navigation }) {
               paddingHorizontal={20}
               paddingTop={80}
               ref={scrollRef}
+              overScrollMode='never'
             >
               <Text T6 bold marginTop={30}>키 & 몸무게</Text>
               <Row marginTop={12} align>

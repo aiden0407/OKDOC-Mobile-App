@@ -104,7 +104,7 @@ export default function DoctorProfileScreen({ navigation }) {
       </LinearGradient> */}
 
       {/* <ScrollView showsVerticalScrollIndicator={false} paddingHorizontal={20} paddingTop={80}> */}
-      <ScrollView showsVerticalScrollIndicator={false} paddingHorizontal={20} paddingTop={0}>
+      <ScrollView showsVerticalScrollIndicator={false} paddingHorizontal={20} paddingTop={0} overScrollMode='never'>
         {informationCategory === 'profile' && (
           <>
             <Row align marginTop={36}>

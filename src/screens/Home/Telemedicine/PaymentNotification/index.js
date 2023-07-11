@@ -51,7 +51,7 @@ export default function PaymentNotificationScreen({ navigation }) {
 
   return (
     <SafeArea>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} overScrollMode='never'>
         <PaddingContainer>
           <Text T3 bold marginTop={30}>진료를 위해{'\n'}예약하신 정보를 확인 해주세요</Text>
           <Row marginTop={24}>
