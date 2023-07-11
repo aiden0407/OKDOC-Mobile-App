@@ -4,9 +4,10 @@ import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
+import * as Device from 'expo-device';
 import { COLOR, BUTTON, INPUT_BOX } from 'constants/design';
 import { ActivityIndicator, Alert } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { SafeArea, Container, ScrollView, Row, Center, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
@@ -32,15 +33,41 @@ export default function PassportInformationScreen({ navigation }) {
   const onBirthChange = (event, selectedDate) => {
     setBirth(selectedDate);
   };
+  const showBirthSelector = () => {
+    DateTimePickerAndroid.open({
+      value: birth,
+      onChange: onBirthChange,
+      mode: 'date',
+      display: 'spinner',
+    });
+  };
+
   const [dateOfIssue, setDateOfIssue] = useState(registerStatus?.dateOfIssue ?? today);
   const [isDateOfIssuePickerShow, setIsDateOfIssuePickerShow] = useState(false);
   const onDateOfIssueChange = (event, selectedDate) => {
     setDateOfIssue(selectedDate);
   };
+  const showDateOfIssueSelector = () => {
+    DateTimePickerAndroid.open({
+      value: dateOfIssue,
+      onChange: onDateOfIssueChange,
+      mode: 'date',
+      display: 'spinner',
+    });
+  };
+
   const [dateOfExpiry, setDateOfExpiry] = useState(registerStatus?.dateOfExpiry ?? today);
   const [isDateOfExpiryPickerShow, setIsDateOfExpiryPickerShow] = useState(false);
   const onDateOfExpiryChange = (event, selectedDate) => {
     setDateOfExpiry(selectedDate);
+  };
+  const showDateOfExpirySelector = () => {
+    DateTimePickerAndroid.open({
+      value: dateOfExpiry,
+      onChange: onDateOfExpiryChange,
+      mode: 'date',
+      display: 'spinner',
+    });
   };
 
   const scrollRef = useRef();
@@ -83,9 +110,9 @@ export default function PassportInformationScreen({ navigation }) {
     setPassportCertifiactionState('CHECKING');
     try {
       const response = await checkPassportInformation(name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry));
-      if(response.data.response?.result==='ERROR'){
+      if (response.data.response?.result === 'ERROR') {
         setPassportCertifiactionState('COUNT_LIMIT_ERROR');
-      } else if(response.data.response?.data?.RESULTYN==='N') {
+      } else if (response.data.response?.data?.RESULTYN === 'N') {
         setPassportCertifiactionState('WRONG_INFORMATION_ERROR');
       } else {
         setPassportCertifiactionState('NONE');
@@ -126,7 +153,7 @@ export default function PassportInformationScreen({ navigation }) {
               returnKeyType="next"
             />
             <Text T6 bold marginTop={24}>생년월일</Text>
-            <DateTimePickerOpenButton onPress={() => setIsBirthPickerShow(true)} underlayColor={COLOR.GRAY4}>
+            <DateTimePickerOpenButton onPress={() => Device.osName === 'iOS' ? setIsBirthPickerShow(true) : showBirthSelector()} underlayColor={COLOR.GRAY4}>
               <Text T6 color={birth.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{birth.toDateString() === today.toDateString() ? '생년월일 8자리' : formatDateString(birth)}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>여권번호</Text>
@@ -139,11 +166,11 @@ export default function PassportInformationScreen({ navigation }) {
               onFocus={() => handleTextInputFocus(200)}
             />
             <Text T6 bold marginTop={24}>발급일</Text>
-            <DateTimePickerOpenButton onPress={() => setIsDateOfIssuePickerShow(true)} underlayColor={COLOR.GRAY4}>
+            <DateTimePickerOpenButton onPress={() => Device.osName === 'iOS' ? setIsDateOfIssuePickerShow(true) : showDateOfIssueSelector()} underlayColor={COLOR.GRAY4}>
               <Text T6 color={dateOfIssue.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfIssue.toDateString() === today.toDateString() ? '발급일 숫자 8자리' : formatDateString(dateOfIssue)}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>기간 만료일</Text>
-            <DateTimePickerOpenButton onPress={() => setIsDateOfExpiryPickerShow(true)} underlayColor={COLOR.GRAY4}>
+            <DateTimePickerOpenButton onPress={() => Device.osName === 'iOS' ? setIsDateOfExpiryPickerShow(true) : showDateOfExpirySelector()} underlayColor={COLOR.GRAY4}>
               <Text T6 color={dateOfExpiry.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfExpiry.toDateString() === today.toDateString() ? '기간 만료일 숫자 8자리' : formatDateString(dateOfExpiry)}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>성별</Text>
