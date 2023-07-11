@@ -21,7 +21,7 @@ export default function PaymentCompleteScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
   const [biddingData, setBiddingData] = useState();
   const [paymentData, setPaymentData] = useState();
-  const biddingId = route.params.biddingId;
+  const biddingId = route.params?.biddingId;
 
   useEffect(() => {
     initBiddingData()
