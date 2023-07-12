@@ -10,7 +10,7 @@ import { LineInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { deleteFamilyAccout } from 'api/Login';
+import { deleteFamilyAccout } from 'api/MyPage';
 
 export default function WithdrawalScreen({ navigation }) {
 
@@ -19,7 +19,7 @@ export default function WithdrawalScreen({ navigation }) {
 
   const handleWithdrawal = async function () {
     try {
-      await deleteFamilyAccout(accountData.loginToken, accountData.email);
+      await deleteFamilyAccout(accountData.loginToken, accountData.email, currentPassword);
       dispatch({ type: 'LOGOUT' });
       try {
         await AsyncStorage.removeItem('accountData');
@@ -29,9 +29,9 @@ export default function WithdrawalScreen({ navigation }) {
       navigation.popToTop();
       navigation.goBack();
       navigation.navigate('Home');
-      Alert.alert('안내', '회원탈퇴가 정상적으로 완료되었습니다');
+      Alert.alert('안내', '회원탈퇴가 정상적으로 완료되었습니다.');
     } catch (error) {
-      console.log(error);
+      Alert.alert('안내', '비밀번호가 올바르지 않습니다.');
     }
   }
 
