@@ -49,15 +49,19 @@ export const modifyPatientInformation = async function (loginToken, patientId, p
     }
 }
 
-export const deleteFamilyAccout = async function (loginToken, email) {
+export const deleteFamilyAccout = async function (loginToken, email, password) {
 
     try {
         let options = {
-            url: `${APIURL}/families/${email}`,
+            url: `${APIURL}/authentication/withdrawal`,
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${loginToken}`
             },
+            data: {
+                id: email,
+                password: password,
+            }
         }
         const response = await axios(options);
         return response;
