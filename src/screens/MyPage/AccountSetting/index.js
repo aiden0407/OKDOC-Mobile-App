@@ -31,8 +31,7 @@ export default function AccountSettingScreen({ navigation }) {
   }
 
   function handleWithdrawal() {
-    //navigation.navigate('MyPageStackNavigation', { screen: 'Withdrawal' });
-    Alert.alert('안내', '회원탈퇴는 고객센터 1:1 문의를 통해 진행해주세요.');
+    navigation.navigate('MyPageStackNavigation', { screen: 'Withdrawal' });
   }
 
   function createLogoutAlert() {
