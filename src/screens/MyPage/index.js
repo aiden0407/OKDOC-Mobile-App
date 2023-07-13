@@ -48,7 +48,10 @@ export default function MyPageScreen({ navigation }) {
   }
 
   function handleMyPageScreen(navigate) {
-    navigation.navigate('MyPageStackNavigation', { screen: navigate });
+    navigation.navigate('MyPageStackNavigation', { 
+      screen: navigate,
+      params: navigate==="Inquiry" && { headerTitle: '1:1 문의' },
+    });
   }
 
   function ServicesButton({ title, navigate }) {
