@@ -38,7 +38,8 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
 
   function handleFeedback() {
     navigation.navigate('InquiryStackNavigation', { 
-      screen: 'Inquiry'
+      screen: 'Inquiry',
+      params: { headerTitle: '진료 후기 작성 / 문의하기' },
     });
   }
 
