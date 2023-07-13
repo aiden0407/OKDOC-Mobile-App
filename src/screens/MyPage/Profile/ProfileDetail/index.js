@@ -315,13 +315,13 @@ export default function ProfileDetailScreen({ navigation }) {
                 onFocus={() => handleTextInputFocus(520)}
               />
               <Row marginTop={30}>
-                <Text T6 bold>알러지 유무</Text><Text T6 medium color={COLOR.GRAY2} marginLeft={2}>(선택)</Text>
+                <Text T6 bold>알러지 반응</Text><Text T6 medium color={COLOR.GRAY2} marginLeft={2}>(선택)</Text>
               </Row>
               <BoxInput
                 medium
                 marginTop={12}
                 editable={isEditable}
-                placeholder="본인에게 알러지를 유발하는 음식이나 환경이 있다면 알러지 반응과 함께 입력해 주세요."
+                placeholder="본인에게 알러지를 유발하는 음식이나 환경이 있다면 반응과 함께 입력해 주세요."
                 value={allergicReaction}
                 onChangeText={setAllergicReaction}
                 onFocus={() => handleTextInputFocus(680)}
