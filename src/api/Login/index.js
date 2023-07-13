@@ -3,7 +3,6 @@ import axios from 'axios';
 import { APIURL } from 'constants/api'
 
 export const familyLocalLogin = async function (id, password) {
-
     try {
         let options = {
             url: `${APIURL}/authentication/sign-in`,
@@ -22,7 +21,6 @@ export const familyLocalLogin = async function (id, password) {
 }
 
 export const getRegisterTerms = async function () {
-
     try {
         let options = {
             url: `${APIURL}/terms/`,
@@ -37,7 +35,6 @@ export const getRegisterTerms = async function () {
 }
 
 export const emailCheckOpen = async function (email) {
-
     try {
         let options = {
             url: `${APIURL}/authentication/email-check-open`,
@@ -55,7 +52,6 @@ export const emailCheckOpen = async function (email) {
 }
 
 export const emailCheckClose = async function (email, certificationNumber, emailToken) {
-
     try {
         let options = {
             url: `${APIURL}/authentication/email-check-close`,
@@ -77,7 +73,6 @@ export const emailCheckClose = async function (email, certificationNumber, email
 }
 
 export const phoneCheckOpen = async function (phone) {
-
     try {
         let options = {
             url: `${APIURL}/authentication/sms-check-open`,
@@ -95,7 +90,6 @@ export const phoneCheckOpen = async function (phone) {
 }
 
 export const phoneCheckClose = async function (phone, certificationNumber, phoneToken) {
-
     try {
         let options = {
             url: `${APIURL}/authentication/sms-check-close`,
@@ -117,7 +111,6 @@ export const phoneCheckClose = async function (phone, certificationNumber, phone
 }
 
 export const checkPassportInformation = async function (name, birth, passportNumber, dateOfIssue, dateOfExpiry) {
-
     try {
         let options = {
             url: `${APIURL}/authentication/passport-check`,
@@ -142,7 +135,6 @@ export const checkPassportInformation = async function (name, birth, passportNum
 }
 
 export const createFamilyAccount = async function (email, password, policy) {
-
     try {
         let options = {
             url: `${APIURL}/authentication/sign-up`,
@@ -162,7 +154,6 @@ export const createFamilyAccount = async function (email, password, policy) {
 }
 
 export const createPatientProfileInit = async function (loginToken, name, birth, passportNumber, dateOfIssue, dateOfExpiry, gender) {
-
     try {
         let options = {
             url: `${APIURL}/patients/${passportNumber}`,
@@ -188,21 +179,81 @@ export const createPatientProfileInit = async function (loginToken, name, birth,
     }
 }
 
-// export const findFamilyAccount = async function (birth, name) {
+export const findFamilyAccount = async function (name, birth) {
+    try {
+        let options = {
+            url: `${APIURL}/authentication/email-find`,
+            method: 'POST',
+            data: {
+                name: name,
+                birth: birth,
+            },
+        }
+        const response = await axios(options);
+        return response;
 
-//     try {
-//         let options = {
-//             url: `${APIURL}/authentication/email-find`,
-//             method: 'POST',
-//             data: {
-//                 birth: birth,
-//                 name: name,
-//             },
-//         }
-//         const response = await axios(options);
-//         return response;
+    } catch (error) {
+        throw error;
+    }
+}
 
-//     } catch (error) {
-//         throw error;
-//     }
-// }
+export const findPasswordOpen = async function (email, birth, name) {
+    try {
+        let options = {
+            url: `${APIURL}/authentication/password-find-open`,
+            method: 'POST',
+            data: {
+                email: email,
+                name: name,
+                birth: birth,
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const findPasswordClose = async function (emailToken, email, verificationNumber) {
+    try {
+        let options = {
+            url: `${APIURL}/authentication/password-find-close`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${emailToken}`
+            },
+            data: {
+                email: email,
+                verification_number: verificationNumber,
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const changePassword = async function (verificationToken, email, newPassword) {
+    try {
+        let options = {
+            url: `${APIURL}/authentication/change-password`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${verificationToken}`
+            },
+            data: {
+                email: email,
+                new_password: newPassword,
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
