@@ -47,7 +47,7 @@ export default function EmailPasswordScreen({ navigation }) {
       Alert.alert('해당 이메일 주소로\n인증번호가 전송되었습니다.');
     } catch (error) {
       setLoading(false);
-      if (error.response.data.message === '이미 가입한 유저') {
+      if (error.response.data.status === 409) {
         Alert.alert('안내', '이미 가입된 이메일입니다. 다른 이메일로 시도해 주시기 바랍니다.');
       } else {
         Alert.alert('인증요청 실패', '네트워크 오류로 인해 인증번호 발송을 실패하였습니다. 다시 시도해 주시기 바랍니다.');
