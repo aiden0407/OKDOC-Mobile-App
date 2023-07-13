@@ -16,7 +16,7 @@ export default function InquiryNavigation({ navigation }) {
           name="Inquiry"
           component={InquiryScreen}
           options={{
-            title: "진료 후기 작성 / 문의하기",
+            title: "문의하기",
             headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
           }}
         />
