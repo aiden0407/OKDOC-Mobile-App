@@ -34,7 +34,7 @@ export default function LoginStackNavigation({ navigation }) {
           options={{
             title: '이메일 / 비밀번호 찾기 문의',
             headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('Login')} />,
-            //headerShown: false,
+            headerShown: false,
           }}
         />
         <Stack.Screen
