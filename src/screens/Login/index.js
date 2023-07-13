@@ -60,8 +60,12 @@ export default function LoginPage({ navigation }) {
   }
 
   function handleRegister() {
-    Alert.alert('안내', '회원가입을 진행하기 위해서는 한국 여권과 전화 번호가 필요합니다.');
-    navigation.navigate('RegisterPolicy');
+    Alert.alert('안내', '회원가입을 진행하기 위해서는 한국 여권과 전화 번호가 필요합니다.', [
+      {
+        text: '확인',
+        onPress: () => navigation.navigate('RegisterPolicy')
+      }
+    ]);
   }
 
   function handleFindEmailPassword() {
