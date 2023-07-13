@@ -27,10 +27,25 @@ export default function EmailPasswordScreen({ navigation }) {
   const [certificationNumber, setCertificationNumber] = useState('');
   const [isPhoneNumberCertificated, setIsPhoneNumberCertificated] = useState(false);
 
+  const handlePhoneNumberChange = (text) => {
+    let formattedNumber = '';
+    if (text.length <= 13) {
+      formattedNumber = text
+        .replace(/\D/g, '')
+        .replace(/(\d{3})(\d{0,4})?(\d{0,4})?/, (match, p1, p2, p3) => {
+          let result = p1;
+          if (p2) result += `-${p2}`;
+          if (p3) result += `-${p3}`;
+          return result;
+        });
+    }
+    setPhoneNumber(formattedNumber);
+  };
+
   const handleRequestCertification = async function () {
     setLoading(true);
     try {
-      const phoneCheckOpenResponse = await phoneCheckOpen(phoneNumber);
+      const phoneCheckOpenResponse = await phoneCheckOpen(Number(phoneNumber.replaceAll("-", "")));
       setPhoneToken(phoneCheckOpenResponse.data.response.message)
       setIsMessageSent(true);
       setLoading(false);
@@ -53,7 +68,7 @@ export default function EmailPasswordScreen({ navigation }) {
     setLoading(true);
 
     // for submission demo phoneNumber & certificationNumber
-    if(phoneNumber==='01024278139' && certificationNumber==='123456'){
+    if(phoneNumber==='010-2427-8139' && certificationNumber==='123456'){
       setIsPhoneNumberCertificated(true);
       setLoading(false);
       Alert.alert('인증되었습니다.');
@@ -136,14 +151,14 @@ export default function EmailPasswordScreen({ navigation }) {
           <InputContainer>
             <CustomLineInput
               editable={!isMessageSent}
-              placeholder="01012345678"
+              placeholder="010-1234-5678"
               inputMode="numeric"
-              maxLength={11}
+              maxLength={13}
               value={phoneNumber}
-              onChangeText={setPhoneNumber}
+              onChangeText={handlePhoneNumberChange}
               returnKeyType="next"
               onSubmitEditing={() => {
-                if (phoneNumber?.length === 11) {
+                if (phoneNumber?.length === 13) {
                   handleRequestCertification();
                 }
               }}
@@ -151,12 +166,12 @@ export default function EmailPasswordScreen({ navigation }) {
             {
               !isPhoneNumberCertificated &&
               <CustomOutlineButtonBackground
-                disabled={phoneNumber?.length !== 11}
+                disabled={phoneNumber?.length !== 13}
                 onPress={() => handleRequestCertification()}
                 underlayColor={COLOR.SUB4}
                 style={{ position: 'absolute', right: 4, top: Device.osName === 'Android' ? 21 : 13, zIndex: 1 }}
               >
-                <Text T7 medium color={phoneNumber?.length === 11 ? COLOR.MAIN : COLOR.GRAY1}>{isMessageSent ? '재전송' : '인증요청'}</Text>
+                <Text T7 medium color={phoneNumber?.length === 13 ? COLOR.MAIN : COLOR.GRAY1}>{isMessageSent ? '재전송' : '인증요청'}</Text>
               </CustomOutlineButtonBackground>
             }
           </InputContainer>
