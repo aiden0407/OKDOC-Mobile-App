@@ -82,7 +82,7 @@ export default function AccountSettingScreen({ navigation }) {
         <DividingLine marginVertical={30} />
 
         <SettingButtonContainer>
-          {/* <SettingButton title="비밀번호 변경" action={() => handleChangePassword()} /> */}
+          <SettingButton title="비밀번호 변경" action={() => handleChangePassword()} />
           <SettingButton title="로그아웃" action={() => createLogoutAlert()} />
           <SettingButton title="회원탈퇴" action={() => handleWithdrawal()} />
         </SettingButtonContainer>
