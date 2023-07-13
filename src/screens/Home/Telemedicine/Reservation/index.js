@@ -15,6 +15,9 @@ import { Image } from 'components/Image';
 //Api
 import { getDoctorsByDepartment, getScheduleByDoctorId } from 'api/Home';
 
+//Assets
+import exclamationIcon from 'assets/icons/circle-exclamation.png';
+
 export default function ReservationScreen({ navigation, route }) {
 
   const { state: { bookableData }, dispatch: apiContextDispatch } = useContext(ApiContext);
@@ -232,7 +235,8 @@ export default function ReservationScreen({ navigation, route }) {
 
             </ScrollView>
             : <ContainerCenter>
-              <Text T4 bold center>해당 증상 또는 진료과로{'\n'}예약 가능한 일정이 존재하지 않습니다</Text>
+              <Image source={exclamationIcon} width={60} height={60} />
+              <Text T4 bold center marginTop={18} marginBottom={100}>해당 증상 또는 진료과로{'\n'}예약 가능한 일정이 존재하지 않습니다</Text>
             </ContainerCenter>
         }
       </Container>
