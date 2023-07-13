@@ -11,35 +11,75 @@ import { LineInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 import NavigationBackArrow from 'components/NavigationBackArrow';
 
+//Api
+import { findFamilyAccount, findPasswordOpen, findPasswordClose, changePassword } from 'api/Login';
+
 export default function FindEmailPasswordScreen({ navigation }) {
 
   const [pageStatus, setPageStatus] = useState('EMAIL');
   const [isFindEmailSubmitted, setIsFindEmailSubmitted] = useState(false);
-  const [findEmailName, setFindEmailName] = useState();
-  const [findEmailBirth, setFindEmailBirth] = useState();
+  const [findEmailName, setFindEmailName] = useState('');
+  const [findEmailBirth, setFindEmailBirth] = useState('');
+  const [foundEmail, setFoundEmail] = useState('');
   const findEmailBirthRef = useRef();
+
   const [isFindPasswordSubmitted, setIsFindPasswordSubmitted] = useState(false);
-  const [findPasswordEmail, setFindPasswordEmail] = useState();
-  const [findPasswordName, setFindPasswordName] = useState();
-  const [findPasswordBirth, setFindPasswordBirth] = useState();
+  const [findPasswordEmail, setFindPasswordEmail] = useState('');
+  const [findPasswordName, setFindPasswordName] = useState('');
+  const [findPasswordBirth, setFindPasswordBirth] = useState('');
   const [findPasswordCertificationNumber, setFindPasswordCertificationNumber] = useState('');
   const [isEmailCertificated, setIsEmailCertificated] = useState(false);
-  const [newPassword, setNewPassword] = useState();
-  const [newPasswordCheck, setNewPasswordCheck] = useState();
+  const [newPassword, setNewPassword] = useState('');
+  const [newPasswordCheck, setNewPasswordCheck] = useState('');
   const findPasswordNameRef = useRef();
   const findPasswordBirthRef = useRef();
   const newPasswordCheckRef = useRef();
+
+  const handleFindEmailBirthChange = (text) => {
+    let formattedDate = '';
+    if (text.length <= 10) {
+      formattedDate = text
+        .replace(/\D/g, '') // 숫자 이외의 문자 제거
+        .replace(/(\d{4})(\d{2})?(\d{0,2})?/, (match, p1, p2, p3) => {
+          let result = p1;
+          if (p2) result += `-${p2}`;
+          if (p3) result += `-${p3}`;
+          return result;
+        });
+    }
+    setFindEmailBirth(formattedDate);
+  };
+
+  function maskEmail(email) {
+    const [username, domain] = email.split('@');
+    const usernameLength = username.length;
+    let maskedUsername = username.charAt(0);
+    if (usernameLength > 2) {
+      maskedUsername += '*'.repeat(usernameLength - 2);
+    }
+    maskedUsername += username.charAt(usernameLength - 1);
+    return maskedUsername + '@' + domain;
+  }
 
   function handleGoBackToLogin() {
     navigation.goBack();
   }
 
   function handleOpenChannelTalk() {
-    Alert.alert('채널톡');
+    navigation.navigate('InquiryStackNavigation', { 
+      screen: 'Inquiry',
+      params: { headerTitle: '이메일 / 비밀번호 찾기 문의' },
+    });
   }
 
-  function handleFindEmail() {
-    setIsFindEmailSubmitted(true);
+  const handleFindEmail = async function () {
+    try {
+      const response = await findFamilyAccount(findEmailName, Number(findEmailBirth.replaceAll("-", "")));
+      setFoundEmail(maskEmail(response.data.response.email));
+      setIsFindEmailSubmitted(true);
+    } catch (error) {
+      Alert.alert('해당 정보로 등록된 유저가 존재하지 않습니다.');
+    }
   }
 
   function handleFindPassword() {
@@ -101,9 +141,9 @@ export default function FindEmailPasswordScreen({ navigation }) {
                   marginTop={24}
                   placeholder="생년월일 8자리"
                   value={findEmailBirth}
-                  onChangeText={setFindEmailBirth}
+                  onChangeText={handleFindEmailBirthChange}
                   inputMode="numeric"
-                  maxLength={8}
+                  maxLength={10}
                   ref={findEmailBirthRef}
                   onSubmitEditing={() => handleFindEmail()}
                 />
@@ -118,7 +158,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
               <SolidButton
                 text="확인"
                 marginBottom={20}
-                disabled={!findEmailName || !findEmailBirth}
+                disabled={!findEmailName || findEmailBirth.length !== 10}
                 action={() => handleFindEmail()}
               />
             </Container>
@@ -130,7 +170,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
                 <Text T3 bold marginTop={42}>이메일을 확인해주세요</Text>
                 <Text T6 color={COLOR.GRAY1} marginTop={12}>입력하신 정보로 조회되는{'\n'}계정 이메일 정보입니다</Text>
                 <EmailBox>
-                  <Text T6 medium>ok**c@i**unginfo.co.kr</Text>
+                  <Text T6 medium>{foundEmail}</Text>
                 </EmailBox>
               </Container>
 
