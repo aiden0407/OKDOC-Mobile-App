@@ -3,7 +3,6 @@ import axios from 'axios';
 import { APIURL } from 'constants/api'
 
 export const getScheduleByPatientId = async function (loginToken, patientId) {
-
     try {
         let options = {
             url: `${APIURL}/treatment_appointments/?patient_id=${patientId}`,
@@ -21,7 +20,6 @@ export const getScheduleByPatientId = async function (loginToken, patientId) {
 }
 
 export const modifyTreatmentAppointmentBeforeEnter = async function (loginToken, appointmentId, symptom) {
-
     try {
         let options = {
             url: `${APIURL}/treatment_appointments/${appointmentId}`,
@@ -42,7 +40,6 @@ export const modifyTreatmentAppointmentBeforeEnter = async function (loginToken,
 }
 
 export const treatmentDelete = async function (loginToken, appointmentId) {
-
     try {
         let options = {
             url: `${APIURL}/treatment_appointments/${appointmentId}`,
@@ -60,7 +57,6 @@ export const treatmentDelete = async function (loginToken, appointmentId) {
 }
 
 export const treatmentComplete = async function (loginToken, appointmentId) {
-
     try {
         let options = {
             url: `${APIURL}/treatment_appointments/${appointmentId}`,
@@ -71,6 +67,23 @@ export const treatmentComplete = async function (loginToken, appointmentId) {
             data: {
                 "status": "EXIT",
             },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
+export const getInvoiceInformation = async function (loginToken, biddingId) {
+    try {
+        let options = {
+            url: `${APIURL}/invoices/${biddingId}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
         }
         const response = await axios(options);
         return response;
