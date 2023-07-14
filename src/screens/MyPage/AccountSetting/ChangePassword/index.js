@@ -1,6 +1,7 @@
 //React
 import { useState, useRef, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Components
 import { COLOR } from 'constants/design';
@@ -9,6 +10,9 @@ import { SafeArea, KeyboardAvoiding, Container, DividingLine, PaddingContainer }
 import { Text } from 'components/Text';
 import { LineInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
+
+//Api
+import { changePassword } from 'api/MyPage';
 
 export default function ChangePasswordScreen({ navigation }) {
 
@@ -24,13 +28,6 @@ export default function ChangePasswordScreen({ navigation }) {
     return regExp.test(password);
   }
 
-  function handleChangePassword() {
-    dispatch({ type: 'LOGOUT' });
-    navigation.popToTop();
-    navigation.goBack();
-    Alert.alert('비밀번호가 변경되었습니다', '변경된 비밀번호로 다시 로그인해 주시기 바랍니다.');
-  }
-
   function createChangePasswordAlert() {
     Alert.alert('비밀번호를 변경하시겠습니까?', '', [
       {
@@ -42,6 +39,29 @@ export default function ChangePasswordScreen({ navigation }) {
         onPress: () => handleChangePassword()
       },
     ]);
+  }
+
+  const handleChangePassword = async function () {
+    try {
+      await changePassword(accountData.loginToken, accountData.email, currentPassword, newPassword);
+      dispatch({ type: 'LOGOUT' });
+      try {
+        await AsyncStorage.removeItem('accountData');
+      } catch (error) {
+        console.log(error);
+      }
+      Alert.alert('비밀번호가 변경', '비밀번호가 변경되었습니다. 변경된 비밀번호로 로그인을 해주시기 바랍니다.', [{
+        text: '확인',
+        onPress: () => handleGoBackToLogin()
+      }]);
+    } catch (error) {
+      Alert.alert('현재 비밀번호가 일치하지 않습니다.');
+    }
+  }
+
+  function handleGoBackToLogin() {
+    navigation.popToTop();
+    navigation.goBack();
   }
 
   return (
