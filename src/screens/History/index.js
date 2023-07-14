@@ -15,7 +15,7 @@ import { SolidButton } from 'components/Button';
 import NeedLogin from 'components/NeedLogin';
 
 //Api
-import { getScheduleByPatientId } from 'api/History';
+import { getScheduleByPatientId, treatmentDelete } from 'api/History';
 
 //Assets
 import letterIcon from 'assets/icons/mypage-letter.png';
@@ -28,6 +28,7 @@ export default function HistoryScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     if(accountData.loginToken){
       getAppointmentHistory();
     } else {
@@ -103,26 +104,38 @@ export default function HistoryScreen({ navigation }) {
     return remainingSeconds;
   }
 
-  // function handleCancleReservation(item) {
-  //   Alert.alert('해당 진료 예약을 취소하시겠습니까?', '환불 규정에 따라 취소\n수수료가 발생할 수 있습니다.', [
-  //     {
-  //       text: '이전으로',
-  //     },
-  //     {
-  //       text: '예약 취소',
-  //       style: 'destructive',
-  //       onPress: () => handleCancleComplete()
-  //     },
-  //   ]);
-  // }
+  function handleCancleReservation(item) {
+    Alert.alert('해당 진료 예약을 취소하시겠습니까?', '환불 규정에 따라 취소\n수수료가 발생할 수 있습니다.', [
+      {
+        text: '이전으로',
+      },
+      {
+        text: '예약 취소',
+        style: 'destructive',
+        onPress: () => handleCancleComplete(item)
+      },
+    ]);
+  }
 
-  // function handleCancleComplete() {
-  //   Alert.alert('해당 예약이 정상적으로 취소되었습니다.', '', [
-  //     {
-  //       text: '확인',
-  //     }
-  //   ]);
-  // }
+  const handleCancleComplete = async function (item) {
+    try {
+      await treatmentDelete(accountData.loginToken, item.id);
+      Alert.alert('해당 예약이 정상적으로 취소되었습니다.', '', [
+        {
+          text: '확인',
+          onPress: () => handleConfirm(item)
+        }
+      ]);
+    } catch (error) {
+      Alert.alert('네트워크 에러', '진료 취소 중 에러가 발생했습니다. 다시 시도해 주시기 바랍니다.');
+    }
+  }
+
+  function handleConfirm(item) {
+    setIsLoading(true);
+    appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: item.id });
+    appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: undefined });
+  }
 
   function handleEnterTelemedicine(item) {
     appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: item.id });
@@ -161,7 +174,7 @@ export default function HistoryScreen({ navigation }) {
             </Text>
             {type === 'pastHistory' ? <Text T7 color={COLOR.GRAY1}>결제 120,000원</Text> : null}
           </CardTitleColumn>
-          {/* {type === 'underReservation'
+          {type === 'underReservation'
             ? <CardTitleButton
               underlayColor={COLOR.GRAY5}
               onPress={() => handleCancleReservation(item)}
@@ -169,7 +182,7 @@ export default function HistoryScreen({ navigation }) {
               <Text T7 medium color={COLOR.GRAY1}>예약 취소</Text>
             </CardTitleButton>
             : null
-          } */}
+          }
           {type === 'pastHistory'
             ? <CardTitleButton>
               <Text T7 medium color={COLOR.GRAY1}>완료</Text>
