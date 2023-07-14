@@ -197,7 +197,7 @@ export const findFamilyAccount = async function (name, birth) {
     }
 }
 
-export const findPasswordOpen = async function (email, birth, name) {
+export const findPasswordOpen = async function (email, name, birth) {
     try {
         let options = {
             url: `${APIURL}/authentication/password-find-open`,
@@ -237,13 +237,13 @@ export const findPasswordClose = async function (emailToken, email, verification
     }
 }
 
-export const changePassword = async function (verificationToken, email, newPassword) {
+export const changePassword = async function (emailToken, email, newPassword) {
     try {
         let options = {
-            url: `${APIURL}/authentication/change-password`,
+            url: `${APIURL}/authentication/password-find-change`,
             method: 'POST',
             headers: {
-                Authorization: `Bearer ${verificationToken}`
+                Authorization: `Bearer ${emailToken}`
             },
             data: {
                 email: email,
