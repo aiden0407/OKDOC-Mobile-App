@@ -236,7 +236,7 @@ export default function ReservationScreen({ navigation, route }) {
             </ScrollView>
             : <ContainerCenter>
               <Image source={exclamationIcon} width={60} height={60} />
-              <Text T4 bold center marginTop={18} marginBottom={100}>해당 증상 또는 진료과로{'\n'}예약 가능한 일정이 존재하지 않습니다</Text>
+              <Text T4 bold center marginTop={18} marginBottom={50}>해당 증상 또는 진료과로{'\n'}예약 가능한 일정이 존재하지 않습니다</Text>
             </ContainerCenter>
         }
       </Container>
