@@ -41,6 +41,24 @@ export const modifyTreatmentAppointmentBeforeEnter = async function (loginToken,
     }
 }
 
+export const treatmentDelete = async function (loginToken, appointmentId) {
+
+    try {
+        let options = {
+            url: `${APIURL}/treatment_appointments/${appointmentId}`,
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
 export const treatmentComplete = async function (loginToken, appointmentId) {
 
     try {
