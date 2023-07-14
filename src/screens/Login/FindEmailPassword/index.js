@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 import styled from 'styled-components/native';
 
 //Components
+import * as Device from 'expo-device';
 import { COLOR, TYPOGRAPHY } from 'constants/design'
 import { Alert } from 'react-native';
 import { SafeArea, KeyboardAvoiding, Container, Center, Box } from 'components/Layout';
@@ -27,6 +28,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
   const [findPasswordEmail, setFindPasswordEmail] = useState('');
   const [findPasswordName, setFindPasswordName] = useState('');
   const [findPasswordBirth, setFindPasswordBirth] = useState('');
+  const [emailToken, setEmailToken] = useState('');
   const [findPasswordCertificationNumber, setFindPasswordCertificationNumber] = useState('');
   const [isEmailCertificated, setIsEmailCertificated] = useState(false);
   const [newPassword, setNewPassword] = useState('');
@@ -39,7 +41,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
     let formattedDate = '';
     if (text.length <= 10) {
       formattedDate = text
-        .replace(/\D/g, '') // 숫자 이외의 문자 제거
+        .replace(/\D/g, '')
         .replace(/(\d{4})(\d{2})?(\d{0,2})?/, (match, p1, p2, p3) => {
           let result = p1;
           if (p2) result += `-${p2}`;
@@ -48,6 +50,21 @@ export default function FindEmailPasswordScreen({ navigation }) {
         });
     }
     setFindEmailBirth(formattedDate);
+  };
+
+  const handleFindPasswordBirthChange = (text) => {
+    let formattedDate = '';
+    if (text.length <= 10) {
+      formattedDate = text
+        .replace(/\D/g, '')
+        .replace(/(\d{4})(\d{2})?(\d{0,2})?/, (match, p1, p2, p3) => {
+          let result = p1;
+          if (p2) result += `-${p2}`;
+          if (p3) result += `-${p3}`;
+          return result;
+        });
+    }
+    setFindPasswordBirth(formattedDate);
   };
 
   function maskEmail(email) {
@@ -61,8 +78,9 @@ export default function FindEmailPasswordScreen({ navigation }) {
     return maskedUsername + '@' + domain;
   }
 
-  function handleGoBackToLogin() {
-    navigation.goBack();
+  function validatePassword(password) {
+    const regExp = /^.*(?=^.{6,14}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[.?!@#$%^&*+=]).*$/;
+    return regExp.test(password);
   }
 
   function handleOpenChannelTalk() {
@@ -75,35 +93,70 @@ export default function FindEmailPasswordScreen({ navigation }) {
   const handleFindEmail = async function () {
     try {
       const response = await findFamilyAccount(findEmailName, Number(findEmailBirth.replaceAll("-", "")));
-      setFoundEmail(maskEmail(response.data.response.email));
+      const familyAccountArray = response.data.response;
+      const pastHistory = [];
+      familyAccountArray.forEach((familyAccount) => {
+        pastHistory.push(maskEmail(familyAccount.family_id));
+      });
+      setFoundEmail(pastHistory);
       setIsFindEmailSubmitted(true);
+    } catch (error) {
+      if (error.response.data.statusCode === 404) {
+        Alert.alert('해당 정보로 등록된 유저가 존재하지 않습니다.');
+      } else {
+        Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+      }
+    }
+  }
+
+  const handleFindPassword = async function () {
+    try {
+      const response = await findPasswordOpen(findPasswordEmail, findPasswordName, Number(findPasswordBirth.replaceAll("-", "")));
+      setEmailToken(response.data.response.message);
+      setIsFindPasswordSubmitted(true);
     } catch (error) {
       Alert.alert('해당 정보로 등록된 유저가 존재하지 않습니다.');
     }
   }
 
-  function handleFindPassword() {
-    setIsFindPasswordSubmitted(true);
-  }
-
-  function handleEmailResend() {
-    Alert.alert('해당 이메일로 인증번호가 재전송 되었습니다.');
-  }
-
-  function handleCheckCertificationNumber(certificationNumber) {
-    if (certificationNumber === '123123') {
-      Alert.alert('인증되었습니다.');
-      setIsEmailCertificated(true);
-    } else {
-      Alert.alert('인증 실패', '인증번호가 일치하지 않습니다.\n다시 입력해 주시기 바랍니다.');
+  const handleEmailResend = async function () {
+    try {
+      const response = await findPasswordOpen(findPasswordEmail, findPasswordName, Number(findPasswordBirth.replaceAll("-", "")));
+      setEmailToken(response.data.response.message);
+      Alert.alert('해당 이메일로 인증번호가 재전송 되었습니다.');
+    } catch (error) {
+      Alert.alert('네트워크 상태가 좋지 않습니다. 다시 시도해 주시기 바랍니다.');
     }
   }
 
-  function handleChangePassword() {
-    Alert.alert('비밀번호가 변경', '비밀번호가 변경되었습니다. 변경된 비밀번호로 로그인을 해주시기 바랍니다.', [{
-      text: '확인',
-      onPress: () => handleGoBackToLogin()
-    }]);
+  const handleCheckCertificationNumber = async function () {
+    try {
+      await findPasswordClose(emailToken, findPasswordEmail, findPasswordCertificationNumber);
+      Alert.alert('인증 성공', '이메일 인증이 완료되었습니다.', [
+        {
+          text: '확인',
+          onPress: () => setIsEmailCertificated(true)
+        }
+      ]);
+    } catch (error) {
+      Alert.alert('인증번호가 일치하지 않습니다.');
+    }
+  }
+
+  const handleChangePassword = async function () {
+    try {
+      await changePassword(emailToken, findPasswordEmail, newPassword);
+      Alert.alert('비밀번호가 변경', '비밀번호가 변경되었습니다. 변경된 비밀번호로 로그인을 해주시기 바랍니다.', [{
+        text: '확인',
+        onPress: () => handleGoBackToLogin()
+      }]);
+    } catch (error) {
+      Alert.alert('현재 비밀번호가 일치하지 않습니다.');
+    }
+  }
+
+  function handleGoBackToLogin() {
+    navigation.goBack();
   }
 
   return (
@@ -169,9 +222,13 @@ export default function FindEmailPasswordScreen({ navigation }) {
               <Container>
                 <Text T3 bold marginTop={42}>이메일을 확인해주세요</Text>
                 <Text T6 color={COLOR.GRAY1} marginTop={12}>입력하신 정보로 조회되는{'\n'}계정 이메일 정보입니다</Text>
-                <EmailBox>
-                  <Text T6 medium>{foundEmail}</Text>
-                </EmailBox>
+                <EmailBoxColumn>
+                {foundEmail?.map((item) =>
+                  <EmailBox key={item}>
+                    <Text T6 medium>{item}</Text>
+                  </EmailBox>
+                )}
+                </EmailBoxColumn>
               </Container>
 
               <Center>
@@ -216,8 +273,9 @@ export default function FindEmailPasswordScreen({ navigation }) {
                   marginTop={24}
                   placeholder="생년월일 8자리"
                   value={findPasswordBirth}
-                  onChangeText={setFindPasswordBirth}
-                  returnKeyType="next"
+                  onChangeText={handleFindPasswordBirthChange}
+                  inputMode="numeric"
+                  maxLength={10}
                   ref={findPasswordBirthRef}
                   onSubmitEditing={() => handleFindPassword()}
                 />
@@ -232,7 +290,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
               <SolidButton
                 text="확인"
                 marginBottom={20}
-                disabled={!findPasswordEmail || !findPasswordName || !findPasswordBirth}
+                disabled={!findPasswordEmail || !findPasswordName || findPasswordBirth.length!==10}
                 action={() => handleFindPassword()}
               />
             </Container>
@@ -243,8 +301,8 @@ export default function FindEmailPasswordScreen({ navigation }) {
               <Container>
                 <Text T3 bold marginTop={42}>이메일로 인증번호를 보냈습니다</Text>
                 <Text T6 color={COLOR.GRAY1} marginTop={12}>아래 이메일로 인증번호를 발송하였습니다{'\n'}인증번호를 입력하고, 비밀번호를 변경해주세요</Text>
-                <EmailBox>
-                  <Text T6 medium>ok**c@i**unginfo.co.kr</Text>
+                <EmailBox marginTop={48}>
+                  <Text T6 medium>{findPasswordEmail}</Text>
                   <CustomOutlineButtonBackground
                     onPress={() => handleEmailResend()}
                     underlayColor={COLOR.SUB4}
@@ -252,22 +310,25 @@ export default function FindEmailPasswordScreen({ navigation }) {
                     <Text T7 medium color={COLOR.MAIN}>재전송</Text>
                   </CustomOutlineButtonBackground>
                 </EmailBox>
-                <CustomOutlineButtonBackground
-                  disabled={findPasswordCertificationNumber?.length < 6}
-                  onPress={() => handleCheckCertificationNumber(findPasswordCertificationNumber)}
-                  underlayColor={COLOR.SUB4}
-                  style={{ position: 'absolute', right: 16, top: 240, zIndex: 1 }}
-                >
-                  <Text T7 medium color={findPasswordCertificationNumber?.length < 6 ? COLOR.GRAY2 : COLOR.MAIN}>인증확인</Text>
-                </CustomOutlineButtonBackground>
-                <CustomLineInput
-                  placeholder="인증번호 6자리"
-                  value={findPasswordCertificationNumber}
-                  onChangeText={setFindPasswordCertificationNumber}
-                  maxLength={6}
-                  returnKeyType="next"
-                  onSubmitEditing={() => handleFindPassword()}
-                />
+
+                <InputContainer>
+                  <CustomLineInput
+                    placeholder="인증번호 6자리"
+                    value={findPasswordCertificationNumber}
+                    onChangeText={setFindPasswordCertificationNumber}
+                    maxLength={6}
+                    returnKeyType="next"
+                    onSubmitEditing={() => handleFindPassword()}
+                  />
+                  <CustomOutlineButtonBackground
+                    disabled={findPasswordCertificationNumber?.length < 6}
+                    onPress={() => handleCheckCertificationNumber(findPasswordCertificationNumber)}
+                    underlayColor={COLOR.SUB4}
+                    style={{ position: 'absolute', right: 16, top: Device.osName === 'iOS' ? 16 : 22, zIndex: 1 }}
+                  >
+                    <Text T7 medium color={findPasswordCertificationNumber?.length < 6 ? COLOR.GRAY2 : COLOR.MAIN}>인증확인</Text>
+                  </CustomOutlineButtonBackground>
+                </InputContainer>
               </Container>
 
               <Center>
@@ -284,24 +345,28 @@ export default function FindEmailPasswordScreen({ navigation }) {
               <Container>
                 <Text T3 bold marginTop={42}>이메일로 인증번호를 보냈습니다</Text>
                 <Text T6 color={COLOR.GRAY1} marginTop={12}>아래 이메일로 인증번호를 발송하였습니다{'\n'}인증번호를 입력하고, 비밀번호를 변경해주세요</Text>
-                <EmailBox>
-                  <Text T6 medium>ok**c@i**unginfo.co.kr</Text>
+                <EmailBox marginTop={48}>
+                  <Text T6 medium>{findPasswordEmail}</Text>
                   <Box height={36} />
                 </EmailBox>
+
+                <InputContainer>
+                  <LineInput
+                    marginTop={24}
+                    placeholder="비밀번호 입력"
+                    value={newPassword}
+                    onChangeText={setNewPassword}
+                    secureTextEntry
+                    returnKeyType="next"
+                    onSubmitEditing={() => newPasswordCheckRef.current.focus()}
+                  />
+                  {
+                    !newPassword && <Text T8 color={COLOR.GRAY1} style={{ position: 'absolute', top: Device.osName === 'Android' ? 32 : 27, left: 98 }}>(영어, 숫자, 특수문자 포함 6자~14자 이내)</Text>
+                  }
+                </InputContainer>
+
                 {
-                  !newPassword && <Text T8 color={COLOR.GRAY1} style={{ position: 'absolute', top: 251, left: 90 }}>(영어, 숫자, 특수문자 포함 6자~14자 이내)</Text>
-                }
-                <LineInput
-                  marginTop={24}
-                  placeholder="비밀번호 입력"
-                  value={newPassword}
-                  onChangeText={setNewPassword}
-                  secureTextEntry
-                  returnKeyType="next"
-                  onSubmitEditing={() => newPasswordCheckRef.current.focus()}
-                />
-                {
-                  newPassword && newPassword?.length < 6 && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 6자~14자 이내를 충족하지 않습니다</Text>
+                  newPassword && !validatePassword(newPassword) && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 6자~14자 이내를 충족하지 않습니다</Text>
                 }
                 <LineInput
                   marginTop={24}
@@ -318,16 +383,16 @@ export default function FindEmailPasswordScreen({ navigation }) {
                 }
               </Container>
 
-              <Center>
+              {/* <Center>
                 <FindEmailPasswordContainer onPress={() => handleOpenChannelTalk()}>
                   <Text T6 color={COLOR.GRAY2}>이메일/비밀번호 찾는데 문제가 있으신가요?</Text>
                 </FindEmailPasswordContainer>
-              </Center>
+              </Center> */}
 
               <SolidButton
                 text="비밀번호 변경"
                 marginBottom={20}
-                disabled={newPassword?.length < 6 || newPassword !== newPasswordCheck}
+                disabled={!validatePassword(newPassword) || newPassword !== newPasswordCheck}
                 action={() => handleChangePassword()}
               />
             </Container>
@@ -340,8 +405,8 @@ export default function FindEmailPasswordScreen({ navigation }) {
 
 const CustomHeader = styled.View`
   width: 100%;
-  height: 48px;
-  padding: 0 24px;
+  height: ${Device.osName === 'iOS' ? '50px' : '90px'};
+  padding: ${Device.osName === 'iOS' ? '0 24px' : '40px 24px 0px 24px'};
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
@@ -351,7 +416,7 @@ const CustomHeader = styled.View`
 
 const BackArrowWrapper = styled.View`
   position: absolute;
-  top: 8px;
+  top: ${Device.osName === 'iOS' ? '10px' : '44px'};
   left: 16px;
 `;
 
@@ -369,8 +434,13 @@ const SelectedBorderBottom = styled.View`
   background-color: ${COLOR.MAIN};
 `;
 
+const EmailBoxColumn = styled.View`
+  width: 100%;
+  margin-top: 48px;
+  gap: 20px;
+`;
+
 const EmailBox = styled.View`
-  margin-top: 42px;
   width: 100%;
   padding: 12px 16px;
   background-color: ${COLOR.GRAY5};
@@ -378,6 +448,11 @@ const EmailBox = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+`;
+
+const InputContainer = styled.View`
+  width: 100%;
+  position: relative;
 `;
 
 const CustomOutlineButtonBackground = styled.TouchableHighlight`
