@@ -8,7 +8,7 @@ import styled from 'styled-components/native';
 import * as Device from 'expo-device';
 import { COLOR } from 'constants/design';
 import { SYMPTOM, DEPARTMENT } from 'constants/service';
-import { Alert } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { StatusBarArea, SafeArea, ContainerTop, ContainerCenter } from 'components/Layout';
 import { Text } from 'components/Text';
@@ -88,8 +88,8 @@ export default function HomeScreen({ navigation }) {
       <SafeArea backgroundColor={COLOR.MAIN}>
         <ContainerTop>
 
-          <BannerContainer>
-            <Image source={bannerImage1} width={300} height={110} />
+          <BannerContainer activeOpacity={0.8} onPress={() => Linking.openURL("https://okdoc.app/")}>
+            <Image source={bannerImage1} width={300} height={100} marginLeft={20} marginBottom={10} />
           </BannerContainer>
 
           <ContentsContainer>
@@ -129,10 +129,10 @@ export default function HomeScreen({ navigation }) {
   );
 }
 
-const BannerContainer = styled.View`
+const BannerContainer = styled.TouchableOpacity`
   width: 100%;
-  height: ${Device.osName === 'Android' ? '180px' : '130px'};
-  padding-top: ${Device.osName === 'Android' ? '30px' : '0px'};;
+  height: ${Device.osName === 'iOS' ? '130px' : '180px'};
+  padding-top: ${Device.osName === 'iOS' ? '0px' : '35px'};
   align-items: center;
   justify-content: center;
 `;
