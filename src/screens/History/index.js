@@ -76,7 +76,7 @@ export default function HistoryScreen({ navigation }) {
 
         if (history.status === 'RESERVATION_CONFIRMED') {
           contextHistorySet.underReservation.push(history)
-        } else if (history.status === 'TREATMENT_COMPLETION') {
+        } else {
           contextHistorySet.pastHistory.push(history)
         }
       });
