@@ -12,7 +12,7 @@ import {
 
 export function KeyboardAvoiding({ children }) {
   return (
-    <KeyboardAvoidingView behavior={Device.osName === 'Android' ? 'height' : 'padding'} style={{flex:1}}>
+    <KeyboardAvoidingView behavior={Device.osName === 'iOS' ? 'padding' : 'height'} style={{flex:1}}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         {children}
       </TouchableWithoutFeedback>
