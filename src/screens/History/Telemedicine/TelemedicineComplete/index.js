@@ -15,7 +15,7 @@ import { SolidButton, OutlineButton } from 'components/Button';
 import checkIcon from 'assets/icons/circle-check.png';
 
 //Api
-import { treatmentComplete } from 'api/History';
+import { getTreatmentInformation, treatmentComplete } from 'api/History';
 
 export default function TelemedicineCompleteScreen({ navigation, route }) {
 
@@ -24,10 +24,22 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
   const telemedicineData = route.params.telemedicineData;
 
   useEffect(() => {
-    initCompleteTreatment()
+    cheeckTreatmentComplete()
   }, []);
 
-  const initCompleteTreatment = async function () {
+  const cheeckTreatmentComplete = async function () {
+    try {
+      const response = await getTreatmentInformation(accountData.loginToken, telemedicineData.id);
+      const status = response.data.response.status;
+      if(status==='RESERVATION_CONFIRMED'){
+        letTreatmentStatusEXIT();
+      }
+    } catch (error) {
+      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    }
+  }
+
+  const letTreatmentStatusEXIT = async function () {
     try {
       await treatmentComplete(accountData.loginToken, telemedicineData.id);
       dispatch({ type: 'HISTORY_DATA_ID_DELETE' });
