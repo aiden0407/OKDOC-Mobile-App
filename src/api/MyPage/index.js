@@ -49,6 +49,28 @@ export const modifyPatientInformation = async function (loginToken, patientId, p
     }
 }
 
+export const changePassword = async function (loginToken, email, password, newPassword) {
+    try {
+        let options = {
+            url: `${APIURL}/authentication/change-password`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+            data: {
+                email: email,
+                password: password,
+                new_password: newPassword,
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const deleteFamilyAccout = async function (loginToken, email, password) {
 
     try {
