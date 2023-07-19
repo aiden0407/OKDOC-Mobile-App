@@ -97,7 +97,7 @@ export const treatmentComplete = async function (loginToken, appointmentId) {
 export const getInvoiceInformation = async function (loginToken, biddingId) {
     try {
         let options = {
-            url: `${APIURL}/invoices/${biddingId}`,
+            url: `${APIURL}/invoices/?bidding_id=${biddingId}`,
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${loginToken}`
