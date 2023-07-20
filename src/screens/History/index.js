@@ -15,14 +15,15 @@ import { SolidButton } from 'components/Button';
 import NeedLogin from 'components/NeedLogin';
 
 //Api
-import { getScheduleByPatientId, treatmentDelete } from 'api/History';
+import { getBiddingInformation } from 'api/Home';
+import { getScheduleByPatientId, getInvoiceInformation, canclePayment } from 'api/History';
 
 //Assets
 import letterIcon from 'assets/icons/mypage-letter.png';
 
 export default function HistoryScreen({ navigation }) {
 
-  const { state: { accountData, profileData, historyData }, dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { state: { accountData, profileData, productList, historyData }, dispatch: apiContextDispatch } = useContext(ApiContext);
   const { state: { historyDataId }, dispatch: appContextDispatch } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -63,7 +64,26 @@ export default function HistoryScreen({ navigation }) {
         ],
       };
 
-      historyList.forEach((history) => {
+      for (let ii = 0; ii < historyList.length; ii++) {
+        const history = historyList[ii];
+        history.productInfo = productList[2];
+
+        try {
+          const response = await getBiddingInformation(accountData.loginToken, history.bidding_id);
+          history.biddingInfo = response.data.response;
+        } catch (error) {
+          throw error;
+        }
+
+        try {
+          const response = await getInvoiceInformation(accountData.loginToken, history.bidding_id);
+          history.invoiceInfo = response.data.response?.[0];
+        } catch (error) {
+          if (error.data.statusCode !== 404) {
+            Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+          }
+        }
+
         renameKey(history, 'doctor', 'doctorInfo');
         renameKey(history, 'patient', 'profileInfo');
         const date = new Date(history.wish_at);
@@ -80,7 +100,7 @@ export default function HistoryScreen({ navigation }) {
         } else {
           contextHistorySet.pastHistory.push(history)
         }
-      });
+      }
 
       setTimeout(function() {
         apiContextDispatch({
@@ -119,7 +139,7 @@ export default function HistoryScreen({ navigation }) {
 
   const handleCancleComplete = async function (item) {
     try {
-      await treatmentDelete(accountData.loginToken, item.id);
+      await canclePayment(item.biddingInfo.P_TID);
       Alert.alert('해당 예약이 정상적으로 취소되었습니다.', '', [
         {
           text: '확인',
@@ -153,6 +173,14 @@ export default function HistoryScreen({ navigation }) {
     });
   }
 
+  function handleInvoicePaymnt(item) {
+    appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: item.id });
+    navigation.navigate('TelemedicineRoomNavigation', { 
+      screen: 'Payment',
+      params: { telemedicineData: item }
+    });
+  }
+
   function handleMakeReservation() {
     navigation.navigate('TelemedicineReservation', { screen: 'Category' });
   }
@@ -172,7 +200,7 @@ export default function HistoryScreen({ navigation }) {
             <Text T7 color={COLOR.GRAY1}>
               {item.date} ({item.time})
             </Text>
-            {type === 'pastHistory' ? <Text T7 color={COLOR.GRAY1}>결제 120,000원</Text> : null}
+            {type === 'pastHistory' ? <Text T7 color={COLOR.GRAY1}>결제 {item?.invoiceInfo?.P_TID ? (item?.biddingInfo?.product?.price + 50000).toLocaleString() : item?.biddingInfo?.product?.price.toLocaleString()}원</Text> : null}
           </CardTitleColumn>
           {type === 'underReservation'
             ? <CardTitleButton
@@ -181,13 +209,13 @@ export default function HistoryScreen({ navigation }) {
             >
               <Text T7 medium color={COLOR.GRAY1}>예약 취소</Text>
             </CardTitleButton>
-            : null
-          }
-          {type === 'pastHistory'
-            ? <CardTitleButton>
-              <Text T7 medium color={COLOR.GRAY1}>완료</Text>
-            </CardTitleButton>
-            : null
+            : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
+              ? <CardTitleButton>
+                <Text T7 medium color={COLOR.GRAY1}>완료</Text>
+              </CardTitleButton>
+              : <CardTitleButton>
+                <Text T7 medium color={COLOR.GRAY1}>결제 필요</Text>
+              </CardTitleButton>
           }
         </CardTitleSection>
 
@@ -234,16 +262,19 @@ export default function HistoryScreen({ navigation }) {
                   >
                     <Text T5 medium color="#FFFFFF">입장 시간 초과</Text>
                   </CustomSolidButton>
-            : null
-          }
-          {type === 'pastHistory'
-            ? <CustomSolidButton
-              underlayColor={COLOR.SUB1}
-              onPress={() => handleViewTelemedicineDetail(item)}
-            >
-              <Text T5 medium color="#FFFFFF">진료 내역</Text>
-            </CustomSolidButton>
-            : null
+            : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
+              ? <CustomSolidButton
+                underlayColor={COLOR.SUB1}
+                onPress={() => handleViewTelemedicineDetail(item)}
+              >
+                <Text T5 medium color="#FFFFFF">진료 내역</Text>
+              </CustomSolidButton>
+              : <CustomSolidButton
+                underlayColor={COLOR.SUB1}
+                onPress={() => handleInvoicePaymnt(item)}
+              >
+                <Text T5 medium color="#FFFFFF">추가 결제하기</Text>
+              </CustomSolidButton>
           }
         </CardDoctorInfoSection>
       </HistoryCardContainer>
