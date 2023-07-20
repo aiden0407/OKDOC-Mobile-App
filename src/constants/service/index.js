@@ -125,7 +125,7 @@ export const SYMPTOM = {
     },
     '근육통': {
         NAME: 'muscularPain',
-        DEPARTMENT: ['내과', '정형외과'],
+        DEPARTMENT: ['정형외과'],
         ICON: muscularPainIcon
     },
     '관절통': {
