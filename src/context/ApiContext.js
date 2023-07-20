@@ -24,6 +24,7 @@ const initialState = {
       etcConsideration: undefined,
     }
   ],
+  productList: [],
   bookableData: [],
   // bookableData 형식
   // [
@@ -279,6 +280,12 @@ const reducer = (state, action) => {
             etcConsideration: action?.etcConsideration
           }
         ],
+      };
+
+    case 'PRODUCT_LIST_UPDATE':
+      return {
+        ...state,
+        productList: action.productList
       };
 
     case 'BOOKABLE_DATA_UPDATE':
