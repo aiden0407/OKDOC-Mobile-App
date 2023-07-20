@@ -57,6 +57,24 @@ export const modifyTreatmentAppointmentBeforeEnter = async function (loginToken,
     }
 }
 
+export const canclePayment = async function (P_TID) {
+    try {
+        let options = {
+            url: `${APIURL}/payment/cancel`,
+            method: 'POST',
+            data: {
+                tid: P_TID,
+                msg: "진료 예약 취소입니다.",
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
 export const treatmentDelete = async function (loginToken, appointmentId) {
     try {
         let options = {
