@@ -59,20 +59,6 @@ export const getDoctorsByDepartment = async function (department) {
     }
 }
 
-// export const getDoctorInformationByDoctorId = async function (doctorId) {
-//     try {
-//         let options = {
-//             url: `${APIURL}/doctor/${doctorId}`,
-//             method: 'GET',
-//         }
-//         const response = await axios(options);
-//         return response;
-
-//     } catch (error) {
-//         throw error.response;
-//     }
-// }
-
 export const getScheduleByDoctorId = async function (doctorId) {
     try {
         let options = {
@@ -88,20 +74,23 @@ export const getScheduleByDoctorId = async function (doctorId) {
 }
 
 export const createBidding = async function (loginToken, reservationInfo) {
+    const formData = new FormData();
+    formData.append('doctor_id', reservationInfo.doctorInfo.doctorId);
+    formData.append('patient_id', reservationInfo.profileInfo.id);
+    //formData.append('wish_at', reservationInfo.doctorInfo.scheduleTime);
+    formData.append('wish_at', '2023-07-20T06:40:00.000Z');
+    formData.append('department', reservationInfo.doctorInfo.subject);
+    formData.append('explain_symptom', reservationInfo.symptom);
+
     try {
         let options = {
             url: `${APIURL}/products/1/biddings/${uuid.v4()}`,
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${loginToken}`,
+                'Content-Type': 'multipart/form-data'
             },
-            data: {
-                doctor_id: reservationInfo.doctorInfo.doctorId,
-                patient_id: reservationInfo.profileInfo.id,
-                wish_at: reservationInfo.doctorInfo.scheduleTime,
-                department: reservationInfo.doctorInfo.subject,
-                explain_symptom: reservationInfo.symptom,
-            },
+            data: formData,
         }
         const response = await axios(options);
         return response;
@@ -110,34 +99,6 @@ export const createBidding = async function (loginToken, reservationInfo) {
         throw error.response;
     }
 }
-
-// export const createBidding = async function (loginToken, reservationInfo) {
-//     const formData = new FormData();
-//     formData.append('doctor_id', reservationInfo.doctorInfo.doctorId);
-//     formData.append('patient_id', reservationInfo.profileInfo.id);
-//     formData.append('wish_at', reservationInfo.doctorInfo.scheduleTime);
-//     formData.append('explain_symptom', reservationInfo.symptom);
-
-//     try {
-//         let options = {
-//             url: `${APIURL}/products/1/biddings/${uuid.v4()}`,
-//             method: 'POST',
-//             headers: {
-//                 'Authorization': `Bearer ${loginToken}`,
-//                 'Content-Type': 'multipart/form-data'
-//             },
-//             data: formData,
-//         }
-//         //console.log(formData);
-//         //const response = await axios(options);
-//         //console.log(response.data.response);
-//         //return response;
-
-//     } catch (error) {
-//         console.log(error.response);
-//         throw error.response;
-//     }
-// }
 
 export const createPaymentRequest = async function (reservationInfo, email) {
     try {
