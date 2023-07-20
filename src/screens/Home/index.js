@@ -1,5 +1,6 @@
 //React
 import { useEffect, useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import { useIsFocused } from '@react-navigation/native';
 import styled from 'styled-components/native';
@@ -27,6 +28,7 @@ function FocusAwareStatusBar(props) {
 
 export default function HomeScreen({ navigation }) {
 
+  const { dispatch: apiContextDispatch } = useContext(ApiContext);
   const { dispatch: appContextDispatch } = useContext(AppContext);
 
   useEffect(() => {
@@ -36,6 +38,7 @@ export default function HomeScreen({ navigation }) {
   const initProducts = async function () {
     try {
       const getProductsResponse = await getProducts();
+      apiContextDispatch({ type: 'PRODUCT_LIST_UPDATE', productList: getProductsResponse.data.response });
       appContextDispatch({ type: 'TELEMEDICINE_RESERVATION_PRODUCT', product: getProductsResponse.data.response[0] });
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
