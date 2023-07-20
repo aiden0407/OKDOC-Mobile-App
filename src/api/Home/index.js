@@ -77,8 +77,8 @@ export const createBidding = async function (loginToken, reservationInfo) {
     const formData = new FormData();
     formData.append('doctor_id', reservationInfo.doctorInfo.doctorId);
     formData.append('patient_id', reservationInfo.profileInfo.id);
-    //formData.append('wish_at', reservationInfo.doctorInfo.scheduleTime);
-    formData.append('wish_at', '2023-07-20T06:40:00.000Z');
+    formData.append('wish_at', reservationInfo.doctorInfo.scheduleTime);
+    //formData.append('wish_at', '2023-07-20T06:40:00.000Z');
     formData.append('department', reservationInfo.doctorInfo.subject);
     formData.append('explain_symptom', reservationInfo.symptom);
 
