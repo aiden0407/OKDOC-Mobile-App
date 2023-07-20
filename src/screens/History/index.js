@@ -96,9 +96,9 @@ export default function HistoryScreen({ navigation }) {
         history.time = time;
 
         if (history.status === 'RESERVATION_CONFIRMED') {
-          contextHistorySet.underReservation.push(history)
+          contextHistorySet.underReservation.unshift(history)
         } else {
-          contextHistorySet.pastHistory.push(history)
+          contextHistorySet.pastHistory.unshift(history)
         }
       }
 
@@ -203,12 +203,18 @@ export default function HistoryScreen({ navigation }) {
             {type === 'pastHistory' ? <Text T7 color={COLOR.GRAY1}>결제 {item?.invoiceInfo?.P_TID ? (item?.biddingInfo?.product?.price + 50000).toLocaleString() : item?.biddingInfo?.product?.price.toLocaleString()}원</Text> : null}
           </CardTitleColumn>
           {type === 'underReservation'
-            ? <CardTitleButton
-              underlayColor={COLOR.GRAY5}
-              onPress={() => handleCancleReservation(item)}
-            >
-              <Text T7 medium color={COLOR.GRAY1}>예약 취소</Text>
-            </CardTitleButton>
+            ? getRemainingTime(item?.wish_at) > 600
+              ? <CardTitleButton
+                underlayColor={COLOR.GRAY5}
+                onPress={() => handleCancleReservation(item)}
+              >
+                <Text T7 medium color={COLOR.GRAY1}>예약 취소</Text>
+              </CardTitleButton>
+              : <CardTitleButton
+                underlayColor={COLOR.GRAY5}
+              >
+                <Text T7 medium color={COLOR.GRAY1}>취소 불가</Text>
+              </CardTitleButton>
             : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
               ? <CardTitleButton>
                 <Text T7 medium color={COLOR.GRAY1}>완료</Text>
