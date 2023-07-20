@@ -1,8 +1,6 @@
 //Navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SymptomDetailCheckScreen from 'screens/History/Telemedicine/SymptomDetailCheck';
-import PaymentScreen from 'screens/History/Telemedicine/Payment';
-import PaymentCompleteScreen from 'screens/History/Telemedicine/PaymentComplete';
 import TelemedicineDetailScreen from 'screens/History/Telemedicine/TelemedicineDetail';
 import TelemedicineOpinionScreen from 'screens/History/Telemedicine/TelemedicineOpinion';
 
@@ -22,23 +20,6 @@ export default function HistoryInnerStackNavigation({ navigation }) {
           options={{
             title: '진료 전 확인사항',
             headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
-          }}
-        />
-        <Stack.Screen
-          name="Payment"
-          component={PaymentScreen}
-          options={{ 
-            headerShown: false,
-            gestureEnabled: false,
-          }}
-        />
-        <Stack.Screen
-          name="PaymentComplete"
-          component={PaymentCompleteScreen}
-          options={{
-            title: '결제 완료',
-            headerBackVisible: false,
-            gestureEnabled: false,
           }}
         />
         <Stack.Screen
