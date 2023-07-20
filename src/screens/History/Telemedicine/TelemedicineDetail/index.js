@@ -14,34 +14,62 @@ import { SubColorButton } from 'components/Button';
 
 //Api
 import { getBiddingInformation, getPaymentInformation } from 'api/Home';
+import { getInvoiceInformation } from 'api/History';
 
 export default function TelemedicineDetailScreen({ navigation, route }) {
 
   const { state: { accountData } } = useContext(ApiContext);
   const [isLoading, setIsLoading] = useState(true);
   const [biddingData, setBiddingData] = useState();
-  const [paymentData, setPaymentData] = useState();
+  const [invoiceData, setInvoiceData] = useState();
+  const [biddingPaymentData, setBiddingPaymentData] = useState();
+  const [invoicePaymentData, setInvoicePaymentData] = useState();
   const telemedicineData = route.params.telemedicineData;
   const biddingId = telemedicineData.bidding_id;
 
   useEffect(() => {
-    initBiddingData()
+    initBiddingData();
   }, []);
 
   const initBiddingData = async function () {
     try {
       const response = await getBiddingInformation(accountData.loginToken, biddingId);
       setBiddingData(response.data.response);
-      initPaymentData(response.data.response.P_TID);
+      getBiddingPaymentData(response.data.response.P_TID);
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }
   }
 
-  const initPaymentData = async function (P_TID) {
+  const getBiddingPaymentData = async function (P_TID) {
     try {
       const response = await getPaymentInformation(P_TID);
-      setPaymentData(response.data.response);
+      setBiddingPaymentData(response.data.response);
+      setIsLoading(false);
+      initInvoiceData();
+    } catch (error) {
+      Alert.alert('결제 정보를 불러오지 못했습니다.');
+    }
+  }
+
+  const initInvoiceData = async function () {
+    try {
+      const response = await getInvoiceInformation(accountData.loginToken, biddingId);
+      setInvoiceData(response.data.response?.[0]);
+      getInvoicePaymentData(response.data.response?.[0].P_TID);
+    } catch (error) {
+      if (error.data.statusCode === 404) {
+        return null;
+      } else {
+        Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+      }
+    }
+  }
+
+  const getInvoicePaymentData = async function (P_TID) {
+    try {
+      const response = await getPaymentInformation(P_TID);
+      setInvoicePaymentData(response.data.response);
       setIsLoading(false);
     } catch (error) {
       Alert.alert('결제 정보를 불러오지 못했습니다.');
@@ -111,10 +139,10 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
 
           <PaddingContainer>
             <Text T3 bold marginTop={24}>결제 내역</Text>
-            <Text T3 bold color={COLOR.MAIN} marginTop={9}>진료 예약 {Number(paymentData.price)?.toLocaleString()}원</Text>
+            <Text T3 bold color={COLOR.MAIN} marginTop={20}>진료 예약 {Number(biddingPaymentData.price)?.toLocaleString()}원</Text>
             <Row marginTop={18}>
               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
-              <Text T6 color={COLOR.GRAY1}>{Number(paymentData.price)?.toLocaleString()}원 | 일시불</Text>
+              <Text T6 color={COLOR.GRAY1}>{Number(biddingPaymentData.price)?.toLocaleString()}원 | 일시불</Text>
             </Row>
             <Row marginTop={6}>
               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 수단</Text>
@@ -125,6 +153,28 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
               <Text T6 color={COLOR.GRAY1}>{formatDate(biddingData?.P_AUTH_DT)}</Text>
             </Row>
           </PaddingContainer>
+
+          {
+            invoicePaymentData
+             ?<PaddingContainer>
+             <Text T3 bold color={COLOR.MAIN} marginTop={36}>진료 연장 {Number(invoicePaymentData.price)?.toLocaleString()}원</Text>
+             <Row marginTop={18}>
+               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
+               <Text T6 color={COLOR.GRAY1}>{Number(invoicePaymentData.price)?.toLocaleString()}원 | 일시불</Text>
+             </Row>
+             <Row marginTop={6}>
+               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 수단</Text>
+               <Text T6 color={COLOR.GRAY1}>신용카드</Text>
+             </Row>
+             <Row marginTop={6}>
+               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
+               <Text T6 color={COLOR.GRAY1}>{formatDate(invoiceData?.P_AUTH_DT)}</Text>
+             </Row>
+              </PaddingContainer>
+              : null
+          }
+
+          <Box height={100} />
 
         </ScrollView>
       </Container>
