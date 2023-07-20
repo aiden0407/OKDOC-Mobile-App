@@ -91,7 +91,7 @@ export default function HomeScreen({ navigation }) {
       <SafeArea backgroundColor={COLOR.MAIN}>
         <ContainerTop>
 
-          <BannerContainer activeOpacity={0.8} onPress={() => Linking.openURL("https://okdoc.app/")}>
+          <BannerContainer activeOpacity={0.8} onPress={() => Linking.openURL("https://insunginfo.notion.site/9c30691e1c5b4ccbbd8b3d573e222a02?pvs=4")}>
             <Image source={bannerImage1} width={300} height={100} marginLeft={20} marginBottom={10} />
           </BannerContainer>
 
