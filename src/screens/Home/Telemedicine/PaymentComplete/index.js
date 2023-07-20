@@ -39,13 +39,10 @@ export default function PaymentCompleteScreen({ navigation, route }) {
 
   const initPaymentData = async function (P_TID) {
     try {
-      console.log(P_TID);
       const response = await getPaymentInformation(P_TID);
-      console.log(response.data);
       setPaymentData(response.data.response);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
       Alert.alert('결제 정보를 불러오지 못했습니다.');
     }
   }
