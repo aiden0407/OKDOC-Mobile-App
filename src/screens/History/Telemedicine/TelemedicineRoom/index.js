@@ -7,6 +7,7 @@ import { StatusBarArea, SafeArea } from 'components/Layout';
 import { StatusBar } from 'expo-status-bar';
 import { useIsFocused } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
+//import { Linking } from 'react-native';
 
 export default function TelemedicineRoomScreen({ navigation, route }) {
 
@@ -17,6 +18,8 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
   const wishAt = telemedicineData.wish_at;
   const id = telemedicineData.id;
   const token = accountData.loginToken;
+
+  //Linking.openURL(`https://zoom.okdoc.app/meeting/patient/?meetingNumber=${meetingNumber}&userName=${userName}&wishAt=${wishAt}&id=${id}&token=${token}`)
 
   function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
