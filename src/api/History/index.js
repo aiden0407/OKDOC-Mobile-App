@@ -75,23 +75,6 @@ export const canclePayment = async function (P_TID) {
     }
 }
 
-export const treatmentDelete = async function (loginToken, appointmentId) {
-    try {
-        let options = {
-            url: `${APIURL}/treatment_appointments/${appointmentId}`,
-            method: 'DELETE',
-            headers: {
-                Authorization: `Bearer ${loginToken}`
-            },
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error.response;
-    }
-}
-
 export const treatmentComplete = async function (loginToken, appointmentId) {
     try {
         let options = {
@@ -129,7 +112,7 @@ export const getInvoiceInformation = async function (loginToken, biddingId) {
     }
 }
 
-export const createInvoicePaymentRequest = async function (invoicePaymentInfo, email) {
+export const createInvoicePaymentRequest = async function (telemedicineData, email) {
     try {
         let options = {
             url: `https://mobile.inicis.com/smart/payment/`,
@@ -141,10 +124,10 @@ export const createInvoicePaymentRequest = async function (invoicePaymentInfo, e
                 P_INI_PAYMENT: 'CARD',
                 P_MID: 'insungif01',
                 P_OID: uuid.v4(),
-                P_NOTI: invoicePaymentInfo.invoiceId,
-                P_AMT: email==='aiden@insunginfo.co.kr' ? Number(1000) : Number(invoicePaymentInfo.price),
-                P_GOODS: encodeURIComponent(invoicePaymentInfo.productName),
-                P_UNAME: encodeURIComponent(invoicePaymentInfo.userName),
+                P_NOTI: telemedicineData.invoiceInfo.id,
+                P_AMT: email==='aiden@insunginfo.co.kr' ? Number(1000) : Number(telemedicineData.productInfo.price),
+                P_GOODS: encodeURIComponent(telemedicineData.productInfo.hospital+' '+telemedicineData.productInfo.name),
+                P_UNAME: encodeURIComponent(telemedicineData.profileInfo.passport.user_name),
                 P_NEXT_URL: 'https://api.okdoc.app/payment-webhook/postpaid',
                 P_EMAIL: email,
                 P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
