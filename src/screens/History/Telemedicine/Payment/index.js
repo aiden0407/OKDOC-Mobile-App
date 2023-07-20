@@ -1,45 +1,147 @@
 //React
-import { useState, useEffect, useRef, useContext } from 'react';
-import { AppContext } from 'context/AppContext';
+import { useState, useEffect, useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
+import cheerio from 'cheerio';
+import * as Linking from 'expo-linking';
 import styled from 'styled-components/native';
 
 //Components
-import { SafeArea, ContainerCenter } from 'components/Layout';
+import * as Device from 'expo-device';
+import { SafeArea } from 'components/Layout';
+import { Alert } from 'react-native';
+import { WebView } from 'react-native-webview';
 import { Text } from 'components/Text';
+
+//Api
+import { createInvoicePaymentRequest } from 'api/History';
 
 export default function PaymentScreen({ navigation, route }) {
 
+  const { state: { accountData } } = useContext(ApiContext);
   const telemedicineData = route.params.telemedicineData;
-  const [count, setCount] = useState(3);
-  const savedCallback = useRef();
+  const [canGoBack, setCanGoBack] = useState(false);
+  const [htmlContent, setHtmlContent] = useState('');
 
-  const callback = () => {
-    if(count === 1){
-      navigation.replace('PaymentComplete', {
-        telemedicineData: telemedicineData,
-      });
-    }else{
-      setCount(count-1);
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: Device.osName === 'iOS' ? canGoBack : true,
+      headerRight: () => {
+        if(Device.osName === 'iOS'){
+          return (
+            <EditButton onPress={() => {
+              navigation.goBack();
+            }}>
+              <Text T5 bold>X</Text>
+            </EditButton>
+          );
+        }else{
+          if(canGoBack){
+            return (
+              <EditButton onPress={() => {
+                navigation.goBack();
+              }}>
+                <Text T5 bold>X</Text>
+              </EditButton>
+            );
+          }
+        }
+      }
+    });
+  }, [navigation, canGoBack]);
+
+  useEffect(() => {
+    paymentRequest();
+  }, []);
+
+  const paymentRequest = async function () {
+    try {
+      const response = await createInvoicePaymentRequest(telemedicineData, accountData.email);
+      var htmlDecoded = decodeValues(response.data);
+      setHtmlContent(htmlDecoded);
+    } catch (error) {
+      Alert.alert('네트워크 에러', '결제 요청에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+      navigation.goBack();
     }
   }
 
-  useEffect(() => {
-    savedCallback.current = callback;
-  });
+  const decodeValues = (html) => {
+    const $ = cheerio.load(html);
 
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
+    const pUnameInput = $('input[name="P_UNAME"]');
+    if (pUnameInput) {
+      const decodedValue = decodeURIComponent(pUnameInput.attr('value'));
+      pUnameInput.attr('value', decodedValue);
     }
-    const timer = setInterval(tick, 1000);
-    return () => clearInterval(timer);
-  }, []);
+
+    const pGoodsInput = $('input[name="P_GOODS"]');
+    if (pGoodsInput) {
+      const decodedValue = decodeURIComponent(pGoodsInput.attr('value'));
+      pGoodsInput.attr('value', decodedValue);
+    }
+
+    return $.html();
+  };
+
+  const onShouldStartLoadWithRequest = (navState) => {
+    if (navState.url.startsWith('http://') || navState.url.startsWith('https://') || navState.url.startsWith('about:blank')) {
+      return true;
+    } else {
+      Linking.openURL(navState.url).catch((error) => {
+        Alert.alert('결제 안내', '앱 실행에 실패했습니다. 설치가 되어있지 않은 경우 설치하기 버튼을 눌러주세요.');
+      });
+      return false;
+    }
+  };
+
+  function handlePaymentComplete(url) {
+    if (url?.split('?invoice_id=')[1]) {
+      navigation.replace('PaymentComplete', {
+        invoiceId: url?.split('?invoice_id=')[1],
+        telemedicineData: telemedicineData,
+      });
+    } else {
+      navigation.goBack();
+    }
+  }
 
   return (
     <SafeArea>
-      <ContainerCenter>
-        <Text T5 bold>PG사 결제창 스크린: {count}초</Text>
-      </ContainerCenter>
+      <WebView
+        source={{ html: htmlContent }}
+        originWhitelist={['*']}
+        onNavigationStateChange={(navState) => {
+
+          console.log(navState.url);
+
+          if(Device.osName === 'iOS' && navState.canGoBack){
+            setCanGoBack(true);
+          }
+
+          if (Device.osName === 'Android') {
+            if (navState.url.includes("https://ksmobile.inicis.com/smart/payment/") || navState.url.includes("about:blank")) {
+              setCanGoBack(false);
+            } else {
+              setCanGoBack(true);
+            }
+          }
+
+          if(navState.url.includes("https://zoom.okdoc.app/reservation")){
+            handlePaymentComplete(navState.url);
+          }
+        }}
+        onShouldStartLoadWithRequest={(navState) => {
+          return onShouldStartLoadWithRequest(navState);
+        }}
+        onError={(error) => {
+          if(error.nativeEvent.code===-1003){
+            Alert.alert('안내', '결제 과정에서 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
+            navigation.goBack();
+          }
+        }}
+      />
     </SafeArea>
   );
 }
+
+const EditButton = styled.Pressable`
+`;
