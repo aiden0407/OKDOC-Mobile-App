@@ -1,3 +1,7 @@
+//React
+import { useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
+
 //Components
 import { StatusBarArea, SafeArea } from 'components/Layout';
 import { StatusBar } from 'expo-status-bar';
@@ -6,7 +10,13 @@ import { WebView } from 'react-native-webview';
 
 export default function TelemedicineRoomScreen({ navigation, route }) {
 
+  const { state: { accountData } } = useContext(ApiContext);
   const telemedicineData = route.params.telemedicineData;
+  const meetingNumber = telemedicineData.hospital_treatment_room.id;
+  const userName = telemedicineData.profileInfo.passport.user_name;
+  const wishAt = telemedicineData.wish_at;
+  const id = telemedicineData.id;
+  const token = accountData.loginToken;
 
   function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
@@ -26,7 +36,8 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
       </StatusBarArea>
       <SafeArea>
         <WebView
-          source={{ uri: `https://zoom.okdoc.app/meeting/patient/?meetingNumber=${telemedicineData.hospital_treatment_room.id}&userName=${telemedicineData.profileInfo.passport.user_name}&wishAt=${telemedicineData.wish_at}` }}
+          source={{ uri: `https://zoom.okdoc.app/meeting/patient/?meetingNumber=${meetingNumber}&userName=${userName}&wishAt=${wishAt}&id=${id}&token=${token}` }}
+          //source={{ uri: `http://127.0.0.1:5500/meeting/patient/?meetingNumber=${meetingNumber}&userName=${userName}&wishAt=${wishAt}&id=${id}&token=${token}` }}
           originWhitelist={['*']}
           useWebkit
           bounces
