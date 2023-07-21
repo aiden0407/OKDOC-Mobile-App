@@ -34,10 +34,10 @@ export default function SymptomDetailScreen({ navigation }) {
       });
   
       if (!result.canceled) {
-        if(result.assets[0].fileSize < 10485760){
+        if(result.assets[0].fileSize < 5 * 1024 * 1024){
           setImage1(result.assets[0].uri);
         }else{
-          Alert.alert('10MB 이내의 이미지 파일만 첨부가 가능합니다.');
+          Alert.alert('5MB 이내의 이미지 파일만 첨부가 가능합니다.');
         }
       }
     } catch (error) {
@@ -54,10 +54,10 @@ export default function SymptomDetailScreen({ navigation }) {
       });
   
       if (!result.canceled) {
-        if(result.assets[0].fileSize < 10485760){
+        if(result.assets[0].fileSize < 5 * 1024 * 1024){
           setImage2(result.assets[0].uri);
         }else{
-          Alert.alert('10MB 이내의 이미지 파일만 첨부가 가능합니다.');
+          Alert.alert('5MB 이내의 이미지 파일만 첨부가 가능합니다.');
         }
       }
     } catch (error) {
@@ -135,7 +135,7 @@ export default function SymptomDetailScreen({ navigation }) {
 
             <Row marginTop={24} align>
               <Ionicons name="alert-circle-outline" size={14} color={COLOR.GRAY2} marginRight={2} />
-              <Text T8 color={COLOR.GRAY0} marginBottom={1}>10MB 이내 이미지 파일(jpg, png) 2개까지 첨부가 가능합니다.</Text>
+              <Text T8 color={COLOR.GRAY0} marginBottom={1}>5MB 이내 이미지 파일(jpg, png) 2개까지 첨부가 가능합니다.</Text>
             </Row>
           </Container>
 
