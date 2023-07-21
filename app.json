@@ -14,12 +14,22 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "진료 예약 시 사진 첨부를 위해 이미지 권한을 허용해야 합니다.",
+          "cameraPermission": "진료 예약 시 사진 첨부를 위해 사진 권한을 허용해야 합니다."
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": false,
-      "buildNumber": "2",
+      "buildNumber": "3",
       "bundleIdentifier": "app.okdoc",
       "icon": "./src/assets/main/main_icon.png",
       "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "진료 예약 시 사진 첨부를 위해 라이브러리 권한을 허용해야 합니다.",
         "NSCameraUsageDescription": "화상 진료를 진행하기 위해서는 카메라 권한을 허용해야 합니다.",
         "NSMicrophoneUsageDescription": "화상 진료를 진행하기 위해서는 마이크 권한을 허용해야 합니다."
       }
