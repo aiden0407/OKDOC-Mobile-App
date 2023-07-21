@@ -114,7 +114,7 @@ export default function PaymentNotificationScreen({ navigation }) {
             <AgreeRow onPress={()=>setPaymentAgreement(!paymentAgreement)}>
               <Ionicons name="checkbox" size={22} color={paymentAgreement ? COLOR.MAIN : COLOR.GRAY3} marginRight={6} />
               <Text T6 bold marginBottom={1.5}>[필수] </Text>
-              <Text T6 medium>결제 대행 서비스 이용 약관에 동의합니다</Text>
+              <Text T6 medium>개인정보 제3자 제공 동의</Text>
             </AgreeRow>
             <PolicyDetailIconWrapper onPress={()=>handlePaymentPolicyDetail()}>
               <Ionicons name="chevron-forward" size={22} />
@@ -124,7 +124,7 @@ export default function PaymentNotificationScreen({ navigation }) {
             <AgreeRow onPress={()=>setRefundAgreement(!refundAgreement)}>
               <Ionicons name="checkbox" size={22} color={refundAgreement ? COLOR.MAIN : COLOR.GRAY3} marginRight={6} />
               <Text T6 bold marginBottom={1.5}>[필수] </Text>
-              <Text T6 medium>취소 및 환불 규정에 동의합니다</Text>
+              <Text T6 medium>취소 및 환불 규정 동의</Text>
             </AgreeRow>
             <PolicyDetailIconWrapper onPress={()=>handleRefundPolicyDetail()}>
               <Ionicons name="chevron-forward" size={22} />
