@@ -13,6 +13,7 @@ const initialState = {
     profileType: undefined,
     profileInfo: undefined,
     symptom: undefined,
+    images: undefined,
   },
   registerStatus: {
     policy: undefined,
@@ -95,6 +96,7 @@ const reducer = (state, action) => {
         telemedicineReservationStatus: {
           ...state.telemedicineReservationStatus,
           symptom: action.symptom,
+          images: action.images,
         },
       };
 
