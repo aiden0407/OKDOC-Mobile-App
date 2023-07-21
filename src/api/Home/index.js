@@ -78,9 +78,16 @@ export const createBidding = async function (loginToken, reservationInfo) {
     formData.append('doctor_id', reservationInfo.doctorInfo.doctorId);
     formData.append('patient_id', reservationInfo.profileInfo.id);
     formData.append('wish_at', reservationInfo.doctorInfo.scheduleTime);
-    //formData.append('wish_at', '2023-07-20T06:40:00.000Z');
     formData.append('department', reservationInfo.doctorInfo.subject);
     formData.append('explain_symptom', reservationInfo.symptom);
+    formData.append('collection_purpose', 'submit');
+    reservationInfo.images.forEach(function(image) {
+        formData.append('images', {
+            uri: image,
+            type: 'image/jpeg',
+            name: 'image.jpg',
+        });
+    });
 
     try {
         let options = {
