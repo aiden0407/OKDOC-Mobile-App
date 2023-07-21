@@ -85,7 +85,7 @@ export const createBidding = async function (loginToken, reservationInfo) {
         formData.append('images', {
             uri: image,
             type: 'image/jpeg',
-            name: 'image.jpg',
+            name: `${uuid.v4()}.jpg`,
         });
     });
 
