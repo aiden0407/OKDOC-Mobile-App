@@ -42,17 +42,6 @@ export default function HistoryScreen({ navigation }) {
     getAppointmentHistory();
   };
 
-  function renameKey(obj, oldKey, newKey) {
-    if (oldKey === newKey) {
-      return obj;
-    }
-    if (obj.hasOwnProperty(oldKey)) {
-      obj[newKey] = obj[oldKey];
-      delete obj[oldKey];
-    }
-    return obj;
-  }
-
   const getAppointmentHistory = async function () {
     try {
       const response = await getScheduleByPatientId(accountData.loginToken, profileData?.[0]?.id);
@@ -70,9 +59,16 @@ export default function HistoryScreen({ navigation }) {
 
         try {
           const response = await getBiddingInformation(accountData.loginToken, history.bidding_id);
-          history.biddingInfo = response.data.response;
+          const biddingInfo = response.data.response;
+          history.biddingInfo = biddingInfo;
+          history.doctorInfo = biddingInfo.doctor;
+          history.profileInfo = biddingInfo.patient;
+          history.department = biddingInfo.department;
+          history.wish_at = biddingInfo.wish_at;
+          history.explain_symptom = biddingInfo.explain_symptom;
+          history.attachments = biddingInfo.attachments;
         } catch (error) {
-          throw error;
+          Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
         }
 
         try {
@@ -83,9 +79,7 @@ export default function HistoryScreen({ navigation }) {
             Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
           }
         }
-
-        renameKey(history, 'doctor', 'doctorInfo');
-        renameKey(history, 'patient', 'profileInfo');
+        
         const date = new Date(history.wish_at);
         const day = date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll(' ', '').slice(0, -1);
         let time = date.toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit' });
