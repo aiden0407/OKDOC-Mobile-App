@@ -141,7 +141,7 @@ export default function PaymentNotificationScreen({ navigation }) {
             </Row>
             <Row align>
               <BulletPoint />
-              <Text T7 color={COLOR.GRAY2}>진료 입장 전 취소 : 30% 환불</Text>
+              <Text T7 color={COLOR.GRAY2}>진료 입장 전 취소 : 20% 환불</Text>
             </Row>
             <Row align>
               <BulletPoint />
