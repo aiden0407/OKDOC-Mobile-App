@@ -18,7 +18,7 @@ export default function HistoryInnerStackNavigation({ navigation }) {
           name="SymptomDetailCheck"
           component={SymptomDetailCheckScreen}
           options={{
-            title: '진료 전 확인사항',
+            title: '진료 예약 정보',
             headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
           }}
         />
