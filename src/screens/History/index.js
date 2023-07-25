@@ -16,7 +16,7 @@ import NeedLogin from 'components/NeedLogin';
 
 //Api
 import { getBiddingInformation } from 'api/Home';
-import { getScheduleByPatientId, getInvoiceInformation, canclePayment } from 'api/History';
+import { getScheduleByPatientId, getInvoiceInformation, canclePayment, treatmentCancel } from 'api/History';
 
 //Assets
 import letterIcon from 'assets/icons/mypage-letter.png';
@@ -30,7 +30,7 @@ export default function HistoryScreen({ navigation }) {
 
   useEffect(() => {
     setIsLoading(true);
-    if(accountData.loginToken){
+    if (accountData.loginToken) {
       getAppointmentHistory();
     } else {
       setIsLoading(false);
@@ -79,7 +79,7 @@ export default function HistoryScreen({ navigation }) {
             Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
           }
         }
-        
+
         const date = new Date(history.wish_at);
         const day = date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll(' ', '').slice(0, -1);
         let time = date.toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit' });
@@ -90,13 +90,13 @@ export default function HistoryScreen({ navigation }) {
         history.time = time;
 
         if (history.status === 'RESERVATION_CONFIRMED') {
-          contextHistorySet.underReservation.unshift(history)
+          contextHistorySet.underReservation.unshift(history);
         } else {
-          contextHistorySet.pastHistory.unshift(history)
+          contextHistorySet.pastHistory.unshift(history);
         }
       }
 
-      setTimeout(function() {
+      setTimeout(function () {
         apiContextDispatch({
           type: 'HISTORY_DATA_UPDATE',
           historyData: contextHistorySet,
@@ -141,7 +141,20 @@ export default function HistoryScreen({ navigation }) {
         }
       ]);
     } catch (error) {
-      Alert.alert('네트워크 에러', '진료 취소 중 에러가 발생했습니다. 다시 시도해 주시기 바랍니다.');
+      if(error.data.statusCode===410){
+        if(getRemainingTime(item.wish_at) > -600){
+          Alert.alert('취소 불가 안내', '진료 예약 시간이 초과되어 취소가 불가능합니다.', [
+            {
+              text: '확인',
+              onPress: () => handleConfirm(item)
+            },
+          ]);
+        }else{
+          handleCancelNotice(item)
+        }
+      }else{
+        Alert.alert('네트워크 에러', '진료 취소 중 에러가 발생했습니다. 다시 시도해 주시기 바랍니다.');
+      }
     }
   }
 
@@ -149,6 +162,24 @@ export default function HistoryScreen({ navigation }) {
     setIsLoading(true);
     appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: item.id });
     appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: undefined });
+  }
+
+  function handleCancelNotice(item) {
+    Alert.alert('취소 불가 안내', '진료 예약 시간이 초과되어 취소가 불가능합니다.', [
+      {
+        text: '확인',
+        onPress: () => letTreatmentStatusCANCELLED(item)
+      },
+    ]);
+  }
+
+  const letTreatmentStatusCANCELLED = async function (item) {
+    try {
+      await treatmentCancel(accountData.loginToken, item.id);
+      handleConfirm(item);
+    } catch (error) {
+      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    }
   }
 
   function handleEnterTelemedicine(item) {
@@ -161,7 +192,7 @@ export default function HistoryScreen({ navigation }) {
 
   function handleViewTelemedicineDetail(item) {
     appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: item.id });
-    navigation.navigate('HistoryStackNavigation', { 
+    navigation.navigate('HistoryStackNavigation', {
       screen: 'TelemedicineDetail',
       params: { telemedicineData: item }
     });
@@ -169,7 +200,7 @@ export default function HistoryScreen({ navigation }) {
 
   function handleInvoicePaymnt(item) {
     appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: item.id });
-    navigation.navigate('TelemedicineRoomNavigation', { 
+    navigation.navigate('TelemedicineRoomNavigation', {
       screen: 'Payment',
       params: { telemedicineData: item }
     });
@@ -197,25 +228,36 @@ export default function HistoryScreen({ navigation }) {
             {type === 'pastHistory' ? <Text T7 color={COLOR.GRAY1}>결제 {item?.invoiceInfo?.P_TID ? (item?.biddingInfo?.product?.price + 50000).toLocaleString() : item?.biddingInfo?.product?.price.toLocaleString()}원</Text> : null}
           </CardTitleColumn>
           {type === 'underReservation'
-            ? getRemainingTime(item?.wish_at) > 600
+            ? getRemainingTime(item?.wish_at) > 0
               ? <CardTitleButton
                 underlayColor={COLOR.GRAY5}
                 onPress={() => handleCancleReservation(item)}
               >
                 <Text T7 medium color={COLOR.GRAY1}>예약 취소</Text>
               </CardTitleButton>
-              : <CardTitleButton
-                underlayColor={COLOR.GRAY5}
-              >
-                <Text T7 medium color={COLOR.GRAY1}>취소 불가</Text>
-              </CardTitleButton>
-            : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
+              : getRemainingTime(item?.wish_at) > -600 || item?.invoiceInfo
+                ? <CardTitleButton
+                  underlayColor={COLOR.GRAY5}
+                >
+                  <Text T7 medium color={COLOR.GRAY1}>진료중</Text>
+                </CardTitleButton>
+                : <CardTitleButton
+                  underlayColor={COLOR.GRAY5}
+                  onPress={() => handleCancelNotice(item)}
+                >
+                  <Text T7 medium color={COLOR.GRAY1}>취소 불가</Text>
+                </CardTitleButton>
+            : item.status === 'CANCELLED'
               ? <CardTitleButton>
-                <Text T7 medium color={COLOR.GRAY1}>완료</Text>
+                <Text T7 medium color={COLOR.GRAY1}>취소됨</Text>
               </CardTitleButton>
-              : <CardTitleButton>
-                <Text T7 medium color={COLOR.GRAY1}>결제 필요</Text>
-              </CardTitleButton>
+              : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
+                ? <CardTitleButton>
+                  <Text T7 medium color={COLOR.GRAY1}>완료</Text>
+                </CardTitleButton>
+                : <CardTitleButton>
+                  <Text T7 medium color={COLOR.GRAY1}>결제 필요</Text>
+                </CardTitleButton>
           }
         </CardTitleSection>
 
@@ -237,44 +279,37 @@ export default function HistoryScreen({ navigation }) {
             </CardDoctorInfoColumn>
           </Row>
           {type === 'underReservation'
-            ? accountData.email === 'aiden@insunginfo.co.kr'
+            ? getRemainingTime(item?.wish_at) > -600 || item?.invoiceInfo
               ? <CustomSolidButton
                 underlayColor={COLOR.SUB1}
                 onPress={() => handleEnterTelemedicine(item)}
               >
-                <Text T5 medium color="#FFFFFF">진료실 입장</Text>
-              </CustomSolidButton>
-              : getRemainingTime(item?.wish_at) > 300
-                ? <CustomSolidButton
-                  style={{ backgroundColor: COLOR.GRAY3 }}
-                >
-                  <Text T5 medium color="#FFFFFF">진료실 입장</Text>
-                </CustomSolidButton>
-                : getRemainingTime(item?.wish_at) > -600
-                  ? <CustomSolidButton
-                    underlayColor={COLOR.SUB1}
-                    onPress={() => handleEnterTelemedicine(item)}
-                  >
-                    <Text T5 medium color="#FFFFFF">진료실 입장</Text>
-                  </CustomSolidButton>
-                  : <CustomSolidButton
-                    style={{ backgroundColor: COLOR.GRAY3 }}
-                  >
-                    <Text T5 medium color="#FFFFFF">입장 시간 초과</Text>
-                  </CustomSolidButton>
-            : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
-              ? <CustomSolidButton
-                underlayColor={COLOR.SUB1}
-                onPress={() => handleViewTelemedicineDetail(item)}
-              >
-                <Text T5 medium color="#FFFFFF">진료 내역</Text>
+                <Text T5 medium color="#FFFFFF">진료 예약 정보</Text>
               </CustomSolidButton>
               : <CustomSolidButton
-                underlayColor={COLOR.SUB1}
-                onPress={() => handleInvoicePaymnt(item)}
+                style={{ backgroundColor: COLOR.GRAY3 }}
               >
-                <Text T5 medium color="#FFFFFF">추가 결제하기</Text>
+                <Text T5 medium color="#FFFFFF">입장 시간 초과</Text>
               </CustomSolidButton>
+            : item.status === 'CANCELLED'
+              ? <CustomSolidButton
+                style={{ backgroundColor: COLOR.GRAY3 }}
+              >
+                <Text T5 medium color="#FFFFFF">입장 시간 초과</Text>
+              </CustomSolidButton>
+              : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
+                ? <CustomSolidButton
+                  underlayColor={COLOR.SUB1}
+                  onPress={() => handleViewTelemedicineDetail(item)}
+                >
+                  <Text T5 medium color="#FFFFFF">진료 내역</Text>
+                </CustomSolidButton>
+                : <CustomSolidButton
+                  underlayColor={COLOR.SUB1}
+                  onPress={() => handleInvoicePaymnt(item)}
+                >
+                  <Text T5 medium color="#FFFFFF">추가 결제하기</Text>
+                </CustomSolidButton>
           }
         </CardDoctorInfoSection>
       </HistoryCardContainer>
