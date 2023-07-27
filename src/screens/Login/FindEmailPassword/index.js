@@ -70,7 +70,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
   function maskEmail(email) {
     const [username, domain] = email.split('@');
     const usernameLength = username.length;
-    let maskedUsername = username.charAt(0);
+    let maskedUsername = username.slice(0, 2);
     if (usernameLength > 2) {
       maskedUsername += '*'.repeat(usernameLength - 2);
     }
