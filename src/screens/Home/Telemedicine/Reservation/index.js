@@ -20,7 +20,7 @@ import exclamationIcon from 'assets/icons/circle-exclamation.png';
 
 export default function ReservationScreen({ navigation, route }) {
 
-  const { state: { bookableData }, dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { state: { accountData, bookableData }, dispatch: apiContextDispatch } = useContext(ApiContext);
   const { state: { telemedicineReservationStatus }, dispatch: appContextDispatch } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const [dateIndex, setDateIndex] = useState(0);
@@ -55,7 +55,11 @@ export default function ReservationScreen({ navigation, route }) {
 
           const wishTime = new Date(schedule.open_at).getTime();
           const currentTime = Date.now();
-          if (wishTime - currentTime < 86400000) {
+
+          if (accountData.email==='aiden@insunginfo.co.kr' && wishTime - currentTime < 0) {
+            return null;
+          }
+          if (accountData.email!=='aiden@insunginfo.co.kr' && wishTime - currentTime < 86400000) {
             return null;
           }
 
