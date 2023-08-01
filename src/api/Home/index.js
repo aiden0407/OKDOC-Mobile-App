@@ -91,7 +91,7 @@ export const createBidding = async function (loginToken, reservationInfo) {
 
     try {
         let options = {
-            url: `${APIURL}/products/1/biddings/${uuid.v4()}`,
+            url: `${APIURL}/products/${reservationInfo.product.id}/biddings/${uuid.v4()}`,
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${loginToken}`,
