@@ -34,6 +34,12 @@ export default function PolicyScreen({ navigation }) {
     })
   }
 
+  function handleBusinessInfoScreen() {
+    navigation.navigate('BusinessInfo', {
+      content: 'https://insunginfo.notion.site/f3fe462f33844664aebc217ce95d1335?pvs=4',
+    })
+  }
+
   function PolicyButton({ title, content }) {
     return (
       <PolicyBox>
@@ -62,6 +68,12 @@ export default function PolicyScreen({ navigation }) {
             )
           }
         })}
+        <PolicyBox>
+        <PolicyRow onPress={() => handleBusinessInfoScreen()}>
+          <Text T5 medium>사업자 정보 확인</Text>
+          <Ionicons name="chevron-forward" size={20} />
+        </PolicyRow>
+      </PolicyBox>
       </Container>
     </SafeArea>
   );
