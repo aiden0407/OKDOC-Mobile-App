@@ -104,7 +104,7 @@ export default function MyPageScreen({ navigation }) {
         <CustomerSurviceContainer>
           <Text T6 medium color={COLOR.GRAY1}>고객센터</Text>
           <ServicesButton title="1:1 문의" navigate="Inquiry" />
-          <ServicesButton title="서비스 이용약관" navigate="Policy" />
+          <ServicesButton title="약관 및 정책" navigate="Policy" />
           {/* <ServicesButton title="자주하는 질문" navigate="FAQ"/>
           <ServicesButton title="공지사항" navigate="Notification"/> */}
         </CustomerSurviceContainer>
