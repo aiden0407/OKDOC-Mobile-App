@@ -25,7 +25,7 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "buildNumber": "3",
+      "buildNumber": "4",
       "bundleIdentifier": "app.okdoc",
       "icon": "./src/assets/main/main_icon.png",
       "infoPlist": {
@@ -37,10 +37,10 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/main/main_icon2.png",
-        "backgroundColor": "#5500CC",
-        "versionCode": 3
+        "backgroundColor": "#5500CC"
       },
-      "package": "app.okdoc"
+      "package": "app.okdoc",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./src/assets/main/main_icon.png"
