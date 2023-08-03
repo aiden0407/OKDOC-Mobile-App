@@ -107,26 +107,36 @@ export default function PassportInformationScreen({ navigation }) {
   const [passportCertifiactionState, setPassportCertifiactionState] = useState('NONE');
 
   const passportCheck = async function () {
-    setPassportCertifiactionState('CHECKING');
+    //setPassportCertifiactionState('CHECKING');
     try {
-      const response = await checkPassportInformation(name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry));
-      if (response.data.response?.result === 'ERROR') {
-        setPassportCertifiactionState('COUNT_LIMIT_ERROR');
-      } else if (response.data.response?.data?.RESULTYN === 'N') {
-        setPassportCertifiactionState('WRONG_INFORMATION_ERROR');
-      } else {
-        setPassportCertifiactionState('NONE');
-        dispatch({
-          type: 'REGISTER_PASSPORT_INFORMATION',
-          name: name,
-          birth: birth,
-          passportNumber: passportNumber,
-          dateOfIssue: dateOfIssue,
-          dateOfExpiry: dateOfExpiry,
-          gender: gender,
-        });
-        navigation.navigate('PhoneInformation');
-      }
+      // const response = await checkPassportInformation(name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry));
+      // if (response.data.response?.result === 'ERROR') {
+      //   setPassportCertifiactionState('COUNT_LIMIT_ERROR');
+      // } else if (response.data.response?.data?.RESULTYN === 'N') {
+      //   setPassportCertifiactionState('WRONG_INFORMATION_ERROR');
+      // } else {
+      //   setPassportCertifiactionState('NONE');
+      //   dispatch({
+      //     type: 'REGISTER_PASSPORT_INFORMATION',
+      //     name: name,
+      //     birth: birth,
+      //     passportNumber: passportNumber,
+      //     dateOfIssue: dateOfIssue,
+      //     dateOfExpiry: dateOfExpiry,
+      //     gender: gender,
+      //   });
+      //   navigation.navigate('PhoneInformation');
+      // }
+      dispatch({
+        type: 'REGISTER_PASSPORT_INFORMATION',
+        name: name,
+        birth: birth,
+        passportNumber: passportNumber,
+        dateOfIssue: dateOfIssue,
+        dateOfExpiry: dateOfExpiry,
+        gender: gender,
+      });
+      navigation.navigate('PhoneInformation');
     } catch (error) {
       setPassportCertifiactionState('NONE');
       Alert.alert('네트워크 에러', '여권 번호 확인에 실패했습니다. 다시 시도해 주시기 바랍니다.');
@@ -188,7 +198,7 @@ export default function PassportInformationScreen({ navigation }) {
             <SolidButton
               text="다음"
               marginBottom={20}
-              disabled={!validateName(name) || !passportNumber || !gender || birth.toDateString() === today.toDateString() || dateOfIssue.toDateString() === today.toDateString() || dateOfExpiry.toDateString() === today.toDateString()}
+              disabled={!validateName(name) || passportNumber.length!==9 || !gender || birth.toDateString() === today.toDateString() || dateOfIssue.toDateString() === today.toDateString() || dateOfExpiry.toDateString() === today.toDateString()}
               action={() => passportCheck()}
             />
           </ScrollView>
