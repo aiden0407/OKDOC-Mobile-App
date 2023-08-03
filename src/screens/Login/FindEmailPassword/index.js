@@ -324,7 +324,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
                     disabled={findPasswordCertificationNumber?.length < 6}
                     onPress={() => handleCheckCertificationNumber(findPasswordCertificationNumber)}
                     underlayColor={COLOR.SUB4}
-                    style={{ position: 'absolute', right: 16, top: Device.osName === 'iOS' ? 16 : 22, zIndex: 1 }}
+                    style={{ position: 'absolute', right: 16, top: Device.osName === 'Android' ? 22 : 16, zIndex: 1 }}
                   >
                     <Text T7 medium color={findPasswordCertificationNumber?.length < 6 ? COLOR.GRAY2 : COLOR.MAIN}>인증확인</Text>
                   </CustomOutlineButtonBackground>
@@ -405,8 +405,8 @@ export default function FindEmailPasswordScreen({ navigation }) {
 
 const CustomHeader = styled.View`
   width: 100%;
-  height: ${Device.osName === 'iOS' ? '50px' : '90px'};
-  padding: ${Device.osName === 'iOS' ? '0 24px' : '40px 24px 0px 24px'};
+  height: ${Device.osName === 'Android' ? '90px' : '50px'};
+  padding: ${Device.osName === 'Android' ? '40px 24px 0px 24px' : '0 24px'};
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
@@ -416,7 +416,7 @@ const CustomHeader = styled.View`
 
 const BackArrowWrapper = styled.View`
   position: absolute;
-  top: ${Device.osName === 'iOS' ? '10px' : '44px'};
+  top: ${Device.osName === 'Android' ? '44px' : '10px'};
   left: 16px;
 `;
 

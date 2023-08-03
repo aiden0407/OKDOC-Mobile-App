@@ -134,8 +134,8 @@ export default function HomeScreen({ navigation }) {
 
 const BannerContainer = styled.TouchableOpacity`
   width: 100%;
-  height: ${Device.osName === 'iOS' ? '130px' : '180px'};
-  padding-top: ${Device.osName === 'iOS' ? '0px' : '35px'};
+  height: ${Device.osName === 'Android' ? '180px' : '130px'};
+  padding-top: ${Device.osName === 'Android' ? '35px' : '0px'};
   align-items: center;
   justify-content: center;
 `;

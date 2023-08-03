@@ -153,7 +153,7 @@ export default function PassportInformationScreen({ navigation }) {
               returnKeyType="next"
             />
             <Text T6 bold marginTop={24}>생년월일</Text>
-            <DateTimePickerOpenButton onPress={() => Device.osName === 'iOS' ? setIsBirthPickerShow(true) : showBirthSelector()} underlayColor={COLOR.GRAY4}>
+            <DateTimePickerOpenButton onPress={() => Device.osName === 'Android' ? showBirthSelector() : setIsBirthPickerShow(true)} underlayColor={COLOR.GRAY4}>
               <Text T6 color={birth.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{birth.toDateString() === today.toDateString() ? '생년월일 8자리' : formatDateString(birth)}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>여권번호</Text>
@@ -166,11 +166,11 @@ export default function PassportInformationScreen({ navigation }) {
               onFocus={() => handleTextInputFocus(200)}
             />
             <Text T6 bold marginTop={24}>발급일</Text>
-            <DateTimePickerOpenButton onPress={() => Device.osName === 'iOS' ? setIsDateOfIssuePickerShow(true) : showDateOfIssueSelector()} underlayColor={COLOR.GRAY4}>
+            <DateTimePickerOpenButton onPress={() => Device.osName === 'Android' ? showDateOfIssueSelector() : setIsDateOfIssuePickerShow(true)} underlayColor={COLOR.GRAY4}>
               <Text T6 color={dateOfIssue.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfIssue.toDateString() === today.toDateString() ? '발급일 숫자 8자리' : formatDateString(dateOfIssue)}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>기간 만료일</Text>
-            <DateTimePickerOpenButton onPress={() => Device.osName === 'iOS' ? setIsDateOfExpiryPickerShow(true) : showDateOfExpirySelector()} underlayColor={COLOR.GRAY4}>
+            <DateTimePickerOpenButton onPress={() => Device.osName === 'Android' ? showDateOfExpirySelector() : setIsDateOfExpiryPickerShow(true)} underlayColor={COLOR.GRAY4}>
               <Text T6 color={dateOfExpiry.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfExpiry.toDateString() === today.toDateString() ? '기간 만료일 숫자 8자리' : formatDateString(dateOfExpiry)}</Text>
             </DateTimePickerOpenButton>
             <Text T6 bold marginTop={24}>성별</Text>

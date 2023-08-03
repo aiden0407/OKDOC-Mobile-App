@@ -24,17 +24,9 @@ export default function PaymentScreen({ navigation, route }) {
 
   useEffect(() => {
     navigation.setOptions({
-      headerShown: Device.osName === 'iOS' ? canGoBack : true,
+      headerShown: Device.osName === 'Android' ? true : canGoBack,
       headerRight: () => {
-        if(Device.osName === 'iOS'){
-          return (
-            <EditButton onPress={() => {
-              navigation.goBack();
-            }}>
-              <Text T5 bold>X</Text>
-            </EditButton>
-          );
-        }else{
+        if(Device.osName === 'Android'){
           if(canGoBack){
             return (
               <EditButton onPress={() => {
@@ -44,6 +36,14 @@ export default function PaymentScreen({ navigation, route }) {
               </EditButton>
             );
           }
+        }else{
+          return (
+            <EditButton onPress={() => {
+              navigation.goBack();
+            }}>
+              <Text T5 bold>X</Text>
+            </EditButton>
+          );
         }
       }
     });
@@ -110,17 +110,14 @@ export default function PaymentScreen({ navigation, route }) {
         source={{ html: htmlContent }}
         originWhitelist={['*']}
         onNavigationStateChange={(navState) => {
-
-          console.log(navState.url);
-
-          if(Device.osName === 'iOS' && navState.canGoBack){
-            setCanGoBack(true);
-          }
-
           if (Device.osName === 'Android') {
             if (navState.url.includes("https://ksmobile.inicis.com/smart/payment/") || navState.url.includes("about:blank")) {
               setCanGoBack(false);
             } else {
+              setCanGoBack(true);
+            }
+          } else {
+            if(navState.canGoBack){
               setCanGoBack(true);
             }
           }
