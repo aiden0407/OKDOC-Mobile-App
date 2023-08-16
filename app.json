@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "OK DOC",
-    "slug": "OK-DOC-Mobile-App",
-    "version": "1.0.5",
+    "slug": "okdoc",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/main/main_icon.png",
     "userInterfaceStyle": "light",
@@ -39,16 +39,20 @@
         "foregroundImage": "./src/assets/main/main_icon2.png",
         "backgroundColor": "#5500CC"
       },
-      "package": "app.okdoc",
-      "versionCode": 1
+      "package": "kr.co.insunginfo.okdoc",
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./src/assets/main/main_icon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "3fbc60d4-7480-42b7-9573-17fb087c1d50"
+        "projectId": "6e4d66cc-4110-4cdb-91da-f25c046e0286"
       }
-    }
+    },
+    "owner": "okdoc"
   }
 }
