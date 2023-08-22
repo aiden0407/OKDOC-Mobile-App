@@ -23,8 +23,8 @@ import exclamationIcon from 'assets/icons/circle-exclamation.png';
 export default function PassportInformationScreen({ navigation }) {
 
   const { state: { registerStatus }, dispatch } = useContext(AppContext);
-  const [name, setName] = useState(registerStatus?.name);
-  const [passportNumber, setPassportNumber] = useState(registerStatus?.passportNumber);
+  const [name, setName] = useState(registerStatus?.name ?? '');
+  const [passportNumber, setPassportNumber] = useState(registerStatus?.passportNumber ?? '');
   const [gender, setGender] = useState(registerStatus?.gender);
 
   const today = new Date();
