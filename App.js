@@ -123,6 +123,8 @@ export default function App() {
                 </Stack.Group>
               </Stack.Navigator>
             </NavigationContainer>
+
+            <Text marginBottom={20}>Your expo push token: {expoPushToken}</Text>
           </View>
         </ApiProvider>
       </AppProvider>
