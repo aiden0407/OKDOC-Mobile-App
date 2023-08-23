@@ -21,6 +21,13 @@
           "photosPermission": "진료 예약 시 사진 첨부를 위해 이미지 권한을 허용해야 합니다.",
           "cameraPermission": "진료 예약 시 사진 첨부를 위해 사진 권한을 허용해야 합니다."
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/main/main_icon.png",
+          "color": "#ffffff"
+        }
       ]
     ],
     "ios": {
