@@ -45,7 +45,7 @@ export default function EmailPasswordScreen({ navigation }) {
   const handleRequestCertification = async function () {
     setLoading(true);
     try {
-      const phoneCheckOpenResponse = await phoneCheckOpen(Number(phoneNumber.replaceAll("-", "")));
+      const phoneCheckOpenResponse = await phoneCheckOpen(Number(phoneNumber.replaceAll('-', '')));
       setPhoneToken(phoneCheckOpenResponse.data.response.message)
       setIsMessageSent(true);
       setLoading(false);
@@ -76,7 +76,7 @@ export default function EmailPasswordScreen({ navigation }) {
     }
 
     try {
-      const phoneCheckCloseResponse = await phoneCheckClose(phoneNumber, certificationNumber, phoneToken);
+      const phoneCheckCloseResponse = await phoneCheckClose(phoneNumber.replaceAll('-', ''), certificationNumber, phoneToken);
       if(phoneCheckCloseResponse.data.response.message === '휴대폰 인증 실패') {
         setLoading(false);
         Alert.alert('인증번호가 일치하지 않습니다.\n다시 입력해 주시기 바랍니다.');
