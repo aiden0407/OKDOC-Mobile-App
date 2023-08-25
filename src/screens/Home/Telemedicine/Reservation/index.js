@@ -42,12 +42,16 @@ export default function ReservationScreen({ navigation, route }) {
       }
 
       for (let jj = 0; jj < doctorsList.length; jj++) {
-        const response = await getScheduleByDoctorId(doctorsList[jj].id);
-        const appointmentsList = response.data.response;
-        const updatedSchedule = doctorsList[jj].schedules.filter((slot) => {
-          return !appointmentsList.some((appt) => appt.wish_at === slot.open_at);
-        });
-        doctorsList[jj].schedules = updatedSchedule;
+        try {
+          const response = await getScheduleByDoctorId(doctorsList[jj].id);
+          const appointmentsList = response.data.response;
+          const updatedSchedule = doctorsList[jj].schedules.filter((slot) => {
+            return !appointmentsList.some((appt) => appt.wish_at === slot.open_at);
+          });
+          doctorsList[jj].schedules = updatedSchedule;
+        } catch (error) {
+          console.log(error.data);
+        }
       }
 
       doctorsList.forEach((doctor) => {
