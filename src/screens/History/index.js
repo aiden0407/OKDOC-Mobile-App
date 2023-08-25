@@ -105,7 +105,11 @@ export default function HistoryScreen({ navigation }) {
         setIsLoading(false);
       }, 2000);
     } catch (error) {
-      Alert.alert('네트워크 에러', '진료 목록 정보 불러오기를 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+      if(error.status===404){
+        setIsLoading(false);
+      } else {
+        Alert.alert('네트워크 에러', '진료 목록 정보 불러오기를 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+      }
       setRefreshing(false);
     }
   };
