@@ -103,7 +103,7 @@ export default function EmailPasswordScreen({ navigation }) {
 
   const initPatient = async function (loginToken) {
     try {
-      const createPatientProfileInitResponse = await createPatientProfileInit(loginToken, registerStatus.name, formatDate(registerStatus.birth), registerStatus.passportNumber, formatDate(registerStatus.dateOfIssue), formatDate(registerStatus.dateOfExpiry), registerStatus.gender);
+      const createPatientProfileInitResponse = await createPatientProfileInit(loginToken, registerStatus.email, registerStatus.name, formatDate(registerStatus.birth), registerStatus.passportNumber, formatDate(registerStatus.dateOfIssue), formatDate(registerStatus.dateOfExpiry), registerStatus.gender);
       const mainProfile = createPatientProfileInitResponse.data.response;
       apiContextDispatch({ 
         type: 'LOGIN', 

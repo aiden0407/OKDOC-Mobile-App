@@ -153,10 +153,10 @@ export const createFamilyAccount = async function (email, password, policy) {
     }
 }
 
-export const createPatientProfileInit = async function (loginToken, name, birth, passportNumber, dateOfIssue, dateOfExpiry, gender) {
+export const createPatientProfileInit = async function (loginToken, email, name, birth, passportNumber, dateOfIssue, dateOfExpiry, gender) {
     try {
         let options = {
-            url: `${APIURL}/patients/${passportNumber}`,
+            url: `${APIURL}/families/${email}/patients/${passportNumber}`,
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${loginToken}`
