@@ -124,9 +124,9 @@ export default function App() {
               </Stack.Navigator>
             </NavigationContainer>
 
-            <Button title="Copy device push token" onPress={() => {
+            {/* <Button title="Copy device push token" onPress={() => {
               Clipboard.setString(expoPushToken);
-            }} />
+            }} /> */}
 
           </View>
         </ApiProvider>
