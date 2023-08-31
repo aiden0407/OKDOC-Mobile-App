@@ -13,7 +13,7 @@ import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { createBidding } from 'api/Home';
+import { getBiddingList, deleteBidding, createBidding } from 'api/Home';
 
 export default function PaymentNotificationScreen({ navigation }) {
 
@@ -41,12 +41,30 @@ export default function PaymentNotificationScreen({ navigation }) {
       const response = await createBidding(accountData.loginToken, telemedicineReservationStatus);
       dispatch({
         type: 'TELEMEDICINE_RESERVATION_BIDDING_ID',
-        biddingId: response.data.response[0].id,
+        biddingId: response.data.response.id,
       });
       navigation.navigate('TelemedicineReservationPayment', { screen: 'Payment' });
     } catch (error) {
-      Alert.alert('예약 오류', '진료 예약 중 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
+      try {
+        const getBiddingListResponse = await getBiddingList(accountData.loginToken);
+        getBiddingListResponse.data.response.forEach(element => {
+          if (element.wish_at === telemedicineReservationStatus.doctorInfo.scheduleTime) {
+            deleteBiddingData(accountData.loginToken, element.id);
+          }
+        });
+
+        setTimeout(() => {
+          handleProceedPayment();
+        }, 1000);
+      } catch (error) {
+        console.log(error)
+        Alert.alert('예약 오류', '진료 예약 중 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
+      }
     }
+  }
+
+  const deleteBiddingData = async function (loginToken, biddingId) {
+    await deleteBidding(loginToken, biddingId);
   }
 
   return (
