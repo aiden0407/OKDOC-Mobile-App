@@ -100,7 +100,8 @@ export default function PaymentScreen({ navigation }) {
         biddingId: url?.split('?bidding_id=')[1],
       });
     } else {
-      navigation.goBack();
+      Alert.alert(url);
+      //navigation.goBack();
     }
   }
 
