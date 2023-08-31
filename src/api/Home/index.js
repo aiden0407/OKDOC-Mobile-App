@@ -73,6 +73,40 @@ export const getScheduleByDoctorId = async function (doctorId) {
     }
 }
 
+export const getBiddingList = async function (loginToken) {
+    try {
+        let options = {
+            url: `${APIURL}/biddings`,
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${loginToken}`
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
+export const deleteBidding = async function (loginToken, biddingId) {
+    try {
+        let options = {
+            url: `${APIURL}/biddings/${biddingId}`,
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${loginToken}`
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
 export const createBidding = async function (loginToken, reservationInfo) {
     const formData = new FormData();
     formData.append('doctor_id', reservationInfo.doctorInfo.doctorId);
