@@ -37,6 +37,23 @@ export const getTreatmentInformation = async function (loginToken, appointmentId
     }
 }
 
+export const getPurchaseInformation = async function (loginToken, appointmentId) {
+    try {
+        let options = {
+            url: `${APIURL}/purchases/?treatment_appointment_id=${appointmentId}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
 export const modifyTreatmentAppointmentBeforeEnter = async function (loginToken, appointmentId, symptom) {
     try {
         let options = {
@@ -57,11 +74,14 @@ export const modifyTreatmentAppointmentBeforeEnter = async function (loginToken,
     }
 }
 
-export const canclePayment = async function (P_TID) {
+export const canclePayment = async function (loginToken, purchaseId, P_TID) {
     try {
         let options = {
-            url: `${APIURL}/merchant/cancel/${P_TID}`,
+            url: `${APIURL}/merchant/cancel/${purchaseId}`,
             method: 'POST',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
             data: {
                 tid: P_TID,
                 msg: "진료 예약 취소입니다.",
