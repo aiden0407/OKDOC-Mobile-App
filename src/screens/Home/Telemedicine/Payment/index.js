@@ -97,7 +97,7 @@ export default function PaymentScreen({ navigation }) {
   function handlePaymentComplete(url) {
     if (url?.split('?bidding_id=')[1]) {
       navigation.replace('PaymentComplete', {
-        biddingId: url?.split('?bidding_id=')[1],
+        biddingId: (url?.split('?bidding_id=')[1]).split('&purchase_id=')[0],
       });
     } else {
       Alert.alert('안내', '예약 과정에서 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
