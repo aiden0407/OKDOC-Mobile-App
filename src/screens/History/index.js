@@ -16,7 +16,7 @@ import NeedLogin from 'components/NeedLogin';
 
 //Api
 import { getBiddingInformation } from 'api/Home';
-import { getScheduleByPatientId, getInvoiceInformation, canclePayment, treatmentCancel } from 'api/History';
+import { getScheduleByPatientId, getPurchaseInformation, getInvoiceInformation, canclePayment, treatmentCancel } from 'api/History';
 
 //Assets
 import letterIcon from 'assets/icons/mypage-letter.png';
@@ -72,6 +72,15 @@ export default function HistoryScreen({ navigation }) {
         }
 
         try {
+          const response = await getPurchaseInformation(accountData.loginToken, history.id);
+          const purchaseInfo = response.data.response[0];
+          history.purchaseInfo = purchaseInfo;
+          history.purchaseId = purchaseInfo.id;
+        } catch (error) {
+          Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+        }
+
+        try {
           const response = await getInvoiceInformation(accountData.loginToken, history.bidding_id);
           history.invoiceInfo = response.data.response?.[0];
         } catch (error) {
@@ -106,6 +115,16 @@ export default function HistoryScreen({ navigation }) {
       }, 2000);
     } catch (error) {
       if(error.status===404){
+        const contextHistorySet = {
+          underReservation: [
+          ],
+          pastHistory: [
+          ],
+        };
+        apiContextDispatch({
+          type: 'HISTORY_DATA_UPDATE',
+          historyData: contextHistorySet,
+        });
         setIsLoading(false);
       } else {
         Alert.alert('네트워크 에러', '진료 목록 정보 불러오기를 실패하였습니다. 다시 시도해 주시기 바랍니다.');
@@ -137,7 +156,7 @@ export default function HistoryScreen({ navigation }) {
 
   const handleCancleComplete = async function (item) {
     try {
-      await canclePayment(item.biddingInfo.P_TID);
+      await canclePayment(accountData.loginToken, item.purchaseId, item.biddingInfo.P_TID);
       Alert.alert('해당 예약이 정상적으로 취소되었습니다.', '', [
         {
           text: '확인',
