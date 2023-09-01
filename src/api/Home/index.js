@@ -143,6 +143,25 @@ export const createBidding = async function (loginToken, reservationInfo) {
 
 export const createPaymentRequest = async function (reservationInfo, email) {
     const orderId = uuid.v4();
+    const data = {
+        P_INI_PAYMENT: 'CARD',
+        P_MID: 'insungif01',
+        P_OID: orderId,
+        P_NOTI: reservationInfo.biddingId,
+        P_GOODS: encodeURIComponent(reservationInfo.product.introduction),
+        P_UNAME: encodeURIComponent(reservationInfo.profileInfo.name),
+        P_NEXT_URL: `https://api.okdoc.app/merchant-webhook/advanced-paid/${reservationInfo.biddingId}/${orderId}`,
+        P_EMAIL: email,
+        P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
+        P_CHARSET: 'utf8'
+    };
+    if(email==='aiden@insunginfo.co.kr'){
+        data.P_AMT = '1000';
+    }else{
+        data.P_AMT = `${reservationInfo.product.price}`;
+        data.P_TAX = '3818';
+        data.P_TAXFREE = '88000';
+    }
 
     try {
         let options = {
@@ -151,21 +170,7 @@ export const createPaymentRequest = async function (reservationInfo, email) {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
-            data: {
-                P_INI_PAYMENT: 'CARD',
-                P_MID: 'insungif01',
-                P_OID: orderId,
-                P_NOTI: reservationInfo.biddingId,
-                P_AMT: email==='aiden@insunginfo.co.kr' ? 1000 : Number(reservationInfo.product.price),
-                P_TAX: 3818,
-                P_TAXFREE: 88000,
-                P_GOODS: encodeURIComponent(reservationInfo.product.introduction),
-                P_UNAME: encodeURIComponent(reservationInfo.profileInfo.name),
-                P_NEXT_URL: `https://api.okdoc.app/merchant-webhook/advanced-paid/${reservationInfo.biddingId}/${orderId}`,
-                P_EMAIL: email,
-                P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
-                P_CHARSET: 'utf8'
-            },
+            data: data,
         }
         const response = await axios(options);
         return response;
