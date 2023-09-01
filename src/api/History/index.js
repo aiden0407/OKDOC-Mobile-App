@@ -60,7 +60,7 @@ export const modifyTreatmentAppointmentBeforeEnter = async function (loginToken,
 export const canclePayment = async function (P_TID) {
     try {
         let options = {
-            url: `${APIURL}/payment/cancel`,
+            url: `${APIURL}/merchant/cancel/${P_TID}`,
             method: 'POST',
             data: {
                 tid: P_TID,
@@ -148,9 +148,10 @@ export const createInvoicePaymentRequest = async function (telemedicineData, ema
                 P_AMT: email==='aiden@insunginfo.co.kr' ? Number(1000) : Number(telemedicineData.productInfo.price),
                 P_GOODS: encodeURIComponent(telemedicineData.productInfo.hospital+' '+telemedicineData.productInfo.name),
                 P_UNAME: encodeURIComponent(telemedicineData.profileInfo.passport.user_name),
-                P_NEXT_URL: 'https://api.okdoc.app/payment-webhook/postpaid',
+                P_NEXT_URL: `https://api.okdoc.app/merchant-webhook/post-paid/${telemedicineData.invoiceInfo.id}/${telemedicineData.id}`,
                 P_EMAIL: email,
                 P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
+                P_CHARSET: 'utf8'
             },
         }
         const response = await axios(options);
