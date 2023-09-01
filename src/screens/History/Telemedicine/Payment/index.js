@@ -100,6 +100,7 @@ export default function PaymentScreen({ navigation, route }) {
         telemedicineData: telemedicineData,
       });
     } else {
+      Alert.alert('안내', '예약 과정에서 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
       navigation.goBack();
     }
   }

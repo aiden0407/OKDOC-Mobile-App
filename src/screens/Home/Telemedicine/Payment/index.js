@@ -100,8 +100,8 @@ export default function PaymentScreen({ navigation }) {
         biddingId: url?.split('?bidding_id=')[1],
       });
     } else {
-      Alert.alert(url);
-      //navigation.goBack();
+      Alert.alert('안내', '예약 과정에서 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
+      navigation.goBack();
     }
   }
 
