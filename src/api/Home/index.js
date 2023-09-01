@@ -142,6 +142,8 @@ export const createBidding = async function (loginToken, reservationInfo) {
 }
 
 export const createPaymentRequest = async function (reservationInfo, email) {
+    const orderId = uuid.v4();
+
     try {
         let options = {
             url: `https://mobile.inicis.com/smart/payment/`,
@@ -152,14 +154,17 @@ export const createPaymentRequest = async function (reservationInfo, email) {
             data: {
                 P_INI_PAYMENT: 'CARD',
                 P_MID: 'insungif01',
-                P_OID: uuid.v4(),
+                P_OID: orderId,
                 P_NOTI: reservationInfo.biddingId,
-                P_AMT: email==='aiden@insunginfo.co.kr' ? Number(1000) : Number(reservationInfo.product.price),
+                P_AMT: email==='aiden@insunginfo.co.kr' ? 1000 : Number(reservationInfo.product.price),
+                P_TAX: 3818,
+                P_TAXFREE: 88000,
                 P_GOODS: encodeURIComponent(reservationInfo.product.introduction),
                 P_UNAME: encodeURIComponent(reservationInfo.profileInfo.name),
-                P_NEXT_URL: 'https://api.okdoc.app/payment-webhook/',
+                P_NEXT_URL: `https://api.okdoc.app/merchant-webhook/advanced-paid/${reservationInfo.biddingId}/${orderId}`,
                 P_EMAIL: email,
                 P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
+                P_CHARSET: 'utf8'
             },
         }
         const response = await axios(options);
