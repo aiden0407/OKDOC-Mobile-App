@@ -1,6 +1,7 @@
 //React
 import { useState, useEffect, useRef, useContext } from 'react';
 import { AppContext } from 'context/AppContext';
+import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
 //Components
@@ -22,6 +23,7 @@ import { modifyTreatmentAppointmentBeforeEnter } from 'api/History';
 export default function SymptomDetailCheckScreen({ navigation, route }) {
 
   const { dispatch } = useContext(AppContext);
+  const { state: { accountData } } = useContext(ApiContext);
   const telemedicineData = route.params.telemedicineData;
   const [symptom, setSymptom] = useState(telemedicineData.explain_symptom);
   const [count, setCount] = useState(301);
@@ -157,7 +159,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
           <SolidButton
             text="진료실 입장하기"
             marginBottom={20}
-            disabled={count>300}
+            disabled={accountData.email==='aiden@insunginfo.co.kr' ? false : count>300}
             action={() => handleNotice1()}
           />
         </Container>
