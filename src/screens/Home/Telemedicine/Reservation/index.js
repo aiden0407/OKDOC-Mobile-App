@@ -60,13 +60,6 @@ export default function ReservationScreen({ navigation, route }) {
           const wishTime = new Date(schedule.open_at).getTime();
           const currentTime = Date.now();
 
-          if (accountData.email==='aiden@insunginfo.co.kr' && wishTime - currentTime < 0) {
-            return null;
-          }
-          if (accountData.email!=='aiden@insunginfo.co.kr' && wishTime - currentTime < 86400000) {
-            return null;
-          }
-
           const date = new Date(schedule.open_at);
           const day = date.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }).replace('.', '/').replace('.', '').replace(' ', '');
           const weekday = date.toLocaleDateString('ko-KR', { weekday: 'long' }).slice(-3);
@@ -82,7 +75,7 @@ export default function ReservationScreen({ navigation, route }) {
               existingTimeSlot[1].push({
                 doctorId: doctor.id,
                 name: doctor.name,
-                image: doctor?.photo,
+                image: doctor?.attachments?.[0]?.Location ?? doctor?.photo,
                 hospital: doctor.hospital,
                 subject: doctor.department,
                 strength: doctor?.strength,
@@ -96,7 +89,7 @@ export default function ReservationScreen({ navigation, route }) {
               existingEntry[2].push([time, [{
                 doctorId: doctor.id,
                 name: doctor.name,
-                image: doctor?.photo,
+                image: doctor?.attachments?.[0]?.Location ?? doctor?.photo,
                 hospital: doctor.hospital,
                 subject: doctor.department,
                 strength: doctor?.strength,
@@ -111,7 +104,7 @@ export default function ReservationScreen({ navigation, route }) {
             doctorsScheduleList.push([day, weekday, [[time, [{
               doctorId: doctor.id,
               name: doctor.name,
-              image: doctor?.photo,
+              image: doctor?.attachments?.[0]?.Location ?? doctor?.photo,
               hospital: doctor.hospital,
               subject: doctor.department,
               strength: doctor?.strength,
