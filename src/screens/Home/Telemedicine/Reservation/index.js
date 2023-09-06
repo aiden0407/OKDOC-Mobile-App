@@ -59,6 +59,9 @@ export default function ReservationScreen({ navigation, route }) {
 
           const wishTime = new Date(schedule.open_at).getTime();
           const currentTime = Date.now();
+          if (wishTime - currentTime < 86400000) {
+            return null;
+          }
 
           const date = new Date(schedule.open_at);
           const day = date.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }).replace('.', '/').replace('.', '').replace(' ', '');
