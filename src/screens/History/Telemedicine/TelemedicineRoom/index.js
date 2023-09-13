@@ -1,13 +1,13 @@
 //React
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 
 //Components
-import { StatusBarArea, SafeArea } from 'components/Layout';
+import { StatusBarArea, Container } from 'components/Layout';
 import { StatusBar } from 'expo-status-bar';
 import { useIsFocused } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
-//import { Linking } from 'react-native';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 export default function TelemedicineRoomScreen({ navigation, route }) {
 
@@ -19,7 +19,13 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
   const id = telemedicineData.id;
   const token = accountData.loginToken;
 
-  //Linking.openURL(`https://zoom.okdoc.app/meeting/patient/?meetingNumber=${meetingNumber}&userName=${userName}&wishAt=${wishAt}&id=${id}&token=${token}`)
+  useEffect(() => {
+    changeScreenOrientation();
+  }, []);
+
+  async function changeScreenOrientation() {
+    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT);
+  }
 
   function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
@@ -34,13 +40,13 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
 
   return (
     <>
-      <StatusBarArea backgroundColor="#111111">
+      {/* <StatusBarArea backgroundColor="#111111">
         <FocusAwareStatusBar animated style="light" />
-      </StatusBarArea>
-      <SafeArea>
+      </StatusBarArea> */}
+      <Container>
         <WebView
           source={{ uri: `https://zoom.okdoc.app/meeting/patient/?meetingNumber=${meetingNumber}&userName=${userName}&wishAt=${wishAt}&id=${id}&token=${token}` }}
-          //source={{ uri: `http://127.0.0.1:5500/meeting/patient/?meetingNumber=${meetingNumber}&userName=${userName}&wishAt=${wishAt}&id=${id}&token=${token}` }}
+          // source={{ uri: `http://127.0.0.1:5500/meeting/patient/?meetingNumber=85440949682&userName=${userName}&wishAt=${wishAt}&id=${id}&token=${token}` }}
           originWhitelist={['*']}
           useWebkit
           bounces
@@ -56,8 +62,8 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
             throw error;
           }}
         />
-      </SafeArea>
-      <StatusBarArea backgroundColor="#030303" />
+      </Container>
+      <StatusBarArea backgroundColor="#000000" />
     </>
   );
 }
