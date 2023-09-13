@@ -317,7 +317,6 @@ export default function HistoryScreen({ navigation }) {
             : item.status === 'CANCELLED'
               ? <CustomSolidButton
                 style={{ backgroundColor: COLOR.GRAY3 }}
-                onPress={() => handleEnterTelemedicine(item)}
               >
                 <Text T5 medium color="#FFFFFF">입장 시간 초과</Text>
               </CustomSolidButton>
