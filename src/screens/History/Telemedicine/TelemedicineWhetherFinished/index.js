@@ -8,6 +8,7 @@ import { Alert } from 'react-native';
 import { SafeArea, Container, ContainerCenter } from 'components/Layout';
 import { Text } from 'components/Text';
 import { SolidButton, OutlineButton } from 'components/Button';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 export default function TelemedicineWhetherFinishedScreen({ navigation, route }) {
 
@@ -16,6 +17,14 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(600);
   const savedCallback = useRef();
+
+  useEffect(() => {
+    changeScreenOrientation();
+  }, []);
+
+  async function changeScreenOrientation() {
+    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+  }
 
   useEffect(() => {
     const originalTime = new Date(telemedicineData.wish_at);
