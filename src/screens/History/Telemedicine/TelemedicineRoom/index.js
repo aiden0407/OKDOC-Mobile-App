@@ -24,13 +24,15 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
   }, []);
 
   async function changeScreenOrientation() {
-    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT);
+    setTimeout( async () => {
+      await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT); 
+    }, 1000);
   }
 
-  function FocusAwareStatusBar(props) {
-    const isFocused = useIsFocused();
-    return isFocused && <StatusBar {...props} />;
-  }
+  // function FocusAwareStatusBar(props) {
+  //   const isFocused = useIsFocused();
+  //   return isFocused && <StatusBar {...props} />;
+  // }
 
   function handleTelemedicineComplete() {
     navigation.navigate('TelemedicineWhetherFinished', {
