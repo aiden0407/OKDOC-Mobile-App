@@ -3,7 +3,6 @@
     "name": "OK DOC",
     "slug": "okdoc",
     "version": "1.0.1",
-    "orientation": "portrait",
     "icon": "./src/assets/main/main_icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -15,6 +14,12 @@
       "**/*"
     ],
     "plugins": [
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "DEFAULT"
+        }
+      ],
       [
         "expo-image-picker",
         {
@@ -28,25 +33,25 @@
           "icon": "./src/assets/main/main_icon.png",
           "color": "#ffffff"
         }
-      ],
-      [
-        "expo-screen-orientation",
-        {
-          "initialOrientation": "DEFAULT"
-        }
       ]
     ],
     "ios": {
+      "requireFullScreen": true,
       "supportsTablet": false,
-      "buildNumber": "11",
+      "buildNumber": "12",
       "bundleIdentifier": "kr.co.insunginfo.okdoc",
       "icon": "./src/assets/main/main_icon.png",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "진료 예약 시 사진 첨부를 위해 라이브러리 권한을 허용해야 합니다.",
         "NSCameraUsageDescription": "화상 진료를 진행하기 위해서는 카메라 권한을 허용해야 합니다.",
-        "NSMicrophoneUsageDescription": "화상 진료를 진행하기 위해서는 마이크 권한을 허용해야 합니다."
-      },
-      "requireFullScreen": true
+        "NSMicrophoneUsageDescription": "화상 진료를 진행하기 위해서는 마이크 권한을 허용해야 합니다.",
+        "UISupportedInterfaceOrientations": [
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationPortraitUp",
+          "UIInterfaceOrientationLandscapeLeft",
+          "UIInterfaceOrientationLandscapeRight"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
