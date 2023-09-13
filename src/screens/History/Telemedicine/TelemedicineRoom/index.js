@@ -24,9 +24,7 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
   }, []);
 
   async function changeScreenOrientation() {
-    setTimeout( async () => {
-      await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT); 
-    }, 1000);
+    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT);
   }
 
   // function FocusAwareStatusBar(props) {
