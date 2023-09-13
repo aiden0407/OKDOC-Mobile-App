@@ -311,6 +311,7 @@ export default function HistoryScreen({ navigation }) {
               </CustomSolidButton>
               : <CustomSolidButton
                 style={{ backgroundColor: COLOR.GRAY3 }}
+                onPress={() => handleEnterTelemedicine(item)}
               >
                 <Text T5 medium color="#FFFFFF">입장 시간 초과</Text>
               </CustomSolidButton>
@@ -323,7 +324,8 @@ export default function HistoryScreen({ navigation }) {
               : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
                 ? <CustomSolidButton
                   underlayColor={COLOR.SUB1}
-                  onPress={() => handleViewTelemedicineDetail(item)}
+                  //onPress={() => handleViewTelemedicineDetail(item)}
+                  onPress={() => handleEnterTelemedicine(item)}
                 >
                   <Text T5 medium color="#FFFFFF">진료 내역</Text>
                 </CustomSolidButton>
