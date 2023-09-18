@@ -1,6 +1,7 @@
 //Navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from 'screens/Login';
+import SNSLoginScreen from 'screens/Login/SNSLogin.js';
+import LocalLoginScreen from 'screens/Login/LocalLogin.js';
 import FindEmailPasswordScreen from 'screens/Login/FindEmailPassword';
 import RegisterPolicyScreen from 'screens/Login/Register/RegisterPolicy';
 import RegisterPolicyDetailScreen from 'screens/Login/Register/RegisterPolicy/Detail';
@@ -22,10 +23,18 @@ export default function LoginStackNavigation({ navigation }) {
       <Stack.Group screenOptions={{ headerLargeTitleShadowVisible: false }}>
         <Stack.Screen
           name="Login"
-          component={LoginScreen}
+          component={SNSLoginScreen}
           options={{
             title: '로그인',
             headerLeft: () => <NavigationBackArrow action={()=>navigation.goBack()} />,
+          }}
+        />
+        <Stack.Screen
+          name="LocalLogin"
+          component={LocalLoginScreen}
+          options={{
+            title: '로그인',
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('Login')} />,
           }}
         />
         <Stack.Screen
