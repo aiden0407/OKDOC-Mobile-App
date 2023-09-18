@@ -14,6 +14,7 @@
       "**/*"
     ],
     "plugins": [
+      "expo-apple-authentication",
       [
         "expo-screen-orientation",
         {
@@ -37,6 +38,7 @@
     ],
     "ios": {
       "requireFullScreen": true,
+      "usesAppleSignIn": true,
       "supportsTablet": false,
       "buildNumber": "13",
       "bundleIdentifier": "kr.co.insunginfo.okdoc",
