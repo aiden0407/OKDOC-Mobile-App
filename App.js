@@ -65,9 +65,9 @@ export default function App() {
         vibrationPattern: [0, 250, 250, 250],
         lightColor: '#FF231F7C',
       });
-      await AsyncStorage.setItem('device_type', 'GCM');
+      await AsyncStorage.setItem('@device_type', 'GCM');
     } else {
-      await AsyncStorage.setItem('device_type', 'APNS');
+      await AsyncStorage.setItem('@device_type', 'APNS');
     }
   
     if (Device.isDevice) {
@@ -82,7 +82,7 @@ export default function App() {
         return;
       }
       token = (await Notifications.getDevicePushTokenAsync()).data;
-      await AsyncStorage.setItem('device_token', token);
+      await AsyncStorage.setItem('@device_token', token);
     } else {
       alert('Must use physical device for Push Notifications');
     }
