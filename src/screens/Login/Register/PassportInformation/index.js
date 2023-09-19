@@ -1,5 +1,6 @@
 //React
 import { useState, useContext, useRef } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
@@ -15,14 +16,15 @@ import { BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { checkPassportInformation } from 'api/Login';
+import { checkPassportInformation, createFamilyAccount, createPatientProfileInit } from 'api/Login';
 
 //Assets
 import exclamationIcon from 'assets/icons/circle-exclamation.png';
 
 export default function PassportInformationScreen({ navigation }) {
 
-  const { state: { registerStatus }, dispatch } = useContext(AppContext);
+  const { dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { state: { registerStatus }, appContextDispatch } = useContext(AppContext);
   const [name, setName] = useState(registerStatus?.name ?? '');
   const [passportNumber, setPassportNumber] = useState(registerStatus?.passportNumber ?? '');
   const [gender, setGender] = useState(registerStatus?.gender);
@@ -115,31 +117,55 @@ export default function PassportInformationScreen({ navigation }) {
       // } else if (response.data.response?.data?.RESULTYN === 'N') {
       //   setPassportCertifiactionState('WRONG_INFORMATION_ERROR');
       // } else {
-      //   setPassportCertifiactionState('NONE');
-      //   dispatch({
-      //     type: 'REGISTER_PASSPORT_INFORMATION',
-      //     name: name,
-      //     birth: birth,
-      //     passportNumber: passportNumber,
-      //     dateOfIssue: dateOfIssue,
-      //     dateOfExpiry: dateOfExpiry,
-      //     gender: gender,
-      //   });
-      //   navigation.navigate('PhoneInformation');
+        try {
+          const createFamilyAccountResponse = await createFamilyAccount(registerStatus.email, registerStatus.password, registerStatus.policy);
+          const loginToken = createFamilyAccountResponse.data.response.accessToken;
+          initPatient(loginToken);
+        } catch (error) {
+          Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+        }
       // }
-      dispatch({
-        type: 'REGISTER_PASSPORT_INFORMATION',
-        name: name,
-        birth: birth,
-        passportNumber: passportNumber,
-        dateOfIssue: dateOfIssue,
-        dateOfExpiry: dateOfExpiry,
-        gender: gender,
-      });
-      navigation.navigate('PhoneInformation');
+
     } catch (error) {
       setPassportCertifiactionState('NONE');
       Alert.alert('네트워크 에러', '여권 번호 확인에 실패했습니다. 다시 시도해 주시기 바랍니다.');
+    }
+  }
+
+  const initPatient = async function (loginToken) {
+    try {
+      const createPatientProfileInitResponse = await createPatientProfileInit(loginToken, registerStatus.email, name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry), gender);
+      const mainProfile = createPatientProfileInitResponse.data.response;
+      apiContextDispatch({ 
+        type: 'LOGIN', 
+        loginToken: loginToken,
+        email: registerStatus.email, 
+      });
+
+      setPassportCertifiactionState('NONE');
+
+      try {
+        const accountData = {
+          loginToken: loginToken,
+          email: registerStatus.email,
+        };
+        await AsyncStorage.setItem('accountData', JSON.stringify(accountData));
+      } catch (error) {
+        console.log(error);
+      }
+
+      apiContextDispatch({
+        type: 'PROFILE_CREATE_MAIN',
+        id: mainProfile.id,
+        name: mainProfile.passport.user_name,
+        relationship: mainProfile.relationship,
+        birth: mainProfile.passport.birth,
+        gender: mainProfile.gender,
+      });
+      appContextDispatch({type: 'REGISTER_COMPLETE'});
+      navigation.navigate('RegisterComplete');
+    } catch (error) {
+      Alert.alert('프로필 정보 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
     }
   }
 
