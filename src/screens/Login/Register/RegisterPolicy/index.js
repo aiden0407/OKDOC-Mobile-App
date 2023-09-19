@@ -63,6 +63,7 @@ export default function RegisterPolicyScreen({ navigation }) {
       setPolicy9Agreement(false);
       setPolicy10Agreement(false);
       setMeetRequirement(false);
+      setCheckedPolicies([]);
     } else {
       setPolicy1Agreement(true);
       setPolicy2Agreement(true);
@@ -77,7 +78,7 @@ export default function RegisterPolicyScreen({ navigation }) {
       setMeetRequirement(true);
       const checkedList = [];
       for (let ii = 0; ii < policyList.length; ii++) {
-        checkedList.push(ii+1);
+        checkedList.push(policyList[ii]._id);
       }
       setCheckedPolicies(checkedList);
     }
@@ -88,11 +89,11 @@ export default function RegisterPolicyScreen({ navigation }) {
     for (let ii = 0; ii < policyList.length; ii++) {
       if (ii === index) {
         if (!useStateValues[ii]) {
-          checkedList.push(ii+1);
+          checkedList.push(policyList[ii]._id);
         }
       } else {
         if (useStateValues[ii]) {
-          checkedList.push(ii+1);
+          checkedList.push(policyList[ii]._id);
         }
       }
     }
@@ -131,6 +132,8 @@ export default function RegisterPolicyScreen({ navigation }) {
   }
 
   function PolicyButton({ essential, title, content, index }) {
+    if(title==='NOTIFICATION_OF_ADS') return;
+
     return (
       <Row marginTop={15} align>
         <AgreeRow onPress={() => {
