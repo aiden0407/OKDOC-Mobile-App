@@ -134,7 +134,7 @@ export const checkPassportInformation = async function (name, birth, passportNum
     }
 }
 
-export const createFamilyAccount = async function (email, password, policy) {
+export const createFamilyAccount = async function (email, password, policy, deviceType, deviceToken) {
     try {
         let options = {
             url: `${APIURL}/authentication/sign-up`,
@@ -142,7 +142,9 @@ export const createFamilyAccount = async function (email, password, policy) {
             data: {
                 id: email,
                 password: password,
-                agreements: policy
+                agreements: policy,
+                device_type: deviceType,
+                device_token: deviceToken
             },
         }
         const response = await axios(options);
