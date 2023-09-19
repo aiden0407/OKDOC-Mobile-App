@@ -37,12 +37,12 @@
       ]
     ],
     "ios": {
-      "requireFullScreen": true,
-      "usesAppleSignIn": true,
-      "supportsTablet": false,
       "buildNumber": "13",
       "bundleIdentifier": "kr.co.insunginfo.okdoc",
       "icon": "./src/assets/main/main_icon.png",
+      "supportsTablet": false,
+      "requireFullScreen": true,
+      "usesAppleSignIn": true,
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "진료 예약 시 사진 첨부를 위해 라이브러리 권한을 허용해야 합니다.",
         "NSCameraUsageDescription": "화상 진료를 진행하기 위해서는 카메라 권한을 허용해야 합니다.",
@@ -50,12 +50,12 @@
       }
     },
     "android": {
+      "versionCode": 1,
+      "package": "kr.co.insunginfo.okdoc",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/main/main_icon2.png",
         "backgroundColor": "#5500CC"
-      },
-      "package": "kr.co.insunginfo.okdoc",
-      "versionCode": 1
+      }
     },
     "web": {
       "favicon": "./src/assets/main/main_icon.png"
