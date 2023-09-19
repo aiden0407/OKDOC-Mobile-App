@@ -6,7 +6,7 @@ import FindEmailPasswordScreen from 'screens/Login/FindEmailPassword';
 import RegisterPolicyScreen from 'screens/Login/Register/RegisterPolicy';
 import RegisterPolicyDetailScreen from 'screens/Login/Register/RegisterPolicy/Detail';
 import EmailPasswordScreen from 'screens/Login/Register/EmailPassword';
-// import PassportPhoneCertifiactionScreen from 'screens/Login/Register/PassportPhoneCertifiaction';
+import PassportPhoneCertifiactionScreen from 'screens/Login/Register/PassportPhoneCertifiaction';
 import PassportInformationScreen from 'screens/Login/Register/PassportInformation';
 import PhoneInformationScreen from 'screens/Login/Register/PhoneInformation';
 // import SearchCountryCodeScreen from 'screens/Login/Register/SearchCountryCode';
@@ -70,20 +70,20 @@ export default function LoginStackNavigation({ navigation }) {
             headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('RegisterPolicy')} />,
           }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="PassportPhoneCertifiaction"
           component={PassportPhoneCertifiactionScreen}
           options={{
             title: '회원가입',
             headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('EmailPassword')} />,
           }}
-        /> */}
+        />
         <Stack.Screen
           name="PassportInformation"
           component={PassportInformationScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('EmailPassword')} />,
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PassportPhoneCertifiaction')} />,
           }}
         />
         <Stack.Screen
@@ -91,7 +91,7 @@ export default function LoginStackNavigation({ navigation }) {
           component={PhoneInformationScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PassportInformation')} />,
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PassportPhoneCertifiaction')} />,
           }}
         />
         {/* <Stack.Screen
