@@ -3,6 +3,7 @@ import { useState, useContext, useRef } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Components
 import * as Device from 'expo-device';
@@ -118,7 +119,9 @@ export default function PassportInformationScreen({ navigation }) {
       //   setPassportCertifiactionState('WRONG_INFORMATION_ERROR');
       // } else {
         try {
-          const createFamilyAccountResponse = await createFamilyAccount(registerStatus.email, registerStatus.password, registerStatus.policy);
+          const deviceType = await AsyncStorage.getItem('@device_type');
+          const deviceToken = await AsyncStorage.getItem('@device_token');
+          const createFamilyAccountResponse = await createFamilyAccount(registerStatus.email, registerStatus.password, registerStatus.policy, deviceType, deviceToken);
           const loginToken = createFamilyAccountResponse.data.response.accessToken;
           initPatient(loginToken);
         } catch (error) {
