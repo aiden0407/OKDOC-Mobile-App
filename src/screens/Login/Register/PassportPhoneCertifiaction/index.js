@@ -22,7 +22,7 @@ export default function PassportPhoneCertifiactionScreen({ navigation }) {
     if(allPolicyAgreement==='PASSPORT'){
       navigation.navigate('PassportInformation');
     } else {
-
+      navigation.navigate('PhoneInformation');
     }
   }
 
