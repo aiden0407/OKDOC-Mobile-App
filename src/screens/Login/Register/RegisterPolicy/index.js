@@ -28,13 +28,11 @@ export default function RegisterPolicyScreen({ navigation }) {
   const [policy6Agreement, setPolicy6Agreement] = useState(false);
   const [policy7Agreement, setPolicy7Agreement] = useState(false);
   const [policy8Agreement, setPolicy8Agreement] = useState(false);
-  const [policy9Agreement, setPolicy9Agreement] = useState(false);
-  const [policy10Agreement, setPolicy10Agreement] = useState(false);
   const [meetRequirement, setMeetRequirement] = useState(false);
   const [checkedPolicies, setCheckedPolicies] = useState([]);
 
-  const useStateValues = [policy1Agreement, policy2Agreement, policy3Agreement, policy4Agreement, policy5Agreement, policy6Agreement, policy7Agreement, policy8Agreement, policy9Agreement, policy10Agreement];
-  const setUseStateValues = [setPolicy1Agreement, setPolicy2Agreement, setPolicy3Agreement, setPolicy4Agreement, setPolicy5Agreement, setPolicy6Agreement, setPolicy7Agreement, setPolicy8Agreement, setPolicy9Agreement, setPolicy10Agreement];
+  const useStateValues = [policy1Agreement, policy2Agreement, policy3Agreement, policy4Agreement, policy5Agreement, policy6Agreement, policy7Agreement, policy8Agreement];
+  const setUseStateValues = [setPolicy1Agreement, setPolicy2Agreement, setPolicy3Agreement, setPolicy4Agreement, setPolicy5Agreement, setPolicy6Agreement, setPolicy7Agreement, setPolicy8Agreement];
 
   useEffect(() => {
     initPolicy();
@@ -60,8 +58,6 @@ export default function RegisterPolicyScreen({ navigation }) {
       setPolicy6Agreement(false);
       setPolicy7Agreement(false);
       setPolicy8Agreement(false);
-      setPolicy9Agreement(false);
-      setPolicy10Agreement(false);
       setMeetRequirement(false);
       setCheckedPolicies([]);
     } else {
@@ -73,11 +69,9 @@ export default function RegisterPolicyScreen({ navigation }) {
       setPolicy6Agreement(true);
       setPolicy7Agreement(true);
       setPolicy8Agreement(true);
-      setPolicy9Agreement(true);
-      setPolicy10Agreement(true);
       setMeetRequirement(true);
       const checkedList = [];
-      for (let ii = 0; ii < policyList.length; ii++) {
+      for (let ii = 0; ii < policyList.length-1; ii++) {
         checkedList.push(policyList[ii]._id);
       }
       setCheckedPolicies(checkedList);
@@ -99,22 +93,33 @@ export default function RegisterPolicyScreen({ navigation }) {
     }
     setCheckedPolicies(checkedList);
 
-    for (let ii = 0; ii < policyList.length; ii++) {
+    setAllPolicyAgreement(true);
+    setMeetRequirement(true);
+    for (let ii = 0; ii < policyList.length-1; ii++) {
       if (policyList[ii].level === 'required') {
         if (ii === index) {
           if (useStateValues[ii]) {
             setMeetRequirement(false);
-            return;
+            setAllPolicyAgreement(false);
           }
         } else {
           if (!useStateValues[ii]) {
             setMeetRequirement(false);
-            return;
+            setAllPolicyAgreement(false);
+          }
+        }
+      } else {
+        if (ii === index) {
+          if (useStateValues[ii]) {
+            setAllPolicyAgreement(false);
+          }
+        } else {
+          if (!useStateValues[ii]) {
+            setAllPolicyAgreement(false);
           }
         }
       }
     }
-    setMeetRequirement(true);
   }
 
   function handleDetailScreen(content) {
@@ -123,10 +128,41 @@ export default function RegisterPolicyScreen({ navigation }) {
     })
   }
 
-  function handleNextScreen() {
+  function handleNotice1() {
+    Alert.alert('오케이닥에서 광고성 정보 알림을 보내고자 합니다.', '해당 기기로 이벤트, 할인 혜택 등을 푸시 알림으로 보내드리곘습니다. 앱 푸시에 수신 동의하시겠습니까?', [
+      {
+        text: '허용 안함',
+        onPress: () => handleNotice2()
+      },
+      {
+        text: '허용',
+        onPress: () => handleNextScreen(true)
+      },
+    ]);
+  }
+
+  function handleNotice2() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    Alert.alert('광고성 정보 수신 거부 처리 결과', `${year}년 ${month}월 ${day}일 오케이닥 광고성 정보 수신 거부 처리 완료 되었습니다.`, [
+      {
+        text: '확인',
+        onPress: () => handleNextScreen(false)
+      },
+    ]);
+  }
+
+  function handleNextScreen(isMarketingAgreed) {
+    const checkedList = checkedPolicies;
+    if(isMarketingAgreed){
+      checkedList.push(policyList[policyList.length-1]._id);
+    }
+
     dispatch({
       type: 'REGISTER_POLICY',
-      policy: checkedPolicies,
+      policy: checkedList,
     });
     navigation.navigate('EmailPassword');
   }
@@ -167,7 +203,7 @@ export default function RegisterPolicyScreen({ navigation }) {
 
           <AgreeRow marginTop={30} onPress={() => handleAgreeAllPolicy()}>
             <Ionicons name="checkbox" size={30} color={allPolicyAgreement ? COLOR.MAIN : COLOR.GRAY3} marginRight={6} marginTop={1} />
-            <Text T4 bold>모든 약관에 모두 확인, 동의합니다.</Text>
+            <Text T4 bold>모든 약관에 동의합니다.</Text>
           </AgreeRow>
           {policyList.map((item, index) =>
             <PolicyButton
@@ -184,7 +220,7 @@ export default function RegisterPolicyScreen({ navigation }) {
           text="확인"
           marginBottom={20}
           disabled={!meetRequirement}
-          action={() => handleNextScreen()}
+          action={() => handleNotice1()}
         />
       </Container>
     </SafeArea>
