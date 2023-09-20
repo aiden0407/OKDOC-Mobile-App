@@ -29,15 +29,14 @@ export default function SymptomDetailScreen({ navigation }) {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        aspect: [4, 4],
-        quality: 1,
+        quality: 0.2,
       });
   
       if (!result.canceled) {
         if(result.assets[0].fileSize < 5 * 1024 * 1024){
           setImage1(result.assets[0].uri);
         }else{
-          Alert.alert('5MB 이내의 이미지 파일만 첨부가 가능합니다.');
+          Alert.alert('10MB 이내의 이미지 파일만 첨부가 가능합니다.');
         }
       }
     } catch (error) {
