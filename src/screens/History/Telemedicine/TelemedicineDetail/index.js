@@ -107,7 +107,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
           </PaddingContainer>
 
           <DoctorContainer>
-            <Image source={{ uri: telemedicineData.doctorInfo.photo }} circle width={66} height={66} />
+            <Image source={{ uri: telemedicineData.doctorInfo?.attachments?.[0]?.Location ?? telemedicineData.doctorInfo.photo }} circle width={66} height={66} />
             <CardDoctorInfoColumn>
               <Text T4 bold>{telemedicineData.doctorInfo.name} 의사</Text>
               <Text T7 bold color={COLOR.GRAY2}>{telemedicineData.doctorInfo.hospital} / {telemedicineData.doctorInfo.department}</Text>
