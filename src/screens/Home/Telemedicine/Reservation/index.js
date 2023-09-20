@@ -59,10 +59,7 @@ export default function ReservationScreen({ navigation, route }) {
 
           const wishTime = new Date(schedule.open_at).getTime();
           const currentTime = Date.now();
-          // if (wishTime - currentTime < 86400000) {
-          //   return null;
-          // }
-          if (wishTime - currentTime < 0) {
+          if (wishTime - currentTime < 5 * 60 * 1000) {
             return null;
           }
 
