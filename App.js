@@ -11,7 +11,7 @@ import { COLOR } from 'constants/design'
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { View, Text, TextInput, TouchableOpacity, Platform, Button, Clipboard } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
@@ -58,7 +58,7 @@ export default function App() {
   async function registerForPushNotificationsAsync() {
     let token;
   
-    if (Platform.OS === 'android') {
+    if (Device.osName==='Android') {
       await Notifications.setNotificationChannelAsync('default', {
         name: 'default',
         importance: Notifications.AndroidImportance.MAX,
