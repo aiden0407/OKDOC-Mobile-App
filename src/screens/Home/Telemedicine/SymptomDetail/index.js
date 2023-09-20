@@ -134,7 +134,7 @@ export default function SymptomDetailScreen({ navigation }) {
 
             <Row marginTop={24} align>
               <Ionicons name="alert-circle-outline" size={14} color={COLOR.GRAY2} marginRight={2} />
-              <Text T8 color={COLOR.GRAY0} marginBottom={1}>5MB 이내 이미지 파일(jpg, png) 2개까지 첨부가 가능합니다.</Text>
+              <Text T8 color={COLOR.GRAY0} marginBottom={1}>10MB 이내 이미지 파일(jpg, png) 2개까지 첨부가 가능합니다.</Text>
             </Row>
           </Container>
 
