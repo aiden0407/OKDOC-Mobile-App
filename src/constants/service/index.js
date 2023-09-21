@@ -72,6 +72,11 @@ export const POLICY = {
     },
 }
 
+export const REFUND_POLICY = {
+    'THIRD_PARTY': ``,
+    'REFUND': ``,
+}
+
 export const SYMPTOM = {
     '감기': {
         NAME: 'flu',
