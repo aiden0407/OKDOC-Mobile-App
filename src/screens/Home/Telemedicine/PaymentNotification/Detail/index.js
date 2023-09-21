@@ -9,8 +9,9 @@ export default function PaymentPolicyDetailScreen({ route }) {
   return (
     <SafeArea>
       <WebView
-        //source={{ html: contentsText }}
-        source={{ uri: contentsText }}
+        source={{ html: contentsText }}
+        originWhitelist={['*']}
+        scalesPageToFit
         onError={() => {
           navigation.goBack();
         }}
