@@ -5,6 +5,7 @@ import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
+import { REFUND_POLICY } from 'constants/service';
 import { COLOR } from 'constants/design';
 import { Alert, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -25,15 +26,15 @@ export default function PaymentNotificationScreen({ navigation }) {
 
   function handlePaymentPolicyDetail() {
     navigation.navigate('PaymentPolicyDetail', {
-      //content: policyHTML,
-      content: 'https://insunginfo.notion.site/e1b8271a91034f87b0c1c49a5b0408c2?pvs=4',
+      content: REFUND_POLICY.THIRD_PARTY,
+      //content: 'https://insunginfo.notion.site/e1b8271a91034f87b0c1c49a5b0408c2?pvs=4',
     })
   }
 
   function handleRefundPolicyDetail() {
     navigation.navigate('PaymentPolicyDetail', {
-      //content: refundHTML,
-      content: 'https://insunginfo.notion.site/bfd7d33b62d54458ad81a28de6b5e2c9?pvs=4',
+      content: refundHTML.REFUND,
+      //content: 'https://insunginfo.notion.site/bfd7d33b62d54458ad81a28de6b5e2c9?pvs=4',
     })
   }
 
