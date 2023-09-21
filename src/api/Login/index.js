@@ -2,6 +2,26 @@
 import axios from 'axios';
 import { APIURL } from 'constants/api'
 
+export const familySNSLogin = async function (token, type) {
+    try {
+        let options = {
+            url: `${APIURL}/authentication/sign-in`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            data: {
+                type: type,
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const familyLocalLogin = async function (id, password) {
     try {
         let options = {

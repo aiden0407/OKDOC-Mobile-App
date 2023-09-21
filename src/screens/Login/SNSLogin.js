@@ -1,6 +1,7 @@
 //React
 import { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
+import * as Device from 'expo-device';
 
 //SNS Login
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -12,6 +13,9 @@ import { Alert, StyleSheet } from 'react-native';
 import { SafeArea, KeyboardAvoiding, ContainerCenter, Center, Row } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
+
+//Api
+import { familySNSLogin } from 'api/Login';
 
 //Assets
 import mainLogo from 'assets/main/main_logo.png';
@@ -25,11 +29,9 @@ export default function LoginPage({ navigation }) {
   const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId: '73186981279-rf6plirme3crocphitmssnrlb5o1koem.apps.googleusercontent.com',
     androidClientId: '73186981279-get8upmndqvj3l96lpqdk1q8snrdlk8d.apps.googleusercontent.com',
-    expoClientId: '73186981279-8a8012fca0dq616i7rff9s7kqfhi61rn.apps.googleusercontent.com'
+    expoClientId: '73186981279-8a8012fca0dq616i7rff9s7kqfhi61rn.apps.googleusercontent.com',
+    responseType: 'id_token'
   });
-
-  console.log(appleUserInfo);
-  console.log(googleUserInfo);
 
   useEffect(() => {
     const checkAvailable = async () => {
@@ -45,21 +47,18 @@ export default function LoginPage({ navigation }) {
 
   async function handleSignInWithGoogle() {
     if(response?.type === "success") {
-      await getGoogleUserInfo(response.authentication.accessToken);
+      await getGoogleUserInfo(response.params.id_token);
     }
   }
 
   const getGoogleUserInfo = async (token) => {
     if(!token) return;
+    
     try {
-      const response = await fetch(
-        "https://www.googleapis.com/userinfo/v2/me",
-        {
-          headers: { 'Authorization': `Bearer ${token}` },
-        }
-      );
-      const user = await response.json();
-      setGoogleUserInfo(user);
+      const familySNSLoginResponse = await familySNSLogin(token, Device.osName==='Android'?'':'');
+      const userData = familySNSLoginResponse.data.response;
+      console.log(userData);
+      //setGoogleUserInfo(userData);
     } catch (error) {
       //
     }
