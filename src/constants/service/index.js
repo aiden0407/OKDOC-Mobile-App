@@ -1,3 +1,7 @@
+//POLICY
+import THIRD_PARTY from 'constants/service/THIRD_PARTY.js';
+import REFUND from 'constants/service/REFUND.js';
+
 //symptoms icons
 import fluIcon from 'assets/icons/symptoms/flu.png';
 import headacheIcon from 'assets/icons/symptoms/headache.png';
@@ -73,8 +77,8 @@ export const POLICY = {
 }
 
 export const REFUND_POLICY = {
-    'THIRD_PARTY': ``,
-    'REFUND': ``,
+    'THIRD_PARTY': THIRD_PARTY,
+    'REFUND': REFUND,
 }
 
 export const SYMPTOM = {
