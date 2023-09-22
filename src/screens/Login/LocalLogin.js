@@ -47,7 +47,8 @@ export default function LoginPage({ navigation }) {
           email: email,
         };
         await AsyncStorage.setItem('accountData', JSON.stringify(accountData));
-        navigation.pop(2);
+        navigation.goBack();
+        navigation.pop();
         setLoading(false);
       } catch (error) {
         console.log(error);
