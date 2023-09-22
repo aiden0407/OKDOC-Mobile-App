@@ -46,7 +46,11 @@
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "진료 예약 시 사진 첨부를 위해 라이브러리 권한을 허용해야 합니다.",
         "NSCameraUsageDescription": "화상 진료를 진행하기 위해서는 카메라 권한을 허용해야 합니다.",
-        "NSMicrophoneUsageDescription": "화상 진료를 진행하기 위해서는 마이크 권한을 허용해야 합니다."
+        "NSMicrophoneUsageDescription": "화상 진료를 진행하기 위해서는 마이크 권한을 허용해야 합니다.",
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSAllowsArbitraryLoadsInWebContent": true
+        }
       }
     },
     "android": {
@@ -55,7 +59,19 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/main/main_icon2.png",
         "backgroundColor": "#5500CC"
-      }
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "category": [
+            "DEFAULT",
+            "BROWSABLE"
+          ],
+          "data": {
+            "scheme": "okdoc"
+          }
+        }
+      ]
     },
     "web": {
       "favicon": "./src/assets/main/main_icon.png"
@@ -65,6 +81,7 @@
         "projectId": "6e4d66cc-4110-4cdb-91da-f25c046e0286"
       }
     },
-    "owner": "okdoc"
+    "owner": "okdoc",
+    "scheme": "okdoc"
   }
 }
