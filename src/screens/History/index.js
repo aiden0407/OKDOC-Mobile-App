@@ -243,7 +243,7 @@ export default function HistoryScreen({ navigation }) {
         <CardTitleSection>
           <CardTitleColumn>
             <Text T6 bold>
-              {item.doctorInfo.department} / {item.profileInfo.passport?.user_name}님 ({item.profileInfo.relationship})
+              {item.doctorInfo.department} / {item.profileInfo.passport?.user_name ?? item.profileInfo.passapp_certification?.name}님 ({item.profileInfo.relationship})
             </Text>
             <Text T7 color={COLOR.GRAY1}>
               {item.date} ({item.time})

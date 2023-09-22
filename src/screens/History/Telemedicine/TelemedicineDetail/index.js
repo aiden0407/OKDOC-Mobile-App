@@ -102,7 +102,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
 
           <PaddingContainer>
             <Text T7 color={COLOR.GRAY1} marginTop={30}>{telemedicineData.date} ({telemedicineData.time})</Text>
-            <Text T3 bold marginTop={6}>{telemedicineData.doctorInfo.department} / {telemedicineData.profileInfo.passport?.user_name}님 ({telemedicineData.profileInfo.relationship})</Text>
+            <Text T3 bold marginTop={6}>{telemedicineData.doctorInfo.department} / {telemedicineData.profileInfo.passport?.user_name ?? telemedicineData.profileInfo.passapp_certification?.name}님 ({telemedicineData.profileInfo.relationship})</Text>
             <Text T6 medium color={COLOR.GRAY1} marginTop={12}>{telemedicineData?.explain_symptom}</Text>
           </PaddingContainer>
 
