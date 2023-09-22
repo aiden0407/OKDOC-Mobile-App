@@ -17,7 +17,7 @@ import { BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { checkPassportInformation, createFamilyAccount, createPatientProfileInit } from 'api/Login';
+import { checkPassportInformation, createFamilyAccount, createPatientByPassport } from 'api/Login';
 
 //Assets
 import exclamationIcon from 'assets/icons/circle-exclamation.png';
@@ -137,8 +137,8 @@ export default function PassportInformationScreen({ navigation }) {
 
   const initPatient = async function (loginToken) {
     try {
-      const createPatientProfileInitResponse = await createPatientProfileInit(loginToken, registerStatus.email, name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry), gender);
-      const mainProfile = createPatientProfileInitResponse.data.response;
+      const createPatientByPassportResponse = await createPatientByPassport(loginToken, registerStatus.email, name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry), gender);
+      const mainProfile = createPatientByPassportResponse.data.response;
       apiContextDispatch({ 
         type: 'LOGIN', 
         loginToken: loginToken,
