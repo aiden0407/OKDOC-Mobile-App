@@ -5446,6 +5446,11 @@ hyphenate-style-name@^1.0.3:
   resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.4.tgz#691879af8e220aea5750e8827db4ef62a54e361d"
   integrity sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==
 
+iamport-react-native@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/iamport-react-native/-/iamport-react-native-2.0.6.tgz#b2ac2e28e637702c102ab2103a739a9f3bf76c2e"
+  integrity sha512-NIoxCLLIqkvnAs4dZ0HzT5GMCH0UwR8Pa+C8zq4gN085e5AjN0nFHev2Uo4pgEftzWvCfdu9XZ71BoQzFufmlg==
+
 iconv-lite@0.4.24:
   version "0.4.24"
   resolved "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.4.24.tgz"
