@@ -93,44 +93,6 @@ export const emailCheckClose = async function (email, certificationNumber, email
     }
 }
 
-export const phoneCheckOpen = async function (phone) {
-    try {
-        let options = {
-            url: `${APIURL}/authentication/sms-check-open`,
-            method: 'POST',
-            data: {
-                phone: phone,
-            }
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error;
-    }
-}
-
-export const phoneCheckClose = async function (phone, certificationNumber, phoneToken) {
-    try {
-        let options = {
-            url: `${APIURL}/authentication/sms-check-close`,
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${phoneToken}`
-            },
-            data: {
-                phone: phone,
-                verification_number: Number(certificationNumber),
-            }
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error;
-    }
-}
-
 export const checkPassportInformation = async function (name, birth, passportNumber, dateOfIssue, dateOfExpiry) {
     try {
         let options = {
