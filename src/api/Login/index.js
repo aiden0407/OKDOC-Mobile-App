@@ -174,7 +174,8 @@ export const createPatientByPassApp = async function (loginToken, imp_uid) {
             },
             data: {
                 id: uuid.v4(),
-                imp_uid: imp_uid
+                imp_uid: imp_uid,
+                relationship: '본인',
             }
         }
         const response = await axios(options);
