@@ -1,6 +1,7 @@
 //API
 import axios from 'axios';
 import { APIURL } from 'constants/api'
+import uuid from 'react-native-uuid';
 
 export const familySNSLogin = async function (token, type) {
     try {
@@ -175,10 +176,10 @@ export const createFamilyAccount = async function (email, password, policy, devi
     }
 }
 
-export const createPatientProfileInit = async function (loginToken, email, name, birth, passportNumber, dateOfIssue, dateOfExpiry, gender) {
+export const createPatientByPassport = async function (loginToken, email, name, birth, passportNumber, dateOfIssue, dateOfExpiry, gender) {
     try {
         let options = {
-            url: `${APIURL}/families/${email}/patients/${passportNumber}`,
+            url: `${APIURL}/families/${email}/patients/${uuid.v4()}`,
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${loginToken}`
@@ -191,6 +192,27 @@ export const createPatientProfileInit = async function (loginToken, email, name,
                 close_date: dateOfExpiry,
                 gender: gender,
                 relationship: '본인',
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const createPatientByPassApp = async function (loginToken, imp_uid) {
+    try {
+        let options = {
+            url: `${APIURL}/authentication/give-birth-by-passapp`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+            data: {
+                id: uuid.v4(),
+                imp_uid: imp_uid
             }
         }
         const response = await axios(options);
