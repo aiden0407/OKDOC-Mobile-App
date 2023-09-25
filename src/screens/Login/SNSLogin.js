@@ -52,8 +52,10 @@ export default function LoginPage({ navigation }) {
   }, [response]);
 
   async function handleSignInWithGoogle() {
+    Alert.alert('구글 로그인 성공');
+    //console.log(response);
     if(response?.type === "success") {
-      await getGoogleUserInfo(response.authentication.accessToken);
+      //await getGoogleUserInfo(response.authentication.accessToken);
     }
   }
 
@@ -112,6 +114,7 @@ export default function LoginPage({ navigation }) {
                 try {
                   const credential = await AppleAuthentication.signInAsync({});
                   setAppleUserInfo(credential);
+                  Alert.alert('애플 로그인 성공');
                   // signed in
                 } catch (e) {
                   if (e.code === 'ERR_REQUEST_CANCELED') {
