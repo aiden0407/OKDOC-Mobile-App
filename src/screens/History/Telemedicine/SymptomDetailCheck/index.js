@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import { AppContext } from 'context/AppContext';
 import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
+import { getLocales } from 'expo-localization';
 
 //Components
 import { COLOR } from 'constants/design';
@@ -25,9 +26,16 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   const { dispatch } = useContext(AppContext);
   const { state: { accountData } } = useContext(ApiContext);
   const telemedicineData = route.params.telemedicineData;
+
+  const [deviceLocale, setDeviceLocale] = useState('');
   const [symptom, setSymptom] = useState(telemedicineData.explain_symptom);
   const [count, setCount] = useState(301);
   const savedCallback = useRef();
+
+  useEffect(() => {
+    const locale = getLocales()[0];
+    setDeviceLocale(locale);
+  }, []);
 
   useEffect(() => {
     const originalTime = new Date(telemedicineData.wish_at);
@@ -77,16 +85,20 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   // }
 
   function handleNotice1() {
-    Alert.alert('진료실에 입장하시겠습니까?', '진료는 예약하신 시간부터 시작됩니다.', [
-      {
-        text: '취소',
-        style: 'cancel',
-      },
-      {
-        text: '확인',
-        onPress: () => handleNotice2()
-      },
-    ]);
+    if(deviceLocale?.regionCode === 'KR'){
+      Alert.alert('대한민국에서는 해당 서비스를 이용하실 수 없습니다.');
+    } else {
+      Alert.alert('진료실에 입장하시겠습니까?', '진료는 예약하신 시간부터 시작됩니다.', [
+        {
+          text: '취소',
+          style: 'cancel',
+        },
+        {
+          text: '확인',
+          onPress: () => handleNotice2()
+        },
+      ]);
+    }
   }
 
   function handleNotice2() {
