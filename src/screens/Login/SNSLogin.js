@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import * as Device from 'expo-device';
+import { getLocales } from 'expo-localization';
 
 //SNS Login
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -23,6 +24,7 @@ import googleLogo from 'assets/icons/google-logo.png';
 
 export default function LoginPage({ navigation }) {
 
+  const [deviceLocale, setDeviceLocale] = useState('');
   const [appleAuthAvailable, setAppleAuthAvailable] = useState(false);
   const [appleUserInfo, setAppleUserInfo] = useState();
   const [googleUserInfo, setGoogleUserInfo] = useState();
@@ -30,8 +32,12 @@ export default function LoginPage({ navigation }) {
     iosClientId: '73186981279-rf6plirme3crocphitmssnrlb5o1koem.apps.googleusercontent.com',
     androidClientId: '73186981279-get8upmndqvj3l96lpqdk1q8snrdlk8d.apps.googleusercontent.com',
     expoClientId: '73186981279-8a8012fca0dq616i7rff9s7kqfhi61rn.apps.googleusercontent.com',
-    responseType: 'id_token'
   });
+
+  useEffect(() => {
+    const locale = getLocales()[0];
+    setDeviceLocale(locale);
+  }, []);
 
   useEffect(() => {
     const checkAvailable = async () => {
@@ -47,7 +53,7 @@ export default function LoginPage({ navigation }) {
 
   async function handleSignInWithGoogle() {
     if(response?.type === "success") {
-      await getGoogleUserInfo(response.params.id_token);
+      await getGoogleUserInfo(response.authentication.accessToken);
     }
   }
 
@@ -88,7 +94,11 @@ export default function LoginPage({ navigation }) {
             <GoogleIconWrapper>
               <Image source={googleLogo} width={28} height={28} />
             </GoogleIconWrapper>
-            <Text T3 color="rgba(0, 0, 0, 0.54)">Sign in with Google</Text>
+            {
+              deviceLocale?.regionCode === 'KR'
+                ? <Text T3 color="rgba(0, 0, 0, 0.54)">Google로 로그인</Text>
+                : <Text T3 color="rgba(0, 0, 0, 0.54)">Sign in with Google</Text>
+            }
           </GoogleSignInButton>
 
           {
@@ -100,12 +110,7 @@ export default function LoginPage({ navigation }) {
               style={styles.button}
               onPress={async () => {
                 try {
-                  const credential = await AppleAuthentication.signInAsync({
-                    requestedScopes: [
-                      AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                      AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                    ],
-                  });
+                  const credential = await AppleAuthentication.signInAsync({});
                   setAppleUserInfo(credential);
                   // signed in
                 } catch (e) {
