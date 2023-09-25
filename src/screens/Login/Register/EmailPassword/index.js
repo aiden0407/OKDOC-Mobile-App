@@ -181,7 +181,7 @@ export default function EmailPasswordScreen({ navigation }) {
           <SolidButton
             text="다음"
             marginBottom={20}
-            //disabled={!isEmailCertificated || !validatePassword(password) || password !== passwordCheck}
+            disabled={!isEmailCertificated || !validatePassword(password) || password !== passwordCheck}
             action={() => handleNextScreen()}
           />
         </Container>
