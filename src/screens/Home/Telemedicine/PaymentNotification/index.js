@@ -5,7 +5,7 @@ import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 
 //Components
-import { REFUND_POLICY } from 'constants/service';
+import { CONSTANT_POLICY } from 'constants/service';
 import { COLOR } from 'constants/design';
 import { Alert, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,13 +26,13 @@ export default function PaymentNotificationScreen({ navigation }) {
 
   function handlePaymentPolicyDetail() {
     navigation.navigate('PaymentPolicyDetail', {
-      content: REFUND_POLICY.THIRD_PARTY,
+      content: CONSTANT_POLICY.THIRD_PARTY,
     })
   }
 
   function handleRefundPolicyDetail() {
     navigation.navigate('PaymentPolicyDetail', {
-      content: REFUND_POLICY.REFUND,
+      content: CONSTANT_POLICY.REFUND,
     })
   }
 
@@ -172,7 +172,7 @@ export default function PaymentNotificationScreen({ navigation }) {
               </Row>
               <Text T7 color={COLOR.GRAY2}>결제되는 상품에 대한 배송, 환불, 민원등의 책임은 (주)인성정보에서 진행합니다 | 민원 담당자 : 김형도 02-3400-7000</Text>
             </RefundPolicyNotificationContainer>
-            
+
             <SolidButton
               marginTop={60}
               marginBottom={20}
