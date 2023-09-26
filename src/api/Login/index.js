@@ -3,16 +3,31 @@ import axios from 'axios';
 import { APIURL } from 'constants/api'
 import uuid from 'react-native-uuid';
 
-export const familySNSLogin = async function (token, type) {
+export const familyAppleLogin = async function (credential) {
     try {
         let options = {
-            url: `${APIURL}/authentication/sign-in`,
+            url: `${APIURL}/apple/login-or-signup`,
             method: 'POST',
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
             data: {
-                type: type,
+                access_token: `${credential.identityToken}`,
+                code: `${credential.authorizationCode}`,
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const familyGoogleLogin = async function (credential) {
+    try {
+        let options = {
+            url: `${APIURL}/google/login-or-signup`,
+            method: 'POST',
+            data: {
+                access_token: `${credential.authentication.accessToken}`,
             }
         }
         const response = await axios(options);
