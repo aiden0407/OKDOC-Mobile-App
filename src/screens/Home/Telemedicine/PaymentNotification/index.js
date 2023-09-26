@@ -170,7 +170,9 @@ export default function PaymentNotificationScreen({ navigation }) {
                 <BulletPoint />
                 <Text T7 color={COLOR.GRAY2}>이외 시간 : 환불 불가</Text>
               </Row>
+              <Text T7 color={COLOR.GRAY2}>결제되는 상품에 대한 배송, 환불, 민원등의 책임은 (주)인성정보에서 진행합니다 | 민원 담당자 : 김형도 02-3400-7000</Text>
             </RefundPolicyNotificationContainer>
+            
             <SolidButton
               marginTop={60}
               marginBottom={20}
