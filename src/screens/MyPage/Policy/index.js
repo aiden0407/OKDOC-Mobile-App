@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 
 //Components
-import { POLICY } from 'constants/service';
+import { POLICY, CONSTANT_POLICY } from 'constants/service';
+import { Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeArea, Container, Box } from 'components/Layout';
+import { SafeArea, ScrollView } from 'components/Layout';
 import { Text } from 'components/Text';
 
 //Api
@@ -34,10 +35,8 @@ export default function PolicyScreen({ navigation }) {
     })
   }
 
-  function handleBusinessInfoScreen() {
-    navigation.navigate('BusinessInfo', {
-      content: 'https://insunginfo.notion.site/f3fe462f33844664aebc217ce95d1335?pvs=4',
-    })
+  function handleUserNotice() {
+    navigation.navigate('UserNotice')
   }
 
   function PolicyButton({ title, content }) {
@@ -55,7 +54,7 @@ export default function PolicyScreen({ navigation }) {
 
   return (
     <SafeArea>
-      <Container>
+      <ScrollView>
         <Text T3 bold marginTop={30} marginLeft={20}>약관 및 정책</Text>
         {policyList.map((item, index) => {
           if (item.level === 'required') {
@@ -68,13 +67,29 @@ export default function PolicyScreen({ navigation }) {
             )
           }
         })}
-        <PolicyBox>
-        <PolicyRow onPress={() => handleBusinessInfoScreen()}>
-          <Text T5 medium>사업자 정보 확인</Text>
-          <Ionicons name="chevron-forward" size={20} />
-        </PolicyRow>
-      </PolicyBox>
-      </Container>
+        {
+          policyList.length
+            ? (
+              <PolicyBox>
+              <PolicyRow onPress={() => handleDetailScreen(CONSTANT_POLICY.BUSINESS)}>
+                <Text T5 medium>사업자 정보 확인</Text>
+                <Ionicons name="chevron-forward" size={20} />
+              </PolicyRow>
+            </PolicyBox>)
+            : null
+        }
+        {
+          policyList.length
+            ? (
+              <PolicyBox>
+              <PolicyRow onPress={() => handleUserNotice()}>
+                <Text T5 medium>이용자 고지사항</Text>
+                <Ionicons name="chevron-forward" size={20} />
+              </PolicyRow>
+            </PolicyBox>)
+            : null
+        }
+      </ScrollView>
     </SafeArea>
   );
 }
