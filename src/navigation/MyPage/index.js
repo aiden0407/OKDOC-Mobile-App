@@ -7,7 +7,7 @@ import ProfileDetailScreen from 'screens/MyPage/Profile/ProfileDetail';
 import InquiryScreen from 'screens/MyPage/Inquiry';
 import PolicyScreen from 'screens/MyPage/Policy';
 import PolicyDetailScreen from 'screens/MyPage/Policy/Detail'; 
-import BusinessInfoScreen from 'screens/MyPage/Policy/Business';
+import UserNoticeScreen from 'screens/MyPage/Policy/User';
 import FaqScreen from 'screens/MyPage/FAQ';
 import NotificationScreen from 'screens/MyPage/Notification';
 import NotificationDetailScreen from 'screens/MyPage/Notification/Detail';
@@ -80,15 +80,15 @@ export default function MyPageInnerStackNavigation({ navigation }) {
           name="PolicyDetail"
           component={PolicyDetailScreen}
           options={{
-            title: '서비스 약관 & 정책',
+            title: '서비스 약관 / 정책',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Policy')} />,
           }}
         />
         <Stack.Screen
-          name="BusinessInfo"
-          component={BusinessInfoScreen}
+          name="UserNotice"
+          component={UserNoticeScreen}
           options={{
-            title: '사업자 정보 확인',
+            title: '서비스 약관 / 정책',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Policy')} />,
           }}
         />
