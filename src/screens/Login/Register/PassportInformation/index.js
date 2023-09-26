@@ -25,7 +25,7 @@ import exclamationIcon from 'assets/icons/circle-exclamation.png';
 export default function PassportInformationScreen({ navigation }) {
 
   const { dispatch: apiContextDispatch } = useContext(ApiContext);
-  const { state: { registerStatus }, appContextDispatch } = useContext(AppContext);
+  const { state: { registerStatus }, dispatch: appContextDispatch } = useContext(AppContext);
   const [name, setName] = useState(registerStatus?.name ?? '');
   const [passportNumber, setPassportNumber] = useState(registerStatus?.passportNumber ?? '');
   const [gender, setGender] = useState(registerStatus?.gender);
@@ -121,8 +121,10 @@ export default function PassportInformationScreen({ navigation }) {
         try {
           const deviceType = await AsyncStorage.getItem('@device_type');
           const deviceToken = await AsyncStorage.getItem('@device_token');
+          //const deviceToken = '961ae45edebaf891a146995cad67d1390d47b63b1867c42c93b6c405911ae241'
           const createFamilyAccountResponse = await createFamilyAccount(registerStatus.email, registerStatus.password, registerStatus.policy, deviceType, deviceToken);
           const loginToken = createFamilyAccountResponse.data.response.accessToken;
+          //const loginToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ikluc3VuZ2luZm9fdXNlcl9jcmVkZW50aWFsIn0.eyJlbWFpbCI6ImFpZGVuQGluc3VuZ2luZm8uY28ua3IiLCJyb2xlIjoiZmFtaWx5IiwiaWF0IjoxNjk1Njk0ODU4LCJleHAiOjE2OTkyOTQ4NTgsImF1ZCI6ImxvY2FsaG9zdDozMDAwIiwiaXNzIjoibG9jYWxob3N0OjMwMDAiLCJzdWIiOiJhaWRlbkBpbnN1bmdpbmZvLmNvLmtyIiwianRpIjoiMTY5NTY5NDg1ODM0NSJ9.cfud3ygrsk8yl3l5Wd6vAQYzvqR8bnMSzfZLOkjPdYk'
           initPatient(loginToken);
         } catch (error) {
           Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
