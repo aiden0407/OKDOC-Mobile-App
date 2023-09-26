@@ -1,8 +1,9 @@
 //React
 import { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
-import * as Device from 'expo-device';
 import { getLocales } from 'expo-localization';
+//import * as Device from 'expo-device';
+import * as Clipboard from 'expo-clipboard';
 
 //SNS Login
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -16,7 +17,7 @@ import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 
 //Api
-import { familySNSLogin } from 'api/Login';
+import { familyAppleLogin, familyGoogleLogin } from 'api/Login';
 
 //Assets
 import mainLogo from 'assets/main/main_logo.png';
@@ -52,18 +53,19 @@ export default function LoginPage({ navigation }) {
   }, [response]);
 
   async function handleSignInWithGoogle() {
-    Alert.alert('구글 로그인 성공');
-    //console.log(response);
     if(response?.type === "success") {
-      //await getGoogleUserInfo(response.authentication.accessToken);
+      await Clipboard.setStringAsync(JSON.stringify(response));
+      Alert.alert('구글 로그인 성공', '크레덴셜이 클립보드에 복사되었습니다.');
+      //console.log(response);
+      //await getGoogleUserInfo(response);
     }
   }
 
-  const getGoogleUserInfo = async (token) => {
-    if(!token) return;
+  const getGoogleUserInfo = async (credential) => {
+    if(!credential) return;
     
     try {
-      const familySNSLoginResponse = await familySNSLogin(token, Device.osName==='Android'?'':'');
+      const familySNSLoginResponse = await familyGoogleLogin(credential);
       const userData = familySNSLoginResponse.data.response;
       console.log(userData);
       //setGoogleUserInfo(userData);
@@ -114,7 +116,8 @@ export default function LoginPage({ navigation }) {
                 try {
                   const credential = await AppleAuthentication.signInAsync({});
                   setAppleUserInfo(credential);
-                  Alert.alert('애플 로그인 성공');
+                  await Clipboard.setStringAsync(JSON.stringify(credential));
+                  Alert.alert('애플 로그인 성공', '크레덴셜이 클립보드에 복사되었습니다.');
                   // signed in
                 } catch (e) {
                   if (e.code === 'ERR_REQUEST_CANCELED') {
