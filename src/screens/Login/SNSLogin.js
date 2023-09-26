@@ -114,7 +114,12 @@ export default function LoginPage({ navigation }) {
               style={styles.button}
               onPress={async () => {
                 try {
-                  const credential = await AppleAuthentication.signInAsync({});
+                  const credential = await AppleAuthentication.signInAsync({
+                    requestedScopes: [
+                      AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                      AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                    ],
+                  });
                   setAppleUserInfo(credential);
                   await Clipboard.setStringAsync(JSON.stringify(credential));
                   Alert.alert('애플 로그인 성공', '크레덴셜이 클립보드에 복사되었습니다.');
