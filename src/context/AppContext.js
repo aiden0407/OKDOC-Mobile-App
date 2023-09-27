@@ -16,6 +16,10 @@ const initialState = {
     images: undefined,
   },
   registerStatus: {
+    // APPLE_EMAIL_EXISTENT 애플 회원가입 이메일 존재
+    // APPLE_EMAIL_UNDEFINED 애플 회원가입 이메일 미존재
+    // LOCAL_REGISTER 이메일 회원가입
+    route: undefined, 
     policy: undefined,
     email: undefined,
     password: undefined,
@@ -125,6 +129,15 @@ const reducer = (state, action) => {
         },
       };
 
+    case 'REGISTER_ROUTE':
+      return {
+        ...state,
+        registerStatus: {
+          ...state.registerStatus,
+          route: action.route,
+        },
+      };
+
     case 'REGISTER_POLICY':
       return {
         ...state,
@@ -173,6 +186,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         registerStatus: {
+          route: undefined,
           policy: undefined,
           email: undefined,
           password: undefined,
