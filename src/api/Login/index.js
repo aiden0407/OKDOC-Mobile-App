@@ -6,10 +6,9 @@ import uuid from 'react-native-uuid';
 export const familyAppleLogin = async function (credential) {
     try {
         let options = {
-            url: `${APIURL}/apple/login-or-signup`,
+            url: `${APIURL}/apple/sign-in`,
             method: 'POST',
             data: {
-                access_token: `${credential.identityToken}`,
                 code: `${credential.authorizationCode}`,
             }
         }
@@ -24,7 +23,7 @@ export const familyAppleLogin = async function (credential) {
 export const familyGoogleLogin = async function (credential) {
     try {
         let options = {
-            url: `${APIURL}/google/login-or-signup`,
+            url: `${APIURL}/google/sign-in`,
             method: 'POST',
             data: {
                 access_token: `${credential.authentication.accessToken}`,
@@ -132,7 +131,51 @@ export const checkPassportInformation = async function (name, birth, passportNum
     }
 }
 
-export const createFamilyAccount = async function (email, password, policy, deviceType, deviceToken) {
+export const createAppleAccount = async function (email, password, policy, deviceType, deviceToken, apple_id) {
+    try {
+        let options = {
+            url: `${APIURL}/authentication/sign-up`,
+            method: 'POST',
+            data: {
+                id: email,
+                password: password,
+                agreements: policy,
+                device_type: deviceType,
+                device_token: deviceToken,
+                apple_id: apple_id
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const createGoogleAccount = async function (email, password, policy, deviceType, deviceToken, google_id) {
+    try {
+        let options = {
+            url: `${APIURL}/authentication/sign-up`,
+            method: 'POST',
+            data: {
+                id: email,
+                password: password,
+                agreements: policy,
+                device_type: deviceType,
+                device_token: deviceToken,
+                google_id: google_id,
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const createLocalAccount = async function (email, password, policy, deviceType, deviceToken) {
     try {
         let options = {
             url: `${APIURL}/authentication/sign-up`,
