@@ -17,7 +17,7 @@ import { getRegisterTerms } from 'api/Login';
 
 export default function RegisterPolicyScreen({ navigation }) {
 
-  const { dispatch } = useContext(AppContext);
+  const { state: { registerStatus }, dispatch } = useContext(AppContext);
   const [policyList, setPolicyList] = useState([]);
   const [allPolicyAgreement, setAllPolicyAgreement] = useState(false);
   const [policy1Agreement, setPolicy1Agreement] = useState(false);
@@ -164,7 +164,16 @@ export default function RegisterPolicyScreen({ navigation }) {
       type: 'REGISTER_POLICY',
       policy: checkedList,
     });
-    navigation.navigate('EmailPassword');
+
+    if(registerStatus.route === 'APPLE_EMAIL_EXISTENT'){
+      navigation.navigate('PassportPhoneCertifiaction');
+    }
+    if(registerStatus.route === 'APPLE_EMAIL_UNDEFINED'){
+      navigation.navigate('AppleEmail');
+    }
+    if(registerStatus.route === 'LOCAL_REGISTER'){
+      navigation.navigate('EmailPassword');
+    }
   }
 
   function PolicyButton({ essential, title, content, index }) {
