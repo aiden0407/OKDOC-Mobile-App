@@ -9,6 +9,7 @@ import { CONSTANT_POLICY } from 'constants/service';
 import { COLOR } from 'constants/design';
 import { Alert, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Image } from 'components/Image';
 import { SafeArea, ScrollView, Row, DividingLine, PaddingContainer } from 'components/Layout';
 import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
@@ -16,13 +17,16 @@ import { SolidButton } from 'components/Button';
 //Api
 import { getBiddingList, deleteBidding, createBidding } from 'api/Home';
 
+//Assets
+import exclamationIcon from 'assets/icons/circle-exclamation.png';
+
 export default function PaymentNotificationScreen({ navigation }) {
 
   const { state: { accountData } } = useContext(ApiContext);
   const { state: { telemedicineReservationStatus }, dispatch } = useContext(AppContext);
   const [paymentAgreement, setPaymentAgreement] = useState(false);
   const [refundAgreement, setRefundAgreement] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [processStatus, setProcessStatus] = useState('BEFORE');
 
   function handlePaymentPolicyDetail() {
     navigation.navigate('PaymentPolicyDetail', {
@@ -37,7 +41,7 @@ export default function PaymentNotificationScreen({ navigation }) {
   }
 
   const handleProceedPayment = async function () {
-    setIsLoading(true);
+    setProcessStatus('LOADING');
 
     try {
       const response = await createBidding(accountData.loginToken, telemedicineReservationStatus);
@@ -46,7 +50,7 @@ export default function PaymentNotificationScreen({ navigation }) {
         biddingId: response.data.response.id,
       });
       navigation.navigate('TelemedicineReservationPayment', { screen: 'Payment' });
-      setIsLoading(false);
+      setProcessStatus('BEFORE');
     } catch (error) {
       try {
         const getBiddingListResponse = await getBiddingList(accountData.loginToken);
@@ -60,7 +64,7 @@ export default function PaymentNotificationScreen({ navigation }) {
           handleProceedPayment();
         }, 1000);
       } catch (error) {
-        setIsLoading(false);
+        setProcessStatus('BEFORE');
         Alert.alert('예약 오류', '진료 예약 중 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
       }
     }
@@ -72,15 +76,6 @@ export default function PaymentNotificationScreen({ navigation }) {
 
   return (
     <>
-      {
-        isLoading && (
-          <LoadingBackground>
-            <ActivityIndicator size="large" color="#5500CC" />
-            <Text T5 medium center marginTop={10} marginBottom={100}>결제를 준비중입니다.{'\n'}잠시만 기다려 주시기 바랍니다.</Text>
-          </LoadingBackground>
-        )
-      }
-
       <SafeArea>
         <ScrollView showsVerticalScrollIndicator={false} overScrollMode='never'>
           <PaddingContainer>
@@ -178,11 +173,44 @@ export default function PaymentNotificationScreen({ navigation }) {
               marginBottom={20}
               text="결제하기"
               disabled={!paymentAgreement || !refundAgreement}
-              action={() => handleProceedPayment()}
+              action={() => setProcessStatus('NOTICE')}
             />
           </PaddingContainer>
         </ScrollView>
       </SafeArea>
+
+      {processStatus !== 'BEFORE' && (
+        <BottomSheetBackground>
+          <BottomSheetContainer>
+            {
+              processStatus === 'NOTICE' && (<>
+                <Image source={exclamationIcon} width={70} height={70} marginTop={-20} />
+                <Text T4 medium center marginTop={12}>진료 유의사항을 모두 확인하였으며,{'\n'}이에 동의하고 결제를 진행하시겠습니까?</Text>
+                <Row gap={24} marginTop={30}>
+                  <DisabledButtonWrapper onPress={() => setProcessStatus('BEFORE')}>
+                    <SolidButton
+                      disabled
+                      medium
+                      text="뒤로가기"
+                    />
+                  </DisabledButtonWrapper>
+                  <SolidButton
+                    medium
+                    text="결제하기"
+                    action={() => handleProceedPayment()}
+                  />
+                </Row>
+              </>)
+            }
+            {
+              processStatus === 'LOADING' && (<>
+                <ActivityIndicator size="large" color="#5500CC" />
+                <Text T4 medium center marginTop={30} marginBottom={50}>결제를 준비중입니다.{'\n'}잠시만 기다려 주시기 바랍니다.</Text>
+              </>)
+            }
+          </BottomSheetContainer>
+        </BottomSheetBackground>
+      )}
     </>
   );
 }
@@ -228,4 +256,26 @@ const BulletPoint = styled.View`
   height: 3px;
   border-radius: 50px;
   background-color: ${COLOR.GRAY1};
+`;
+
+const BottomSheetBackground = styled.Pressable`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000000AA;
+`;
+
+const BottomSheetContainer = styled.View`
+  position: absolute;
+  height: 340px;
+  width: 100%;
+  bottom: 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #FFFFFF;
+  align-items: center;
+  justify-content: center;
+`;
+
+const DisabledButtonWrapper = styled.Pressable`
 `;
