@@ -120,16 +120,12 @@ export default function PaymentNotificationScreen({ navigation }) {
             </Row>
             <Row marginTop={15}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-              <Text T6 medium>진료시간은 10분입니다.</Text>
-            </Row>
-            {/* <Row marginTop={15}>
-              <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
               <Text T6 medium>기본 진료시간은 10분이며, 추가로 5분 연장 가능합니다.</Text>
             </Row>
             <Row marginTop={15}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
               <Text T6 medium>진료시간 연장 시 50,000원의 추가 비용이 발생합니다.</Text>
-            </Row> */}
+            </Row>
           </PaddingContainer>
 
           <DividingLine marginTop={30} />
