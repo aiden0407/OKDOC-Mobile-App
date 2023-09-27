@@ -1,5 +1,6 @@
 //React
-import { useEffect, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
+import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
 import { getLocales } from 'expo-localization';
 //import * as Device from 'expo-device';
@@ -25,6 +26,7 @@ import googleLogo from 'assets/icons/google-logo.png';
 
 export default function LoginPage({ navigation }) {
 
+  const { dispatch } = useContext(AppContext);
   const [deviceLocale, setDeviceLocale] = useState('');
   const [appleAuthAvailable, setAppleAuthAvailable] = useState(false);
   const [appleUserInfo, setAppleUserInfo] = useState();
@@ -74,6 +76,22 @@ export default function LoginPage({ navigation }) {
     }
   }
 
+  function AppleRegisterWithEmail() {
+    dispatch({
+      type: 'REGISTER_ROUTE',
+      route: 'APPLE_EMAIL_EXISTENT',
+    });
+    navigation.navigate('RegisterPolicy');
+  }
+
+  function AppleRegisterWithOutEmail() {
+    dispatch({
+      type: 'REGISTER_ROUTE',
+      route: 'APPLE_EMAIL_UNDEFINED',
+    });
+    navigation.navigate('RegisterPolicy');
+  }
+
   function handleLocalLogin() {
     navigation.navigate('LocalLogin');
   }
@@ -96,12 +114,12 @@ export default function LoginPage({ navigation }) {
 
           <GoogleSignInButton onPress={() => promptAsync()}>
             <GoogleIconWrapper>
-              <Image source={googleLogo} width={28} height={28} />
+              <Image source={googleLogo} width={20} height={20} />
             </GoogleIconWrapper>
             {
               deviceLocale?.regionCode === 'KR'
-                ? <Text T3 color="rgba(0, 0, 0, 0.54)">Google로 로그인</Text>
-                : <Text T3 color="rgba(0, 0, 0, 0.54)">Sign in with Google</Text>
+                ? <Text T4 color="rgba(0, 0, 0, 0.54)">Google로 로그인</Text>
+                : <Text T4 color="rgba(0, 0, 0, 0.54)">Sign in with Google</Text>
             }
           </GoogleSignInButton>
 
@@ -121,9 +139,13 @@ export default function LoginPage({ navigation }) {
                     ],
                   });
                   setAppleUserInfo(credential);
-                  await Clipboard.setStringAsync(JSON.stringify(credential));
-                  Alert.alert('애플 로그인 성공', '크레덴셜이 클립보드에 복사되었습니다.');
-                  // signed in
+
+                  // await Clipboard.setStringAsync(JSON.stringify(credential));
+                  // Alert.alert('애플 로그인 성공', '크레덴셜이 클립보드에 복사되었습니다.');
+                  AppleRegisterWithEmail()
+                  // AppleRegisterWithOutEmail()
+
+
                 } catch (e) {
                   if (e.code === 'ERR_REQUEST_CANCELED') {
                     // handle that the user canceled the sign-in flow
@@ -153,7 +175,7 @@ const GoogleSignInButton = styled.TouchableOpacity`
   position: relative;
   margin-top: 30px;
   width: 100%;
-  height: 58px;
+  height: 49px;
   border-radius: 5px;
   display: flex;
   flex-direction: row;
@@ -172,8 +194,8 @@ const GoogleIconWrapper = styled.View`
 const styles = StyleSheet.create({
   button: {
     width: '100%',
-    height: 58,
-    marginTop: 10
+    height: 49,
+    marginTop: 10,
   },
 });
 
