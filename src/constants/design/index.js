@@ -61,7 +61,7 @@ export const BUTTON = {
     },
     MEDIUM: {
         WIDTH: '138px',
-        HEIGHT: '44px',
+        HEIGHT: '54px',
         BORDER_RADIUS: '5px',
     },
     TINY: {
