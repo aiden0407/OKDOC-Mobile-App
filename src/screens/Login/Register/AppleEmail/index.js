@@ -16,7 +16,7 @@ import { emailCheckOpen, emailCheckClose } from 'api/Login';
 
 export default function AppleEmailScreen({ navigation }) {
 
-  const { dispatch } = useContext(AppContext);
+  const { state: { registerStatus }, dispatch } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [invitationToken, setInvitationToken] = useState('');
   const [email, setEmail] = useState('');
@@ -64,8 +64,8 @@ export default function AppleEmailScreen({ navigation }) {
     dispatch({
       type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
       email: email,
-      password: undefined,
-      invitationToken: invitationToken,
+      password: 'qwe123!',
+      invitationToken: registerStatus.invitationToken,
     });
     navigation.navigate('PassportPhoneCertifiaction');
   }
