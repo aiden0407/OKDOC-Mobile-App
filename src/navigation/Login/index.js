@@ -27,19 +27,15 @@ export default function LoginStackNavigation({ navigation }) {
   const { state: { registerStatus } } = useContext(AppContext);
 
   function handleRegisterPolicyBack() {
-    if(registerStatus.route === 'APPLE_EMAIL_EXISTENT'){
-      navigation.navigate('Login');
-    }
-    if(registerStatus.route === 'APPLE_EMAIL_UNDEFINED'){
-      navigation.navigate('Login');
-    }
     if(registerStatus.route === 'LOCAL_REGISTER'){
       navigation.navigate('LocalLogin');
+    } else {
+      navigation.navigate('Login');
     }
   }
 
   function handlePassportPhoneCertifiactionBack() {
-    if(registerStatus.route === 'APPLE_EMAIL_EXISTENT'){
+    if(registerStatus.route === 'APPLE_EMAIL_EXISTENT' || registerStatus.route === 'GOOGLE_REGISTER'){
       navigation.navigate('RegisterPolicy');
     }
     if(registerStatus.route === 'APPLE_EMAIL_UNDEFINED'){

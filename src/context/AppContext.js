@@ -18,6 +18,7 @@ const initialState = {
   registerStatus: {
     // APPLE_EMAIL_EXISTENT 애플 회원가입 이메일 존재
     // APPLE_EMAIL_UNDEFINED 애플 회원가입 이메일 미존재
+    // GOOGLE_REGISTER 구글 회원가입
     // LOCAL_REGISTER 이메일 회원가입
     route: undefined, 
     policy: undefined,
