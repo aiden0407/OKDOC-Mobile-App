@@ -1,6 +1,7 @@
 //React
 import { useState, useRef, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
+import { AppContext } from 'context/AppContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 
@@ -15,7 +16,6 @@ import { SolidButton, OutlineButton } from 'components/Button';
 
 //Api
 import { familyLocalLogin } from 'api/Login';
-import { getPatientList } from 'api/MyPage';
 
 //Assets
 import mainLogo from 'assets/main/main_logo.png';
@@ -23,6 +23,7 @@ import mainLogo from 'assets/main/main_logo.png';
 export default function LoginPage({ navigation }) {
 
   const { dispatch } = useContext(ApiContext);
+  const { dispatch: appContextDispatch } = useContext(AppContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -64,7 +65,13 @@ export default function LoginPage({ navigation }) {
     Alert.alert('안내', '본 서비스는 재외국민을 대상으로 하는 서비스입니다. 회원가입을 진행하기 위해서는 대한민국 여권 또는 한국인 명의의 휴대폰이 필요합니다.', [
       {
         text: '확인',
-        onPress: () => navigation.navigate('RegisterPolicy')
+        onPress: () => {
+          appContextDispatch({
+            type: 'REGISTER_ROUTE',
+            route: 'LOCAL_REGISTER',
+          });
+          navigation.navigate('RegisterPolicy');
+        }
       }
     ]);
   }
