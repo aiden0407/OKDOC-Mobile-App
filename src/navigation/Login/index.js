@@ -1,3 +1,7 @@
+//React
+import { useContext } from 'react';
+import { AppContext } from 'context/AppContext';
+
 //Navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SNSLoginScreen from 'screens/Login/SNSLogin.js';
@@ -6,6 +10,7 @@ import FindEmailPasswordScreen from 'screens/Login/FindEmailPassword';
 import RegisterPolicyScreen from 'screens/Login/Register/RegisterPolicy';
 import RegisterPolicyDetailScreen from 'screens/Login/Register/RegisterPolicy/Detail';
 import EmailPasswordScreen from 'screens/Login/Register/EmailPassword';
+import AppleEmailScreen from 'screens/Login/Register/AppleEmail';
 import PassportPhoneCertifiactionScreen from 'screens/Login/Register/PassportPhoneCertifiaction';
 import PassportInformationScreen from 'screens/Login/Register/PassportInformation';
 import PhoneInformationScreen from 'screens/Login/Register/PhoneInformation';
@@ -18,6 +23,33 @@ import NavigationBackArrow from 'components/NavigationBackArrow';
 const Stack = createNativeStackNavigator();
 
 export default function LoginStackNavigation({ navigation }) {
+
+  const { state: { registerStatus } } = useContext(AppContext);
+
+  function handleRegisterPolicyBack() {
+    if(registerStatus.route === 'APPLE_EMAIL_EXISTENT'){
+      navigation.navigate('Login');
+    }
+    if(registerStatus.route === 'APPLE_EMAIL_UNDEFINED'){
+      navigation.navigate('Login');
+    }
+    if(registerStatus.route === 'LOCAL_REGISTER'){
+      navigation.navigate('LocalLogin');
+    }
+  }
+
+  function handlePassportPhoneCertifiactionBack() {
+    if(registerStatus.route === 'APPLE_EMAIL_EXISTENT'){
+      navigation.navigate('RegisterPolicy');
+    }
+    if(registerStatus.route === 'APPLE_EMAIL_UNDEFINED'){
+      navigation.navigate('AppleEmail');
+    }
+    if(registerStatus.route === 'LOCAL_REGISTER'){
+      navigation.navigate('EmailPassword');
+    }
+  }
+
   return (
     <Stack.Navigator initialRouteName="Login" >
       <Stack.Group screenOptions={{ headerLargeTitleShadowVisible: false }}>
@@ -51,7 +83,7 @@ export default function LoginStackNavigation({ navigation }) {
           component={RegisterPolicyScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('Login')} />,
+            headerLeft: () => <NavigationBackArrow action={()=>handleRegisterPolicyBack()} />,
           }}
         />
         <Stack.Screen
@@ -71,11 +103,19 @@ export default function LoginStackNavigation({ navigation }) {
           }}
         />
         <Stack.Screen
+          name="AppleEmail"
+          component={AppleEmailScreen}
+          options={{
+            title: '회원가입',
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('RegisterPolicy')} />,
+          }}
+        />
+        <Stack.Screen
           name="PassportPhoneCertifiaction"
           component={PassportPhoneCertifiactionScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('EmailPassword')} />,
+            headerLeft: () => <NavigationBackArrow action={()=>handlePassportPhoneCertifiactionBack()} />,
           }}
         />
         <Stack.Screen
