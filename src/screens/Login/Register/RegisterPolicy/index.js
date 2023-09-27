@@ -165,7 +165,7 @@ export default function RegisterPolicyScreen({ navigation }) {
       policy: checkedList,
     });
 
-    if(registerStatus.route === 'APPLE_EMAIL_EXISTENT'){
+    if(registerStatus.route === 'APPLE_EMAIL_EXISTENT' || registerStatus.route === 'GOOGLE_REGISTER'){
       navigation.navigate('PassportPhoneCertifiaction');
     }
     if(registerStatus.route === 'APPLE_EMAIL_UNDEFINED'){
