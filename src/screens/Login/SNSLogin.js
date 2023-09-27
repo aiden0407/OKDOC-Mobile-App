@@ -1,10 +1,9 @@
 //React
 import { useContext, useState, useEffect } from 'react';
 import { AppContext } from 'context/AppContext';
-import styled from 'styled-components/native';
 import { getLocales } from 'expo-localization';
-//import * as Device from 'expo-device';
-import * as Clipboard from 'expo-clipboard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import styled from 'styled-components/native';
 
 //SNS Login
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -29,8 +28,6 @@ export default function LoginPage({ navigation }) {
   const { dispatch } = useContext(AppContext);
   const [deviceLocale, setDeviceLocale] = useState('');
   const [appleAuthAvailable, setAppleAuthAvailable] = useState(false);
-  const [appleUserInfo, setAppleUserInfo] = useState();
-  const [googleUserInfo, setGoogleUserInfo] = useState();
   const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId: '73186981279-rf6plirme3crocphitmssnrlb5o1koem.apps.googleusercontent.com',
     androidClientId: '73186981279-get8upmndqvj3l96lpqdk1q8snrdlk8d.apps.googleusercontent.com',
@@ -56,10 +53,7 @@ export default function LoginPage({ navigation }) {
 
   async function handleSignInWithGoogle() {
     if(response?.type === "success") {
-      await Clipboard.setStringAsync(JSON.stringify(response));
-      Alert.alert('구글 로그인 성공', '크레덴셜이 클립보드에 복사되었습니다.');
-      //console.log(response);
-      //await getGoogleUserInfo(response);
+      await getGoogleUserInfo(response);
     }
   }
 
@@ -67,29 +61,129 @@ export default function LoginPage({ navigation }) {
     if(!credential) return;
     
     try {
-      const familySNSLoginResponse = await familyGoogleLogin(credential);
-      const userData = familySNSLoginResponse.data.response;
-      console.log(userData);
-      //setGoogleUserInfo(userData);
+      const response = await fetch(
+        'https://www.googleapis.com/userinfo/v2/me ',
+        {
+          headers: { Authorization: `Bearer ${credential.authentication.accessToken}` },
+        }
+      );
+      const user = await response.json();
+
+      try {
+        const familyGoogleLoginResponse = await familyGoogleLogin(credential);
+        const loginToken = familyGoogleLoginResponse.data.response.accessToken;
+        
+        dispatch({
+          type: 'LOGIN',
+          loginToken: loginToken,
+          email: user.email,
+        });
+
+        try {
+          const accountData = {
+            loginToken: loginToken,
+            email: user.email,
+          };
+          await AsyncStorage.setItem('accountData', JSON.stringify(accountData));
+          navigation.goBack();
+        } catch (error) {
+          //console.log(error);
+        }
+        
+      } catch (error) {
+        if (error.response.data.statusCode === 404) {
+          dispatch({
+            type: 'REGISTER_ROUTE',
+            route: 'GOOGLE_REGISTER',
+          });
+          Alert.alert('안내', '해당 계정이 존재하지 않습니다. 회원가입을 진행합니다.', [
+            {
+              text: '확인',
+              onPress: () => {
+                dispatch({
+                  type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
+                  email: user.email,
+                  password: 'qwe123!',
+                  invitationToken: user.id,
+                });
+                navigation.navigate('RegisterPolicy');
+              }
+            }
+          ]);
+        }
+      }
+
     } catch (error) {
-      //
+      console.log(error);
     }
   }
 
-  function AppleRegisterWithEmail() {
-    dispatch({
-      type: 'REGISTER_ROUTE',
-      route: 'APPLE_EMAIL_EXISTENT',
-    });
-    navigation.navigate('RegisterPolicy');
-  }
+  async function handleSignInWithApple(credential) {
+    try {
+      const familyAppleLoginResponse = await familyAppleLogin(credential);
+      const loginToken = familyAppleLoginResponse.data.response.accessToken;
+      const email = familyAppleLoginResponse.data.response.email;
+      
+      dispatch({
+        type: 'LOGIN',
+        loginToken: loginToken,
+        email: email,
+      });
 
-  function AppleRegisterWithOutEmail() {
-    dispatch({
-      type: 'REGISTER_ROUTE',
-      route: 'APPLE_EMAIL_UNDEFINED',
-    });
-    navigation.navigate('RegisterPolicy');
+      try {
+        const accountData = {
+          loginToken: loginToken,
+          email: email,
+        };
+        await AsyncStorage.setItem('accountData', JSON.stringify(accountData));
+        navigation.goBack();
+      } catch (error) {
+        //console.log(error);
+      }
+      
+    } catch (error) {
+      if (error.response.data.statusCode === 404) {
+        dispatch({
+          type: 'REGISTER_ROUTE',
+          route: 'APPLE_EMAIL_EXISTENT',
+        });
+        Alert.alert('안내', '해당 계정이 존재하지 않습니다. 회원가입을 진행합니다.', [
+          {
+            text: '확인',
+            onPress: () => {
+              dispatch({
+                type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
+                email: credential.email,
+                password: 'qwe123!',
+                invitationToken: credential.user,
+              });
+              navigation.navigate('RegisterPolicy');
+            }
+          }
+        ]);
+      }
+
+      if (error.response.data.statusCode === 422) {
+        dispatch({
+          type: 'REGISTER_ROUTE',
+          route: 'APPLE_EMAIL_UNDEFINED',
+        });
+        Alert.alert('안내', '해당 계정이 존재하지 않습니다. 회원가입을 진행합니다.', [
+          {
+            text: '확인',
+            onPress: () => {
+              dispatch({
+                type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
+                email: credential.email,
+                password: 'qwe123!',
+                invitationToken: credential.user,
+              });
+              navigation.navigate('RegisterPolicy');
+            }
+          }
+        ]);
+      }
+    }
   }
 
   function handleLocalLogin() {
@@ -138,14 +232,7 @@ export default function LoginPage({ navigation }) {
                       AppleAuthentication.AppleAuthenticationScope.EMAIL,
                     ],
                   });
-                  setAppleUserInfo(credential);
-
-                  // await Clipboard.setStringAsync(JSON.stringify(credential));
-                  // Alert.alert('애플 로그인 성공', '크레덴셜이 클립보드에 복사되었습니다.');
-                  AppleRegisterWithEmail()
-                  // AppleRegisterWithOutEmail()
-
-
+                  handleSignInWithApple(credential);
                 } catch (e) {
                   if (e.code === 'ERR_REQUEST_CANCELED') {
                     // handle that the user canceled the sign-in flow
