@@ -72,7 +72,14 @@ export default function BottomTapNavigation() {
         etcConsideration: mainProfile?.consideration,
       });
     } catch (error) {
-      console.log(error);
+      if (error.response.data.statusCode === 403) {
+        dispatch({ type: 'LOGOUT' });
+        try {
+          await AsyncStorage.removeItem('accountData');
+        } catch (error) {
+          console.log(error);
+        }
+      }
     }
   };
 
