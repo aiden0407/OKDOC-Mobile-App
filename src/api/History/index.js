@@ -115,16 +115,33 @@ export const treatmentCancel = async function (loginToken, appointmentId) {
     }
 }
 
-export const treatmentComplete = async function (loginToken, appointmentId) {
+export const getCCTVInformation = async function (loginToken, appointmentId) {
     try {
         let options = {
-            url: `${APIURL}/treatment_appointments/${appointmentId}`,
+            url: `${APIURL}/hospital_room_cctvs/?treatment_appointment_id=${appointmentId}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
+export const patchCCTVPatientBye = async function (loginToken, CCTVId) {
+    try {
+        let options = {
+            url: `${APIURL}/hospital_room_cctvs/${CCTVId}`,
             method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${loginToken}`
             },
             data: {
-                "status": "EXIT",
+                "patient_motion": "bye",
             },
         }
         const response = await axios(options);
