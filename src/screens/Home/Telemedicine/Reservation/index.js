@@ -46,7 +46,7 @@ export default function ReservationScreen({ navigation, route }) {
           const response = await getScheduleByDoctorId(doctorsList[jj].id);
           const appointmentsList = response.data.response;
           const updatedSchedule = doctorsList[jj].schedules.filter((slot) => {
-            return !appointmentsList.some((appt) => appt.wish_at === slot.open_at);
+            return !appointmentsList.some((appt) => (new Date(appt.hospital_treatment_room.start_time).getTime() === new Date(slot.open_at).getTime()));
           });
           doctorsList[jj].schedules = updatedSchedule;
         } catch (error) {
