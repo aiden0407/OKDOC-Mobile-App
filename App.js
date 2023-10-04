@@ -84,7 +84,7 @@ export default function App() {
       token = (await Notifications.getDevicePushTokenAsync()).data;
       await AsyncStorage.setItem('@device_token', token);
     } else {
-      // alert('Must use physical device for Push Notifications');
+      await AsyncStorage.setItem('@device_token', '961ae45edebaf891a146995cad67d1390d47b63b1867c42c93b6c405911ae241');
     }
   
     return token;
