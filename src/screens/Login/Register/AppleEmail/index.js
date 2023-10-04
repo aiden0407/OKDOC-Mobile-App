@@ -64,7 +64,7 @@ export default function AppleEmailScreen({ navigation }) {
     dispatch({
       type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
       email: email,
-      password: 'qwe123!',
+      password: undefined,
       invitationToken: registerStatus.invitationToken,
     });
     navigation.navigate('PassportPhoneCertifiaction');

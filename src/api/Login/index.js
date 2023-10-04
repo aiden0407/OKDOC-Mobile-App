@@ -138,7 +138,7 @@ export const createAppleAccount = async function (email, password, policy, devic
             method: 'POST',
             data: {
                 id: email,
-                password: password,
+                password: 'qwe123!',
                 agreements: policy,
                 device_type: deviceType,
                 device_token: deviceToken,
@@ -160,7 +160,7 @@ export const createGoogleAccount = async function (email, password, policy, devi
             method: 'POST',
             data: {
                 id: email,
-                password: password,
+                password: 'qwe123!',
                 agreements: policy,
                 device_type: deviceType,
                 device_token: deviceToken,
