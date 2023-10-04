@@ -153,6 +153,27 @@ export const getInvoiceInformation = async function (loginToken, biddingId) {
 }
 
 export const createInvoicePaymentRequest = async function (telemedicineData, email) {
+    const orderId = uuid.v4();
+    const data = {
+        P_INI_PAYMENT: 'CARD',
+        P_MID: 'insungif01',
+        P_OID: orderId,
+        P_NOTI: telemedicineData.invoiceInfo.id,
+        P_GOODS: encodeURIComponent(telemedicineData.productInfo.hospital+' '+telemedicineData.productInfo.name),
+        P_UNAME: encodeURIComponent(telemedicineData.profileInfo?.passport?.user_name ?? telemedicineData.profileInfo?.passapp_certification?.name),
+        P_NEXT_URL: `https://api.okdoc.app/merchant-webhook/advanced-paid/${telemedicineData.invoiceInfo.id}/${telemedicineData.id}`,
+        P_EMAIL: email,
+        P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
+        P_CHARSET: 'utf8'
+    };
+    if (email === 'aiden@insunginfo.co.kr' || email === 'cailyent0407@gmail.com') {
+        data.P_AMT = '1000';
+    } else {
+        data.P_AMT = `${telemedicineData.productInfo.price}`;
+        data.P_TAX = '3818';
+        data.P_TAXFREE = '88000';
+    }
+
     try {
         let options = {
             url: `https://mobile.inicis.com/smart/payment/`,
@@ -160,19 +181,7 @@ export const createInvoicePaymentRequest = async function (telemedicineData, ema
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
-            data: {
-                P_INI_PAYMENT: 'CARD',
-                P_MID: 'insungif01',
-                P_OID: uuid.v4(),
-                P_NOTI: telemedicineData.invoiceInfo.id,
-                P_AMT: email==='aiden@insunginfo.co.kr' ? Number(1000) : Number(telemedicineData.productInfo.price),
-                P_GOODS: encodeURIComponent(telemedicineData.productInfo.hospital+' '+telemedicineData.productInfo.name),
-                P_UNAME: encodeURIComponent(telemedicineData.profileInfo?.passport?.user_name ?? telemedicineData.profileInfo?.passapp_certification?.name),
-                P_NEXT_URL: `https://api.okdoc.app/merchant-webhook/post-paid/${telemedicineData.invoiceInfo.id}/${telemedicineData.id}`,
-                P_EMAIL: email,
-                P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
-                P_CHARSET: 'utf8'
-            },
+            data: data,
         }
         const response = await axios(options);
         return response;

@@ -171,7 +171,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
           <SolidButton
             text="진료실 입장하기"
             marginBottom={20}
-            disabled={accountData.email==='aiden@insunginfo.co.kr' ? false : count>300}
+            disabled={(accountData.email==='aiden@insunginfo.co.kr' || accountData.email==='cailyent0407@gmail.com')? false : count>300}
             action={() => handleNotice1()}
           />
         </Container>

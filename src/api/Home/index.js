@@ -155,9 +155,9 @@ export const createPaymentRequest = async function (reservationInfo, email) {
         P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
         P_CHARSET: 'utf8'
     };
-    if(email==='aiden@insunginfo.co.kr'){
+    if (email === 'aiden@insunginfo.co.kr' || email === 'cailyent0407@gmail.com') {
         data.P_AMT = '1000';
-    }else{
+    } else {
         data.P_AMT = `${reservationInfo.product.price}`;
         data.P_TAX = '3818';
         data.P_TAXFREE = '88000';
@@ -168,7 +168,7 @@ export const createPaymentRequest = async function (reservationInfo, email) {
             url: `https://mobile.inicis.com/smart/payment/`,
             method: 'POST',
             headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
             data: data,
         }

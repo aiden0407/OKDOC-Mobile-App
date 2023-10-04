@@ -82,12 +82,12 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
   }
 
   function handleFinish() {
-    if(count < 600){
+    if (count < 600) {
       navigation.navigate('TelemedicineComplete', {
         telemedicineData: telemedicineData,
       });
     } else {
-      if(accountData.email==='aiden@insunginfo.co.kr'){
+      if (accountData.email === 'aiden@insunginfo.co.kr' || accountData.email === 'cailyent0407@gmail.com') {
         navigation.navigate('TelemedicineComplete', {
           telemedicineData: telemedicineData,
         });
