@@ -26,12 +26,13 @@ export default function PassportInformationScreen({ navigation }) {
 
   const { dispatch: apiContextDispatch } = useContext(ApiContext);
   const { state: { registerStatus }, dispatch: appContextDispatch } = useContext(AppContext);
-  const [name, setName] = useState(registerStatus?.name ?? '');
-  const [passportNumber, setPassportNumber] = useState(registerStatus?.passportNumber ?? '');
-  const [gender, setGender] = useState(registerStatus?.gender);
+  const [name, setName] = useState('');
+  const [passportNumber, setPassportNumber] = useState('');
+  const [gender, setGender] = useState('');
 
   const today = new Date();
-  const [birth, setBirth] = useState(registerStatus?.birth ?? today);
+  const [birth, setBirth] = useState(today);
+  //const [birth, setBirth] = useState(new Date('1998-04-07T02:32:55.000Z'));
   const [isBirthPickerShow, setIsBirthPickerShow] = useState(false);
   const onBirthChange = (event, selectedDate) => {
     setBirth(selectedDate);
@@ -45,7 +46,8 @@ export default function PassportInformationScreen({ navigation }) {
     });
   };
 
-  const [dateOfIssue, setDateOfIssue] = useState(registerStatus?.dateOfIssue ?? today);
+  const [dateOfIssue, setDateOfIssue] = useState(today);
+  //const [dateOfIssue, setDateOfIssue] = useState(new Date('2023-03-15T02:32:55.000Z'));
   const [isDateOfIssuePickerShow, setIsDateOfIssuePickerShow] = useState(false);
   const onDateOfIssueChange = (event, selectedDate) => {
     setDateOfIssue(selectedDate);
@@ -59,7 +61,8 @@ export default function PassportInformationScreen({ navigation }) {
     });
   };
 
-  const [dateOfExpiry, setDateOfExpiry] = useState(registerStatus?.dateOfExpiry ?? today);
+  const [dateOfExpiry, setDateOfExpiry] = useState(today);
+  //const [dateOfExpiry, setDateOfExpiry] = useState(new Date('2033-03-15T02:32:55.000Z'));
   const [isDateOfExpiryPickerShow, setIsDateOfExpiryPickerShow] = useState(false);
   const onDateOfExpiryChange = (event, selectedDate) => {
     setDateOfExpiry(selectedDate);
@@ -136,6 +139,7 @@ export default function PassportInformationScreen({ navigation }) {
           const loginToken = createLocalAccountResponse.data.response.accessToken;
           initPatient(loginToken);
         } catch (error) {
+          setPassportCertifiactionState('NONE');
           Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
         }
       }
@@ -179,6 +183,7 @@ export default function PassportInformationScreen({ navigation }) {
       appContextDispatch({type: 'REGISTER_COMPLETE'});
       navigation.navigate('RegisterComplete');
     } catch (error) {
+      setPassportCertifiactionState('NONE');
       Alert.alert('프로필 정보 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
     }
   }
