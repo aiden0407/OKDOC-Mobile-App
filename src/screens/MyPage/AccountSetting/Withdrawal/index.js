@@ -1,6 +1,7 @@
 //React
 import { useState, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Components
 import { Alert } from 'react-native';
