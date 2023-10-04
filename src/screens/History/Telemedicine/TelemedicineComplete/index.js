@@ -16,7 +16,7 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 import checkIcon from 'assets/icons/circle-check.png';
 
 //Api
-import { treatmentComplete, getInvoiceInformation } from 'api/History';
+import { getCCTVInformation, patchCCTVPatientBye, getInvoiceInformation } from 'api/History';
 
 export default function TelemedicineCompleteScreen({ navigation, route }) {
 
@@ -26,7 +26,7 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
   const telemedicineData = route.params.telemedicineData;
 
   useEffect(() => {
-    letTreatmentStatusEXIT()
+    letCCTVStatusChange()
   }, []);
 
   useEffect(() => {
@@ -37,11 +37,18 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
   }
 
-  const letTreatmentStatusEXIT = async function () {
+  const letCCTVStatusChange = async function () {
     try {
-      await treatmentComplete(accountData.loginToken, telemedicineData.id);
-      dispatch({ type: 'HISTORY_DATA_ID_DELETE' });
-      checkInvoice();
+      const response = await getCCTVInformation(accountData.loginToken, telemedicineData.id);
+
+      try {
+        await patchCCTVPatientBye(accountData.loginToken, response.data.response[0].id);
+        dispatch({ type: 'HISTORY_DATA_ID_DELETE' });
+        checkInvoice();
+      } catch (error) {
+        Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+      }
+
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }
