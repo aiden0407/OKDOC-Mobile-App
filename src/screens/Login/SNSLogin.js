@@ -1,5 +1,6 @@
 //React
 import { useContext, useState, useEffect } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import { getLocales } from 'expo-localization';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,7 +26,8 @@ import googleLogo from 'assets/icons/google-logo.png';
 
 export default function LoginPage({ navigation }) {
 
-  const { dispatch } = useContext(AppContext);
+  const { dispatch } = useContext(ApiContext);
+  const { dispatch: appContextDispatch } = useContext(AppContext);
   const [deviceLocale, setDeviceLocale] = useState('');
   const [appleAuthAvailable, setAppleAuthAvailable] = useState(false);
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -62,7 +64,7 @@ export default function LoginPage({ navigation }) {
     
     try {
       const response = await fetch(
-        'https://www.googleapis.com/userinfo/v2/me ',
+        'https://www.googleapis.com/userinfo/v2/me',
         {
           headers: { Authorization: `Bearer ${credential.authentication.accessToken}` },
         }
@@ -92,7 +94,7 @@ export default function LoginPage({ navigation }) {
         
       } catch (error) {
         if (error.response.data.statusCode === 404) {
-          dispatch({
+          appContextDispatch({
             type: 'REGISTER_ROUTE',
             route: 'GOOGLE_REGISTER',
           });
@@ -100,16 +102,18 @@ export default function LoginPage({ navigation }) {
             {
               text: '확인',
               onPress: () => {
-                dispatch({
+                appContextDispatch({
                   type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
                   email: user.email,
-                  password: 'qwe123!',
+                  password: undefined,
                   invitationToken: user.id,
                 });
                 navigation.navigate('RegisterPolicy');
               }
             }
           ]);
+        } else {
+          Alert.alert('네트워크 오류로 인해 로그인에 실패했습니다.');
         }
       }
 
@@ -143,7 +147,7 @@ export default function LoginPage({ navigation }) {
       
     } catch (error) {
       if (error.response.data.statusCode === 404) {
-        dispatch({
+        appContextDispatch({
           type: 'REGISTER_ROUTE',
           route: 'APPLE_EMAIL_EXISTENT',
         });
@@ -151,20 +155,18 @@ export default function LoginPage({ navigation }) {
           {
             text: '확인',
             onPress: () => {
-              dispatch({
+              appContextDispatch({
                 type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
                 email: credential.email,
-                password: 'qwe123!',
+                password: undefined,
                 invitationToken: credential.user,
               });
               navigation.navigate('RegisterPolicy');
             }
           }
         ]);
-      }
-
-      if (error.response.data.statusCode === 422) {
-        dispatch({
+      } else if (error.response.data.statusCode === 422) {
+        appContextDispatch({
           type: 'REGISTER_ROUTE',
           route: 'APPLE_EMAIL_UNDEFINED',
         });
@@ -172,16 +174,18 @@ export default function LoginPage({ navigation }) {
           {
             text: '확인',
             onPress: () => {
-              dispatch({
+              appContextDispatch({
                 type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
                 email: credential.email,
-                password: 'qwe123!',
+                password: undefined,
                 invitationToken: credential.user,
               });
               navigation.navigate('RegisterPolicy');
             }
           }
         ]);
+      } else {
+        Alert.alert('네트워크 오류로 인해 로그인에 실패했습니다.');
       }
     }
   }
