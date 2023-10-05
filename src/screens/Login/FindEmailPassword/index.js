@@ -10,10 +10,14 @@ import { SafeArea, KeyboardAvoiding, Container, Center, Box } from 'components/L
 import { Text } from 'components/Text';
 import { LineInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
+import { Image } from 'components/Image';
 import NavigationBackArrow from 'components/NavigationBackArrow';
 
 //Api
 import { findFamilyAccount, findPasswordOpen, findPasswordClose, changePassword } from 'api/Login';
+
+//Assets
+import exclamationIcon from 'assets/icons/circle-exclamation.png';
 
 export default function FindEmailPasswordScreen({ navigation }) {
 
@@ -24,6 +28,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
   const [foundEmail, setFoundEmail] = useState('');
   const findEmailBirthRef = useRef();
 
+  const [findPasswordAccountType, setFindPasswordAccountType] = useState('');
   const [isFindPasswordSubmitted, setIsFindPasswordSubmitted] = useState(false);
   const [findPasswordEmail, setFindPasswordEmail] = useState('');
   const [findPasswordName, setFindPasswordName] = useState('');
@@ -67,15 +72,22 @@ export default function FindEmailPasswordScreen({ navigation }) {
     setFindPasswordBirth(formattedDate);
   };
 
-  function maskEmail(email) {
-    const [username, domain] = email.split('@');
+  function maskEmail(familyAccount) {
+    const [username, domain] = familyAccount.id.split('@');
     const usernameLength = username.length;
     let maskedUsername = username.slice(0, 2);
     if (usernameLength > 2) {
       maskedUsername += '*'.repeat(usernameLength - 2);
     }
     maskedUsername += username.charAt(usernameLength - 1);
-    return maskedUsername + '@' + domain;
+
+    if (familyAccount?.apple_id) {
+      return maskedUsername + '@' + domain + ' (애플 로그인)';
+    } else if (familyAccount?.google_id) {
+      return maskedUsername + '@' + domain + ' (구글 로그인)';
+    } else {
+      return maskedUsername + '@' + domain;
+    }
   }
 
   function validatePassword(password) {
@@ -84,7 +96,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
   }
 
   function handleOpenChannelTalk() {
-    navigation.navigate('InquiryStackNavigation', { 
+    navigation.navigate('InquiryStackNavigation', {
       screen: 'Inquiry',
       params: { headerTitle: '이메일 / 비밀번호 찾기 문의' },
     });
@@ -96,7 +108,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
       const familyAccountArray = response.data.response;
       const pastHistory = [];
       familyAccountArray.forEach((familyAccount) => {
-        pastHistory.push(maskEmail(familyAccount.family_id));
+        pastHistory.push(maskEmail(familyAccount));
       });
       setFoundEmail(pastHistory);
       setIsFindEmailSubmitted(true);
@@ -112,8 +124,16 @@ export default function FindEmailPasswordScreen({ navigation }) {
   const handleFindPassword = async function () {
     try {
       const response = await findPasswordOpen(findPasswordEmail, findPasswordName, Number(findPasswordBirth.replaceAll("-", "")));
-      setEmailToken(response.data.response.message);
-      setIsFindPasswordSubmitted(true);
+
+      if (response.data.response.family?.apple_id) {
+        setFindPasswordAccountType('애플');
+      } else if (response.data.response.family?.google_id) {
+        setFindPasswordAccountType('구글');
+      } else {
+        setEmailToken(response.data.response.verifiedToken);
+        setIsFindPasswordSubmitted(true);
+      }
+
     } catch (error) {
       Alert.alert('해당 정보로 등록된 유저가 존재하지 않습니다.');
     }
@@ -159,247 +179,267 @@ export default function FindEmailPasswordScreen({ navigation }) {
     navigation.goBack();
   }
 
+  function handleGoBackToSNSLogin() {
+    navigation.pop(2);
+  }
+
   return (
-    <SafeArea>
-      <KeyboardAvoiding>
-        <Container >
-          <CustomHeader>
-            <BackArrowWrapper>
-              <NavigationBackArrow action={() => handleGoBackToLogin()} />
-            </BackArrowWrapper>
-            <HeaderColumn onPress={() => setPageStatus('EMAIL')}>
-              <Text T5 bold={pageStatus === 'EMAIL'} medium={pageStatus !== 'EMAIL'} marginTop={10}>이메일 찾기</Text>
-              {pageStatus === 'EMAIL' && <SelectedBorderBottom />}
-            </HeaderColumn>
-            <HeaderColumn onPress={() => setPageStatus('PASSWORD')}>
-              <Text T5 bold={pageStatus === 'PASSWORD'} medium={pageStatus !== 'PASSWORD'} marginTop={10}>비밀번호 찾기</Text>
-              {pageStatus === 'PASSWORD' && <SelectedBorderBottom />}
-            </HeaderColumn>
-          </CustomHeader>
+    <>
+      <SafeArea>
+        <KeyboardAvoiding>
+          <Container >
+            <CustomHeader>
+              <BackArrowWrapper>
+                <NavigationBackArrow action={() => handleGoBackToLogin()} />
+              </BackArrowWrapper>
+              <HeaderColumn onPress={() => setPageStatus('EMAIL')}>
+                <Text T5 bold={pageStatus === 'EMAIL'} medium={pageStatus !== 'EMAIL'} marginTop={10}>이메일 찾기</Text>
+                {pageStatus === 'EMAIL' && <SelectedBorderBottom />}
+              </HeaderColumn>
+              <HeaderColumn onPress={() => setPageStatus('PASSWORD')}>
+                <Text T5 bold={pageStatus === 'PASSWORD'} medium={pageStatus !== 'PASSWORD'} marginTop={10}>비밀번호 찾기</Text>
+                {pageStatus === 'PASSWORD' && <SelectedBorderBottom />}
+              </HeaderColumn>
+            </CustomHeader>
 
-          {(pageStatus === 'EMAIL' && !isFindEmailSubmitted) && (
-            <Container paddingHorizontal={20}>
-              <Container>
-                <Text T3 bold marginTop={42}>회원정보를 입력해 주세요</Text>
-                <Text T6 color={COLOR.GRAY1} marginTop={12}>회원 가입 시 입력했던 정보와{'\n'}동일하게 입력해주세요</Text>
-                <LineInput
-                  marginTop={42}
-                  placeholder="이름"
-                  value={findEmailName}
-                  onChangeText={setFindEmailName}
-                  returnKeyType="next"
-                  onSubmitEditing={() => findEmailBirthRef.current.focus()}
-                />
-                <LineInput
-                  marginTop={24}
-                  placeholder="생년월일 8자리"
-                  value={findEmailBirth}
-                  onChangeText={handleFindEmailBirthChange}
-                  inputMode="numeric"
-                  maxLength={10}
-                  ref={findEmailBirthRef}
-                  onSubmitEditing={() => handleFindEmail()}
-                />
-              </Container>
-
-              <Center>
-                <FindEmailPasswordContainer onPress={() => handleOpenChannelTalk()}>
-                  <Text T6 color={COLOR.GRAY2}>이메일/비밀번호 찾는데 문제가 있으신가요?</Text>
-                </FindEmailPasswordContainer>
-              </Center>
-
-              <SolidButton
-                text="확인"
-                marginBottom={20}
-                disabled={!findEmailName || findEmailBirth.length !== 10}
-                action={() => handleFindEmail()}
-              />
-            </Container>
-          )}
-
-          {(pageStatus === 'EMAIL' && isFindEmailSubmitted) && (
-            <Container paddingHorizontal={20}>
-              <Container>
-                <Text T3 bold marginTop={42}>이메일을 확인해주세요</Text>
-                <Text T6 color={COLOR.GRAY1} marginTop={12}>입력하신 정보로 조회되는{'\n'}계정 이메일 정보입니다</Text>
-                <EmailBoxColumn>
-                {foundEmail?.map((item) =>
-                  <EmailBox key={item}>
-                    <Text T6 medium>{item}</Text>
-                  </EmailBox>
-                )}
-                </EmailBoxColumn>
-              </Container>
-
-              <Center>
-                <FindEmailPasswordContainer onPress={() => handleOpenChannelTalk()}>
-                  <Text T6 color={COLOR.GRAY2}>이메일/비밀번호 찾는데 문제가 있으신가요?</Text>
-                </FindEmailPasswordContainer>
-              </Center>
-
-              <SolidButton
-                text="뒤로가기"
-                marginBottom={20}
-                action={() => handleGoBackToLogin()}
-              />
-            </Container>
-          )}
-
-          {(pageStatus === 'PASSWORD' && !isFindPasswordSubmitted) && (
-            <Container paddingHorizontal={20}>
-              <Container>
-                <Text T3 bold marginTop={42}>회원정보를 입력해 주세요</Text>
-                <Text T6 color={COLOR.GRAY1} marginTop={12}>회원 가입 시 입력했던 정보와{'\n'}동일하게 입력해주세요</Text>
-                <LineInput
-                  marginTop={42}
-                  placeholder="이메일"
-                  value={findPasswordEmail}
-                  onChangeText={setFindPasswordEmail}
-                  autoComplete="email"
-                  keyboardType="email-address"
-                  returnKeyType="next"
-                  onSubmitEditing={() => findPasswordNameRef.current.focus()}
-                />
-                <LineInput
-                  marginTop={24}
-                  placeholder="이름"
-                  value={findPasswordName}
-                  onChangeText={setFindPasswordName}
-                  returnKeyType="next"
-                  ref={findPasswordNameRef}
-                  onSubmitEditing={() => findPasswordBirthRef.current.focus()}
-                />
-                <LineInput
-                  marginTop={24}
-                  placeholder="생년월일 8자리"
-                  value={findPasswordBirth}
-                  onChangeText={handleFindPasswordBirthChange}
-                  inputMode="numeric"
-                  maxLength={10}
-                  ref={findPasswordBirthRef}
-                  onSubmitEditing={() => handleFindPassword()}
-                />
-              </Container>
-
-              <Center>
-                <FindEmailPasswordContainer onPress={() => handleOpenChannelTalk()}>
-                  <Text T6 color={COLOR.GRAY2}>이메일/비밀번호 찾는데 문제가 있으신가요?</Text>
-                </FindEmailPasswordContainer>
-              </Center>
-
-              <SolidButton
-                text="확인"
-                marginBottom={20}
-                disabled={!findPasswordEmail || !findPasswordName || findPasswordBirth.length!==10}
-                action={() => handleFindPassword()}
-              />
-            </Container>
-          )}
-
-          {(pageStatus === 'PASSWORD' && isFindPasswordSubmitted && !isEmailCertificated) && (
-            <Container paddingHorizontal={20}>
-              <Container>
-                <Text T3 bold marginTop={42}>이메일로 인증번호를 보냈습니다</Text>
-                <Text T6 color={COLOR.GRAY1} marginTop={12}>아래 이메일로 인증번호를 발송하였습니다{'\n'}인증번호를 입력하고, 비밀번호를 변경해주세요</Text>
-                <EmailBox marginTop={48}>
-                  <Text T6 medium>{findPasswordEmail}</Text>
-                  <CustomOutlineButtonBackground
-                    onPress={() => handleEmailResend()}
-                    underlayColor={COLOR.SUB4}
-                  >
-                    <Text T7 medium color={COLOR.MAIN}>재전송</Text>
-                  </CustomOutlineButtonBackground>
-                </EmailBox>
-
-                <InputContainer>
-                  <CustomLineInput
-                    placeholder="인증번호 6자리"
-                    value={findPasswordCertificationNumber}
-                    onChangeText={setFindPasswordCertificationNumber}
-                    maxLength={6}
+            {(pageStatus === 'EMAIL' && !isFindEmailSubmitted) && (
+              <Container paddingHorizontal={20}>
+                <Container>
+                  <Text T3 bold marginTop={42}>회원정보를 입력해 주세요</Text>
+                  <Text T6 color={COLOR.GRAY1} marginTop={12}>회원 가입 시 입력했던 정보와{'\n'}동일하게 입력해주세요</Text>
+                  <LineInput
+                    marginTop={42}
+                    placeholder="이름"
+                    value={findEmailName}
+                    onChangeText={setFindEmailName}
                     returnKeyType="next"
-                    onSubmitEditing={() => handleFindPassword()}
+                    onSubmitEditing={() => findEmailBirthRef.current.focus()}
                   />
-                  <CustomOutlineButtonBackground
-                    disabled={findPasswordCertificationNumber?.length < 6}
-                    onPress={() => handleCheckCertificationNumber(findPasswordCertificationNumber)}
-                    underlayColor={COLOR.SUB4}
-                    style={{ position: 'absolute', right: 16, top: Device.osName === 'Android' ? 22 : 16, zIndex: 1 }}
-                  >
-                    <Text T7 medium color={findPasswordCertificationNumber?.length < 6 ? COLOR.GRAY2 : COLOR.MAIN}>인증확인</Text>
-                  </CustomOutlineButtonBackground>
-                </InputContainer>
-              </Container>
-
-              <Center>
-                <FindEmailPasswordContainer onPress={() => handleOpenChannelTalk()}>
-                  <Text T6 color={COLOR.GRAY2}>이메일/비밀번호 찾는데 문제가 있으신가요?</Text>
-                </FindEmailPasswordContainer>
-              </Center>
-
-            </Container>
-          )}
-
-          {(pageStatus === 'PASSWORD' && isFindPasswordSubmitted && isEmailCertificated) && (
-            <Container paddingHorizontal={20}>
-              <Container>
-                <Text T3 bold marginTop={42}>이메일로 인증번호를 보냈습니다</Text>
-                <Text T6 color={COLOR.GRAY1} marginTop={12}>아래 이메일로 인증번호를 발송하였습니다{'\n'}인증번호를 입력하고, 비밀번호를 변경해주세요</Text>
-                <EmailBox marginTop={48}>
-                  <Text T6 medium>{findPasswordEmail}</Text>
-                  <Box height={36} />
-                </EmailBox>
-
-                <InputContainer>
                   <LineInput
                     marginTop={24}
-                    placeholder="비밀번호 입력"
-                    value={newPassword}
-                    onChangeText={setNewPassword}
-                    secureTextEntry
+                    placeholder="생년월일 8자리"
+                    value={findEmailBirth}
+                    onChangeText={handleFindEmailBirthChange}
+                    inputMode="numeric"
+                    maxLength={10}
+                    ref={findEmailBirthRef}
+                    onSubmitEditing={() => handleFindEmail()}
+                  />
+                </Container>
+
+                <Center>
+                  <FindEmailPasswordContainer onPress={() => handleOpenChannelTalk()}>
+                    <Text T6 color={COLOR.GRAY2}>이메일/비밀번호 찾는데 문제가 있으신가요?</Text>
+                  </FindEmailPasswordContainer>
+                </Center>
+
+                <SolidButton
+                  text="확인"
+                  marginBottom={20}
+                  disabled={!findEmailName || findEmailBirth.length !== 10}
+                  action={() => handleFindEmail()}
+                />
+              </Container>
+            )}
+
+            {(pageStatus === 'EMAIL' && isFindEmailSubmitted) && (
+              <Container paddingHorizontal={20}>
+                <Container>
+                  <Text T3 bold marginTop={42}>이메일을 확인해주세요</Text>
+                  <Text T6 color={COLOR.GRAY1} marginTop={12}>입력하신 정보로 조회되는{'\n'}계정 이메일 정보입니다</Text>
+                  <EmailBoxColumn>
+                    {foundEmail?.map((item) =>
+                      <EmailBox key={item}>
+                        <Text T6 medium>{item}</Text>
+                      </EmailBox>
+                    )}
+                  </EmailBoxColumn>
+                </Container>
+
+                <Center>
+                  <FindEmailPasswordContainer onPress={() => handleOpenChannelTalk()}>
+                    <Text T6 color={COLOR.GRAY2}>이메일/비밀번호 찾는데 문제가 있으신가요?</Text>
+                  </FindEmailPasswordContainer>
+                </Center>
+
+                <SolidButton
+                  text="뒤로가기"
+                  marginBottom={20}
+                  action={() => handleGoBackToLogin()}
+                />
+              </Container>
+            )}
+
+            {(pageStatus === 'PASSWORD' && !isFindPasswordSubmitted) && (
+              <Container paddingHorizontal={20}>
+                <Container>
+                  <Text T3 bold marginTop={42}>회원정보를 입력해 주세요</Text>
+                  <Text T6 color={COLOR.GRAY1} marginTop={12}>회원 가입 시 입력했던 정보와{'\n'}동일하게 입력해주세요</Text>
+                  <LineInput
+                    marginTop={42}
+                    placeholder="이메일"
+                    value={findPasswordEmail}
+                    onChangeText={setFindPasswordEmail}
+                    autoComplete="email"
+                    keyboardType="email-address"
                     returnKeyType="next"
-                    onSubmitEditing={() => newPasswordCheckRef.current.focus()}
+                    onSubmitEditing={() => findPasswordNameRef.current.focus()}
+                  />
+                  <LineInput
+                    marginTop={24}
+                    placeholder="이름"
+                    value={findPasswordName}
+                    onChangeText={setFindPasswordName}
+                    returnKeyType="next"
+                    ref={findPasswordNameRef}
+                    onSubmitEditing={() => findPasswordBirthRef.current.focus()}
+                  />
+                  <LineInput
+                    marginTop={24}
+                    placeholder="생년월일 8자리"
+                    value={findPasswordBirth}
+                    onChangeText={handleFindPasswordBirthChange}
+                    inputMode="numeric"
+                    maxLength={10}
+                    ref={findPasswordBirthRef}
+                    onSubmitEditing={() => handleFindPassword()}
+                  />
+                </Container>
+
+                <Center>
+                  <FindEmailPasswordContainer onPress={() => handleOpenChannelTalk()}>
+                    <Text T6 color={COLOR.GRAY2}>이메일/비밀번호 찾는데 문제가 있으신가요?</Text>
+                  </FindEmailPasswordContainer>
+                </Center>
+
+                <SolidButton
+                  text="확인"
+                  marginBottom={20}
+                  disabled={!findPasswordEmail || !findPasswordName || findPasswordBirth.length !== 10}
+                  action={() => handleFindPassword()}
+                />
+              </Container>
+            )}
+
+            {(pageStatus === 'PASSWORD' && isFindPasswordSubmitted && !isEmailCertificated) && (
+              <Container paddingHorizontal={20}>
+                <Container>
+                  <Text T3 bold marginTop={42}>이메일로 인증번호를 보냈습니다</Text>
+                  <Text T6 color={COLOR.GRAY1} marginTop={12}>아래 이메일로 인증번호를 발송하였습니다{'\n'}인증번호를 입력하고, 비밀번호를 변경해주세요</Text>
+                  <EmailBox marginTop={48}>
+                    <Text T6 medium>{findPasswordEmail}</Text>
+                    <CustomOutlineButtonBackground
+                      onPress={() => handleEmailResend()}
+                      underlayColor={COLOR.SUB4}
+                    >
+                      <Text T7 medium color={COLOR.MAIN}>재전송</Text>
+                    </CustomOutlineButtonBackground>
+                  </EmailBox>
+
+                  <InputContainer>
+                    <CustomLineInput
+                      placeholder="인증번호 6자리"
+                      value={findPasswordCertificationNumber}
+                      onChangeText={setFindPasswordCertificationNumber}
+                      maxLength={6}
+                      returnKeyType="next"
+                      onSubmitEditing={() => handleFindPassword()}
+                    />
+                    <CustomOutlineButtonBackground
+                      disabled={findPasswordCertificationNumber?.length < 6}
+                      onPress={() => handleCheckCertificationNumber(findPasswordCertificationNumber)}
+                      underlayColor={COLOR.SUB4}
+                      style={{ position: 'absolute', right: 16, top: Device.osName === 'Android' ? 22 : 16, zIndex: 1 }}
+                    >
+                      <Text T7 medium color={findPasswordCertificationNumber?.length < 6 ? COLOR.GRAY2 : COLOR.MAIN}>인증확인</Text>
+                    </CustomOutlineButtonBackground>
+                  </InputContainer>
+                </Container>
+
+                <Center>
+                  <FindEmailPasswordContainer onPress={() => handleOpenChannelTalk()}>
+                    <Text T6 color={COLOR.GRAY2}>이메일/비밀번호 찾는데 문제가 있으신가요?</Text>
+                  </FindEmailPasswordContainer>
+                </Center>
+
+              </Container>
+            )}
+
+            {(pageStatus === 'PASSWORD' && isFindPasswordSubmitted && isEmailCertificated) && (
+              <Container paddingHorizontal={20}>
+                <Container>
+                  <Text T3 bold marginTop={42}>이메일로 인증번호를 보냈습니다</Text>
+                  <Text T6 color={COLOR.GRAY1} marginTop={12}>아래 이메일로 인증번호를 발송하였습니다{'\n'}인증번호를 입력하고, 비밀번호를 변경해주세요</Text>
+                  <EmailBox marginTop={48}>
+                    <Text T6 medium>{findPasswordEmail}</Text>
+                    <Box height={36} />
+                  </EmailBox>
+
+                  <InputContainer>
+                    <LineInput
+                      marginTop={24}
+                      placeholder="비밀번호 입력"
+                      value={newPassword}
+                      onChangeText={setNewPassword}
+                      secureTextEntry
+                      returnKeyType="next"
+                      onSubmitEditing={() => newPasswordCheckRef.current.focus()}
+                    />
+                    {
+                      !newPassword && <Text T8 color={COLOR.GRAY1} style={{ position: 'absolute', top: Device.osName === 'Android' ? 32 : 27, left: 98 }}>(영어, 숫자, 특수문자 포함 6자~14자 이내)</Text>
+                    }
+                  </InputContainer>
+
+                  {
+                    newPassword && !validatePassword(newPassword) && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 6자~14자 이내를 충족하지 않습니다</Text>
+                  }
+                  <LineInput
+                    marginTop={24}
+                    placeholder="비밀번호 확인"
+                    value={newPasswordCheck}
+                    onChangeText={setNewPasswordCheck}
+                    secureTextEntry
+                    returnKeyType="done"
+                    ref={newPasswordCheckRef}
+                    onSubmitEditing={() => handleChangePassword()}
                   />
                   {
-                    !newPassword && <Text T8 color={COLOR.GRAY1} style={{ position: 'absolute', top: Device.osName === 'Android' ? 32 : 27, left: 98 }}>(영어, 숫자, 특수문자 포함 6자~14자 이내)</Text>
+                    newPassword && newPasswordCheck && newPassword !== newPasswordCheck && <Text T8 color='#FF0000CC' marginTop={6}>* 비밀번호가 일치하지 않습니다</Text>
                   }
-                </InputContainer>
+                </Container>
 
-                {
-                  newPassword && !validatePassword(newPassword) && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 6자~14자 이내를 충족하지 않습니다</Text>
-                }
-                <LineInput
-                  marginTop={24}
-                  placeholder="비밀번호 확인"
-                  value={newPasswordCheck}
-                  onChangeText={setNewPasswordCheck}
-                  secureTextEntry
-                  returnKeyType="done"
-                  ref={newPasswordCheckRef}
-                  onSubmitEditing={() => handleChangePassword()}
-                />
-                {
-                  newPassword && newPasswordCheck && newPassword !== newPasswordCheck && <Text T8 color='#FF0000CC' marginTop={6}>* 비밀번호가 일치하지 않습니다</Text>
-                }
-              </Container>
-
-              {/* <Center>
+                {/* <Center>
                 <FindEmailPasswordContainer onPress={() => handleOpenChannelTalk()}>
                   <Text T6 color={COLOR.GRAY2}>이메일/비밀번호 찾는데 문제가 있으신가요?</Text>
                 </FindEmailPasswordContainer>
               </Center> */}
 
-              <SolidButton
-                text="비밀번호 변경"
-                marginBottom={20}
-                disabled={!validatePassword(newPassword) || newPassword !== newPasswordCheck}
-                action={() => handleChangePassword()}
-              />
-            </Container>
-          )}
-        </Container>
-      </KeyboardAvoiding>
-    </SafeArea>
+                <SolidButton
+                  text="비밀번호 변경"
+                  marginBottom={20}
+                  disabled={!validatePassword(newPassword) || newPassword !== newPasswordCheck}
+                  action={() => handleChangePassword()}
+                />
+              </Container>
+            )}
+          </Container>
+        </KeyboardAvoiding>
+      </SafeArea>
+
+      {(findPasswordAccountType === '애플' || findPasswordAccountType === '구글') && (
+        <BottomSheetBackground>
+          <BottomSheetContainer>
+            <Image source={exclamationIcon} width={70} height={70} marginTop={-20} />
+            <Text T4 medium center marginTop={20}>해당 계정은{'\n'}{findPasswordAccountType}&nbsp;로그인을 통해 가입하셨습니다</Text>
+            <SolidButton
+              text="로그인 하기"
+              marginTop={30}
+              action={() => handleGoBackToSNSLogin()}
+            />
+          </BottomSheetContainer>
+        </BottomSheetBackground>
+      )}
+    </>
   );
 }
 
@@ -481,4 +521,24 @@ const FindEmailPasswordContainer = styled.TouchableOpacity`
   margin-bottom: 40px;
   border-bottom-width: 1px;
   border-bottom-color: ${COLOR.GRAY3};
+`;
+
+const BottomSheetBackground = styled.Pressable`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000000AA;
+`;
+
+const BottomSheetContainer = styled.View`
+  position: absolute;
+  padding: 20px;
+  height: 340px;
+  width: 100%;
+  bottom: 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #FFFFFF;
+  align-items: center;
+  justify-content: center;
 `;
