@@ -1,20 +1,40 @@
 //React
-import { useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 
 //Components
 import { COLOR } from 'constants/design'
-import { Dimensions, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, Container, Row, DividingLine } from 'components/Layout';
 import { Text } from 'components/Text';
 
+//Api
+import { getFamilyInfo } from 'api/MyPage';
+
 export default function AccountSettingScreen({ navigation }) {
 
   const { state: { accountData }, dispatch } = useContext(ApiContext);
-  const windowWidth = Dimensions.get('window').width;
+  const [isSNSFamily, setIsSNSFamily] = useState(true);
+
+  useEffect(() => {
+    checkLoginType();
+  }, []);
+
+  const checkLoginType = async function () {
+    try {
+      const response = await getFamilyInfo(accountData.loginToken, accountData.email);
+      if (response.data.response?.apple_id || response.data.response?.google_id) {
+        setIsSNSFamily(true);
+      } else {
+        setIsSNSFamily(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   function handleChangePassword() {
     navigation.navigate('MyPageStackNavigation', { screen: 'ChangePassword' });
@@ -59,18 +79,6 @@ export default function AccountSettingScreen({ navigation }) {
   return (
     <SafeArea>
       <Container>
-
-        {/* <Text T3 bold marginTop={30} marginLeft={20}>등록된 전화번호</Text>
-        <Text T6 color={COLOR.GRAY2} marginTop={12} marginLeft={20}>해당 번호는 최초 가입 시 기입된 번호입니다.{'\n'}번호 변경은 고객센터 1:1 문의를 통해 문의해주세요.</Text>
-        <Row marginTop={24} paddingHorizontal={20} gap={6}>
-          <CountryCallingCodeBox>
-            <Text T5 color={COLOR.GRAY0}>{accountData?.phoneNumber?.split(' ')[0]}</Text>
-          </CountryCallingCodeBox>
-          <PhoneNumberBox windowWidth={windowWidth}>
-            <Text T5 color={COLOR.GRAY0}>{accountData?.phoneNumber?.split(' ')[1]}</Text>
-          </PhoneNumberBox>
-        </Row> */}
-
         <Text T3 bold marginTop={30} marginLeft={20}>계정 이메일</Text>
         <Text T6 color={COLOR.GRAY2} marginTop={12} marginLeft={20}>해당 이메일은 가입 시 기입된 정보입니다.{'\n'}개인정보 관련 문의는 고객센터 1:1 문의를 통해 전달해주세요.</Text>
         <Row marginTop={24} paddingHorizontal={20} gap={6}>
@@ -82,7 +90,9 @@ export default function AccountSettingScreen({ navigation }) {
         <DividingLine marginVertical={30} />
 
         <SettingButtonContainer>
-          <SettingButton title="비밀번호 변경" action={() => handleChangePassword()} />
+          {
+            !isSNSFamily && <SettingButton title="비밀번호 변경" action={() => handleChangePassword()} />
+          }
           <SettingButton title="로그아웃" action={() => createLogoutAlert()} />
           <SettingButton title="회원탈퇴" action={() => handleWithdrawal()} />
         </SettingButtonContainer>
