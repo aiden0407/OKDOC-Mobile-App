@@ -2,6 +2,24 @@
 import axios from 'axios';
 import { APIURL } from 'constants/api'
 
+export const getFamilyInfo = async function (loginToken, email) {
+
+    try {
+        let options = {
+            url: `${APIURL}/families/${email}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const getPatientList = async function (loginToken, email) {
 
     try {
