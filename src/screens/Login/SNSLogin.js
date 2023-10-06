@@ -168,7 +168,8 @@ export default function LoginPage({ navigation }) {
       } else if (error.response.data.statusCode === 422) {
         appContextDispatch({
           type: 'REGISTER_ROUTE',
-          route: 'APPLE_EMAIL_UNDEFINED',
+          //route: 'APPLE_EMAIL_UNDEFINED',
+          route: 'APPLE_EMAIL_EXISTENT',
         });
         Alert.alert('안내', '해당 계정이 존재하지 않습니다. 회원가입을 진행합니다.', [
           {
