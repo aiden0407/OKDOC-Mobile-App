@@ -83,7 +83,7 @@ export default function AccountSettingScreen({ navigation }) {
         <Text T6 color={COLOR.GRAY2} marginTop={12} marginLeft={20}>해당 이메일은 가입 시 기입된 정보입니다.{'\n'}개인정보 관련 문의는 고객센터 1:1 문의를 통해 전달해주세요.</Text>
         <Row marginTop={24} paddingHorizontal={20} gap={6}>
           <PhoneNumberBox style={{width: '100%'}}>
-            <Text T5>{accountData?.email}</Text>
+            <Text T5>{accountData?.email?.includes('privaterelay') ? '애플 계정' : accountData?.email}</Text>
           </PhoneNumberBox>
         </Row>
 
