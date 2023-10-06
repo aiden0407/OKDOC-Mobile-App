@@ -78,7 +78,7 @@ export default function App() {
         finalStatus = status;
       }
       if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
+        //alert('알림 허용을 거절하셨습니다.');
         return;
       }
       token = (await Notifications.getDevicePushTokenAsync()).data;
