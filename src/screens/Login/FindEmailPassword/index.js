@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 //Components
 import * as Device from 'expo-device';
 import { COLOR, TYPOGRAPHY } from 'constants/design'
-import { Alert } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
 import { SafeArea, KeyboardAvoiding, Container, Center, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { LineInput } from 'components/TextInput';
@@ -123,6 +123,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
 
   const handleFindPassword = async function () {
     try {
+      Keyboard.dismiss();
       const response = await findPasswordOpen(findPasswordEmail, findPasswordName, Number(findPasswordBirth.replaceAll("-", "")));
 
       if (response.data.response.family?.apple_id) {
@@ -408,12 +409,6 @@ export default function FindEmailPasswordScreen({ navigation }) {
                   }
                 </Container>
 
-                {/* <Center>
-                <FindEmailPasswordContainer onPress={() => handleOpenChannelTalk()}>
-                  <Text T6 color={COLOR.GRAY2}>이메일/비밀번호 찾는데 문제가 있으신가요?</Text>
-                </FindEmailPasswordContainer>
-              </Center> */}
-
                 <SolidButton
                   text="비밀번호 변경"
                   marginBottom={20}
@@ -427,7 +422,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
       </SafeArea>
 
       {(findPasswordAccountType === '애플' || findPasswordAccountType === '구글') && (
-        <BottomSheetBackground>
+        <BottomSheetBackground onPress={()=>setFindPasswordAccountType('')}>
           <BottomSheetContainer>
             <Image source={exclamationIcon} width={70} height={70} marginTop={-20} />
             <Text T4 medium center marginTop={20}>해당 계정은{'\n'}{findPasswordAccountType}&nbsp;로그인을 통해 가입하셨습니다</Text>
@@ -530,7 +525,7 @@ const BottomSheetBackground = styled.Pressable`
   background-color: #000000AA;
 `;
 
-const BottomSheetContainer = styled.View`
+const BottomSheetContainer = styled.Pressable`
   position: absolute;
   padding: 20px;
   height: 340px;
