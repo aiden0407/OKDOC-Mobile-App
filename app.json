@@ -38,7 +38,7 @@
       "expo-localization"
     ],
     "ios": {
-      "buildNumber": "20",
+      "buildNumber": "21",
       "bundleIdentifier": "kr.co.insunginfo.okdoc",
       "icon": "./src/assets/main/main_icon.png",
       "supportsTablet": false,
