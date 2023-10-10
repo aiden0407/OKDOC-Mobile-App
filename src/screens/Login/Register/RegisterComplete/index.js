@@ -12,7 +12,7 @@ import { SolidButton, OutlineButton } from 'components/Button';
 //Assets
 import checkIcon from 'assets/icons/circle-check.png';
 
-export default function RegisterPolicyScreen({ navigation }) {
+export default function RegisterCompleteScreen({ navigation }) {
 
   function handleFillInProfileDetail() {
     navigation.popToTop();
