@@ -85,19 +85,23 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   // }
 
   function handleNotice1() {
-    if(deviceLocale?.regionCode === 'KR'){
-      Alert.alert('대한민국에서는 해당 서비스를 이용하실 수 없습니다.');
+    if (accountData.email === 'aiden@insunginfo.co.kr' || accountData.email === 'cailyent0407@gmail.com') {
+      handleNotice2();
     } else {
-      Alert.alert('진료실에 입장하시겠습니까?', '진료는 예약하신 시간부터 시작됩니다.', [
-        {
-          text: '취소',
-          style: 'cancel',
-        },
-        {
-          text: '확인',
-          onPress: () => handleNotice2()
-        },
-      ]);
+      if (deviceLocale?.regionCode === 'KR') {
+        Alert.alert('대한민국에서는 해당 서비스를 이용하실 수 없습니다.');
+      } else {
+        Alert.alert('진료실에 입장하시겠습니까?', '진료는 예약하신 시간부터 시작됩니다.', [
+          {
+            text: '취소',
+            style: 'cancel',
+          },
+          {
+            text: '확인',
+            onPress: () => handleNotice2()
+          },
+        ]);
+      }
     }
   }
 
@@ -171,7 +175,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
           <SolidButton
             text="진료실 입장하기"
             marginBottom={20}
-            disabled={(accountData.email==='aiden@insunginfo.co.kr' || accountData.email==='cailyent0407@gmail.com')? false : count>300}
+            disabled={count>300}
             action={() => handleNotice1()}
           />
         </Container>
