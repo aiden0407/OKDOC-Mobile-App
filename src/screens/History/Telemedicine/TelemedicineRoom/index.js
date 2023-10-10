@@ -16,7 +16,7 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
   const meetingNumber = telemedicineData.hospital_treatment_room.id;
   const userName = telemedicineData.profileInfo?.passport?.user_name ?? telemedicineData.profileInfo?.passapp_certification?.name;
   const wishAt = telemedicineData.wish_at;
-  const id = telemedicineData.id;
+  const biddingId = telemedicineData.bidding_id;
   const token = accountData.loginToken;
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
       </StatusBarArea> */}
       <Container>
         <WebView
-          source={{ uri: `https://zoom.okdoc.app/meeting/patient/?meetingNumber=${meetingNumber}&userName=${userName}&wishAt=${wishAt}&id=${id}&token=${token}` }}
+          source={{ uri: `https://zoom.okdoc.app/meeting/patient/?meetingNumber=${meetingNumber}&userName=${userName}&wishAt=${wishAt}&biddingId=${biddingId}&token=${token}` }}
           // source={{ uri: `http://127.0.0.1:5500/meeting/patient/?meetingNumber=85440949682&userName=${userName}&wishAt=${wishAt}&id=${id}&token=${token}` }}
           originWhitelist={['*']}
           useWebkit
