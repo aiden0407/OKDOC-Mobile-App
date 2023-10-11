@@ -131,7 +131,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
       } else if (response.data.response.family?.google_id) {
         setFindPasswordAccountType('구글');
       } else {
-        setEmailToken(response.data.response.verifiedToken);
+        setEmailToken(response.data.response.verified_token);
         setIsFindPasswordSubmitted(true);
       }
 
@@ -143,7 +143,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
   const handleEmailResend = async function () {
     try {
       const response = await findPasswordOpen(findPasswordEmail, findPasswordName, Number(findPasswordBirth.replaceAll("-", "")));
-      setEmailToken(response.data.response.message);
+      setEmailToken(response.data.response.verified_token);
       Alert.alert('해당 이메일로 인증번호가 재전송 되었습니다.');
     } catch (error) {
       Alert.alert('네트워크 상태가 좋지 않습니다. 다시 시도해 주시기 바랍니다.');
