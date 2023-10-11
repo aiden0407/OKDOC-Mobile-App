@@ -3,6 +3,24 @@ import axios from 'axios';
 import { APIURL } from 'constants/api'
 import uuid from 'react-native-uuid';
 
+function generateRandomPassword() {
+    const length = Math.floor(Math.random() * 9) + 6; // 6에서 14 글자 사이의 길이 생성
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.?!@#$%^&*+=';
+
+    let password = '';
+
+    while (password.length < length) {
+        const randomIndex = Math.floor(Math.random() * chars.length);
+        password += chars[randomIndex];
+    }
+
+    if (password.match(/^.*(?=^.{6,14}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[.?!@#$%^&*+=]).*$/)) {
+        return password;
+    } else {
+        return generateRandomPassword(); // 조건을 만족하지 않으면 다시 생성
+    }
+}
+
 export const familyAppleLogin = async function (credential) {
     try {
         let options = {
@@ -138,7 +156,7 @@ export const createAppleAccount = async function (email, password, policy, devic
             method: 'POST',
             data: {
                 id: email,
-                password: 'qwe123!',
+                password: generateRandomPassword(),
                 agreements: policy,
                 device_type: deviceType,
                 device_token: deviceToken,
@@ -160,7 +178,7 @@ export const createGoogleAccount = async function (email, password, policy, devi
             method: 'POST',
             data: {
                 id: email,
-                password: 'qwe123!',
+                password: generateRandomPassword(),
                 agreements: policy,
                 device_type: deviceType,
                 device_token: deviceToken,
