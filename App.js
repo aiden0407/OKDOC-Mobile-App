@@ -24,6 +24,7 @@ TouchableOpacity.defaultProps.activeOpacity = 0.6;
 //Notifications
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import * as TaskManager from 'expo-task-manager';
 
 //navigation
 import BottomTapNavigation from 'navigation/BottomTapNavigation';
@@ -47,11 +48,33 @@ Notifications.setNotificationHandler({
   }),
 });
 
+const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND-NOTIFICATION-TASK";
+
+TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, async ({ data, error, executionInfo }) => {
+  if (data) {
+    const notification_history = [];
+
+    AsyncStorage.getItem('@notification_history')
+      .then(serializedArray => {
+        if (serializedArray !== null) {
+          notification_history = JSON.parse(serializedArray);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    notification_history.push(data);
+    await AsyncStorage.setItem('@notification_history', JSON.stringify(notification_history));
+  }
+});
+
+Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+
 export default function App() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [expoPushToken, setExpoPushToken] = useState('');
-  const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
 
