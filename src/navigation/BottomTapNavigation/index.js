@@ -10,7 +10,7 @@ import { getPatientList } from 'api/MyPage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from 'screens/Home';
 import HistoryScreen from 'screens/History';
-//import AlarmScreen from 'screens/Alarm';
+import AlarmScreen from 'screens/Alarm';
 import MyPageScreen from 'screens/MyPage';
 
 //Components
@@ -126,7 +126,7 @@ export default function BottomTapNavigation() {
       }}>
         <BottomTab.Screen name="Home" component={HomeScreen} options={{ title: '홈', headerShown: false }} />
         <BottomTab.Screen name="History" component={HistoryScreen} options={{ title: '진료 내역' }} />
-        {/* <BottomTab.Screen name="Alarm" component={AlarmScreen} options={{ title: '알림' }} /> */}
+        <BottomTab.Screen name="Alarm" component={AlarmScreen} options={{ title: '알림' }} />
         <BottomTab.Screen name="MyPage" component={MyPageScreen} options={{ title: '마이페이지' }} />
       </BottomTab.Group>
     </BottomTab.Navigator>
