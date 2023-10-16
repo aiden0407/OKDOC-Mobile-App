@@ -1,5 +1,5 @@
 //React
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AppProvider } from 'context/AppContext';
@@ -74,9 +74,17 @@ Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
 export default function App() {
 
   const [isLoading, setIsLoading] = useState(true);
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const notificationListener = useRef();
-  const responseListener = useRef();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+  }, []);
 
   async function registerForPushNotificationsAsync() {
     let token;
@@ -112,30 +120,6 @@ export default function App() {
   
     return token;
   }
-
-  useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
 
   const [fontsLoaded] = useFonts({
     "Pretendard-Bold": require('assets/fonts/Pretendard-Bold.otf'),
