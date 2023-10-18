@@ -30,13 +30,13 @@ export default function EmailPasswordScreen({ navigation }) {
         let createLocalAccountResponse;
 
           if(registerStatus.route === 'APPLE_EMAIL_EXISTENT' || registerStatus.route === 'APPLE_EMAIL_UNDEFINED'){
-            createLocalAccountResponse = await createAppleAccount(registerStatus.email, registerStatus.password, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
+            createLocalAccountResponse = await createAppleAccount(registerStatus.email, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
           }
           if(registerStatus.route === 'GOOGLE_REGISTER'){
-            createLocalAccountResponse = await createGoogleAccount(registerStatus.email, registerStatus.password, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
+            createLocalAccountResponse = await createGoogleAccount(registerStatus.email, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
           }
           if(registerStatus.route === 'LOCAL_REGISTER'){
-            createLocalAccountResponse = await createLocalAccount(registerStatus.email, registerStatus.password, registerStatus.policy, deviceType, deviceToken);
+            createLocalAccountResponse = await createLocalAccount(registerStatus.email, registerStatus.password, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
           }
 
         const loginToken = createLocalAccountResponse.data.response.accessToken;
