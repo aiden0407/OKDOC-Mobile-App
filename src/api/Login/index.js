@@ -149,7 +149,7 @@ export const checkPassportInformation = async function (name, birth, passportNum
     }
 }
 
-export const createAppleAccount = async function (email, password, policy, deviceType, deviceToken, apple_id) {
+export const createAppleAccount = async function (email, policy, deviceType, deviceToken, apple_id) {
     try {
         let options = {
             url: `${APIURL}/authentication/sign-up`,
@@ -171,7 +171,7 @@ export const createAppleAccount = async function (email, password, policy, devic
     }
 }
 
-export const createGoogleAccount = async function (email, password, policy, deviceType, deviceToken, google_id) {
+export const createGoogleAccount = async function (email, policy, deviceType, deviceToken, google_id) {
     try {
         let options = {
             url: `${APIURL}/authentication/sign-up`,
@@ -193,11 +193,14 @@ export const createGoogleAccount = async function (email, password, policy, devi
     }
 }
 
-export const createLocalAccount = async function (email, password, policy, deviceType, deviceToken) {
+export const createLocalAccount = async function (email, password, policy, deviceType, deviceToken, emailToken) {
     try {
         let options = {
             url: `${APIURL}/authentication/sign-up`,
             method: 'POST',
+            headers: {
+                Authorization: `Bearer ${emailToken}`
+            },
             data: {
                 id: email,
                 password: password,
