@@ -23,6 +23,7 @@ export default function EmailPasswordScreen({ navigation }) {
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [certificationNumber, setCertificationNumber] = useState('');
   const [isEmailCertificated, setIsEmailCertificated] = useState(false);
+  const [emailToken, setEmailToken] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const passwordCheckRef = useRef();
@@ -58,7 +59,8 @@ export default function EmailPasswordScreen({ navigation }) {
   const handleCheckCertificationNumber = async function () {
     setLoading(true);
     try {
-      await emailCheckClose(email, certificationNumber, invitationToken);
+      const response = await emailCheckClose(email, certificationNumber, invitationToken);
+      setEmailToken(response.data.response.accessToken);
       setIsEmailCertificated(true);
       setLoading(false);
       Alert.alert('이메일이 인증되었습니다.');
@@ -73,7 +75,7 @@ export default function EmailPasswordScreen({ navigation }) {
       type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
       email: email,
       password: password,
-      invitationToken: invitationToken,
+      invitationToken: emailToken,
     });
     navigation.navigate('PassportPhoneCertifiaction');
   }
