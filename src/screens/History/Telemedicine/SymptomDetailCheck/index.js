@@ -18,9 +18,6 @@ import { SolidButton } from 'components/Button';
 //Assets
 import addImageIcon from 'assets/icons/add-image.png';
 
-//Api
-import { modifyTreatmentAppointmentBeforeEnter } from 'api/History';
-
 export default function SymptomDetailCheckScreen({ navigation, route }) {
 
   const { dispatch } = useContext(AppContext);
@@ -62,27 +59,6 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
       setCount(count - 1);
     }
   }
-
-  // const submitSymptomDetail = async function () {
-  //   if(telemedicineData.explain_symptom===symptom){
-  //     handleNotice1();
-  //   }else{
-  //     try {
-  //       await modifyTreatmentAppointmentBeforeEnter(accountData.loginToken, telemedicineData.id, symptom);
-  //       dispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: undefined });
-  //       dispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: telemedicineData.id });
-  //       telemedicineData.explain_symptom = symptom;
-  //       Alert.alert('안내', '증상을 성공적으로 업데이트 하였습니다.', [
-  //         {
-  //           text: '확인',
-  //           onPress: () =>  handleNotice1()
-  //         },
-  //       ]);
-  //     } catch (error) {
-  //       Alert.alert('네트워크 오류로 인해 증상을 업데이트하지 못했습니다.');
-  //     }
-  //   }
-  // }
 
   function handleNotice1() {
     if (accountData.email === 'aiden@insunginfo.co.kr' || accountData.email === 'cailyent0407@gmail.com' || email === 'logan@insunginfo.co.kr' || email === 'zloganway@gmail.com' || email === 'rlagudeh123@naver.com') {
