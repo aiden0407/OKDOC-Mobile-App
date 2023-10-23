@@ -1,7 +1,6 @@
 //React
 import { useEffect, useState, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 
 //Components
@@ -25,13 +24,9 @@ export default function AlarmScreen({ navigation }) {
 
   const getNotificationHistory = async function () {
     try {
-      const arrayValue = AsyncStorage.getItem('@notification_history');
-      if (jsonValue !== null) {
-        const notification_history = JSON.parse(arrayValue);
-        setNotificationHistory(notification_history);
-      }
+
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
