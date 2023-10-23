@@ -34,7 +34,7 @@ export default function EmailPasswordScreen({ navigation }) {
   }
 
   function validatePassword(password) {
-    const regExp = /^.*(?=^.{6,14}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[.?!@#$%^&*+=]).*$/;
+    const regExp = /^.*(?=^.{8,14}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[.?!@#$%^&*+=]).*$/;
     return regExp.test(password);
   }
 
@@ -156,11 +156,11 @@ export default function EmailPasswordScreen({ navigation }) {
                   onSubmitEditing={() => passwordCheckRef.current.focus()}
                 />
                 {
-                  !password && <Text T8 color={COLOR.GRAY1} style={{ position: 'absolute', top: Device.osName === 'Android' ? 32 : 27, left: 98 }}>(영어, 숫자, 특수문자 포함 6자~14자 이내)</Text>
+                  !password && <Text T8 color={COLOR.GRAY1} style={{ position: 'absolute', top: Device.osName === 'Android' ? 32 : 27, left: 98 }}>(영어, 숫자, 특수문자 포함 8자~14자 이내)</Text>
                 }
               </InputContainer>
               {
-                password && !validatePassword(password) && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 6자~14자 이내를 충족하지 않습니다</Text>
+                password && !validatePassword(password) && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 8자~14자 이내를 충족하지 않습니다</Text>
               }
               <CustomLineInput
                 placeholder="비밀번호 확인"

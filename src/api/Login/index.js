@@ -4,7 +4,7 @@ import { APIURL } from 'constants/api'
 import uuid from 'react-native-uuid';
 
 function generateRandomPassword() {
-    const length = Math.floor(Math.random() * 9) + 6; // 6에서 14 글자 사이의 길이 생성
+    const length = Math.floor(Math.random() * 7) + 8; // 8자~14자 사이의 길이 생성
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.?!@#$%^&*+=';
 
     let password = '';
@@ -14,7 +14,7 @@ function generateRandomPassword() {
         password += chars[randomIndex];
     }
 
-    if (password.match(/^.*(?=^.{6,14}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[.?!@#$%^&*+=]).*$/)) {
+    if (password.match(/^.*(?=^.{8,14}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[.?!@#$%^&*+=]).*$/)) {
         return password;
     } else {
         return generateRandomPassword(); // 조건을 만족하지 않으면 다시 생성
