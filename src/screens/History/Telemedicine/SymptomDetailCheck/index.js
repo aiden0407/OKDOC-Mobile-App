@@ -61,7 +61,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   }
 
   function handleNotice1() {
-    if (accountData.email === 'aiden@insunginfo.co.kr' || accountData.email === 'cailyent0407@gmail.com' || email === 'logan@insunginfo.co.kr' || email === 'zloganway@gmail.com' || email === 'rlagudeh123@naver.com') {
+    if (accountData.email === 'aiden@insunginfo.co.kr' || accountData.email === 'cailyent0407@gmail.com' || accountData.email === 'logan@insunginfo.co.kr' || accountData.email === 'zloganway@gmail.com' || accountData.email === 'rlagudeh123@naver.com') {
       handleNotice2();
     } else {
       if (deviceLocale?.regionCode === 'KR') {
