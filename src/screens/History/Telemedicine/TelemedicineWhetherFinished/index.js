@@ -87,13 +87,7 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
         telemedicineData: telemedicineData,
       });
     } else {
-      if (accountData.email === 'aiden@insunginfo.co.kr' || accountData.email === 'cailyent0407@gmail.com') {
-        navigation.navigate('TelemedicineComplete', {
-          telemedicineData: telemedicineData,
-        });
-      } else {
-        Alert.alert('진료 종료 확정 불가', '진료 입장 시간 전의 스케줄은 종료할 수 없습니다.');
-      }
+      Alert.alert('진료 종료 확정 불가', '진료 입장 시간 전의 스케줄은 종료할 수 없습니다.');
     }
   }
 
