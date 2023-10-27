@@ -115,6 +115,26 @@ export const treatmentCancel = async function (loginToken, appointmentId) {
     }
 }
 
+export const treatmentComplete = async function (loginToken, appointmentId) {
+    try {
+        let options = {
+            url: `${APIURL}/treatment_appointments/${appointmentId}`,
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+            data: {
+                "status": "EXIT",
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
 export const getCCTVInformation = async function (loginToken, appointmentId) {
     try {
         let options = {

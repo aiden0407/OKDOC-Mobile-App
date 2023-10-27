@@ -16,7 +16,7 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 import checkIcon from 'assets/icons/circle-check.png';
 
 //Api
-import { getCCTVInformation, patchCCTVPatientBye, getInvoiceInformation } from 'api/History';
+import { treatmentComplete, getCCTVInformation, patchCCTVPatientBye, getInvoiceInformation } from 'api/History';
 
 export default function TelemedicineCompleteScreen({ navigation, route }) {
 
@@ -38,6 +38,12 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
   }
 
   const letCCTVStatusChange = async function () {
+    try {
+      await treatmentComplete(accountData.loginToken, telemedicineData.id);
+    } catch (error) {
+      //Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    }
+
     try {
       const response = await getCCTVInformation(accountData.loginToken, telemedicineData.id);
 
