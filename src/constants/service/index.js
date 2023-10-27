@@ -86,52 +86,52 @@ export const CONSTANT_POLICY = {
 export const SYMPTOM = {
     '감기': {
         NAME: 'flu',
-        DEPARTMENT: ['내과', '이비인후과'],
+        DEPARTMENT: ['소아청소년과', '이비인후과'],
         ICON: fluIcon
     },
     '두통': {
         NAME: 'headache',
-        DEPARTMENT: ['내과', '이비인후과'],
+        DEPARTMENT: ['소아청소년과', '이비인후과'],
         ICON: headacheIcon
     },
     '고열/미열': {
         NAME: 'highFever',
-        DEPARTMENT: ['내과', '이비인후과'],
+        DEPARTMENT: ['소아청소년과', '이비인후과'],
         ICON: highFeverIcon
     },
     '복통': {
         NAME: 'stomachache',
-        DEPARTMENT: ['내과'],
+        DEPARTMENT: ['소화기내과'],
         ICON: stomachacheIcon
     },
     '소화불량': {
         NAME: 'indigestion',
-        DEPARTMENT: ['내과'],
+        DEPARTMENT: ['소화기내과'],
         ICON: indigestionIcon
     },
     '몸살': {
         NAME: 'ache',
-        DEPARTMENT: ['내과', '이비인후과'],
+        DEPARTMENT: ['소아청소년과', '이비인후과'],
         ICON: acheIcon
     },
     '오한': {
         NAME: 'chill',
-        DEPARTMENT: ['내과', '이비인후과'],
+        DEPARTMENT: ['소아청소년과', '이비인후과'],
         ICON: chillIcon
     },
     '변비': {
         NAME: 'constipation',
-        DEPARTMENT: ['내과'],
+        DEPARTMENT: ['소화기내과'],
         ICON: constipationIcon
     },
     '설사': {
         NAME: 'diarrhea',
-        DEPARTMENT: ['내과'],
+        DEPARTMENT: ['소화기내과'],
         ICON: diarrheaIcon
     },
     '속쓰림': {
         NAME: 'heartburn',
-        DEPARTMENT: ['내과'],
+        DEPARTMENT: ['소화기내과'],
         ICON: heartburnIcon
     },
     '근육통': {
@@ -147,113 +147,37 @@ export const SYMPTOM = {
 }
 
 export const DEPARTMENT = {
-    '내과': {
-        NAME: 'internalMedicine',
-        ICON: internalMedicineIcon
-    },
-    '이비인후과': {
-        NAME: 'otolaryngology',
-        ICON: otolaryngologyIcon
-    },
-    '외과': {
-        NAME: 'surgery',
-        ICON: surgeryIcon
-    },
-    '치과': {
-        NAME: 'dentistry',
-        ICON: dentistryIcon
-    },
-    '소아청소년과': {
-        NAME: 'pediatry',
-        ICON: pediatryIcon
-    },
-    '산부인과': {
-        NAME: 'gynecology',
-        ICON: gynecologyIcon
-    },
-    '피부과': {
-        NAME: 'dermatology',
-        ICON: dermatologyIcon
-    },
-    '안과': {
-        NAME: 'ophthalmology',
-        ICON: ophthalmologyIcon
-    },
-    '응급의학과': {
-        NAME: 'emergencyMedicine',
-        ICON: emergencyMedicineIcon
-    },
     '가정의학과': {
         NAME: 'familyMedicine',
         ICON: familyMedicineIcon
-    },
-    '비뇨기과': {
-        NAME: 'urology',
-        ICON: urologyIcon
-    },
-    '정신건강의학과': {
-        NAME: 'psychiatry',
-        ICON: psychiatryIcon
-    },
-    '정형외과': {
-        NAME: 'orthopedics',
-        ICON: orthopedicsIcon
-    },
-    '재활의학과': {
-        NAME: 'rehabilitationMedicine',
-        ICON: rehabilitationMedicineIcon
-    },
-    '류마티스과': {
-        NAME: 'rheumatism',
-        ICON: rheumatismIcon
-    },
-    '심장내과': {
-        NAME: 'cardiology',
-        ICON: cardiologyIcon
-    },
-    '진단검사의학과': {
-        NAME: 'laboratoryMedicine',
-        ICON: laboratoryMedicineIcon
     },
     '감염내과': {
         NAME: 'infectionMedicine',
         ICON: infectionMedicineIcon
     },
-    '내분비과': {
+    '내분비내과': {
         NAME: 'endocrineMedicine',
         ICON: endocrineMedicineIcon
     },
-    '마취통증의학과': {
-        NAME: 'anesthesiology',
-        ICON: anesthesiologyIcon
+    '류마티스과': {
+        NAME: 'rheumatism',
+        ICON: rheumatismIcon
     },
-    '방사선종양학과': {
-        NAME: 'radiationOncology',
-        ICON: radiationOncologyIcon
+    '비뇨의학과': {
+        NAME: 'urology',
+        ICON: urologyIcon
     },
-    '흉부외과': {
-        NAME: 'thoracicSurgery',
-        ICON: thoracicSurgeryIcon
+    '산부인과': {
+        NAME: 'gynecology',
+        ICON: gynecologyIcon
     },
-    '병리과': {
-        NAME: 'pathology',
-        ICON: pathologyIcon
+    '소아청소년과': {
+        NAME: 'pediatry',
+        ICON: pediatryIcon
     },
-    '핵의학과': {
-        NAME: 'nuclearMedicine',
-        ICON: nuclearMedicineIcon
-    },
-    '성형외과': {
-        NAME: 'plasticSurgery',
-        ICON: plasticSurgeryIcon
-    },
-    '혈액내과': {
-        NAME: 'hematoOncology',
-        ICON: hematoOncologyIcon
-    },
-    '호흡기내과': {
-        NAME: 'pulmonology',
-        ICON: pulmonologyIcon
+    '소화기내과': {
+        NAME: 'internalMedicine',
+        ICON: internalMedicineIcon,
     },
     '신경과': {
         NAME: 'neurology',
@@ -267,8 +191,86 @@ export const DEPARTMENT = {
         NAME: 'nephrology',
         ICON: nephrologyIcon
     },
+    '심장내과': {
+        NAME: 'cardiology',
+        ICON: cardiologyIcon
+    },
+    '안과': {
+        NAME: 'ophthalmology',
+        ICON: ophthalmologyIcon
+    },
+    '외과': {
+        NAME: 'surgery',
+        ICON: surgeryIcon,
+        DEPARTMENT: ['외과', '유방외과', '중환자외상외과', '혈관이식외과'],
+    },
+    '이비인후과': {
+        NAME: 'otolaryngology',
+        ICON: otolaryngologyIcon
+    },
+    '재활의학과': {
+        NAME: 'rehabilitationMedicine',
+        ICON: rehabilitationMedicineIcon
+    },
+    '정신건강의학과': {
+        NAME: 'psychiatry',
+        ICON: psychiatryIcon
+    },
+    '정형외과': {
+        NAME: 'orthopedics',
+        ICON: orthopedicsIcon
+    },
+    '종양내과': {
+        NAME: 'pathology',
+        ICON: pathologyIcon
+    },
+    '치과': {
+        NAME: 'dentistry',
+        ICON: dentistryIcon
+    },
+    '피부과': {
+        NAME: 'dermatology',
+        ICON: dermatologyIcon
+    },
+    '혈액종양내과': {
+        NAME: 'hematoOncology',
+        ICON: hematoOncologyIcon
+    },
+    '호흡기내과': {
+        NAME: 'pulmonology',
+        ICON: pulmonologyIcon
+    },
+    '흉부외과': {
+        NAME: 'thoracicSurgery',
+        ICON: thoracicSurgeryIcon
+    },
+
+    '마취통증의학과': {
+        NAME: 'anesthesiology',
+        ICON: anesthesiologyIcon
+    },
+    '방사선종양학과': {
+        NAME: 'radiationOncology',
+        ICON: radiationOncologyIcon
+    },
+    '성형외과': {
+        NAME: 'plasticSurgery',
+        ICON: plasticSurgeryIcon
+    },
     '영상의학과': {
         NAME: 'radiology',
         ICON: radiologyIcon
     },
+    '응급의학과': {
+        NAME: 'emergencyMedicine',
+        ICON: emergencyMedicineIcon
+    },
+    '진단검사의학과': {
+        NAME: 'laboratoryMedicine',
+        ICON: laboratoryMedicineIcon
+    },
+    '핵의학과': {
+        NAME: 'nuclearMedicine',
+        ICON: nuclearMedicineIcon
+    },    
 }
