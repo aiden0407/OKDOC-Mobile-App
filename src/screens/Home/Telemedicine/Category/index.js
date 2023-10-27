@@ -40,6 +40,8 @@ export default function CategoryScreen({ navigation }) {
     let department;
     if(category==='symptom'){
       department = SYMPTOM[name]?.DEPARTMENT;
+    } else if (name==='외과') {
+      department = DEPARTMENT[name]?.DEPARTMENT;
     } else {
       department = [name];
     }
@@ -48,23 +50,27 @@ export default function CategoryScreen({ navigation }) {
   }
 
   function Icon({ category, name }) {
-    return (
-      <IconButton
-        underlayColor={COLOR.GRAY5}
-        onPress={() => handleNextStep(category, name)}
-      >
-        <>
-          {category === 'symptom' && (<>
-            <Image source={SYMPTOM[name]?.ICON} marginTop={8} width={60} height={60} />
-            <Text T6>{name}</Text>
-          </>)}
-          {category === 'medicalSubject' && (<>
-            <Image source={DEPARTMENT[name]?.ICON} marginTop={8} width={60} height={60} />
-            <Text T6>{name}</Text>
-          </>)}
-        </>
-      </IconButton>
-    )
+    if (name === '유방외과' || name === '중환자외상외과' || name === '혈관이식외과') {
+      return;
+    } else {
+      return (
+        <IconButton
+          underlayColor={COLOR.GRAY5}
+          onPress={() => handleNextStep(category, name)}
+        >
+          <>
+            {category === 'symptom' && (<>
+              <Image source={SYMPTOM[name]?.ICON} marginTop={8} width={60} height={60} />
+              <Text T6>{name}</Text>
+            </>)}
+            {category === 'medicalSubject' && (<>
+              <Image source={DEPARTMENT[name]?.ICON} marginTop={8} width={60} height={60} />
+              <Text T6>{name}</Text>
+            </>)}
+          </>
+        </IconButton>
+      )
+    }
   }
 
   return (
@@ -107,12 +113,6 @@ export default function CategoryScreen({ navigation }) {
             {categoryGroup === 'subjects' && (
               departmentsData.map((item) => <Icon key={item.name} category="medicalSubject" name={item.name} />)
             )}
-            {/* {categoryGroup === 'symptoms' && (
-              <Icon category="symptom" name="근육통" />
-            )}
-            {categoryGroup === 'subjects' && (
-              <Icon category="medicalSubject" name="정형외과" />
-            )} */}
           </IconsWrapper>
         </IconsContainer>
 
