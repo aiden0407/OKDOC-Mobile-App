@@ -24,7 +24,7 @@ export default function ChangePasswordScreen({ navigation }) {
   const newPasswordCheckRef = useRef();
 
   function validatePassword(password) {
-    const regExp = /^.*(?=^.{8,14}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[.?!@#$%^&*+=]).*$/;
+    const regExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.?!@#$%^&*+=]).{8,14}$/;
     return regExp.test(password);
   }
 
@@ -96,7 +96,7 @@ export default function ChangePasswordScreen({ navigation }) {
             <PaddingContainer>
               <Text T5 medium>비밀번호 변경</Text>
               {
-                !newPassword && <Text T8 color={COLOR.GRAY1} style={{ position: 'absolute', top: 41, left: 112 }}>(영어, 숫자, 특수문자 포함 8자~14자 이내)</Text>
+                !newPassword && <Text T8 color={COLOR.GRAY1} style={{ position: 'absolute', top: 41, left: 112 }}>(대소문자, 숫자, 특수문자 포함 8자~14자 이내)</Text>
               }
               <LineInput
                 marginTop={14}
@@ -111,7 +111,7 @@ export default function ChangePasswordScreen({ navigation }) {
                 }}
               />
               {
-                newPassword && !validatePassword(newPassword) && <Text T8 color='#FF0000CC' marginTop={6}>* 영어, 숫자, 특수문자 포함 8자~14자 이내를 충족하지 않습니다</Text>
+                newPassword && !validatePassword(newPassword) && <Text T8 color='#FF0000CC' marginTop={6}>* 대소문자, 숫자, 특수문자 포함 8자~14자 이내를 충족하지 않습니다</Text>
               }
               <LineInput
                 marginTop={24}
