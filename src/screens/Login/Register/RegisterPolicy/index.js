@@ -72,7 +72,7 @@ export default function RegisterPolicyScreen({ navigation }) {
       setMeetRequirement(true);
       const checkedList = [];
       for (let ii = 0; ii < policyList.length-1; ii++) {
-        checkedList.push(policyList[ii]._id);
+        checkedList.push(policyList[ii].id);
       }
       setCheckedPolicies(checkedList);
     }
@@ -83,11 +83,11 @@ export default function RegisterPolicyScreen({ navigation }) {
     for (let ii = 0; ii < policyList.length; ii++) {
       if (ii === index) {
         if (!useStateValues[ii]) {
-          checkedList.push(policyList[ii]._id);
+          checkedList.push(policyList[ii].id);
         }
       } else {
         if (useStateValues[ii]) {
-          checkedList.push(policyList[ii]._id);
+          checkedList.push(policyList[ii].id);
         }
       }
     }
@@ -157,7 +157,7 @@ export default function RegisterPolicyScreen({ navigation }) {
   function handleNextScreen(isMarketingAgreed) {
     const checkedList = checkedPolicies;
     if(isMarketingAgreed){
-      checkedList.push(policyList[policyList.length-1]._id);
+      checkedList.push(policyList[policyList.length-1].id);
     }
 
     dispatch({
