@@ -58,16 +58,15 @@ export default function PaymentNotificationScreen({ navigation }) {
           if (element.wish_at === telemedicineReservationStatus.doctorInfo.scheduleTime) {
             if(element.doctor.id === telemedicineReservationStatus.doctorInfo.id){
               deleteBiddingData(accountData.loginToken, element.id);
+              setTimeout(() => {
+                handleProceedPayment();
+              }, 1000);
             } else {
+              setProcessStatus('BEFORE');
               Alert.alert('예약 오류', '동일 시간대에 이미 예약이 되어있습니다.');
-              return ;
             }
           }
         });
-
-        setTimeout(() => {
-          handleProceedPayment();
-        }, 1000);
       } catch (error) {
         setProcessStatus('BEFORE');
         Alert.alert('예약 오류', '진료 예약 중 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
