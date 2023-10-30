@@ -56,7 +56,12 @@ export default function PaymentNotificationScreen({ navigation }) {
         const getBiddingListResponse = await getBiddingList(accountData.loginToken);
         getBiddingListResponse.data.response.forEach(element => {
           if (element.wish_at === telemedicineReservationStatus.doctorInfo.scheduleTime) {
-            deleteBiddingData(accountData.loginToken, element.id);
+            if(element.doctor.id === telemedicineReservationStatus.doctorInfo.id){
+              deleteBiddingData(accountData.loginToken, element.id);
+            } else {
+              Alert.alert('예약 오류', '동일 시간대에 이미 예약이 되어있습니다.');
+              return ;
+            }
           }
         });
 
