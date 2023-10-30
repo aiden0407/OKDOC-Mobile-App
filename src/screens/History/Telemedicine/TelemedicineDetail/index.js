@@ -16,6 +16,10 @@ import { SubColorButton } from 'components/Button';
 import { getBiddingInformation, getPaymentInformation } from 'api/Home';
 import { getInvoiceInformation, getTreatmentResults } from 'api/History';
 
+//Expo Print
+import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
+
 export default function TelemedicineDetailScreen({ navigation, route }) {
 
   const { state: { accountData } } = useContext(ApiContext);
@@ -44,6 +48,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
       const response = await getTreatmentResults(accountData.loginToken, telemedicineData.id);
       telemedicineData.opinion = response.data.response[0];
     } catch (error) {
+      telemedicineData.opinion = 'asdf';
       //Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }
   }
@@ -94,9 +99,131 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
     return formattedDate;
   }
 
-  function handleViewTelemedicineOpinion() {
-    navigation.navigate('TelemedicineOpinion', {telemedicineData: telemedicineData});
-  }
+  const handleViewTelemedicineOpinion = async () => {
+    const html = `
+      <html>
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+          <!-- Pretendard Fonts -->
+          <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.7/dist/web/static/pretendard-dynamic-subset.css" />
+          <!-- Pretendard Fonts End -->
+          <style>
+            body {
+              font-family: 'Pretendard';
+              text-align: center;
+            }
+            .main {
+              font-size: 20;
+            }
+            .title: {
+              font-size: 11;
+              textAlign: center;
+            },
+            .content: {
+              font-size: 11;
+            },
+            ,row1: {
+              margin-top: 30;
+              width: 100%;
+              display: flex;
+              flexDirection: row;
+            },
+          </style>
+        </head>
+
+        <body style="text-align: center;">
+          <p class='main'>소견서</p>
+
+          <div style={styles.row1}>
+            <div style={styles.titleBox1}>
+              <p style={styles.title}>환자의 성명</p>
+            </div>
+            <div style={styles.contentBox1}>
+              <p style={styles.content}>{treatmentData?.patient?.passport?.user_name ?? treatmentData?.patient?.passapp_certification?.name}</p>
+            </div>
+            <div style={styles.titleBox1}>
+              <p style={styles.title}>환자 생년월일</p>
+            </div>
+            <div style={styles.contentBox1}>
+              <p style={styles.content}>{treatmentData?.patient?.passport ? formatDate(String(treatmentData?.patient?.passport?.birth)) : treatmentData?.patient?.passapp_certification?.birthday.replaceAll('-', '.')}</p>
+            </div>
+          </div>
+
+          <div style={styles.row2}>
+            <div style={styles.titleBox2}>
+              <p style={styles.title}>병명</p>
+              <div style={styles.column1}>
+                <p style={styles.content}>{diagnosisType === 'presumptive' ? '◉ 임상적 추정' : '○ 임상적 추정'}</p>
+                <p style={styles.content}>{diagnosisType === 'definitive' ? '◉ 최종 진단' : '○ 최종 진단'}</p>
+              </div>
+            </div>
+            <div style={styles.contentBox2}>
+              <p style={styles.content}>{diagnosis}</p>
+            </div>
+            <div style={styles.titleBox2}>
+              <p style={styles.title}>질병 분류 기호</p>
+            </div>
+            <div style={styles.contentBox2}>
+              <p style={styles.content}>{diagnosisCode}</p>
+            </div>
+          </div>
+
+          <div style={styles.row2}>
+            <div style={styles.titleBox3}>
+              <p style={styles.title}>진료 내용 및{'\n'}향후 치료에 대한{'\n'}소견</p>
+            </div>
+            <div style={styles.contentBox3}>
+              <div style={styles.column2}>
+                <p style={styles.title}>(환자 호소 증상)</p>
+                <p style={styles.content}>{CC}</p>
+                <p style={styles.content}>{subjectiveSymtoms}</p>
+              </div>
+              
+              <div style={styles.column2}>
+                <p style={styles.title}>(본 의사의 판단)</p>
+                <p style={styles.content}>{objectiveFindings}</p>
+                <p style={styles.content}>{assessment}</p>
+              </div>
+              
+              <div style={styles.column2}>
+                <p style={styles.title}>(치료 계획)</p>
+                <p style={styles.content}>{plan}</p>
+              </div>
+              
+              <div style={styles.column2}>
+                <p style={styles.title}>(본 의사의 판단)</p>
+                <p style={styles.content}>{medicalOpinion}</p>
+              </div>
+            </div>
+          </div>
+
+          <div style={styles.contentBox4}>
+            <p style={styles.content}>상기 진료는 ㈜인성정보의 OK DOC 플랫폼을 통한 원격진료로 진행되었으며, 위와 같이 소견합니다.</p>
+            <div style={styles.row3}>
+              <p style={styles.content}>{returnToday()}</p>
+            </div>
+            <div style={styles.row4}>
+              <p style={styles.content}>의료기관 명칭 : 의정부을지대학교병원</p>
+              <p style={styles.content}> </p>
+              <p style={styles.content}>주소 : 경기도 의정부시 동일로 712 (금오동)</p>
+              <p style={styles.content}> </p>
+              <p style={styles.content}> </p>
+              <p style={styles.content}> </p>
+              <p style={styles.content}>[○]의사 [ ]치과의사 [ ]한의사 면허번호 : 제 {treatmentData?.doctor?.id} 호</p>
+              <p style={styles.content}> </p>
+              <p style={styles.content}>성명:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{treatmentData?.doctor?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명)</p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+    const { uri } = await Print.printToFileAsync({ html });
+    await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
+  };
+
+  // function handleViewTelemedicineOpinion() {
+  //   navigation.navigate('TelemedicineOpinion', {telemedicineData: telemedicineData});
+  // }
 
   if (isLoading) {
     return null;
