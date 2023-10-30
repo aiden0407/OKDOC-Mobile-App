@@ -13,6 +13,7 @@ export default function NeedLoginScreen({ navigation, route }) {
   useEffect(() => {
     if (accountData.loginToken) {
       navigation.goBack();
+      navigation.goBack();
     }
   }, [accountData]);
 
