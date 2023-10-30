@@ -31,7 +31,7 @@ export default function PassportPhoneCertifiactionScreen({ navigation }) {
       <Container paddingHorizontal={20}>
         <Container>
           <Text T3 bold marginTop={30}>오케이닥 서비스 이용을 위해{'\n'}본인 인증을 진행해 주세요</Text>
-          <Text T6 color={COLOR.GRAY1} marginTop={12}>재외국민이신 경우, 여권인증이 더 수월해요{'\n'}* 재외국민 : 30일 이상 해외 체류자</Text>
+          <Text T6 color={COLOR.GRAY1} marginTop={12}>재외국민이신 경우, 여권인증이 더 수월해요</Text>
 
           <Center marginTop={72}>
             <Row gap={20}>
