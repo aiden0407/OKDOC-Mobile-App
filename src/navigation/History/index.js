@@ -35,7 +35,6 @@ export default function HistoryInnerStackNavigation({ navigation }) {
           component={TelemedicineOpinionScreen}
           options={{
             title: '전자 소견서',
-            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('TelemedicineDetail')} />,
           }}
         />
       </Stack.Group>

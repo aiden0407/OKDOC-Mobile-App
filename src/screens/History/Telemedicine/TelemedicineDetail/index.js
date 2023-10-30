@@ -14,7 +14,7 @@ import { SubColorButton } from 'components/Button';
 
 //Api
 import { getBiddingInformation, getPaymentInformation } from 'api/Home';
-import { getInvoiceInformation } from 'api/History';
+import { getInvoiceInformation, getTreatmentResults } from 'api/History';
 
 export default function TelemedicineDetailScreen({ navigation, route }) {
 
@@ -38,6 +38,13 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
       getBiddingPaymentData(response.data.response.P_TID);
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    }
+
+    try {
+      const response = await getTreatmentResults(accountData.loginToken, telemedicineData.id);
+      telemedicineData.opinion = response.data.response[0];
+    } catch (error) {
+      //Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }
   }
 
@@ -88,7 +95,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
   }
 
   function handleViewTelemedicineOpinion() {
-    navigation.navigate('TelemedicineOpinion');
+    navigation.navigate('TelemedicineOpinion', {telemedicineData: telemedicineData});
   }
 
   if (isLoading) {
