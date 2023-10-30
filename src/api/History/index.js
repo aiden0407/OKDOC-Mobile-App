@@ -203,7 +203,7 @@ export const createInvoicePaymentRequest = async function (telemedicineData, ema
         P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
         P_CHARSET: 'utf8'
     };
-    if (email === 'aiden@insunginfo.co.kr' || email === 'cailyent0407@gmail.com' || email === 'logan@insunginfo.co.kr' || email === 'zloganway@gmail.com' || email === 'rlagudeh123@naver.com') {
+    if (email === 'aiden@insunginfo.co.kr' || email === 'cailyent0407@gmail.com' || email === 'logan@insunginfo.co.kr' || email === 'zloganway@gmail.com' || email === 'rlagudeh123@naver.com' || email === 'dbckd22@gmail.com') {
         data.P_AMT = '1000';
     } else {
         data.P_AMT = `${telemedicineData.productInfo.price}`;
