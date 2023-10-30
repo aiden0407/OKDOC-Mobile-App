@@ -225,3 +225,20 @@ export const createInvoicePaymentRequest = async function (telemedicineData, ema
         throw error.response;
     }
 }
+
+export const getTreatmentResults = async function (loginToken, treatmentId) {
+    try {
+        let options = {
+            url: `${APIURL}/treatments/?treatment_appointment_id=${treatmentId}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
