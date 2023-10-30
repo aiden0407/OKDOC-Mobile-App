@@ -40,24 +40,27 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
   const letCCTVStatusChange = async function () {
     try {
       await treatmentComplete(accountData.loginToken, telemedicineData.id);
+      checkInvoice();
     } catch (error) {
       //Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }
 
-    try {
-      const response = await getCCTVInformation(accountData.loginToken, telemedicineData.id);
+    // try {
+    //   const response = await getCCTVInformation(accountData.loginToken, telemedicineData.id);
 
-      try {
-        await patchCCTVPatientBye(accountData.loginToken, response.data.response[0].id);
-        dispatch({ type: 'HISTORY_DATA_ID_DELETE' });
-        checkInvoice();
-      } catch (error) {
-        Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
-      }
+    //   try {
+    //     await patchCCTVPatientBye(accountData.loginToken, response.data.response[0].id);
+    //     dispatch({ type: 'HISTORY_DATA_ID_DELETE' });
+    //     checkInvoice();
+    //   } catch (error) {
+    //     console.log("1"+error.data.response);
+    //     Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    //   }
 
-    } catch (error) {
-      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
-    }
+    // } catch (error) {
+    //   console.log("2"+error.data.response);
+    //   Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+    // }
   }
 
   const checkInvoice = async function () {
