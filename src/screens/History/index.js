@@ -140,6 +140,11 @@ export default function HistoryScreen({ navigation }) {
     const remainingSeconds = Math.floor(remainingTime / 1000);
     return remainingSeconds;
   }
+  
+  function convertToHashtags(dataArray) {
+    const hashtags = dataArray.map(tag => `#${tag}`).join(' ');
+    return hashtags;
+  }
 
   function handleCancleReservation(item) {
     Alert.alert('해당 진료 예약을 취소하시겠습니까?', '환불 규정에 따라 취소\n수수료가 발생할 수 있습니다.', [
@@ -294,11 +299,7 @@ export default function HistoryScreen({ navigation }) {
               <Text T7 bold color={COLOR.GRAY2}>
                 {item.doctorInfo.hospital} / {item.doctorInfo.department}
               </Text>
-              <Row marginTop={12}>
-                {item.doctorInfo.strength?.map((item, index) =>
-                  <Text key={`field${index}`} T7 color={COLOR.GRAY1}>#{item} </Text>
-                )}
-              </Row>
+              <StyledText T7 color={COLOR.GRAY1} numberOfLines={1} ellipsizeMode="tail">{convertToHashtags(item.doctorInfo.strength)}</StyledText>
             </CardDoctorInfoColumn>
           </Row>
           {type === 'underReservation'
@@ -483,4 +484,9 @@ const HistoryEmptyContainer = styled.View`
   border-radius: 10px;
   background-color: #FFFFFF;
   align-items: center;
+`;
+
+const StyledText = styled(Text)`
+  width: 230px;
+  margin-top: 12px;
 `;

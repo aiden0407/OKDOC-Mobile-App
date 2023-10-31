@@ -41,6 +41,11 @@ export default function DoctorProfileScreen({ navigation }) {
     }
   }
 
+  function convertToHashtags(dataArray) {
+    const hashtags = dataArray.map(tag => `#${tag}`).join(' ');
+    return hashtags;
+  }
+
   // function Review() {
   //   return (<>
   //     <Row marginTop={24} align>
@@ -112,11 +117,7 @@ export default function DoctorProfileScreen({ navigation }) {
               <DoctorColumn>
                 <Text T4 bold>{doctorInfo.name} 의사</Text>
                 <Text T7 medium color={COLOR.GRAY1}>{doctorInfo.hospital} / {doctorInfo.subject}</Text>
-                <Row marginTop={12}>
-                  {doctorInfo?.strength?.map((item, index) =>
-                    <Text key={`field${index}`} T7 color={COLOR.GRAY2}>#{item} </Text>
-                  )}
-                </Row>
+                <StyledText T7 color={COLOR.GRAY1} >{convertToHashtags(doctorInfo.strength)}</StyledText>
               </DoctorColumn>
             </Row>
 
@@ -256,4 +257,9 @@ const ServiceSection = styled.View`
   align-items: center;
   justify-content: center;
   border-radius: 25px;
+`;
+
+const StyledText = styled(Text)`
+  width: 230px;
+  margin-top: 12px;
 `;
