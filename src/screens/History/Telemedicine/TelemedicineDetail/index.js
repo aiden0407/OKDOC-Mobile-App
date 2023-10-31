@@ -6,11 +6,10 @@ import styled from 'styled-components/native';
 //Components
 import { COLOR, BUTTON } from 'constants/design';
 import { Alert } from 'react-native';
-import { ActivityIndicator } from 'react-native';
+// import { ActivityIndicator } from 'react-native';
 import { SafeArea, Container, ScrollView, Row, DividingLine, PaddingContainer, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
-import { SubColorButton } from 'components/Button';
 
 //Api
 import { getBiddingInformation, getPaymentInformation } from 'api/Home';
@@ -48,7 +47,6 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
       const response = await getTreatmentResults(accountData.loginToken, telemedicineData.id);
       telemedicineData.opinion = response.data.response[0];
     } catch (error) {
-      telemedicineData.opinion = 'asdf';
       //Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }
   }
@@ -67,6 +65,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
   const initInvoiceData = async function () {
     try {
       const response = await getInvoiceInformation(accountData.loginToken, biddingId);
+      console.log(response.data.response)
       setInvoiceData(response.data.response?.[0]);
       getInvoicePaymentData(response.data.response?.[0].P_TID);
     } catch (error) {
@@ -99,131 +98,285 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
     return formattedDate;
   }
 
+  function formatDate2(inputDate) {
+    const year = inputDate.substring(0, 4);
+    const month = inputDate.substring(4, 6);
+    const day = inputDate.substring(6, 8);
+    return `${year}.${month}.${day}`;
+  }
+
+  function formatDate3(inputDate) {
+    const date = new Date(inputDate);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+  
+    const formattedDate = `${year}년 ${month}월 ${day}일`;
+    return formattedDate;
+  }
+
+  function concatenateDeasesName(arr) {
+    const koreanNames = arr.map(obj => obj.한글명);
+    const concatenatedString = koreanNames.join(', ');
+    return concatenatedString;
+  }
+
+  function concatenateDeasesId(arr) {
+    const koreanNames = arr.map(obj => obj.상병기호);
+    const concatenatedString = koreanNames.join(', ');
+    return concatenatedString;
+  }
+
+  function convertToHashtags(dataArray) {
+    const hashtags = dataArray.map(tag => `#${tag}`).join(' ');
+    return hashtags;
+  }
+
   const handleViewTelemedicineOpinion = async () => {
     const html = `
-      <html>
+    <html>
         <head>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-          <!-- Pretendard Fonts -->
-          <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.7/dist/web/static/pretendard-dynamic-subset.css" />
-          <!-- Pretendard Fonts End -->
-          <style>
-            body {
-              font-family: 'Pretendard';
-              text-align: center;
-            }
-            .main {
-              font-size: 20;
-            }
-            .title: {
-              font-size: 11;
-              textAlign: center;
-            },
-            .content: {
-              font-size: 11;
-            },
-            ,row1: {
-              margin-top: 30;
-              width: 100%;
-              display: flex;
-              flexDirection: row;
-            },
-          </style>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+            <link href="//fonts.googleapis.com/earlyaccess/nanumgothic.css" rel="stylesheet" type="text/css">
+
+            <style>
+                html {
+                    display: flex;
+                    justify-content: center;
+                }
+                body {
+                    font-family: 'Nanumgothic';
+                    height: 842;
+                    width: 595;
+                    padding: 25 40;
+                    font-size: 11;
+                }
+                p {
+                    margin: 0;
+                }
+                div {
+                    box-sizing: border-box;
+                }
+                .watermark {
+                    position: absolute;
+                    top: 270;
+                    left: 50%;
+                    transform: translate(-50%, 0%);
+                    width: 300;
+                    opacity: 0.2;
+                }
+                .main {
+                    font-size: 20;
+                    font-weight: 700;
+                    text-align: center;
+                }
+                .title {
+                    text-align: center;
+                    font-weight: 700;
+                }
+                .content {
+                    text-align: start;
+                }
+                .row1 {
+                    margin-top: 30;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                }
+                .titleBox1 {
+                    min-width: 80;
+                    height: 24;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: 1px solid #7A7A7A;
+                    background-color: #F0F0F0;
+                }
+                .contentBox1 {
+                    padding: 0 10px;
+                    width: 100%;
+                    height: 24;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    border: 1px solid #7A7A7A;
+                }
+                .row2 {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                }
+                .column1 {
+                    margin-top: 4;
+                    margin-left: 12;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 4
+                }
+                .titleBox2 {
+                    min-width: 80;
+                    height: 75;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    border: 1px solid #7A7A7A;
+                    background-color: #F0F0F0;
+                }
+                .contentBox2 {
+                    padding: 0 10px;
+                    width: 100%;
+                    height: 75;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    border: 1px solid #7A7A7A;
+                }
+                .titleBox3 {
+                    min-width: 80;
+                    height: 460;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: 1px solid #7A7A7A;
+                    background-color: #F0F0F0;
+                    font-size: 10.5;
+                }
+                .contentBox3 {
+                    width: 100%;
+                    height: 460;
+                    max-height: 460;
+                    padding: 10px 10px 60px 10px;
+                    display: flex;
+                    flex-direction: column;
+                    border: 1px solid #7A7A7A;
+                    justify-content: space-between;
+                }
+                .column2 {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 4
+                }
+                .contentBox4 {
+                    width: 100%;
+                    height: 170;
+                    padding: 10px 30px 30px 10px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    border: 1px solid #7A7A7A;
+                }
+                .row3 {
+                    margin-top: 10;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-end;
+                }
+                .row4 {
+                    padding: 30px 0 0 30px;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+            </style>
         </head>
 
-        <body style="text-align: center;">
-          <p class='main'>소견서</p>
+        <body>
+            <img class='watermark' src="https://unsafe-public-okdoc-user-upload-image.s3.ap-northeast-2.amazonaws.com/insung-icon.png" alt="인성 아이콘">
 
-          <div style={styles.row1}>
-            <div style={styles.titleBox1}>
-              <p style={styles.title}>환자의 성명</p>
-            </div>
-            <div style={styles.contentBox1}>
-              <p style={styles.content}>{treatmentData?.patient?.passport?.user_name ?? treatmentData?.patient?.passapp_certification?.name}</p>
-            </div>
-            <div style={styles.titleBox1}>
-              <p style={styles.title}>환자 생년월일</p>
-            </div>
-            <div style={styles.contentBox1}>
-              <p style={styles.content}>{treatmentData?.patient?.passport ? formatDate(String(treatmentData?.patient?.passport?.birth)) : treatmentData?.patient?.passapp_certification?.birthday.replaceAll('-', '.')}</p>
-            </div>
-          </div>
+            <p class='main'>소견서</p>
 
-          <div style={styles.row2}>
-            <div style={styles.titleBox2}>
-              <p style={styles.title}>병명</p>
-              <div style={styles.column1}>
-                <p style={styles.content}>{diagnosisType === 'presumptive' ? '◉ 임상적 추정' : '○ 임상적 추정'}</p>
-                <p style={styles.content}>{diagnosisType === 'definitive' ? '◉ 최종 진단' : '○ 최종 진단'}</p>
-              </div>
+            <div class='row1'>
+                <div class='titleBox1'>
+                    <p class='title'>환자의 성명</p>
+                </div>
+                <div class='contentBox1'>
+                    <p class='content'>${telemedicineData.opinion.treatment_appointment.patient?.passport?.user_name ?? telemedicineData.opinion.treatment_appointment.patient?.passapp_certification?.name}</p>
+                </div>
+                <div class='titleBox1'>
+                    <p class='title'>환자 생년월일</p>
+                </div>
+                <div class='contentBox1'>
+                    <p class='content'>${telemedicineData.opinion.treatment_appointment.patient?.passport ? formatDate2(String(telemedicineData.opinion.treatment_appointment.patient?.passport?.birth)) : telemedicineData.opinion.treatment_appointment.patient?.passapp_certification?.birthday.replaceAll('-', '.')}</p>
+                </div>
             </div>
-            <div style={styles.contentBox2}>
-              <p style={styles.content}>{diagnosis}</p>
-            </div>
-            <div style={styles.titleBox2}>
-              <p style={styles.title}>질병 분류 기호</p>
-            </div>
-            <div style={styles.contentBox2}>
-              <p style={styles.content}>{diagnosisCode}</p>
-            </div>
-          </div>
 
-          <div style={styles.row2}>
-            <div style={styles.titleBox3}>
-              <p style={styles.title}>진료 내용 및{'\n'}향후 치료에 대한{'\n'}소견</p>
+            <div class='row2'>
+                <div class='titleBox2'>
+                    <p class='title'>병명</p>
+                    <div class='column1'>
+                        <p>${telemedicineData.opinion.diagnosis_type === 'presumptive' ? '◉ 임상적 추정' : '○ 임상적 추정'}</p>
+                        <p>${telemedicineData.opinion.diagnosis_type === 'definitive' ? '◉ 최종 진단' : '○ 최종 진단'}</p>
+                    </div>
+                </div>
+                <div class='contentBox2'>
+                    <p class='content'>${concatenateDeasesName(telemedicineData.opinion.diseases)}</p>
+                </div>
+                <div class='titleBox2'>
+                    <p class='title'>질병 분류 기호</p>
+                </div>
+                <div class='contentBox2'>
+                    <p class='content'>${concatenateDeasesId(telemedicineData.opinion.diseases)}</p>
+                </div>
             </div>
-            <div style={styles.contentBox3}>
-              <div style={styles.column2}>
-                <p style={styles.title}>(환자 호소 증상)</p>
-                <p style={styles.content}>{CC}</p>
-                <p style={styles.content}>{subjectiveSymtoms}</p>
-              </div>
-              
-              <div style={styles.column2}>
-                <p style={styles.title}>(본 의사의 판단)</p>
-                <p style={styles.content}>{objectiveFindings}</p>
-                <p style={styles.content}>{assessment}</p>
-              </div>
-              
-              <div style={styles.column2}>
-                <p style={styles.title}>(치료 계획)</p>
-                <p style={styles.content}>{plan}</p>
-              </div>
-              
-              <div style={styles.column2}>
-                <p style={styles.title}>(본 의사의 판단)</p>
-                <p style={styles.content}>{medicalOpinion}</p>
-              </div>
-            </div>
-          </div>
 
-          <div style={styles.contentBox4}>
-            <p style={styles.content}>상기 진료는 ㈜인성정보의 OK DOC 플랫폼을 통한 원격진료로 진행되었으며, 위와 같이 소견합니다.</p>
-            <div style={styles.row3}>
-              <p style={styles.content}>{returnToday()}</p>
+            <div class='row2'>
+                <div class='titleBox3'>
+                    <p class='title'>진료 내용 및<br>향후 치료에 대한<br>소견</p>
+                </div>
+                <div class='contentBox3'>
+                    <div class='column2'>
+                        <p class='title'>(환자 호소 증상)</p>
+                        <p class='content'>${telemedicineData.opinion.chief_complaint}</p>
+                        <p class='content'>${telemedicineData.opinion.subjective_symptom}</p>
+                    </div>
+
+                    <div class='column2'>
+                        <p class='title'>(본 의사의 판단)</p>
+                        <p class='content'>${telemedicineData.opinion.objective_finding}</p>
+                        <p class='content'>${telemedicineData.opinion.assessment}</p>
+                    </div>
+
+                    <div class='column2'>
+                        <p class='title'>(치료 계획)</p>
+                        <p class='content'>${telemedicineData.opinion.plan}</p>
+                    </div>
+
+                    <div class='column2'>
+                        <p class='title'>(본 의사의 소견)</p>
+                        <p class='content'>${telemedicineData.opinion.medical_opinion}</p>
+                    </div>
+                </div>
             </div>
-            <div style={styles.row4}>
-              <p style={styles.content}>의료기관 명칭 : 의정부을지대학교병원</p>
-              <p style={styles.content}> </p>
-              <p style={styles.content}>주소 : 경기도 의정부시 동일로 712 (금오동)</p>
-              <p style={styles.content}> </p>
-              <p style={styles.content}> </p>
-              <p style={styles.content}> </p>
-              <p style={styles.content}>[○]의사 [ ]치과의사 [ ]한의사 면허번호 : 제 {treatmentData?.doctor?.id} 호</p>
-              <p style={styles.content}> </p>
-              <p style={styles.content}>성명:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{treatmentData?.doctor?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명)</p>
+
+            <div class='contentBox4'>
+                <p class='content'>상기 진료는 ㈜인성정보의 OK DOC 플랫폼을 통한 원격진료로 진행되었으며, 위와 같이 소견합니다.</p>
+                <div class='row3'>
+                    <p class='content'>${formatDate3(telemedicineData.opinion.createdAt)}</p>
+                </div>
+                <div class='row4'>
+                    <p class='content'>의료기관 명칭 : 의정부을지대학교병원</p>
+                    <p class='content'>주소 : 경기도 의정부시 동일로 712 (금오동)</p>
+                    <p class='content'>[○]의사 [ ]치과의사 [ ]한의사 면허번호 : 제 ${telemedicineData.opinion.treatment_appointment.doctor.id} 호</p>
+                    <br>
+                    <p class='content'>
+                        성명:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${telemedicineData.opinion.treatment_appointment.doctor.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명)
+                    </p>
+                </div>
             </div>
-          </div>
         </body>
-      </html>
+    </html>
     `;
-    const { uri } = await Print.printToFileAsync({ html });
+
+    const { uri } = await Print.printToFileAsync({ html, height:842, width:595 });
     await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
   };
-
-  // function handleViewTelemedicineOpinion() {
-  //   navigation.navigate('TelemedicineOpinion', {telemedicineData: telemedicineData});
-  // }
 
   if (isLoading) {
     return null;
@@ -245,11 +398,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
             <CardDoctorInfoColumn>
               <Text T4 bold>{telemedicineData.doctorInfo.name} 의사</Text>
               <Text T7 bold color={COLOR.GRAY2}>{telemedicineData.doctorInfo.hospital} / {telemedicineData.doctorInfo.department}</Text>
-              <Row marginTop={12}>
-                {telemedicineData.doctorInfo.strength?.map((item, index) =>
-                  <Text key={`field${index}`} T7 color={COLOR.GRAY1}>#{item} </Text>
-                )}
-              </Row>
+              <StyledText T7 color={COLOR.GRAY1} >{convertToHashtags(telemedicineData.doctorInfo.strength)}</StyledText>
             </CardDoctorInfoColumn>
           </DoctorContainer>
 
@@ -258,11 +407,11 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
             {
               telemedicineData?.opinion
                 ? <CustomSubColorButton underlayColor={COLOR.SUB2} onPress={() => handleViewTelemedicineOpinion()}>
-                  <Text T5 medium color={COLOR.MAIN}>전자 소견서 보기</Text>
+                  <Text T5 medium color={COLOR.MAIN}>전자 소견서 저장</Text>
                 </CustomSubColorButton>
                 : (<Center>
                   <Box height={24} />
-                  <ActivityIndicator size="large" color="#5500CC" />
+                  {/* <ActivityIndicator size="large" color="#5500CC" /> */}
                   <Text T3 bold marginTop={12}>전자 소견서 작성중</Text>
                   <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>담당 의사가 소견서를 작성중입니다{'\n'}잠시만 기다려주세요</Text>
                 </Center>)
@@ -342,4 +491,9 @@ const CustomSubColorButton = styled.TouchableHighlight`
 const Center = styled.View`
   width: 100%;
   align-items: center;
+`;
+
+const StyledText = styled(Text)`
+  width: 230px;
+  margin-top: 12px;
 `;
