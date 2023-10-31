@@ -76,7 +76,7 @@ export const familyLocalLogin = async function (id, password) {
 export const getRegisterTerms = async function () {
     try {
         let options = {
-            url: `${APIURL}/terms/`,
+            url: `${APIURL}/terms/?sort_by=level&sort_order=-1&category=html`,
             method: 'GET',
         }
         const response = await axios(options);
