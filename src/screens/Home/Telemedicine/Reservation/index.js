@@ -8,7 +8,8 @@ import styled from 'styled-components/native';
 import { COLOR } from 'constants/design';
 import { Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeArea, Container, ScrollView, Row, DividingLine, ContainerCenter } from 'components/Layout';
+import { ActivityIndicator } from 'react-native';
+import { SafeArea, ContainerCenter, Container, ScrollView, Row, DividingLine } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 
@@ -159,8 +160,19 @@ export default function ReservationScreen({ navigation, route }) {
     navigation.navigate('DoctorProfile');
   }
 
+  function convertToHashtags(dataArray) {
+    const hashtags = dataArray.map(tag => `#${tag}`).join(' ');
+    return hashtags;
+  }
+
   if (isLoading) {
-    return null;
+    return (
+      <SafeArea>
+        <ContainerCenter>
+          <ActivityIndicator size="large" color="#5500CC" />
+        </ContainerCenter>
+      </SafeArea>
+    )
   }
 
   return (
@@ -226,11 +238,7 @@ export default function ReservationScreen({ navigation, route }) {
                     <DoctorColumn>
                       <Text T4 bold>{item.name} 의사</Text>
                       <Text T7 medium color={COLOR.GRAY1}>{item.hospital} / {item.subject}</Text>
-                      <Row marginTop={12}>
-                        {item?.strength?.map((item, index) =>
-                          <Text key={`field${index}`} T7 color={COLOR.GRAY1}>#{item} </Text>
-                        )}
-                      </Row>
+                      <StyledText T7 color={COLOR.GRAY1} numberOfLines={1} ellipsizeMode="tail">{convertToHashtags(item.strength)}</StyledText>
                     </DoctorColumn>
                     <Ionicons name="chevron-forward" size={24} color={COLOR.MAIN} />
                   </DoctorRow>
@@ -300,4 +308,9 @@ const DoctorRow = styled.Pressable`
 const DoctorColumn = styled.View`
   margin-left: 24px;
   flex: 1;
+`;
+
+const StyledText = styled(Text)`
+  width: 230px;
+  margin-top: 12px;
 `;
