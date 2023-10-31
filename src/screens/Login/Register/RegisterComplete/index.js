@@ -23,6 +23,7 @@ export default function RegisterCompleteScreen({ navigation }) {
   function handleNextScreen() {
     navigation.popToTop();
     navigation.goBack();
+    navigation.goBack();
   }
 
   return (
