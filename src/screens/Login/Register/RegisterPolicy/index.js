@@ -41,7 +41,12 @@ export default function RegisterPolicyScreen({ navigation }) {
   const initPolicy = async function () {
     try {
       const getRegisterTermsResponse = await getRegisterTerms();
-      setPolicyList(getRegisterTermsResponse.data.response);
+      const sortedPolicyList = getRegisterTermsResponse.data.response;
+      sortedPolicyList.push({
+        "id": "4a387957-7d37-417e-b23e-b158315c6d4b",
+        "type": "NOTIFICATION_OF_ADS",
+      });
+      setPolicyList(sortedPolicyList);
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }
@@ -214,7 +219,7 @@ export default function RegisterPolicyScreen({ navigation }) {
             <Ionicons name="checkbox" size={30} color={allPolicyAgreement ? COLOR.MAIN : COLOR.GRAY3} marginRight={6} marginTop={1} />
             <Text T4 bold>모든 약관에 동의합니다.</Text>
           </AgreeRow>
-          {policyList.map((item, index) =>
+          {policyList.map((item, index) => 
             <PolicyButton
               key={`policy${index}`}
               essential={item.level === 'required'}
