@@ -147,6 +147,7 @@ export default function LoginPage({ navigation }) {
 
     } catch (error) {
       if (error.response.data.statusCode === 404) {
+        const eamil = extractEmailFromString(error.response.data.message);
         appContextDispatch({
           type: 'REGISTER_ROUTE',
           route: 'APPLE_EMAIL_EXISTENT',
@@ -157,7 +158,7 @@ export default function LoginPage({ navigation }) {
             onPress: () => {
               appContextDispatch({
                 type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
-                email: extractEmailFromString(error.response.data.message),
+                email: eamil,
                 password: undefined,
                 invitationToken: credential.user,
               });
@@ -240,12 +241,13 @@ export default function LoginPage({ navigation }) {
               style={styles.button}
               onPress={async () => {
                 try {
-                  const credential = await AppleAuthentication.signInAsync({
-                    requestedScopes: [
-                      AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                      AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                    ],
-                  });
+                  // const credential = await AppleAuthentication.signInAsync({
+                  //   requestedScopes: [
+                  //     AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                  //     AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                  //   ],
+                  // });
+                  const credential = {"email":null,"identityToken":"eyJraWQiOiJXNldjT0tCIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoia3IuY28uaW5zdW5naW5mby5va2RvYyIsImV4cCI6MTY5OTAwMjIxOCwiaWF0IjoxNjk4OTE1ODE4LCJzdWIiOiIwMDE2NTguMGMwYTQ1NTgzZDMwNDE3MWEwYTc2ZTcwYmYwNDVlNTUuMDUxOSIsImNfaGFzaCI6IndOQ2JwdVNqZ2pxMEtZMVZWT1g0THciLCJlbWFpbCI6ImNhaWx5ZW50MDQwN0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6InRydWUiLCJhdXRoX3RpbWUiOjE2OTg5MTU4MTgsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.uhZz0vPtnn2ZXgeeKQDuN4ToiJy8kG8TVEX59_vQEwAiWECXbE4Lu_yqxhefLBRWdRCbVm2DKTzv_po5PT4EIkXJJY9w-i01DaA2SSytQs81-WhRpYVnLRMVD1869faOlVsWbUF_KmhwIvekFPLrAITmhBgZEgXABjjpWdUVOez0W1NgKBFhvQbyiQFsQqtXQEedgx4BT81PTWC6kP4YU0GnrjFWtGMXeFUro_5wFdWiJT2g616jDVLkER9m7G9GMoEzYgnSSs8PoZRU_iYrO_JD5UuQkSg16dZxqLy-MUc93sohF4Btb2MstPIH_t9uzQF05bLgfzfLWAyY0lKmSw","user":"001658.0c0a45583d304171a0a76e70bf045e55.0519","state":null,"authorizationCode":"c8311b475d0794bffbf8a5d671d847000.0.srwvy.Sh8jbvLulZeBWQuXHmGjLQ","fullName":{"nickname":null,"givenName":null,"nameSuffix":null,"familyName":null,"middleName":null,"namePrefix":null},"realUserStatus":1}
                   handleSignInWithApple(credential);
                 } catch (e) {
                   if (e.code === 'ERR_REQUEST_CANCELED') {
