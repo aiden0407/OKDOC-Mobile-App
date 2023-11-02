@@ -198,7 +198,7 @@ export const createInvoicePaymentRequest = async function (telemedicineData, ema
         P_NOTI: telemedicineData.invoiceInfo.id,
         P_GOODS: encodeURIComponent(telemedicineData.productInfo.hospital+' '+telemedicineData.productInfo.name),
         P_UNAME: encodeURIComponent(telemedicineData.profileInfo?.passport?.user_name ?? telemedicineData.profileInfo?.passapp_certification?.name),
-        P_NEXT_URL: `https://api.okdoc.app/merchant-webhook/advanced-paid/${telemedicineData.invoiceInfo.id}/${telemedicineData.id}`,
+        P_NEXT_URL: `https://api.okdoc.app/merchant-webhook/post-paid/${telemedicineData.invoiceInfo.id}/${telemedicineData.id}`,
         P_EMAIL: email,
         P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
         P_CHARSET: 'utf8'
