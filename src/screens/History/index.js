@@ -284,8 +284,11 @@ export default function HistoryScreen({ navigation }) {
                   <Text T7 medium color={COLOR.GRAY1}>완료</Text>
                 </CardTitleButton>
                 : <CardTitleButton>
-                  <Text T7 medium color={COLOR.GRAY1}>결제 필요</Text>
+                  <Text T7 medium color={COLOR.GRAY1}>완료</Text>
                 </CardTitleButton>
+                // : <CardTitleButton>
+                //   <Text T7 medium color={COLOR.GRAY1}>결제 필요</Text>
+                // </CardTitleButton>
           }
         </CardTitleSection>
 
@@ -330,10 +333,16 @@ export default function HistoryScreen({ navigation }) {
                 </CustomSolidButton>
                 : <CustomSolidButton
                   underlayColor={COLOR.SUB1}
-                  onPress={() => handleInvoicePaymnt(item)}
+                  onPress={() => handleViewTelemedicineDetail(item)}
                 >
-                  <Text T5 medium color="#FFFFFF">추가 결제하기</Text>
+                  <Text T5 medium color="#FFFFFF">진료 내역</Text>
                 </CustomSolidButton>
+                // : <CustomSolidButton
+                //   underlayColor={COLOR.SUB1}
+                //   onPress={() => handleInvoicePaymnt(item)}
+                // >
+                //   <Text T5 medium color="#FFFFFF">추가 결제하기</Text>
+                // </CustomSolidButton>
           }
         </CardDoctorInfoSection>
       </HistoryCardContainer>
