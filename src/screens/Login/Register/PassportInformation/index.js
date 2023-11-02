@@ -18,6 +18,7 @@ import { SolidButton } from 'components/Button';
 
 //Api
 import { checkPassportInformation, createAppleAccount, createGoogleAccount, createLocalAccount, createPatientByPassport } from 'api/Login';
+import { deleteFamilyAccout } from 'api/MyPage';
 
 //Assets
 import exclamationIcon from 'assets/icons/circle-exclamation.png';
@@ -116,37 +117,39 @@ export default function PassportInformationScreen({ navigation }) {
     setPassportCertifiactionState('CHECKING');
     try {
       const response = await checkPassportInformation(name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry));
-      if (response.data.response?.result === 'ERROR') {
-        setPassportCertifiactionState('COUNT_LIMIT_ERROR');
-      } else if (response.data.response?.data?.RESULTYN === 'N') {
-        setPassportCertifiactionState('WRONG_INFORMATION_ERROR');
-      } else {
-        try {
-          const deviceType = await AsyncStorage.getItem('@device_type');
-          const deviceToken = await AsyncStorage.getItem('@device_token');
-          let createLocalAccountResponse;
+      try {
+        const deviceType = await AsyncStorage.getItem('@device_type');
+        const deviceToken = await AsyncStorage.getItem('@device_token');
+        let createLocalAccountResponse;
 
-          if(registerStatus.route === 'APPLE_EMAIL_EXISTENT' || registerStatus.route === 'APPLE_EMAIL_UNDEFINED'){
-            createLocalAccountResponse = await createAppleAccount(registerStatus.email, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
-          }
-          if(registerStatus.route === 'GOOGLE_REGISTER'){
-            createLocalAccountResponse = await createGoogleAccount(registerStatus.email, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
-          }
-          if(registerStatus.route === 'LOCAL_REGISTER'){
-            createLocalAccountResponse = await createLocalAccount(registerStatus.email, registerStatus.password, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
-          }
-
-          const loginToken = createLocalAccountResponse.data.response.accessToken;
-          initPatient(loginToken);
-        } catch (error) {
-          setPassportCertifiactionState('NONE');
-          Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+        if(registerStatus.route === 'APPLE_EMAIL_EXISTENT' || registerStatus.route === 'APPLE_EMAIL_UNDEFINED'){
+          createLocalAccountResponse = await createAppleAccount(registerStatus.email, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
         }
+        if(registerStatus.route === 'GOOGLE_REGISTER'){
+          createLocalAccountResponse = await createGoogleAccount(registerStatus.email, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
+        }
+        if(registerStatus.route === 'LOCAL_REGISTER'){
+          createLocalAccountResponse = await createLocalAccount(registerStatus.email, registerStatus.password, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
+        }
+
+        const loginToken = createLocalAccountResponse.data.response.accessToken;
+        initPatient(loginToken);
+      } catch (error) {
+        setPassportCertifiactionState('NONE');
+        Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
       }
 
     } catch (error) {
-      setPassportCertifiactionState('NONE');
-      Alert.alert('네트워크 에러', '여권 번호 확인에 실패했습니다. 다시 시도해 주시기 바랍니다.');
+      if(error.response.data.statusCode===422){
+        if(error.response.data.message.includes('여권정보가 일치하지 않습니다.')) {
+          setPassportCertifiactionState('WRONG_INFORMATION_ERROR');
+        } else {
+          setPassportCertifiactionState('CERTIFICATE_ERROR');
+        }
+      } else {
+        setPassportCertifiactionState('NONE');
+        Alert.alert('네트워크 에러', '다시 시도해 주시기 바랍니다.');
+      }      
     }
   }
 
@@ -169,7 +172,7 @@ export default function PassportInformationScreen({ navigation }) {
         };
         await AsyncStorage.setItem('accountData', JSON.stringify(accountData));
       } catch (error) {
-        console.log(error);
+        //console.log(error);
       }
 
       apiContextDispatch({
@@ -183,8 +186,35 @@ export default function PassportInformationScreen({ navigation }) {
       appContextDispatch({type: 'REGISTER_COMPLETE'});
       navigation.navigate('RegisterComplete');
     } catch (error) {
-      setPassportCertifiactionState('NONE');
-      Alert.alert('프로필 정보 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+      if(error.response.data.statusCode === 409){
+        try {
+          await deleteFamilyAccout(loginToken, registerStatus.email);
+          apiContextDispatch({ type: 'LOGOUT' });
+          try {
+            await AsyncStorage.removeItem('accountData');
+          } catch (error) {
+            //console.log(error);
+          }
+          setPassportCertifiactionState('NONE');
+          Alert.alert('계정 안내', '이미 가입된 회원입니다. 로그인 혹은 계정 찾기를 진행해주시기 바랍니다.', '', [
+            {
+              text: '확인',
+              onPress: () => {
+                appContextDispatch({type: 'REGISTER_COMPLETE'});
+                navigation.popToTop();
+              }
+            }
+          ]);
+        } catch (error) {
+          //회원 탈퇴 실패
+          setPassportCertifiactionState('NONE');
+          Alert.alert('네트워크 에러', '프로필 생성에 실패했습니다. 관리자에게 문의해 주시기 바랍니다.');
+        }
+      } else {
+        //중복 프로필 생성 외 프로필 생성 실패
+        setPassportCertifiactionState('NONE');
+        Alert.alert('네트워크 에러', '프로필 생성에 실패했습니다. 관리자에게 문의해 주시기 바랍니다.');
+      }
     }
   }
 
@@ -319,11 +349,11 @@ export default function PassportInformationScreen({ navigation }) {
         </BottomSheetBackground>
       )}
 
-      {passportCertifiactionState === 'COUNT_LIMIT_ERROR' && (
+      {passportCertifiactionState === 'CERTIFICATE_ERROR' && (
         <BottomSheetBackground>
           <PassportCertifiactionContainer>
             <Image source={exclamationIcon} width={70} height={70} marginTop={-20} />
-            <Text T4 medium center marginTop={12}>이용횟수가 소진되었습니다.{'\n'}관리자에게 문의해주세요.</Text>
+            <Text T4 medium center marginTop={12}>여권 검증 서버에 문제가 발생했습니다{'\n'}관리자에게 문의해주세요.</Text>
             <Row gap={24} marginTop={18}>
               <CustomSolidButtonBackground onPress={() => setPassportCertifiactionState('NONE')} underlayColor={COLOR.SUB3}>
                 <Text T6 medium color={COLOR.MAIN}>닫기</Text>
