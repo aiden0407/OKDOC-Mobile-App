@@ -1,6 +1,7 @@
 //React
 import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
+import { useIsFocused } from '@react-navigation/native';
 import styled from 'styled-components/native';
 
 //Components
@@ -30,6 +31,14 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
   const [needInvoicePayment, setNeedInvoicePayment] = useState(false);
   const telemedicineData = route.params.telemedicineData;
   const biddingId = telemedicineData.bidding_id;
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if(isFocused){
+      initBiddingData();
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     initBiddingData();
