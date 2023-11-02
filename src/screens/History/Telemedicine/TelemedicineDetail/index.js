@@ -6,7 +6,6 @@ import styled from 'styled-components/native';
 //Components
 import { COLOR, BUTTON } from 'constants/design';
 import { Alert } from 'react-native';
-// import { ActivityIndicator } from 'react-native';
 import { SafeArea, Container, ScrollView, Row, DividingLine, PaddingContainer, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
@@ -27,6 +26,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
   const [invoiceData, setInvoiceData] = useState();
   const [biddingPaymentData, setBiddingPaymentData] = useState();
   const [invoicePaymentData, setInvoicePaymentData] = useState();
+  const [needInvoicePayment, setNeedInvoicePayment] = useState(false);
   const telemedicineData = route.params.telemedicineData;
   const biddingId = telemedicineData.bidding_id;
 
@@ -47,7 +47,8 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
       const response = await getTreatmentResults(accountData.loginToken, telemedicineData.id);
       telemedicineData.opinion = response.data.response[0];
     } catch (error) {
-      //Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+      //소견서 작성중
+      return null;
     }
   }
 
@@ -65,11 +66,11 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
   const initInvoiceData = async function () {
     try {
       const response = await getInvoiceInformation(accountData.loginToken, biddingId);
-      console.log(response.data.response)
       setInvoiceData(response.data.response?.[0]);
       getInvoicePaymentData(response.data.response?.[0].P_TID);
     } catch (error) {
       if (error.data.statusCode === 404) {
+        //진료 연장 안함
         return null;
       } else {
         Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
@@ -83,8 +84,16 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
       setInvoicePaymentData(response.data.response);
       setIsLoading(false);
     } catch (error) {
-      Alert.alert('결제 정보를 불러오지 못했습니다.');
+      //추가 결제 필요
+      setNeedInvoicePayment(true);
     }
+  }
+
+  function handleInvoicePaymnt() {
+    navigation.navigate('TelemedicineRoomNavigation', {
+      screen: 'Payment',
+      params: { telemedicineData: telemedicineData }
+    });
   }
 
   function formatDate(inputDate) {
@@ -411,7 +420,6 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
                 </CustomSubColorButton>
                 : (<Center>
                   <Box height={24} />
-                  {/* <ActivityIndicator size="large" color="#5500CC" /> */}
                   <Text T3 bold marginTop={12}>전자 소견서 작성중</Text>
                   <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>담당 의사가 소견서를 작성중입니다{'\n'}잠시만 기다려주세요</Text>
                 </Center>)
