@@ -157,7 +157,7 @@ export default function LoginPage({ navigation }) {
             onPress: () => {
               appContextDispatch({
                 type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
-                email: credential.email,
+                email: extractEmailFromString(error.response.data.message),
                 password: undefined,
                 invitationToken: credential.user,
               });
@@ -176,7 +176,7 @@ export default function LoginPage({ navigation }) {
             onPress: () => {
               appContextDispatch({
                 type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
-                email: credential.email,
+                email: undefined,
                 password: undefined,
                 invitationToken: credential.user,
               });
@@ -199,6 +199,16 @@ export default function LoginPage({ navigation }) {
       screen: 'Inquiry',
       params: { headerTitle: '계정 관련 문의' },
     });
+  }
+
+  function extractEmailFromString(inputString) {
+    const start = inputString.indexOf('User ') + 5;
+    const end = inputString.indexOf(' not found', start);
+    if (start !== -1 && end !== -1) {
+      return inputString.substring(start, end);
+    } else {
+      return null;
+    }
   }
 
   return (
