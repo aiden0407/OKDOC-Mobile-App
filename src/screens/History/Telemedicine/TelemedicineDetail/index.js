@@ -9,6 +9,7 @@ import { Alert } from 'react-native';
 import { SafeArea, Container, ScrollView, Row, DividingLine, PaddingContainer, Box } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
+import { SolidButton } from 'components/Button';
 
 //Api
 import { getBiddingInformation, getPaymentInformation } from 'api/Home';
@@ -414,15 +415,21 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
           <PaddingContainer>
             <Text T3 bold marginTop={24}>전자 소견서</Text>
             {
-              telemedicineData?.opinion
-                ? <CustomSubColorButton underlayColor={COLOR.SUB2} onPress={() => handleViewTelemedicineOpinion()}>
-                  <Text T5 medium color={COLOR.MAIN}>전자 소견서 저장</Text>
-                </CustomSubColorButton>
-                : (<Center>
+              needInvoicePayment
+                ? (<Center>
                   <Box height={24} />
-                  <Text T3 bold marginTop={12}>전자 소견서 작성중</Text>
-                  <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>담당 의사가 소견서를 작성중입니다{'\n'}잠시만 기다려주세요</Text>
+                  <Text T3 bold marginTop={12}>추가 결제 필요</Text>
+                  <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>진료를 연장했기 때문에{'\n'}결제 후 소견서를 확인하실 수 있습니다</Text>
                 </Center>)
+                : telemedicineData?.opinion
+                  ? <CustomSubColorButton underlayColor={COLOR.SUB2} onPress={() => handleViewTelemedicineOpinion()}>
+                    <Text T5 medium color={COLOR.MAIN}>전자 소견서 저장</Text>
+                  </CustomSubColorButton>
+                  : (<Center>
+                    <Box height={24} />
+                    <Text T3 bold marginTop={12}>전자 소견서 작성중</Text>
+                    <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>담당 의사가 소견서를 작성중입니다{'\n'}잠시만 기다려주세요</Text>
+                  </Center>)
             }
           </PaddingContainer>
 
@@ -461,6 +468,18 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
                <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
                <Text T6 color={COLOR.GRAY1}>{formatDate(invoiceData?.P_AUTH_DT)}</Text>
              </Row>
+              </PaddingContainer>
+              : null
+          }
+
+          {
+            needInvoicePayment
+              ? <PaddingContainer>
+                <SolidButton
+                  text="추가 결제하기"
+                  marginTop={24}
+                  action={() => handleInvoicePaymnt()}
+                />
               </PaddingContainer>
               : null
           }
