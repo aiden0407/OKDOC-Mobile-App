@@ -15,7 +15,8 @@ import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { getBiddingList, deleteBidding, createBidding } from 'api/Home';
+import { getBiddingInformation, createBidding } from 'api/Home';
+import { getScheduleByPatientId } from 'api/History';
 
 //Assets
 import exclamationIcon from 'assets/icons/circle-exclamation.png';
@@ -44,37 +45,64 @@ export default function PaymentNotificationScreen({ navigation }) {
     setProcessStatus('LOADING');
 
     try {
-      const response = await createBidding(accountData.loginToken, telemedicineReservationStatus);
-      dispatch({
-        type: 'TELEMEDICINE_RESERVATION_BIDDING_ID',
-        biddingId: response.data.response.id,
-      });
-      navigation.navigate('TelemedicineReservationPayment', { screen: 'Payment' });
-      setProcessStatus('BEFORE');
-    } catch (error) {
-      try {
-        const getBiddingListResponse = await getBiddingList(accountData.loginToken);
-        getBiddingListResponse.data.response.forEach(element => {
-          if (element.wish_at === telemedicineReservationStatus.doctorInfo.scheduleTime) {
-            if(element?.P_TID){
-              Alert.alert('예약 오류', '동일 시간대에 이미 예약이 되어있습니다.');
-            } else {
-              deleteBiddingData(accountData.loginToken, element.id);
-              setTimeout(() => {
-                handleProceedPayment();
-              }, 1000);
-            }
+      const response = await getScheduleByPatientId(accountData.loginToken, telemedicineReservationStatus.profileInfo?.id);
+      const appointmentList = response.data.response;
+      let appointmentExist = false;
+
+      for (let ii = 0; ii < appointmentList.length; ii++) {
+        const appointment = appointmentList[ii];
+        try {
+          const response = await getBiddingInformation(accountData.loginToken, appointment.bidding_id);
+          const biddingInfo = response.data.response;
+          if (biddingInfo.wish_at === telemedicineReservationStatus.doctorInfo.scheduleTime) {
+            appointmentExist = true;
           }
-        });
-      } catch (error) {
+        } catch (error) {
+          setProcessStatus('BEFORE');
+          Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+          break ;
+        }
+      }
+
+      if (appointmentExist) {
         setProcessStatus('BEFORE');
-        Alert.alert('예약 오류', '진료 예약 중 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
+        Alert.alert('예약 오류', '동일 시간대에 이미 예약이 되어있습니다.');
+      } else {
+        try {
+          const response = await createBidding(accountData.loginToken, telemedicineReservationStatus);
+          dispatch({
+            type: 'TELEMEDICINE_RESERVATION_BIDDING_ID',
+            biddingId: response.data.response.id,
+          });
+          navigation.navigate('TelemedicineReservationPayment', { screen: 'Payment' });
+          setProcessStatus('BEFORE');
+        } catch (error) {
+          console.log(error.data)
+          setProcessStatus('BEFORE');
+          Alert.alert('결제 정보 생성 실패', '고객센터로 문의해주시기 바랍니다.');
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      if(error.status===404){
+        // 예약되어 있는 진료 없음
+        try {
+          const response = await createBidding(accountData.loginToken, telemedicineReservationStatus);
+          dispatch({
+            type: 'TELEMEDICINE_RESERVATION_BIDDING_ID',
+            biddingId: response.data.response.id,
+          });
+          navigation.navigate('TelemedicineReservationPayment', { screen: 'Payment' });
+          setProcessStatus('BEFORE');
+        } catch (error) {
+          setProcessStatus('BEFORE');
+          Alert.alert('결제 정보 생성 실패', '고객센터로 문의해주시기 바랍니다.');
+        }
+      } else {
+        setProcessStatus('BEFORE');
+        Alert.alert('네트워크 에러', '진료 목록 불러오기를 실패하였습니다. 다시 시도해 주시기 바랍니다.');
       }
     }
-  }
-
-  const deleteBiddingData = async function (loginToken, biddingId) {
-    await deleteBidding(loginToken, biddingId);
   }
 
   return (
