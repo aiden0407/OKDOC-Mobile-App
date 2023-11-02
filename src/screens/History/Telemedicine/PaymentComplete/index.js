@@ -29,9 +29,9 @@ export default function PaymentCompleteScreen({ navigation, route }) {
 
   const initInvoiceData = async function () {
     try {
-      const response = await getInvoiceInformation(accountData.loginToken, telemedicineData.biddingId);
+      const response = await getInvoiceInformation(accountData.loginToken, telemedicineData.biddingInfo.id);
       setInvoiceData(response.data.response?.[0]);
-      initPaymentData(response.data.response.P_TID?.[0].P_TID);
+      initPaymentData(response.data.response?.[0].P_TID);
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }
