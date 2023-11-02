@@ -92,7 +92,8 @@ export default function App() {
       token = (await Notifications.getDevicePushTokenAsync()).data;
       await AsyncStorage.setItem('@device_token', token);
     } else {
-      await AsyncStorage.setItem('@device_token', '961ae45edebaf891a146995cad67d1390d47b63b1867c42c93b6c405911ae241');
+      //Aiden's @device_token
+      await AsyncStorage.setItem('@device_token', '7af2918322215934ebb1c265340c190f1c503d9a81c303d32cd308b0ae72ce3e');
     }
   
     return token;
