@@ -144,53 +144,48 @@ export default function LoginPage({ navigation }) {
       } catch (error) {
         //console.log(error);
       }
-      
+
     } catch (error) {
-      if(credential.email){
-        if (error.response.data.statusCode === 404) {
-          appContextDispatch({
-            type: 'REGISTER_ROUTE',
-            route: 'APPLE_EMAIL_EXISTENT',
-          });
-          Alert.alert('안내', '해당 계정이 존재하지 않습니다. 회원가입을 진행합니다.', [
-            {
-              text: '확인',
-              onPress: () => {
-                appContextDispatch({
-                  type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
-                  email: credential.email,
-                  password: undefined,
-                  invitationToken: credential.user,
-                });
-                navigation.navigate('RegisterPolicy');
-              }
+      if (error.response.data.statusCode === 404) {
+        appContextDispatch({
+          type: 'REGISTER_ROUTE',
+          route: 'APPLE_EMAIL_EXISTENT',
+        });
+        Alert.alert('안내', '해당 계정이 존재하지 않습니다. 회원가입을 진행합니다.', [
+          {
+            text: '확인',
+            onPress: () => {
+              appContextDispatch({
+                type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
+                email: credential.email,
+                password: undefined,
+                invitationToken: credential.user,
+              });
+              navigation.navigate('RegisterPolicy');
             }
-          ]);
-        } else if (error.response.data.statusCode === 422) {
-          appContextDispatch({
-            type: 'REGISTER_ROUTE',
-            route: 'APPLE_EMAIL_UNDEFINED',
-            //route: 'APPLE_EMAIL_EXISTENT',
-          });
-          Alert.alert('안내', '해당 계정이 존재하지 않습니다. 회원가입을 진행합니다.', [
-            {
-              text: '확인',
-              onPress: () => {
-                appContextDispatch({
-                  type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
-                  email: credential.email,
-                  password: undefined,
-                  invitationToken: credential.user,
-                });
-                navigation.navigate('RegisterPolicy');
-              }
+          }
+        ]);
+      } else if (error.response.data.statusCode === 422) {
+        appContextDispatch({
+          type: 'REGISTER_ROUTE',
+          route: 'APPLE_EMAIL_UNDEFINED',
+        });
+        Alert.alert('안내', '해당 계정이 존재하지 않습니다. 회원가입을 진행합니다.', [
+          {
+            text: '확인',
+            onPress: () => {
+              appContextDispatch({
+                type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
+                email: credential.email,
+                password: undefined,
+                invitationToken: credential.user,
+              });
+              navigation.navigate('RegisterPolicy');
             }
-          ]);
-        } else {
-          Alert.alert('네트워크 오류로 인해 로그인에 실패했습니다.');
-        }
+          }
+        ]);
       } else {
-        Alert.alert('안내', '애플 로그인 오류가 발생했습니다. 고객센터를 통해 문의해주시기 바랍니다.');
+        Alert.alert('네트워크 오류로 인해 로그인에 실패했습니다.');
       }
     }
   }
