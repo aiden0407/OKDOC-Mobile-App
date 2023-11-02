@@ -21,7 +21,6 @@ export default function PaymentCompleteScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
   const [invoiceData, setInvoiceData] = useState();
   const [paymentData, setPaymentData] = useState();
-  const invoiceId = route.params?.invoiceId;
   const telemedicineData = route.params.telemedicineData;
 
   useEffect(() => {
@@ -30,9 +29,9 @@ export default function PaymentCompleteScreen({ navigation, route }) {
 
   const initInvoiceData = async function () {
     try {
-      const response = await getInvoiceInformation(accountData.loginToken, invoiceId);
-      setInvoiceData(response.data.response);
-      initPaymentData(response.data.response.P_TID);
+      const response = await getInvoiceInformation(accountData.loginToken, telemedicineData.biddingId);
+      setInvoiceData(response.data.response?.[0]);
+      initPaymentData(response.data.response.P_TID?.[0].P_TID);
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }
