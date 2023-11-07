@@ -189,10 +189,12 @@ export default function useHistoryUpdate() {
                 type: 'HISTORY_DATA_UPDATE',
                 historyData: contextHistorySet,
             });
-            appContextDispatch({
-                type: 'NEED_PAYMENT_DATA',
-                needPaymentData: needPayment,
-            });
+            if(needPayment){
+                appContextDispatch({
+                    type: 'NEED_PAYMENT_DATA',
+                    needPaymentData: needPayment,
+                });
+            }
             appContextDispatch({ type: 'HISTORY_DATA_UPDATED' });
             // await Clipboard.setStringAsync(JSON.stringify(contextHistorySet));
             // console.log('Updated')
