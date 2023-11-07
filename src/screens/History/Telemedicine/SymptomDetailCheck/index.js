@@ -4,6 +4,7 @@ import { ApiContext } from 'context/ApiContext';
 import useHistoryUpdate from 'hook/useHistoryUpdate';
 import styled from 'styled-components/native';
 import { getLocales } from 'expo-localization';
+//import * as Location from 'expo-location';
 
 //Components
 import { COLOR } from 'constants/design';
@@ -62,9 +63,9 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   }
 
   function handleNotice1() {
-    if (accountData.email === 'aiden@insunginfo.co.kr' || accountData.email === 'cailyent0407@gmail.com' || accountData.email === 'logan@insunginfo.co.kr' || accountData.email === 'zloganway@gmail.com' || accountData.email === 'rlagudeh123@naver.com' || accountData.email === 'dbckd22@gmail.com') {
-      handleNotice2();
-    } else {
+    // if (accountData.email === 'aiden@insunginfo.co.kr' || accountData.email === 'cailyent0407@gmail.com' || accountData.email === 'logan@insunginfo.co.kr' || accountData.email === 'zloganway@gmail.com' || accountData.email === 'rlagudeh123@naver.com' || accountData.email === 'dbckd22@gmail.com') {
+    //   handleNotice2();
+    // } else {
       if (deviceLocale?.regionCode === 'KR') {
         Alert.alert('대한민국에서는 해당 서비스를 이용하실 수 없습니다.');
       } else {
@@ -79,7 +80,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
           },
         ]);
       }
-    }
+    //}
   }
 
   function handleNotice2() {
