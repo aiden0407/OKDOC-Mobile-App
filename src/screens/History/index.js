@@ -2,6 +2,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
+import useHistoryUpdate from 'hook/useHistoryUpdate';
 import styled from 'styled-components/native';
 
 //Components
@@ -15,123 +16,36 @@ import { SolidButton } from 'components/Button';
 import NeedLogin from 'components/NeedLogin';
 
 //Api
-import { getBiddingInformation } from 'api/Home';
-import { getScheduleByPatientId, getPurchaseInformation, getInvoiceInformation, canclePayment, treatmentCancel } from 'api/History';
+import { canclePayment } from 'api/History';
 
 //Assets
 import letterIcon from 'assets/icons/mypage-letter.png';
 
 export default function HistoryScreen({ navigation }) {
 
-  const { state: { accountData, profileData, productList, historyData }, dispatch: apiContextDispatch } = useContext(ApiContext);
-  const { state: { historyDataId }, dispatch: appContextDispatch } = useContext(AppContext);
+  const { refresh } = useHistoryUpdate();
+  const { state: { accountData, historyData } } = useContext(ApiContext);
+  const { state: { historyDataLoading }, dispatch: appContextDispatch } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    setIsLoading(true);
-    if (accountData.loginToken) {
-      getAppointmentHistory();
-    } else {
-      setIsLoading(false);
-    }
-  }, [profileData, historyDataId]);
-
   const onRefresh = () => {
     setRefreshing(true);
-    getAppointmentHistory();
+    refresh();
   };
 
-  const getAppointmentHistory = async function () {
-    try {
-      const response = await getScheduleByPatientId(accountData.loginToken, profileData?.[0]?.id);
-      const historyList = response.data.response;
-      const contextHistorySet = {
-        underReservation: [
-        ],
-        pastHistory: [
-        ],
-      };
+  const loadingRefresh = () => {
+    setIsLoading(true);
+    refresh();
+  };
 
-      for (let ii = 0; ii < historyList.length; ii++) {
-        const history = historyList[ii];
-        history.productInfo = productList[2];
-
-        try {
-          const response = await getBiddingInformation(accountData.loginToken, history.bidding_id);
-          const biddingInfo = response.data.response;
-          history.biddingInfo = biddingInfo;
-          history.doctorInfo = biddingInfo.doctor;
-          history.profileInfo = biddingInfo.patient;
-          history.department = biddingInfo.department;
-          history.wish_at = biddingInfo.wish_at;
-          history.explain_symptom = biddingInfo.explain_symptom;
-          history.attachments = biddingInfo.attachments;
-        } catch (error) {
-          Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
-        }
-
-        try {
-          const response = await getPurchaseInformation(accountData.loginToken, history.id);
-          const purchaseInfo = response.data.response[0];
-          history.purchaseInfo = purchaseInfo;
-          history.purchaseId = purchaseInfo.id;
-        } catch (error) {
-          Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
-        }
-
-        try {
-          const response = await getInvoiceInformation(accountData.loginToken, history.bidding_id);
-          history.invoiceInfo = response.data.response?.[0];
-        } catch (error) {
-          if (error.data.statusCode !== 404) {
-            Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
-          }
-        }
-
-        const date = new Date(history.wish_at);
-        const day = date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll(' ', '').slice(0, -1);
-        let time = date.toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit' });
-        if (time.startsWith('24:')) {
-          time = time.replace('24:', '00:');
-        }
-        history.date = day;
-        history.time = time;
-
-        if (history.status === 'RESERVATION_CONFIRMED') {
-          contextHistorySet.underReservation.unshift(history);
-        } else {
-          contextHistorySet.pastHistory.unshift(history);
-        }
-      }
-
-      setTimeout(function () {
-        apiContextDispatch({
-          type: 'HISTORY_DATA_UPDATE',
-          historyData: contextHistorySet,
-        });
-        setRefreshing(false);
-        setIsLoading(false);
-      }, 2000);
-    } catch (error) {
-      if(error.status===404){
-        const contextHistorySet = {
-          underReservation: [
-          ],
-          pastHistory: [
-          ],
-        };
-        apiContextDispatch({
-          type: 'HISTORY_DATA_UPDATE',
-          historyData: contextHistorySet,
-        });
-        setIsLoading(false);
-      } else {
-        Alert.alert('네트워크 에러', '진료 목록 정보 불러오기를 실패하였습니다. 다시 시도해 주시기 바랍니다.');
-      }
+  useEffect(() => {
+    if(!historyDataLoading){
       setRefreshing(false);
+      setIsLoading(false);
     }
-  };
+  }, [historyDataLoading]);
+  
 
   function getRemainingTime(wishAt) {
     const wishTime = new Date(wishAt).getTime();
@@ -160,58 +74,34 @@ export default function HistoryScreen({ navigation }) {
   }
 
   const handleCancleComplete = async function (item) {
-    try {
-      await canclePayment(accountData.loginToken, item.purchaseId, item.biddingInfo.P_TID);
-      Alert.alert('해당 예약이 정상적으로 취소되었습니다.', '', [
+    if(getRemainingTime(item.wish_at) < 300){
+      Alert.alert('취소 불가 안내', '진료 5분 전에는 취소가 불가능합니다.', [
         {
           text: '확인',
-          onPress: () => handleConfirm(item)
-        }
+          onPress: () => loadingRefresh()
+        },
       ]);
-    } catch (error) {
-      if(error.data.statusCode===410){
-        if(getRemainingTime(item.wish_at) > -600){
-          Alert.alert('취소 불가 안내', '진료 예약 시간이 초과되어 취소가 불가능합니다.', [
-            {
-              text: '확인',
-              onPress: () => handleConfirm(item)
-            },
-          ]);
-        }else{
-          handleCancelNotice(item)
-        }
-      }else{
-        Alert.alert('네트워크 에러', '진료 취소 중 에러가 발생했습니다. 다시 시도해 주시기 바랍니다.');
+    } else {
+      try {
+        await canclePayment(accountData.loginToken, item.purchaseId, item.biddingInfo.P_TID);
+        Alert.alert('해당 예약이 정상적으로 취소되었습니다.', '', [
+          {
+            text: '확인',
+            onPress: () => loadingRefresh()
+          }
+        ]);
+      } catch (error) {
+        Alert.alert('네트워크 에러', '진료 취소 중 에러가 발생했습니다. 다시 시도해 주시기 바랍니다.', [
+          {
+            text: '확인',
+            onPress: () => loadingRefresh()
+          },
+        ]);
       }
     }
   }
 
-  function handleConfirm(item) {
-    setIsLoading(true);
-    appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: item.id });
-    appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: undefined });
-  }
-
-  function handleCancelNotice(item) {
-    Alert.alert('취소 불가 안내', '진료 예약 시간이 초과되어 취소가 불가능합니다.', [
-      {
-        text: '확인',
-        onPress: () => letTreatmentStatusCANCELLED(item)
-      },
-    ]);
-  }
-
-  const letTreatmentStatusCANCELLED = async function (item) {
-    try {
-      await treatmentCancel(accountData.loginToken, item.id);
-      handleConfirm(item);
-    } catch (error) {
-      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
-    }
-  }
-
   function handleEnterTelemedicine(item) {
-    appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: item.id });
     navigation.navigate('HistoryStackNavigation', {
       screen: 'SymptomDetailCheck',
       params: { telemedicineData: item }
@@ -219,17 +109,8 @@ export default function HistoryScreen({ navigation }) {
   }
 
   function handleViewTelemedicineDetail(item) {
-    appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: item.id });
     navigation.navigate('HistoryStackNavigation', {
       screen: 'TelemedicineDetail',
-      params: { telemedicineData: item }
-    });
-  }
-
-  function handleInvoicePaymnt(item) {
-    appContextDispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: item.id });
-    navigation.navigate('TelemedicineRoomNavigation', {
-      screen: 'Payment',
       params: { telemedicineData: item }
     });
   }
@@ -263,32 +144,18 @@ export default function HistoryScreen({ navigation }) {
               >
                 <Text T7 medium color={COLOR.GRAY1}>예약 취소</Text>
               </CardTitleButton>
-              : getRemainingTime(item?.wish_at) > -600 || item?.invoiceInfo
-                ? <CardTitleButton
-                  underlayColor={COLOR.GRAY5}
-                >
-                  <Text T7 medium color={COLOR.GRAY1}>진료중</Text>
-                </CardTitleButton>
-                : <CardTitleButton
-                  underlayColor={COLOR.GRAY5}
-                  onPress={() => handleCancelNotice(item)}
-                >
-                  <Text T7 medium color={COLOR.GRAY1}>취소 불가</Text>
-                </CardTitleButton>
-            : item.status === 'CANCELLED'
+              : <CardTitleButton
+                underlayColor={COLOR.GRAY5}
+              >
+                <Text T7 medium color={COLOR.GRAY1}>진료중</Text>
+              </CardTitleButton>
+            : item.STATUS === 'CANCELED'
               ? <CardTitleButton>
                 <Text T7 medium color={COLOR.GRAY1}>취소됨</Text>
               </CardTitleButton>
-              : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
-                ? <CardTitleButton>
-                  <Text T7 medium color={COLOR.GRAY1}>완료</Text>
-                </CardTitleButton>
-                : <CardTitleButton>
-                  <Text T7 medium color={COLOR.GRAY1}>완료</Text>
-                </CardTitleButton>
-                // : <CardTitleButton>
-                //   <Text T7 medium color={COLOR.GRAY1}>결제 필요</Text>
-                // </CardTitleButton>
+              : <CardTitleButton>
+                <Text T7 medium color={COLOR.GRAY1}>완료</Text>
+              </CardTitleButton>
           }
         </CardTitleSection>
 
@@ -306,23 +173,18 @@ export default function HistoryScreen({ navigation }) {
             </CardDoctorInfoColumn>
           </Row>
           {type === 'underReservation'
-            ? getRemainingTime(item?.wish_at) > -600 || item?.invoiceInfo
+            ? <CustomSolidButton
+              underlayColor={COLOR.SUB1}
+              onPress={() => handleEnterTelemedicine(item)}
+            >
+              <Text T5 medium color="#FFFFFF">진료 예약 정보</Text>
+            </CustomSolidButton>
+            : item.STATUS === 'CANCELED'
               ? <CustomSolidButton
                 underlayColor={COLOR.SUB1}
-                onPress={() => handleEnterTelemedicine(item)}
+                onPress={() => handleViewTelemedicineDetail(item)}
               >
-                <Text T5 medium color="#FFFFFF">진료 예약 정보</Text>
-              </CustomSolidButton>
-              : <CustomSolidButton
-                style={{ backgroundColor: COLOR.GRAY3 }}
-              >
-                <Text T5 medium color="#FFFFFF">입장 시간 초과</Text>
-              </CustomSolidButton>
-            : item.status === 'CANCELLED'
-              ? <CustomSolidButton
-                style={{ backgroundColor: COLOR.GRAY3 }}
-              >
-                <Text T5 medium color="#FFFFFF">입장 시간 초과</Text>
+                <Text T5 medium color="#FFFFFF">취소 내역</Text>
               </CustomSolidButton>
               : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
                 ? <CustomSolidButton
@@ -335,14 +197,8 @@ export default function HistoryScreen({ navigation }) {
                   underlayColor={COLOR.SUB1}
                   onPress={() => handleViewTelemedicineDetail(item)}
                 >
-                  <Text T5 medium color="#FFFFFF">진료 내역</Text>
+                  <Text T5 medium color="#FFFFFF">추가 결제 필요</Text>
                 </CustomSolidButton>
-                // : <CustomSolidButton
-                //   underlayColor={COLOR.SUB1}
-                //   onPress={() => handleInvoicePaymnt(item)}
-                // >
-                //   <Text T5 medium color="#FFFFFF">추가 결제하기</Text>
-                // </CustomSolidButton>
           }
         </CardDoctorInfoSection>
       </HistoryCardContainer>
