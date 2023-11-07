@@ -88,6 +88,7 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
         telemedicineData: telemedicineData
       });
     } else {
+      navigation.popToTop();
       navigation.navigate('HistoryStackNavigation', { 
         screen: 'TelemedicineDetail',
         params: { telemedicineData: telemedicineData }
