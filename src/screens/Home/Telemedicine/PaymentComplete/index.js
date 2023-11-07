@@ -2,6 +2,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
+import useHistoryUpdate from 'hook/useHistoryUpdate';
 
 //Components
 import { COLOR } from 'constants/design';
@@ -16,6 +17,7 @@ import { getBiddingInformation, getPaymentInformation } from 'api/Home';
 
 export default function PaymentCompleteScreen({ navigation, route }) {
 
+  const { refresh } = useHistoryUpdate();
   const { state: { accountData } } = useContext(ApiContext);
   const { state: { telemedicineReservationStatus }, dispatch } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,7 +62,7 @@ export default function PaymentCompleteScreen({ navigation, route }) {
 
   function handleConfirm() {
     dispatch({ type: 'TELEMEDICINE_RESERVATION_CONFIRMED' });
-    dispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: biddingId });
+    refresh();
     navigation.navigate('BottomTapNavigation', { screen: 'History'});
   }
 

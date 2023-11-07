@@ -1,7 +1,7 @@
 //React
 import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
-import { AppContext } from 'context/AppContext';
+import useHistoryUpdate from 'hook/useHistoryUpdate';
 
 //Components
 import { COLOR } from 'constants/design';
@@ -16,8 +16,8 @@ import { getPaymentInformation } from 'api/Home';
 
 export default function PaymentCompleteScreen({ navigation, route }) {
 
+  const { refresh } = useHistoryUpdate();
   const { state: { accountData } } = useContext(ApiContext);
-  const { dispatch } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const [invoiceData, setInvoiceData] = useState();
   const [paymentData, setPaymentData] = useState();
@@ -59,8 +59,7 @@ export default function PaymentCompleteScreen({ navigation, route }) {
   }
 
   function handleConfirm() {
-    dispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: undefined});
-    dispatch({ type: 'HISTORY_DATA_ID_ADD', historyDataId: telemedicineData.id });
+    refresh();
     navigation.navigate('HistoryStackNavigation', { 
       screen: 'TelemedicineDetail',
       params: { telemedicineData: telemedicineData }
