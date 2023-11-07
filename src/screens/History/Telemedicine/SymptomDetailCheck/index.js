@@ -1,26 +1,26 @@
 //React
 import { useState, useEffect, useRef, useContext } from 'react';
-import { AppContext } from 'context/AppContext';
 import { ApiContext } from 'context/ApiContext';
+import useHistoryUpdate from 'hook/useHistoryUpdate';
 import styled from 'styled-components/native';
 import { getLocales } from 'expo-localization';
 
 //Components
 import { COLOR } from 'constants/design';
 import { Alert } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeArea, KeyboardAvoiding, Row, Container } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 import { BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
+//import { Ionicons } from '@expo/vector-icons';
 
 //Assets
 import addImageIcon from 'assets/icons/add-image.png';
 
 export default function SymptomDetailCheckScreen({ navigation, route }) {
 
-  const { dispatch } = useContext(AppContext);
+  const { refresh } = useHistoryUpdate();
   const { state: { accountData } } = useContext(ApiContext);
   const telemedicineData = route.params.telemedicineData;
 
@@ -53,8 +53,9 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   });
 
   const callback = () => {
-    if (count === 1) {
-      handleFinish();
+    if (count < -600) {
+      refresh();
+      navigation.goBack();
     } else {
       setCount(count - 1);
     }
