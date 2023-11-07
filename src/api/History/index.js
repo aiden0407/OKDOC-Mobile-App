@@ -3,6 +3,7 @@ import axios from 'axios';
 import { APIURL } from 'constants/api'
 import uuid from 'react-native-uuid';
 
+// <--레거시 함수-->
 export const getScheduleByPatientId = async function (loginToken, patientId) {
     try {
         let options = {
@@ -11,81 +12,6 @@ export const getScheduleByPatientId = async function (loginToken, patientId) {
             headers: {
                 Authorization: `Bearer ${loginToken}`
             }
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error.response;
-    }
-}
-
-export const getTreatmentInformation = async function (loginToken, appointmentId) {
-    try {
-        let options = {
-            url: `${APIURL}/treatment_appointments/${appointmentId}`,
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${loginToken}`
-            },
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error.response;
-    }
-}
-
-export const getPurchaseInformation = async function (loginToken, appointmentId) {
-    try {
-        let options = {
-            url: `${APIURL}/purchases/?treatment_appointment_id=${appointmentId}`,
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${loginToken}`
-            },
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error.response;
-    }
-}
-
-export const modifyTreatmentAppointmentBeforeEnter = async function (loginToken, appointmentId, symptom) {
-    try {
-        let options = {
-            url: `${APIURL}/treatment_appointments/${appointmentId}`,
-            method: 'PATCH',
-            headers: {
-                Authorization: `Bearer ${loginToken}`
-            },
-            data: {
-                "explain_symptom": symptom,
-            },
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error.response;
-    }
-}
-
-export const canclePayment = async function (loginToken, purchaseId, P_TID) {
-    try {
-        let options = {
-            url: `${APIURL}/merchant/cancel/${purchaseId}`,
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${loginToken}`
-            },
-            data: {
-                tid: P_TID,
-                msg: "진료 예약 취소입니다.",
-            },
         }
         const response = await axios(options);
         return response;
@@ -134,6 +60,70 @@ export const treatmentComplete = async function (loginToken, appointmentId) {
         throw error.response;
     }
 }
+// <--레거시 함수 End-->
+
+// <--진료 상태 정의 함수-->
+export const getHistoryListByPatientId = async function (patientId) {
+    try {
+        let options = {
+            url: `${APIURL}/purchase_histories/?patient_id=${patientId}`,
+            method: 'GET',
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
+export const getHistoryStatus = async function (documentKey) {
+    try {
+        let options = {
+            url: `${APIURL}/purchase_histories/?documentKey=${documentKey}`,
+            method: 'GET',
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
+export const getAuditLog = async function (loginToken, fullDocumentId) {
+    try {
+        let options = {
+            url: `${APIURL}/audits/?focus=/merchant/cancel/${fullDocumentId}&action=POST`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
+export const getTreatmentResults = async function (loginToken, treatmentId) {
+    try {
+        let options = {
+            url: `${APIURL}/treatments/?treatment_appointment_id=${treatmentId}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
 
 export const getCCTVInformation = async function (loginToken, appointmentId) {
     try {
@@ -142,6 +132,98 @@ export const getCCTVInformation = async function (loginToken, appointmentId) {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${loginToken}`
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+// <--진료 상태 정의 함수 End-->
+
+// <--진료 상세 데이터-->
+export const getTreatmentInformation = async function (loginToken, appointmentId) {
+    try {
+        let options = {
+            url: `${APIURL}/treatment_appointments/${appointmentId}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
+export const getBiddingInformation = async function (loginToken, biddingId) {
+    try {
+        let options = {
+            url: `${APIURL}/biddings/${biddingId}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
+export const getInvoiceInformation = async function (loginToken, biddingId) {
+    try {
+        let options = {
+            url: `${APIURL}/invoices/?bidding_id=${biddingId}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
+export const getPurchaseInformation = async function (loginToken, appointmentId) {
+    try {
+        let options = {
+            url: `${APIURL}/purchases/?treatment_appointment_id=${appointmentId}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+// <--진료 상세 데이터 End-->
+
+export const canclePayment = async function (loginToken, purchaseId, P_TID) {
+    try {
+        let options = {
+            url: `${APIURL}/merchant/cancel/${purchaseId}`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+            data: {
+                tid: P_TID,
+                msg: "진료 예약 취소입니다.",
             },
         }
         const response = await axios(options);
@@ -163,23 +245,6 @@ export const patchCCTVPatientBye = async function (loginToken, CCTVId) {
             data: {
                 "patient_motion": "bye",
             },
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error.response;
-    }
-}
-
-export const getInvoiceInformation = async function (loginToken, biddingId) {
-    try {
-        let options = {
-            url: `${APIURL}/invoices/?bidding_id=${biddingId}`,
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${loginToken}`
-            }
         }
         const response = await axios(options);
         return response;
@@ -217,23 +282,6 @@ export const createInvoicePaymentRequest = async function (telemedicineData, ema
               'Content-Type': 'application/x-www-form-urlencoded'
             },
             data: data,
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error.response;
-    }
-}
-
-export const getTreatmentResults = async function (loginToken, treatmentId) {
-    try {
-        let options = {
-            url: `${APIURL}/treatments/?treatment_appointment_id=${treatmentId}`,
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${loginToken}`
-            }
         }
         const response = await axios(options);
         return response;
