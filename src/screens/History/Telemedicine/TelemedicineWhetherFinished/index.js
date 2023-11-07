@@ -1,6 +1,5 @@
 //React
-import { useState, useEffect, useRef, useContext } from 'react';
-import { ApiContext } from 'context/ApiContext';
+import { useState, useEffect, useRef } from 'react';
 
 //Components
 import { COLOR } from 'constants/design'
@@ -13,7 +12,6 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 export default function TelemedicineWhetherFinishedScreen({ navigation, route }) {
 
   const telemedicineData = route.params.telemedicineData;
-  const { state: { accountData } } = useContext(ApiContext);
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(600);
   const savedCallback = useRef();
