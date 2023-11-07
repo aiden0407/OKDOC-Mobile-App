@@ -41,6 +41,7 @@ export default function HistoryInnerStackNavigation({ navigation }) {
           name="Payment"
           component={PaymentScreen}
           options={{ 
+            title: '',
             headerShown: false,
             gestureEnabled: false,
           }}
