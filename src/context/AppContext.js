@@ -34,7 +34,9 @@ const initialState = {
     countryCode: undefined,
     phoneNumber: undefined,
   },
-  historyDataId: undefined,
+  historyDataLoading: false,
+  needPayment: false,
+  needPaymentData: undefined,
 };
 
 //create context
@@ -203,16 +205,23 @@ const reducer = (state, action) => {
         },
       };
 
-    case 'HISTORY_DATA_ID_ADD':
+    case 'NEED_PAYMENT_DATA':
       return {
         ...state,
-        historyDataId: action.historyDataId
+        needPayment: true,
+        needPaymentData: action.needPaymentData
       };
 
-    case 'HISTORY_DATA_ID_DELETE':
+    case 'HISTORY_DATA_UPDATING':
       return {
         ...state,
-        historyDataId: undefined
+        historyDataLoading: true
+      };
+
+    case 'HISTORY_DATA_UPDATED':
+      return {
+        ...state,
+        historyDataLoading: false
       };
 
     default:
@@ -224,7 +233,7 @@ const reducer = (state, action) => {
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
-  //console.log(`AppContext: ${JSON.stringify(state.historyDataId)}`);
+  //console.log(`AppContext: ${JSON.stringify(state.needPayment)}`);
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
