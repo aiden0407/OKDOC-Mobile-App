@@ -156,7 +156,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
           <SolidButton
             text="진료실 입장하기"
             marginBottom={20}
-            disabled={count>300}
+            disabled={count>270}
             action={() => handleNotice1()}
           />
         </Container>
