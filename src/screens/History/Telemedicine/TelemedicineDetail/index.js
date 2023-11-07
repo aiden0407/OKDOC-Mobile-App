@@ -100,6 +100,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
   }
 
   function handleInvoicePaymnt() {
+    navigation.navigate('History');
     navigation.navigate('TelemedicineRoomNavigation', {
       screen: 'Payment',
       params: { telemedicineData: telemedicineData }
@@ -421,31 +422,43 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
             </CardDoctorInfoColumn>
           </DoctorContainer>
 
-          <PaddingContainer>
-            <Text T3 bold marginTop={24}>전자 소견서</Text>
-            {
-              needInvoicePayment
-                ? (<Center>
-                  <Box height={24} />
-                  <Text T3 bold marginTop={12}>추가 결제 필요</Text>
-                  <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>진료를 연장했기 때문에{'\n'}결제 후 소견서를 확인하실 수 있습니다</Text>
-                </Center>)
-                : telemedicineData?.opinion
-                  ? <CustomSubColorButton underlayColor={COLOR.SUB2} onPress={() => handleViewTelemedicineOpinion()}>
-                    <Text T5 medium color={COLOR.MAIN}>전자 소견서 저장</Text>
-                  </CustomSubColorButton>
-                  : (<Center>
-                    <Box height={24} />
-                    <Text T3 bold marginTop={12}>전자 소견서 작성중</Text>
-                    <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>담당 의사가 소견서를 작성중입니다{'\n'}잠시만 기다려주세요</Text>
-                  </Center>)
-            }
-          </PaddingContainer>
+          {
+            telemedicineData?.STATUS === 'CANCELED'
+              ? <></>
+              :(<>
+                <PaddingContainer>
+                  <Text T3 bold marginTop={24}>전자 소견서</Text>
+                  {
+                    needInvoicePayment
+                      ? (<Center>
+                        <Box height={24} />
+                        <Text T3 bold marginTop={12}>추가 결제 필요</Text>
+                        <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>진료를 연장했기 때문에{'\n'}결제 후 소견서를 확인하실 수 있습니다</Text>
+                      </Center>)
+                      : telemedicineData?.opinion
+                        ? <CustomSubColorButton underlayColor={COLOR.SUB2} onPress={() => handleViewTelemedicineOpinion()}>
+                          <Text T5 medium color={COLOR.MAIN}>전자 소견서 저장</Text>
+                        </CustomSubColorButton>
+                        : telemedicineData?.STATUS === 'ABNORMAL_FINISHED'
+                          ? (<Center>
+                            <Box height={24} />
+                            <Text T3 bold marginTop={12}>작성된 소견서가 없습니다</Text>
+                            <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>환자분의 진료 미참여 혹은 짧은 진료로 인해{'\n'}작성된 소견서가 없습니다.</Text>
+                          </Center>)
+                          : (<Center>
+                            <Box height={24} />
+                            <Text T3 bold marginTop={12}>전자 소견서 작성중</Text>
+                            <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>담당 의사가 소견서를 작성중입니다{'\n'}잠시만 기다려주세요</Text>
+                          </Center>)
+                  }
+                </PaddingContainer>
 
-          <DividingLine marginTop={36} />
+                <DividingLine marginTop={36} />
+              </>)
+          }
 
           <PaddingContainer>
-            <Text T3 bold marginTop={24}>결제 내역</Text>
+            <Text T3 bold marginTop={24}>{telemedicineData?.STATUS === 'CANCELED'?'취소':'결제'} 내역</Text>
             <Text T3 bold color={COLOR.MAIN} marginTop={20}>진료 예약 {Number(biddingPaymentData.price)?.toLocaleString()}원</Text>
             <Row marginTop={18}>
               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
