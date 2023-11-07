@@ -1,6 +1,8 @@
 //React
 import { useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
+import { AppContext } from 'context/AppContext';
+import useHistoryUpdate from 'hook/useHistoryUpdate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Api
@@ -20,9 +22,11 @@ import { COLOR } from 'constants/design'
 
 const BottomTab = createBottomTabNavigator();
 
-export default function BottomTapNavigation() {
+export default function BottomTapNavigation({ navigation }) {
 
-  const { state: { accountData }, dispatch } = useContext(ApiContext);
+  const { refresh } = useHistoryUpdate();
+  const { state: { accountData, profileData }, dispatch } = useContext(ApiContext);
+  const { state: { needPayment } } = useContext(AppContext);
 
   useEffect(() => {
     autoLogin();
@@ -33,6 +37,18 @@ export default function BottomTapNavigation() {
       getPatientInformation();
     }
   }, [accountData.loginToken]);
+
+  useEffect(() => {
+    if (profileData?.[0]?.id) {
+      refresh();
+    }
+  }, [profileData]);
+
+  useEffect(() => {
+    if(needPayment){
+      navigation.navigate('PaymentStackNavigation');
+    }
+  }, [needPayment]);
 
   const autoLogin = async function () {
     try {
