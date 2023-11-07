@@ -54,7 +54,10 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   });
 
   const callback = () => {
-    if (count < -600) {
+    if (telemedicineData?.invoiceInfo && count < -900) {
+      refresh();
+      navigation.goBack();
+    } else if ( !(telemedicineData?.invoiceInfo) && count < -600) {
       refresh();
       navigation.goBack();
     } else {
@@ -63,9 +66,9 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   }
 
   function handleNotice1() {
-    // if (accountData.email === 'aiden@insunginfo.co.kr' || accountData.email === 'cailyent0407@gmail.com' || accountData.email === 'logan@insunginfo.co.kr' || accountData.email === 'zloganway@gmail.com' || accountData.email === 'rlagudeh123@naver.com' || accountData.email === 'dbckd22@gmail.com') {
-    //   handleNotice2();
-    // } else {
+    if (accountData.email === 'aiden@insunginfo.co.kr' || accountData.email === 'cailyent0407@gmail.com' || accountData.email === 'logan@insunginfo.co.kr' || accountData.email === 'zloganway@gmail.com' || accountData.email === 'rlagudeh123@naver.com' || accountData.email === 'dbckd22@gmail.com') {
+      handleNotice2();
+    } else {
       if (deviceLocale?.regionCode === 'KR') {
         Alert.alert('대한민국에서는 해당 서비스를 이용하실 수 없습니다.');
       } else {
@@ -80,7 +83,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
           },
         ]);
       }
-    //}
+    }
   }
 
   function handleNotice2() {
