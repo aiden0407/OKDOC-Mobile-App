@@ -150,8 +150,27 @@ export default function useHistoryUpdate() {
 
                     // 인보이스가 생성되어 있을 때 결제 필요 여부 확인, 가장 오래된 인보이스부터 결제 유도
                     if (!(invoiceInfo?.P_TID)) {
-                        needPayment = obj;
+                        const currentTime = new Date();
+                        const wishAtTime = new Date(obj.fullDocument.treatment_appointment.hospital_treatment_room.start_time);
+                        const remainingTime = wishAtTime - currentTime;
+                        const remainingSeconds = Math.floor(remainingTime / 1000);
+
+                        if (remainingSeconds < -900) {
+                            // 15분이 지났어야만 needPayment에 추가
+                            needPayment = obj;
+                        }
+                        
+                        if (obj.STATUS === 'ABNORMAL_FINISHED') {
+                            if (remainingSeconds < -900) {
+                                // 인보이스가 생성되어 있으면 완료
+                                obj.STATUS = 'FINISHED';
+                            } else {
+                                // 인보이스가 생성되어 있으면 15분까지는 진료중
+                                obj.STATUS = 'IN_TREATMENT';
+                            }
+                        }
                     }
+                    
                 } catch (error) {
                     // 연장이 없었어서 인보이스가 없는 경우
                     // console.log(error);
