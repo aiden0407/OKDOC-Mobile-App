@@ -36,6 +36,7 @@ import MyPageStackNavigation from 'navigation/MyPage';
 import LoginStackNavigation from 'navigation/Login';
 import NeedLoginNavigation from 'navigation/Login/NeedLoginNavigation';
 import InquiryStackNavigation from 'navigation/Inquiry';
+import PaymentStackNavigation from 'navigation/Home/NeedPaymentNavigation';
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
@@ -141,6 +142,7 @@ export default function App() {
                   <Stack.Screen name="TelemedicineReservationPayment" component={TelemedicineReservationPayment} options={{ gestureEnabled: false }} />
                   <Stack.Screen name="LoginStackNavigation" component={LoginStackNavigation} />
                   <Stack.Screen name="InquiryStackNavigation" component={InquiryStackNavigation} />
+                  <Stack.Screen name="PaymentStackNavigation" component={PaymentStackNavigation} />
                 </Stack.Group>
               </Stack.Navigator>
             </NavigationContainer>
