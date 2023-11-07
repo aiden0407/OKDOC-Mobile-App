@@ -60,6 +60,8 @@ export default function PaymentCompleteScreen({ navigation, route }) {
 
   function handleConfirm() {
     refresh();
+    navigation.popToTop();
+    navigation.goBack();
     navigation.navigate('HistoryStackNavigation', { 
       screen: 'TelemedicineDetail',
       params: { telemedicineData: telemedicineData }
