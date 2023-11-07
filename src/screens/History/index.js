@@ -187,12 +187,33 @@ export default function HistoryScreen({ navigation }) {
                 <Text T5 medium color="#FFFFFF">진료실 입장</Text>
               </CustomSolidButton>
             : item.STATUS === 'CANCELED'
-              ? <CustomSolidButton
-                underlayColor={COLOR.SUB1}
-                onPress={() => handleViewTelemedicineDetail(item)}
-              >
-                <Text T5 medium color="#FFFFFF">취소 내역</Text>
-              </CustomSolidButton>
+              ? item?.CANCELER === 'PATIENT'
+                ? <CustomSolidButton
+                  underlayColor={COLOR.SUB1}
+                  onPress={() => handleViewTelemedicineDetail(item)}
+                >
+                  <Text T5 medium color="#FFFFFF">환자의 예약 취소</Text>
+                </CustomSolidButton>
+                : item?.CANCELER === 'DOCTOR'
+                  ? <CustomSolidButton
+                    underlayColor={COLOR.SUB1}
+                    onPress={() => handleViewTelemedicineDetail(item)}
+                  >
+                    <Text T5 medium color="#FFFFFF">의사에 의한 취소</Text>
+                  </CustomSolidButton>
+                  : item?.CANCELER === 'ADMIN'
+                    ? <CustomSolidButton
+                      underlayColor={COLOR.SUB1}
+                      onPress={() => handleViewTelemedicineDetail(item)}
+                    >
+                      <Text T5 medium color="#FFFFFF">관리자에 의한 환불</Text>
+                    </CustomSolidButton>
+                    : <CustomSolidButton
+                      underlayColor={COLOR.SUB1}
+                      onPress={() => handleViewTelemedicineDetail(item)}
+                    >
+                      <Text T5 medium color="#FFFFFF">시스템에 의한 환불</Text>
+                    </CustomSolidButton>
               : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
                 ? <CustomSolidButton
                   underlayColor={COLOR.SUB1}
