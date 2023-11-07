@@ -173,12 +173,19 @@ export default function HistoryScreen({ navigation }) {
             </CardDoctorInfoColumn>
           </Row>
           {type === 'underReservation'
-            ? <CustomSolidButton
-              underlayColor={COLOR.SUB1}
-              onPress={() => handleEnterTelemedicine(item)}
-            >
-              <Text T5 medium color="#FFFFFF">진료 예약 정보</Text>
-            </CustomSolidButton>
+            ? getRemainingTime(item?.wish_at) > 0
+              ? <CustomSolidButton
+                underlayColor={COLOR.SUB1}
+                onPress={() => handleEnterTelemedicine(item)}
+              >
+                <Text T5 medium color="#FFFFFF">진료 예약 정보</Text>
+              </CustomSolidButton>
+              : <CustomSolidButton
+                underlayColor={COLOR.SUB1}
+                onPress={() => handleEnterTelemedicine(item)}
+              >
+                <Text T5 medium color="#FFFFFF">진료실 입장</Text>
+              </CustomSolidButton>
             : item.STATUS === 'CANCELED'
               ? <CustomSolidButton
                 underlayColor={COLOR.SUB1}
