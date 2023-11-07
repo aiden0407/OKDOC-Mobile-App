@@ -13,7 +13,7 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
 
   const { state: { accountData } } = useContext(ApiContext);
   const telemedicineData = route.params.telemedicineData;
-  const meetingNumber = telemedicineData.hospital_treatment_room.id;
+  const meetingNumber = telemedicineData.fullDocument.treatment_appointment.hospital_treatment_room.id;
   const userName = telemedicineData.profileInfo?.passport?.user_name ?? telemedicineData.profileInfo?.passapp_certification?.name;
   const wishAt = telemedicineData.wish_at;
   const biddingId = telemedicineData.bidding_id;
