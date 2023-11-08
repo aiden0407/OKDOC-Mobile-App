@@ -53,27 +53,43 @@ export default function useHistoryUpdate() {
                     if (document[document.length - 1].operationType === 'insert') {
                         obj.STATUS = 'RESERVED';
                     } else {
+                        obj.STATUS = 'CANCELED';
                         try {
                             const response = await getAuditLog(accountData.loginToken, obj.fullDocument.id);
-                            const auditLog = response.data.response[0];
-
-                            // 취소 시간과 role 데이터를 통한 취소 주체 규명
-                            const wishAtTime = new Date(obj.fullDocument.treatment_appointment.hospital_treatment_room.start_time);
-                            const CanceledTime = new Date(auditLog.createdAt);
-                            if (CanceledTime < wishAtTime) {
-                                if (auditLog.principal?.role === 'family') obj.CANCELER = 'PATIENT';
-                                if (auditLog.principal?.role === 'administrator') obj.CANCELER = 'DOCTOR';
-                            } else {
-                                if (auditLog.principal?.role === 'administrator') {
-                                    obj.CANCELER = 'ADMIN';
-                                } else {
-                                    obj.CANCELER = 'SYSTEM';
-                                }
-                            }
-                            obj.STATUS = 'CANCELED';
+                            // 환자의 감사 목록은 환자만 확인 가능
+                            obj.CANCELER = 'PATIENT';
                         } catch (error) {
-                            // console.log(error);
+                            // 환자 이외의 주체에 의한 취소
+                            const wishAtTime = new Date(obj.fullDocument.treatment_appointment.hospital_treatment_room.start_time);
+                            const canceledTime = new Date(document[document.length - 1].createdAt);
+
+                            if (canceledTime < wishAtTime) {
+                                obj.CANCELER = 'DOCTOR';
+                            } else {
+                                obj.CANCELER = 'ADMIN';
+                            }
                         }
+                        // 감사 로그 크레덴셜 이슈 이전 로직
+                        // try {
+                        //     const response = await getAuditLog(accountData.loginToken, obj.fullDocument.id);
+                        //     const auditLog = response.data.response[0];
+                        //     // 취소 시간과 role 데이터를 통한 취소 주체 규명
+                        //     const wishAtTime = new Date(obj.fullDocument.treatment_appointment.hospital_treatment_room.start_time);
+                        //     const CanceledTime = new Date(auditLog.createdAt);
+                        //     if (CanceledTime < wishAtTime) {
+                        //         if (auditLog.principal?.role === 'family') obj.CANCELER = 'PATIENT';
+                        //         if (auditLog.principal?.role === 'administrator') obj.CANCELER = 'DOCTOR';
+                        //     } else {
+                        //         if (auditLog.principal?.role === 'administrator') {
+                        //             obj.CANCELER = 'ADMIN';
+                        //         } else {
+                        //             obj.CANCELER = 'SYSTEM';
+                        //         }
+                        //     }
+                        //     obj.STATUS = 'CANCELED';
+                        // } catch (error) {
+                        //     // console.log(error);
+                        // }
                     }
                 } catch (error) {
                     // console.log(error);
