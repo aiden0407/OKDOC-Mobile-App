@@ -60,10 +60,8 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   const callback = () => {
     if (telemedicineData?.invoiceInfo && count < -900) {
       refresh();
-      navigation.goBack();
     } else if ( !(telemedicineData?.invoiceInfo) && count < -600) {
       refresh();
-      navigation.goBack();
     } else {
       setCount(count - 1);
     }
