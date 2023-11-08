@@ -30,12 +30,12 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
     const currentTime = new Date();
     const remainingTime = Math.floor((addedTime - currentTime) / 1000);
 
-    if (remainingTime < 0){
+    if (remainingTime < 1){
       setTimeout(() => {
         navigation.navigate('TelemedicineComplete', {
           telemedicineData: telemedicineData,
         });
-      }, 500);
+      }, 1000);
     } else {
       setCount(remainingTime);
       setIsLoading(false);
