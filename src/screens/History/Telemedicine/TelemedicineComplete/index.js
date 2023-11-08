@@ -1,7 +1,6 @@
 //React
 import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
-import { AppContext } from 'context/AppContext';
 
 //Components
 import { COLOR } from 'constants/design'
@@ -10,7 +9,6 @@ import { SafeArea, Container, ContainerCenter, Row } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 import { SolidButton, OutlineButton } from 'components/Button';
-import * as ScreenOrientation from 'expo-screen-orientation';
 
 //Assets
 import checkIcon from 'assets/icons/circle-check.png';
@@ -21,21 +19,12 @@ import { treatmentComplete, getCCTVInformation, patchCCTVPatientBye, getInvoiceI
 export default function TelemedicineCompleteScreen({ navigation, route }) {
 
   const { state: { accountData } } = useContext(ApiContext);
-  const { dispatch } = useContext(AppContext);
   const [invoiceInformation, setInvoiceInformation] = useState();
   const telemedicineData = route.params.telemedicineData;
 
   useEffect(() => {
     letCCTVStatusChange()
   }, []);
-
-  useEffect(() => {
-    changeScreenOrientation();
-  }, []);
-
-  async function changeScreenOrientation() {
-    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-  }
 
   const letCCTVStatusChange = async function () {
     try {
@@ -88,7 +77,6 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
         telemedicineData: telemedicineData
       });
     } else {
-      navigation.popToTop();
       navigation.navigate('HistoryStackNavigation', { 
         screen: 'TelemedicineDetail',
         params: { telemedicineData: telemedicineData }
