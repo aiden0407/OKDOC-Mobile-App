@@ -1,6 +1,7 @@
 //React
 import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
+import { AppContext } from 'context/AppContext';
 import cheerio from 'cheerio';
 import * as Linking from 'expo-linking';
 import styled from 'styled-components/native';
@@ -18,6 +19,7 @@ import { createInvoicePaymentRequest } from 'api/History';
 export default function PaymentScreen({ navigation, route }) {
 
   const { state: { accountData } } = useContext(ApiContext);
+  const { state: { needPayment } } = useContext(AppContext);
   const telemedicineData = route.params.telemedicineData;
   const [canGoBack, setCanGoBack] = useState(false);
   const [htmlContent, setHtmlContent] = useState('');
@@ -30,7 +32,11 @@ export default function PaymentScreen({ navigation, route }) {
           if(canGoBack){
             return (
               <EditButton onPress={() => {
-                navigation.goBack();
+                if (needPayment) {
+                  navigation.navigate('PaymentStackNavigation');
+                } else {
+                  navigation.goBack();
+                }
               }}>
                 <Text T5 bold>X</Text>
               </EditButton>
@@ -39,7 +45,11 @@ export default function PaymentScreen({ navigation, route }) {
         }else{
           return (
             <EditButton onPress={() => {
-              navigation.goBack();
+              if (needPayment) {
+                navigation.navigate('PaymentStackNavigation');
+              } else {
+                navigation.goBack();
+              }
             }}>
               <Text T5 bold>X</Text>
             </EditButton>
@@ -99,8 +109,12 @@ export default function PaymentScreen({ navigation, route }) {
         telemedicineData: telemedicineData,
       });
     } else {
-      Alert.alert('안내', '결제 과정에서 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
-      navigation.goBack();
+      if (needPayment) {
+        navigation.navigate('PaymentStackNavigation');
+      } else {
+        Alert.alert('안내', '결제 과정에서 문제가 발생했습니다. 다시 시도해 주시기 바랍니다?');
+        navigation.goBack();
+      }
     }
   }
 
@@ -130,7 +144,7 @@ export default function PaymentScreen({ navigation, route }) {
           return onShouldStartLoadWithRequest(navState);
         }}
         onError={(error) => {
-          if(error.nativeEvent.code===-1003){
+          if (error.nativeEvent.code === -1003) {
             Alert.alert('안내', '결제 과정에서 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
             navigation.goBack();
           }
