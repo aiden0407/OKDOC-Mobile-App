@@ -1,7 +1,8 @@
 //API
 import axios from 'axios';
-import { APIURL } from 'constants/api'
+import { APIURL } from 'constants/api';
 import uuid from 'react-native-uuid';
+import useTestAccount from 'hook/useTestAccount';
 
 // <--레거시 함수-->
 export const getScheduleByPatientId = async function (loginToken, patientId) {
@@ -268,7 +269,7 @@ export const createInvoicePaymentRequest = async function (telemedicineData, ema
         P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
         P_CHARSET: 'utf8'
     };
-    if (email === 'aiden@insunginfo.co.kr' || email === 'cailyent0407@gmail.com' || email === 'logan@insunginfo.co.kr' || email === 'zloganway@gmail.com' || email === 'rlagudeh123@naver.com' || email === 'dbckd22@gmail.com') {
+    if (useTestAccount(email)) {
         data.P_AMT = '1000';
     } else {
         data.P_AMT = `${telemedicineData.productInfo.price}`;

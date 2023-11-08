@@ -2,6 +2,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
+import useTestAccount from 'hook/useTestAccount';
 import styled from 'styled-components/native';
 
 //Components
@@ -60,8 +61,14 @@ export default function ReservationScreen({ navigation, route }) {
 
           const wishTime = new Date(schedule.open_at).getTime();
           const currentTime = Date.now();
-          if (wishTime - currentTime < 20 * 60 * 1000) {
-            return null;
+          if (useTestAccount(accountData.email)) {
+            if (wishTime - currentTime < 2 * 60 * 1000) {
+              return null;
+            }
+          } else {
+            if (wishTime - currentTime < 20 * 60 * 1000) {
+              return null;
+            }
           }
 
           const date = new Date(schedule.open_at);

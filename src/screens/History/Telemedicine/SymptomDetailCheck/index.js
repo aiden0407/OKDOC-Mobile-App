@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import useHistoryUpdate from 'hook/useHistoryUpdate';
+import useTestAccount from 'hook/useTestAccount';
 import styled from 'styled-components/native';
 import { getCalendars, getLocales } from 'expo-localization';
 //import * as Location from 'expo-location';
@@ -69,13 +70,13 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   }
 
   function handleNotice1() {
-    if (accountData.email === 'aiden@insunginfo.co.kr' || accountData.email === 'cailyent0407@gmail.com' || accountData.email === 'logan@insunginfo.co.kr' || accountData.email === 'zloganway@gmail.com' || accountData.email === 'rlagudeh123@naver.com' || accountData.email === 'dbckd22@gmail.com') {
+    if (useTestAccount(accountData.email)) {
       handleNotice2();
     } else {
       if (deviceLocale?.regionCode === 'KR' && deviceCalendar?.timeZone === 'Asia/Seoul') {
         Alert.alert('대한민국에서는 해당 서비스를 이용하실 수 없습니다.');
       } else {
-        Alert.alert('진료실에 입장하시겠습니까?', '진료는 예약하신 시간부터 시작됩니다.', [
+        Alert.alert('진료실에 입장하시겠습니까?', '조기 입장시에도 정상 진료는 예약하신 시간대부터 진행됩니다.', [
           {
             text: '취소',
             style: 'cancel',
