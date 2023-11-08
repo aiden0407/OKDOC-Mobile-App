@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import useHistoryUpdate from 'hook/useHistoryUpdate';
 import styled from 'styled-components/native';
-import { getLocales } from 'expo-localization';
+import { getCalendars, getLocales } from 'expo-localization';
 //import * as Location from 'expo-location';
 
 //Components
@@ -25,12 +25,15 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   const { state: { accountData } } = useContext(ApiContext);
   const telemedicineData = route.params.telemedicineData;
 
+  const [deviceCalendar, setDeviceCalendar] = useState('');
   const [deviceLocale, setDeviceLocale] = useState('');
   const [symptom, setSymptom] = useState(telemedicineData.explain_symptom);
   const [count, setCount] = useState(301);
   const savedCallback = useRef();
 
   useEffect(() => {
+    const calendar = getCalendars()[0];
+    setDeviceCalendar(calendar);
     const locale = getLocales()[0];
     setDeviceLocale(locale);
   }, []);
@@ -69,7 +72,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
     if (accountData.email === 'aiden@insunginfo.co.kr' || accountData.email === 'cailyent0407@gmail.com' || accountData.email === 'logan@insunginfo.co.kr' || accountData.email === 'zloganway@gmail.com' || accountData.email === 'rlagudeh123@naver.com' || accountData.email === 'dbckd22@gmail.com') {
       handleNotice2();
     } else {
-      if (deviceLocale?.regionCode === 'KR') {
+      if (deviceLocale?.regionCode === 'KR' && deviceCalendar?.timeZone === 'Asia/Seoul') {
         Alert.alert('대한민국에서는 해당 서비스를 이용하실 수 없습니다.');
       } else {
         Alert.alert('진료실에 입장하시겠습니까?', '진료는 예약하신 시간부터 시작됩니다.', [
