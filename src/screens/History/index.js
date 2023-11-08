@@ -40,7 +40,11 @@ export default function HistoryScreen({ navigation }) {
   };
 
   useEffect(() => {
-    if(!historyDataLoading){
+    if(historyDataLoading){
+      if(!refreshing){
+        setIsLoading(true);
+      }
+    } else {
       setRefreshing(false);
       setIsLoading(false);
     }
@@ -192,7 +196,7 @@ export default function HistoryScreen({ navigation }) {
                   underlayColor={COLOR.SUB1}
                   onPress={() => handleViewTelemedicineDetail(item)}
                 >
-                  <Text T5 medium color="#FFFFFF">환자의 예약 취소</Text>
+                  <Text T5 medium color="#FFFFFF">환자에 의한 취소</Text>
                 </CustomSolidButton>
                 : item?.CANCELER === 'DOCTOR'
                   ? <CustomSolidButton
@@ -212,7 +216,7 @@ export default function HistoryScreen({ navigation }) {
                       underlayColor={COLOR.SUB1}
                       onPress={() => handleViewTelemedicineDetail(item)}
                     >
-                      <Text T5 medium color="#FFFFFF">시스템에 의한 환불</Text>
+                      <Text T5 medium color="#FFFFFF">정책에 의한 환불</Text>
                     </CustomSolidButton>
               : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
                 ? <CustomSolidButton
