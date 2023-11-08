@@ -32,10 +32,32 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
   //   return isFocused && <StatusBar {...props} />;
   // }
 
-  function handleTelemedicineComplete() {
-    navigation.navigate('TelemedicineWhetherFinished', {
-      telemedicineData: telemedicineData,
-    });
+  async function handleTelemedicineComplete() {
+    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+
+    const originalTime = new Date(telemedicineData.wish_at);
+    let addedTime;
+    if(telemedicineData?.invoiceInfo){
+      addedTime = new Date(originalTime.getTime() + 15 * 60 * 1000);
+    } else {
+      addedTime = new Date(originalTime.getTime() + 10 * 60 * 1000);
+    }
+    const currentTime = new Date();
+    const remainingTime = Math.floor((addedTime - currentTime) / 1000);
+
+    if(remainingTime > 0){
+      setTimeout(() => {
+        navigation.navigate('TelemedicineWhetherFinished', {
+          telemedicineData: telemedicineData,
+        });
+      }, 500);
+    } else {
+      setTimeout(() => {
+        navigation.navigate('TelemedicineComplete', {
+          telemedicineData: telemedicineData,
+        });
+      }, 500);
+    }
   }
 
   return (
@@ -47,6 +69,7 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
         <WebView
           source={{ uri: `https://zoom.okdoc.app/meeting/patient/?meetingNumber=${meetingNumber}&userName=${userName}&wishAt=${wishAt}&biddingId=${biddingId}&token=${token}` }}
           // source={{ uri: `http://127.0.0.1:5500/meeting/patient/?meetingNumber=85440949682&userName=${userName}&wishAt=${wishAt}&id=${id}&token=${token}` }}
+          // source={{ uri: `https://zoom.okdoc.app/meeting/end` }}
           originWhitelist={['*']}
           useWebkit
           bounces
