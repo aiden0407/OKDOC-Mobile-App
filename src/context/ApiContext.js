@@ -205,9 +205,7 @@ const initialState = {
   //     },
   //   ],
   // },
-  alarmData: [
-
-  ],
+  alarmData: [],
 };
 
 //create context
@@ -298,6 +296,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         historyData: action.historyData
+      };
+
+    case 'ALARM_DATA_UPDATE':
+      return {
+        ...state,
+        alarmData: action.alarmData
       };
 
     default:
