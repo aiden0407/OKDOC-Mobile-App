@@ -12,6 +12,17 @@ export default function useAlarmUpdate() {
     const { state: { accountData, profileData }, dispatch: apiContextDispatch } = useContext(ApiContext);
     const { dispatch: appContextDispatch } = useContext(AppContext);
 
+    const alarmTypeTranslator = {
+        'RESERVATION_CONFIRMED': '예약 완료',
+        'APPOINTMENT_24_H_BEFORE': '진료 24시간 전',
+        'APPOINTMENT_1_H_BEFORE': '진료 1시간 전',
+        'APPOINTMENT_5_M_BEFORE': '진료 5분 전',
+        'TREATMENT_CONFIRMED': '소견서 작성 완료',
+        'RESERVATION_CANCLED': '예약 취소 안내',
+        // 'INVOICE_CONFIRMED': '',
+        // 'INVOICE_CANCLED': '',
+    }
+
     const refreshAlarm = () => {
         if (accountData.loginToken && profileData)
             appContextDispatch({ type: 'ALARM_DATA_UPDATING' });
@@ -21,9 +32,6 @@ export default function useAlarmUpdate() {
     const updateAlarm = async function () {
         //let contextAlarmSet = [];
         let contextAlarmSet = [
-            //RESERVATION_CANCLED
-            //INVOICE_CONFIRMED
-            //INVOICE_CANCLED
             {
                 "_id": "649266beceefd680de5d00ef",
                 "type": "TREATMENT_CONFIRMED",
@@ -73,6 +81,11 @@ export default function useAlarmUpdate() {
 
         try {
             setTimeout(() => {
+
+                for (const obj of contextAlarmSet) {
+                    obj.type = alarmTypeTranslator?.[obj.type] ?? obj.type;
+                }
+
                 apiContextDispatch({
                     type: 'ALARM_DATA_UPDATE',
                     alarmData: contextAlarmSet,
