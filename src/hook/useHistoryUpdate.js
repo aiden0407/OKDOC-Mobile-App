@@ -14,9 +14,10 @@ export default function useHistoryUpdate() {
     const { dispatch: appContextDispatch } = useContext(AppContext);
 
     const refresh = () => {
-        if (accountData.loginToken && profileData)
+        if (accountData.loginToken && profileData) {
             appContextDispatch({ type: 'HISTORY_DATA_UPDATING' });
-        updateHistory();
+            updateHistory();
+        }
     };
 
     const updateHistory = async function () {
