@@ -20,7 +20,7 @@ const initialState = {
     // APPLE_EMAIL_UNDEFINED 애플 회원가입 이메일 미존재
     // GOOGLE_REGISTER 구글 회원가입
     // LOCAL_REGISTER 이메일 회원가입
-    route: undefined, 
+    route: undefined,
     policy: undefined,
     email: undefined,
     password: undefined,
@@ -37,6 +37,7 @@ const initialState = {
   historyDataLoading: false,
   needPayment: false,
   needPaymentData: undefined,
+  alarmDataLoading: false,
 };
 
 //create context
@@ -222,6 +223,18 @@ const reducer = (state, action) => {
       return {
         ...state,
         historyDataLoading: false
+      };
+
+    case 'ALARM_DATA_UPDATING':
+      return {
+        ...state,
+        alarmDataLoading: true
+      };
+
+    case 'ALARM_DATA_UPDATED':
+      return {
+        ...state,
+        alarmDataLoading: false
       };
 
     default:
