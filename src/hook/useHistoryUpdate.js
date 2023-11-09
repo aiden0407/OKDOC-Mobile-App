@@ -69,27 +69,6 @@ export default function useHistoryUpdate() {
                                 obj.CANCELER = 'ADMIN';
                             }
                         }
-                        // 감사 로그 크레덴셜 이슈 이전 로직
-                        // try {
-                        //     const response = await getAuditLog(accountData.loginToken, obj.fullDocument.id);
-                        //     const auditLog = response.data.response[0];
-                        //     // 취소 시간과 role 데이터를 통한 취소 주체 규명
-                        //     const wishAtTime = new Date(obj.fullDocument.treatment_appointment.hospital_treatment_room.start_time);
-                        //     const CanceledTime = new Date(auditLog.createdAt);
-                        //     if (CanceledTime < wishAtTime) {
-                        //         if (auditLog.principal?.role === 'family') obj.CANCELER = 'PATIENT';
-                        //         if (auditLog.principal?.role === 'administrator') obj.CANCELER = 'DOCTOR';
-                        //     } else {
-                        //         if (auditLog.principal?.role === 'administrator') {
-                        //             obj.CANCELER = 'ADMIN';
-                        //         } else {
-                        //             obj.CANCELER = 'SYSTEM';
-                        //         }
-                        //     }
-                        //     obj.STATUS = 'CANCELED';
-                        // } catch (error) {
-                        //     // console.log(error);
-                        // }
                     }
                 } catch (error) {
                     // console.log(error);
@@ -125,8 +104,7 @@ export default function useHistoryUpdate() {
                                     // 진료 중
                                     obj.STATUS = 'IN_TREATMENT';
                                 } else {
-                                    // 진료 전
-                                    // obj.STATUS = 'RESERVED';
+                                    // 진료 전 'RESERVED'
                                 }
                             }
                         } catch (error) {
@@ -164,26 +142,27 @@ export default function useHistoryUpdate() {
                     const invoiceInfo = response.data.response?.[0];
                     obj.invoiceInfo = invoiceInfo;
 
+                    const currentTime = new Date();
+                    const wishAtTime = new Date(obj.fullDocument.treatment_appointment.hospital_treatment_room.start_time);
+                    const remainingTime = wishAtTime - currentTime;
+                    const remainingSeconds = Math.floor(remainingTime / 1000);
+
                     // 인보이스가 생성되어 있을 때 결제 필요 여부 확인, 가장 오래된 인보이스부터 결제 유도
                     if (!(invoiceInfo?.P_TID)) {
-                        const currentTime = new Date();
-                        const wishAtTime = new Date(obj.fullDocument.treatment_appointment.hospital_treatment_room.start_time);
-                        const remainingTime = wishAtTime - currentTime;
-                        const remainingSeconds = Math.floor(remainingTime / 1000);
-
                         if (remainingSeconds < -900) {
                             // 15분이 지났어야만 needPayment에 추가
                             needPayment = obj;
                         }
-                        
-                        if (obj.STATUS === 'ABNORMAL_FINISHED') {
-                            if (remainingSeconds < -900) {
-                                // 인보이스가 생성되어 있으면 완료
-                                obj.STATUS = 'FINISHED';
-                            } else {
-                                // 인보이스가 생성되어 있으면 15분까지는 진료중
-                                obj.STATUS = 'IN_TREATMENT';
-                            }
+                    }
+                    
+                    // 환자의 진료확정이 되지 않았으면서 인보이스가 생성되어있는 경우
+                    if (obj.STATUS === 'ABNORMAL_FINISHED') {
+                        if (remainingSeconds < -900) {
+                            // 인보이스가 생성되어 있으면 완료
+                            obj.STATUS = 'FINISHED';
+                        } else {
+                            // 인보이스가 생성되어 있으면 15분까지는 진료중
+                            obj.STATUS = 'IN_TREATMENT';
                         }
                     }
                     
