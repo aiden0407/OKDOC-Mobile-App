@@ -45,13 +45,6 @@ export default function AlarmScreen({ navigation }) {
     navigation.navigate('LoginStackNavigation');
   }
 
-  function AlarmCard({ item }) {
-    return (
-      <>
-      </>
-    )
-  }
-
   if (isLoading) {
     return (
       <LoadingBackground>
@@ -66,7 +59,7 @@ export default function AlarmScreen({ navigation }) {
         accountData.loginToken
           ? (<>
             {alarmData.length
-              ? <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20} paddingTop={Device.osName === 'Android' ? 0 : refreshing ? 30 : 0}>
+              ? <Container backgroundColor={COLOR.GRAY6} paddingTop={Device.osName === 'Android' ? 2 : refreshing ? 32 : 2}>
                 <ScrollView
                   showsVerticalScrollIndicator={false}
                   refreshControl={
@@ -74,7 +67,15 @@ export default function AlarmScreen({ navigation }) {
                   }
                   overScrollMode='never'
                 >
-                  {/* <>알림 내역 카드</> */}
+                  {alarmData?.map((item, index) => {
+                    return (
+                      <AlarmCard key={`alarmData_${index}`}>
+                        <Text T6 color={COLOR.GRAY1}>{item.type}</Text>
+                        <Text T6 marginTop={2}>{item.message}</Text>
+                        <Text T7 color={COLOR.GRAY2} marginTop={12}>{item.created_at}</Text>
+                      </AlarmCard>
+                    )
+                  })}
                 </ScrollView>
               </Container>
 
@@ -139,4 +140,13 @@ const AlarmEmptyBox = styled.View`
   border-radius: 10px;
   background-color: #FFFFFF;
   align-items: center;
+`;
+
+const AlarmCard = styled.View`
+  position: relative;
+  width: 100%;
+  padding: 14px 14px 14px 28px;
+  background-color: #FFFFFF;
+  border-bottom-width: 1px;
+  border-bottom-color: ${COLOR.GRAY3};
 `;
