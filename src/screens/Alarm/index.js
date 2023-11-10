@@ -59,7 +59,7 @@ export default function AlarmScreen({ navigation }) {
         accountData.loginToken
           ? (<>
             {alarmData.length
-              ? <Container backgroundColor={COLOR.GRAY6} paddingTop={Device.osName === 'Android' ? 2 : refreshing ? 32 : 2}>
+              ? <Container backgroundColor={COLOR.GRAY6} paddingTop={2}>
                 <ScrollView
                   showsVerticalScrollIndicator={false}
                   refreshControl={
@@ -67,14 +67,25 @@ export default function AlarmScreen({ navigation }) {
                   }
                   overScrollMode='never'
                 >
-                  {alarmData?.map((item, index) => {
-                    return (
-                      <AlarmCard key={`alarmData_${index}`}>
-                        <Text T6 color={COLOR.GRAY1}>{item.type}</Text>
-                        <Text T6 marginTop={2}>{item.message}</Text>
-                        <Text T7 color={COLOR.GRAY2} marginTop={12}>{item.created_at}</Text>
-                      </AlarmCard>
-                    )
+                  {alarmData?.map((item, index) => {                    
+                    if(item?.new){
+                      return (
+                        <AlarmCard key={`alarmData_${index}`}>
+                          <BulletPoint />
+                          <Text T6 color={COLOR.GRAY1}>{item.type}</Text>
+                          <Text T6 marginTop={2}>{item.message}</Text>
+                          <Text T7 color={COLOR.GRAY2} marginTop={12}>{item.time}</Text>
+                        </AlarmCard>
+                      )
+                    } else {
+                      return (
+                        <AlarmCard key={`alarmData_${index}`}>
+                          <Text T6 color={COLOR.GRAY1}>{item.type}</Text>
+                          <Text T6 marginTop={2}>{item.message}</Text>
+                          <Text T7 color={COLOR.GRAY2} marginTop={12}>{item.time}</Text>
+                        </AlarmCard>
+                      )
+                    }
                   })}
                 </ScrollView>
               </Container>
@@ -149,4 +160,14 @@ const AlarmCard = styled.View`
   background-color: #FFFFFF;
   border-bottom-width: 1px;
   border-bottom-color: ${COLOR.GRAY3};
+`;
+
+const BulletPoint = styled.View`
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50px;
+  background-color: ${COLOR.MAIN};
 `;
