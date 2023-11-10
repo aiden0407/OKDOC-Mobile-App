@@ -72,7 +72,7 @@ export default function AlarmScreen({ navigation }) {
                       return (
                         <AlarmCard key={`alarmData_${index}`}>
                           <BulletPoint />
-                          <Text T6 color={COLOR.GRAY1}>{item.type}</Text>
+                          <Text T6 color={COLOR.GRAY1}>{item.title}</Text>
                           <Text T6 marginTop={2}>{item.message}</Text>
                           <Text T7 color={COLOR.GRAY2} marginTop={12}>{item.time}</Text>
                         </AlarmCard>
@@ -80,7 +80,7 @@ export default function AlarmScreen({ navigation }) {
                     } else {
                       return (
                         <AlarmCard key={`alarmData_${index}`}>
-                          <Text T6 color={COLOR.GRAY1}>{item.type}</Text>
+                          <Text T6 color={COLOR.GRAY1}>{item.title}</Text>
                           <Text T6 marginTop={2}>{item.message}</Text>
                           <Text T7 color={COLOR.GRAY2} marginTop={12}>{item.time}</Text>
                         </AlarmCard>

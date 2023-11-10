@@ -12,17 +12,6 @@ export default function useAlarmUpdate() {
     const { state: { accountData, profileData }, dispatch: apiContextDispatch } = useContext(ApiContext);
     const { dispatch: appContextDispatch } = useContext(AppContext);
 
-    const alarmTypeTranslator = {
-        'RESERVATION_CONFIRMED': '예약 완료',
-        'APPOINTMENT_24_H_BEFORE': '진료 24시간 전',
-        'APPOINTMENT_1_H_BEFORE': '진료 1시간 전',
-        'APPOINTMENT_5_M_BEFORE': '진료 5분 전',
-        'TREATMENT_CONFIRMED': '소견서 작성 완료',
-        'RESERVATION_CANCLED': '예약 취소 안내',
-        // 'INVOICE_CONFIRMED': '',
-        // 'INVOICE_CANCLED': '',
-    }
-
     function formatTimeAgo(timestamp) {
         const now = new Date();
         const targetDate = new Date(timestamp);
@@ -79,7 +68,7 @@ export default function useAlarmUpdate() {
             contextAlarmSet = [
                 {
                     "_id": "649266beceefd680de5d00ef",
-                    "type": "TREATMENT_CONFIRMED",
+                    "title": "소견서 작성 완료",
                     "message": "진료 소견서가 전달되었습니다. 확인해 보세요.",
                     "patient_id": "7aa6cf9d-aef5-42f0-bdd3-32387c424e26",
                     "created_at": "2023-11-10T00:02:29.203Z",
@@ -88,7 +77,7 @@ export default function useAlarmUpdate() {
                 },
                 {
                     "_id": "649266beceefd680de5d00ef",
-                    "type": "APPOINTMENT_5_M_BEFORE",
+                    "title": "진료 5분 전",
                     "message": "예약하신 이비인후과 장윤희 의사 진료 5분 전입니다. 진료실에 입장해주세요.",
                     "patient_id": "7aa6cf9d-aef5-42f0-bdd3-32387c424e26",
                     "created_at": "2023-11-09T23:12:29.203Z",
@@ -97,7 +86,7 @@ export default function useAlarmUpdate() {
                 },
                 {
                     "_id": "649266beceefd680de5d00ef",
-                    "type": "APPOINTMENT_1_H_BEFORE",
+                    "title": "진료 1시간 전",
                     "message": "예약하신 이비인후과 장윤희 의사 진료 1시간 전입니다.",
                     "patient_id": "7aa6cf9d-aef5-42f0-bdd3-32387c424e26",
                     "created_at": "2023-11-09T22:17:29.203Z",
@@ -106,7 +95,7 @@ export default function useAlarmUpdate() {
                 },
                 {
                     "_id": "649266beceefd680de5d00ef",
-                    "type": "APPOINTMENT_24_H_BEFORE",
+                    "title": "진료 24시간 전",
                     "message": "예약하신 이비인후과 장윤희 의사 진료 24시간 전입니다.",
                     "patient_id": "7aa6cf9d-aef5-42f0-bdd3-32387c424e26",
                     "created_at": "2023-11-08T10:17:29.203Z",
@@ -115,7 +104,7 @@ export default function useAlarmUpdate() {
                 },
                 {
                     "_id": "649266beceefd680de5d00ef",
-                    "type": "RESERVATION_CONFIRMED",
+                    "title": "예약 완료",
                     "message": "2023년 11월 08일 (22:20) 이비인후과 장윤희 의사 진료 예약이 완료되었습니다.",
                     "patient_id": "7aa6cf9d-aef5-42f0-bdd3-32387c424e26",
                     "created_at": "2023-11-06T13:17:29.203Z",
@@ -125,7 +114,6 @@ export default function useAlarmUpdate() {
             ];
 
             for (const obj of contextAlarmSet) {
-                obj.type = alarmTypeTranslator?.[obj.type] ?? obj.type;
                 obj.time = formatTimeAgo(obj.created_at) ?? obj.created_at
                 if (!readAlarmIdList.includes(obj.id)) {
                     obj.new = true;
