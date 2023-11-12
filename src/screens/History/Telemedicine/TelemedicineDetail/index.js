@@ -418,7 +418,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
             <CardDoctorInfoColumn>
               <Text T4 bold>{telemedicineData.doctorInfo.name} 의사</Text>
               <Text T7 bold color={COLOR.GRAY2}>{telemedicineData.doctorInfo.hospital_name} / {telemedicineData.doctorInfo.department_name}</Text>
-              <StyledText T7 color={COLOR.GRAY1} >{convertToHashtags(telemedicineData.doctorInfo.strength)}</StyledText>
+              <StyledText T7 color={COLOR.GRAY1} >{convertToHashtags(telemedicineData.doctorInfo.strengths)}</StyledText>
             </CardDoctorInfoColumn>
           </DoctorContainer>
 

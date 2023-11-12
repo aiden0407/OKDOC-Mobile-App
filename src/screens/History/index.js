@@ -173,7 +173,7 @@ export default function HistoryScreen({ navigation }) {
               <Text T7 bold color={COLOR.GRAY2}>
                 {item.doctorInfo.hospital_name} / {item.doctorInfo.department_name}
               </Text>
-              <StyledText T7 color={COLOR.GRAY1} numberOfLines={1} ellipsizeMode="tail">{convertToHashtags(item.doctorInfo.strength)}</StyledText>
+              <StyledText T7 color={COLOR.GRAY1} numberOfLines={1} ellipsizeMode="tail">{convertToHashtags(item.doctorInfo.strengths)}</StyledText>
             </CardDoctorInfoColumn>
           </Row>
           {type === 'underReservation'
