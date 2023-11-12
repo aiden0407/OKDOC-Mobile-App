@@ -129,7 +129,7 @@ export default function useHistoryUpdate() {
                     obj.biddingInfo = biddingInfo;
                     obj.doctorInfo = biddingInfo.doctor;
                     obj.profileInfo = biddingInfo.patient;
-                    obj.department = biddingInfo.department;
+                    obj.department = biddingInfo.department_name;
                     obj.wish_at = biddingInfo.wish_at;
                     obj.explain_symptom = biddingInfo.explain_symptom;
                     obj.attachments = biddingInfo.attachments;

@@ -133,7 +133,7 @@ export default function HistoryScreen({ navigation }) {
         <CardTitleSection>
           <CardTitleColumn>
             <Text T6 bold>
-              {item.doctorInfo.department} / {item.profileInfo.passport?.user_name ?? item.profileInfo.passapp_certification?.name}님 ({item.profileInfo.relationship})
+              {item.doctorInfo.department_name} / {item.profileInfo.passport?.user_name ?? item.profileInfo.passapp_certification?.name}님 ({item.profileInfo.relationship})
             </Text>
             <Text T7 color={COLOR.GRAY1}>
               {item.date} ({item.time})
@@ -171,7 +171,7 @@ export default function HistoryScreen({ navigation }) {
             <CardDoctorInfoColumn>
               <Text T4 bold>{item.doctorInfo.name} 의사</Text>
               <Text T7 bold color={COLOR.GRAY2}>
-                {item.doctorInfo.hospital} / {item.doctorInfo.department}
+                {item.doctorInfo.hospital} / {item.doctorInfo.department_name}
               </Text>
               <StyledText T7 color={COLOR.GRAY1} numberOfLines={1} ellipsizeMode="tail">{convertToHashtags(item.doctorInfo.strength)}</StyledText>
             </CardDoctorInfoColumn>

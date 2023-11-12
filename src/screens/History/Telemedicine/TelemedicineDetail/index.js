@@ -409,7 +409,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
 
           <PaddingContainer>
             <Text T7 color={COLOR.GRAY1} marginTop={30}>{telemedicineData.date} ({telemedicineData.time})</Text>
-            <Text T3 bold marginTop={6}>{telemedicineData.doctorInfo.department} / {telemedicineData.profileInfo.passport?.user_name ?? telemedicineData.profileInfo.passapp_certification?.name}님 ({telemedicineData.profileInfo.relationship})</Text>
+            <Text T3 bold marginTop={6}>{telemedicineData.doctorInfo.department_name} / {telemedicineData.profileInfo.passport?.user_name ?? telemedicineData.profileInfo.passapp_certification?.name}님 ({telemedicineData.profileInfo.relationship})</Text>
             <Text T6 medium color={COLOR.GRAY1} marginTop={12}>{telemedicineData?.explain_symptom}</Text>
           </PaddingContainer>
 
@@ -417,7 +417,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
             <Image source={{ uri: telemedicineData.doctorInfo?.attachments?.[0]?.Location ?? telemedicineData.doctorInfo.photo }} circle width={66} height={66} />
             <CardDoctorInfoColumn>
               <Text T4 bold>{telemedicineData.doctorInfo.name} 의사</Text>
-              <Text T7 bold color={COLOR.GRAY2}>{telemedicineData.doctorInfo.hospital} / {telemedicineData.doctorInfo.department}</Text>
+              <Text T7 bold color={COLOR.GRAY2}>{telemedicineData.doctorInfo.hospital} / {telemedicineData.doctorInfo.department_name}</Text>
               <StyledText T7 color={COLOR.GRAY1} >{convertToHashtags(telemedicineData.doctorInfo.strength)}</StyledText>
             </CardDoctorInfoColumn>
           </DoctorContainer>
