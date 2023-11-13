@@ -72,7 +72,7 @@ export default function ReservationScreen({ navigation, route }) {
           }
 
           const date = new Date(schedule.open_at);
-          const day = date.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }).replace('.', '/').replace('.', '').replace(' ', '');
+          const day = date.toLocaleDateString('ko-KR');
           const weekday = date.toLocaleDateString('ko-KR', { weekday: 'long' }).slice(-3);
           let time = date.toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit' });
           if (time.startsWith('24:')) {
@@ -87,8 +87,8 @@ export default function ReservationScreen({ navigation, route }) {
                 doctorId: doctor.id,
                 name: doctor.name,
                 image: doctor?.attachments?.[0]?.Location ?? doctor?.photo,
-                hospital: doctor.hospital_name,
-                subject: doctor.department_name,
+                hospital: doctor?.hospital_name,
+                subject: doctor?.department_name,
                 strength: doctor?.strengths,
                 field: doctor?.fields,
                 selfIntrodectionTitle: doctor?.self_introduction_title,
@@ -101,8 +101,8 @@ export default function ReservationScreen({ navigation, route }) {
                 doctorId: doctor.id,
                 name: doctor.name,
                 image: doctor?.attachments?.[0]?.Location ?? doctor?.photo,
-                hospital: doctor.hospital_name,
-                subject: doctor.department_name,
+                hospital: doctor?.hospital_name,
+                subject: doctor?.department_name,
                 strength: doctor?.strengths,
                 field: doctor?.fields,
                 selfIntrodectionTitle: doctor?.self_introduction_title,
@@ -116,8 +116,8 @@ export default function ReservationScreen({ navigation, route }) {
               doctorId: doctor.id,
               name: doctor.name,
               image: doctor?.attachments?.[0]?.Location ?? doctor?.photo,
-              hospital: doctor.hospital_name,
-              subject: doctor.department_name,
+              hospital: doctor?.hospital_name,
+              subject: doctor?.department_name,
               strength: doctor?.strengths,
               field: doctor?.fields,
               selfIntrodectionTitle: doctor?.self_introduction_title,
@@ -129,21 +129,32 @@ export default function ReservationScreen({ navigation, route }) {
         });
       });
 
-      function sortByTime(a, b) {
-        const timeA = parseInt(a[0].replace(':', ''));
-        const timeB = parseInt(b[0].replace(':', ''));
-        return timeA - timeB;
+      function parseCustomDateFormat(str) {
+        const parts = str.split('.').map(part => parseInt(part.trim(), 10));
+        return new Date(parts[0], parts[1] - 1, parts[2]);
       }
 
-      function transformData(doctorsScheduleList) {
-        for (let ii = 0; ii < doctorsScheduleList.length; ii++) {
-          const daySchedule = doctorsScheduleList[ii][2];
-          daySchedule.sort(sortByTime);
-        }
-        return doctorsScheduleList;
+      function convertToSlashFormat(str) {
+        const parts = str.split('.').map(part => part.trim());
+        return `${parts[1]}/${parts[2]}`;
       }
 
-      transformData(doctorsScheduleList);
+      doctorsScheduleList.sort((a, b) => {
+        const dateA = parseCustomDateFormat(a[0]);
+        const dateB = parseCustomDateFormat(b[0]);
+        return dateA - dateB;
+      });
+
+      for (let ii = 0; ii < doctorsScheduleList.length; ii++) {
+        const daySchedule = doctorsScheduleList[ii][2];
+        daySchedule.sort((a, b) => {
+          const timeA = parseInt(a[0].replace(':', ''));
+          const timeB = parseInt(b[0].replace(':', ''));
+          return timeA - timeB;
+        });
+
+        doctorsScheduleList[ii][0] = convertToSlashFormat(doctorsScheduleList[ii][0]);
+      }
 
       apiContextDispatch({
         type: 'BOOKABLE_DATA_UPDATE',
