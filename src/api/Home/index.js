@@ -49,7 +49,7 @@ export const getDepartments = async function () {
 export const getDoctorsByDepartment = async function (department) {
     try {
         let options = {
-            url: `${APIURL}/doctors/?department=${department}`,
+            url: `${APIURL}/doctors/?department_name=${department}`,
             method: 'GET',
         }
         const response = await axios(options);
@@ -79,9 +79,8 @@ export const createBidding = async function (loginToken, reservationInfo) {
     formData.append('doctor_id', reservationInfo.doctorInfo.doctorId);
     formData.append('patient_id', reservationInfo.profileInfo.id);
     formData.append('wish_at', reservationInfo.doctorInfo.scheduleTime);
-    formData.append('department', reservationInfo.doctorInfo.subject);
+    formData.append('department_name', reservationInfo.doctorInfo.subject);
     formData.append('explain_symptom', reservationInfo.symptom);
-    formData.append('collection_purpose', 'submit');
     reservationInfo.images.forEach(function(image) {
         formData.append('images', {
             uri: image,
@@ -117,7 +116,7 @@ export const createPaymentRequest = async function (reservationInfo, email) {
         P_NOTI: reservationInfo.biddingId,
         P_GOODS: encodeURIComponent(reservationInfo.product.introduction),
         P_UNAME: encodeURIComponent(reservationInfo.profileInfo.name),
-        P_NEXT_URL: `https://api.okdoc.app/merchant-webhook/advanced-paid/${reservationInfo.biddingId}/${orderId}`,
+        P_NEXT_URL: `${APIURL}/merchant-webhook/advanced-paid/${reservationInfo.biddingId}/${orderId}`,
         P_EMAIL: email,
         P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
         P_CHARSET: 'utf8'
