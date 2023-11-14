@@ -44,23 +44,12 @@ export const modifyPatientInformation = async function (loginToken, patientId, p
         weight: patientInformation.weight,
         drinker: patientInformation.drinker,
         smoker: patientInformation.smoker,
+        medical_history: patientInformation.medical_history,
+        family_medical_history: patientInformation.family_medical_history,
+        medication: patientInformation.medication,
+        allergic_reaction: patientInformation.allergic_reaction,
+        consideration: patientInformation.consideration,
     }
-    if(patientInformation.medical_history.length){
-        data.medical_history = patientInformation.medical_history
-    }
-    if(patientInformation.family_medical_history.length){
-        data.family_medical_history = patientInformation.family_medical_history
-    }
-    if(patientInformation.medication.length){
-        data.medication = patientInformation.medication
-    }
-    if(patientInformation.allergic_reaction.length){
-        data.allergic_reaction = patientInformation.allergic_reaction
-    }
-    if(patientInformation.consideration.length){
-        data.consideration = patientInformation.consideration
-    }
-
     try {
         let options = {
             url: `${APIURL}/patients/${patientId}`,
