@@ -27,11 +27,11 @@ export default function ProfileDetailScreen({ navigation }) {
   const [weight, setWeight] = useState(mainProfile?.weight?.toString());
   const [drinker, setDrinker] = useState(mainProfile?.drinker);
   const [smoker, setSmoker] = useState(mainProfile?.smoker);
-  const [medicalHistory, setMedicalHistory] = useState(mainProfile?.medicalHistory);
-  const [medicalHistoryFamily, setMedicalHistoryFamily] = useState(mainProfile?.medicalHistoryFamily);
-  const [medication, setMedication] = useState(mainProfile?.medication);
-  const [allergicReaction, setAllergicReaction] = useState(mainProfile?.allergicReaction);
-  const [etcConsideration, setEtcConsideration] = useState(mainProfile?.etcConsideration);
+  const [medicalHistory, setMedicalHistory] = useState(mainProfile?.medicalHistory===' ' ? '' : mainProfile?.medicalHistory);
+  const [medicalHistoryFamily, setMedicalHistoryFamily] = useState(mainProfile?.medicalHistoryFamily===' ' ? '' : mainProfile?.medicalHistoryFamily);
+  const [medication, setMedication] = useState(mainProfile?.medication===' ' ? '' : mainProfile?.medication);
+  const [allergicReaction, setAllergicReaction] = useState(mainProfile?.allergicReaction===' ' ? '' : mainProfile?.allergicReaction);
+  const [etcConsideration, setEtcConsideration] = useState(mainProfile?.etcConsideration===' ' ? '' : mainProfile?.etcConsideration);
 
   useEffect(() => {
     navigation.setOptions({
@@ -72,7 +72,7 @@ export default function ProfileDetailScreen({ navigation }) {
 
   const handleModifyPatientInformation = async function () {
     if(!height || !weight || !drinker || !smoker){
-      Alert.alert('프로필 수정', '키/몸무게/음주 여부/흡연 여부는 필수 정보입니다.');
+      Alert.alert('프로필 수정', '키/몸무게/음주여부/흡연여부 항목은 필수 기입 정보입니다.');
       return null;
     }
 
@@ -82,11 +82,11 @@ export default function ProfileDetailScreen({ navigation }) {
         weight: weight,
         drinker: drinker,
         smoker: smoker,
-        medical_history: medicalHistory ?? '',
-        family_medical_history: medicalHistoryFamily ?? '',
-        medication: medication ?? '',
-        allergic_reaction: allergicReaction ?? '',
-        consideration: etcConsideration ?? '',
+        medical_history: medicalHistory?.length ? medicalHistory : ' ',
+        family_medical_history: medicalHistoryFamily?.length ? medicalHistoryFamily : ' ',
+        medication: medication?.length ? medication : ' ',
+        allergic_reaction: allergicReaction?.length ? allergicReaction : ' ',
+        consideration: etcConsideration?.length ? etcConsideration : ' ',
       }
       const response = await modifyPatientInformation(accountData.loginToken, mainProfile.id, data);
       const modifiedProfile = response.data.response;

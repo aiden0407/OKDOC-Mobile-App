@@ -30,11 +30,11 @@ export default function ProfileDetailScreen({ navigation }) {
   const [weight, setWeight] = useState(profileInfo?.weight?.toString());
   const [drinker, setDrinker] = useState(profileInfo?.drinker);
   const [smoker, setSmoker] = useState(profileInfo?.smoker);
-  const [medicalHistory, setMedicalHistory] = useState(profileInfo?.medicalHistory);
-  const [medicalHistoryFamily, setMedicalHistoryFamily] = useState(profileInfo?.medicalHistoryFamily);
-  const [medication, setMedication] = useState(profileInfo?.medication);
-  const [allergicReaction, setAllergicReaction] = useState(profileInfo?.allergicReaction);
-  const [etcConsideration, setEtcConsideration] = useState(profileInfo?.etcConsideration);
+  const [medicalHistory, setMedicalHistory] = useState(profileInfo?.medicalHistory===' ' ? '' : profileInfo?.medicalHistory);
+  const [medicalHistoryFamily, setMedicalHistoryFamily] = useState(profileInfo?.medicalHistoryFamily===' ' ? '' : profileInfo?.medicalHistoryFamily);
+  const [medication, setMedication] = useState(profileInfo?.medication===' ' ? '' : profileInfo?.medication);
+  const [allergicReaction, setAllergicReaction] = useState(profileInfo?.allergicReaction===' ' ? '' : profileInfo?.allergicReaction);
+  const [etcConsideration, setEtcConsideration] = useState(profileInfo?.etcConsideration===' ' ? '' : profileInfo?.etcConsideration);
 
   const relationshipRef = useRef();
   const birthRef = useRef();
@@ -68,11 +68,11 @@ export default function ProfileDetailScreen({ navigation }) {
         weight: weight,
         drinker: drinker,
         smoker: smoker,
-        medical_history: medicalHistory ?? '',
-        family_medical_history: medicalHistoryFamily ?? '',
-        medication: medication ?? '',
-        allergic_reaction: allergicReaction ?? '',
-        consideration: etcConsideration ?? '',
+        medical_history: medicalHistory?.length ? medicalHistory : ' ',
+        family_medical_history: medicalHistoryFamily?.length ? medicalHistoryFamily : ' ',
+        medication: medication?.length ? medication : ' ',
+        allergic_reaction: allergicReaction?.length ? allergicReaction : ' ',
+        consideration: etcConsideration?.length ? etcConsideration : ' ',
       }
       const response = await modifyPatientInformation(accountData.loginToken, mainProfile.id, data);
       const modifiedProfile = response.data.response;
