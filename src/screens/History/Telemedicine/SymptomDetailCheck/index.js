@@ -59,9 +59,9 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
 
   const callback = () => {
     if (telemedicineData?.invoiceInfo && count < -900) {
-      refresh();
+      // refresh();
     } else if ( !(telemedicineData?.invoiceInfo) && count < -600) {
-      refresh();
+      // refresh();
     } else {
       setCount(count - 1);
     }
@@ -156,9 +156,9 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
           </Container>
           
           <SolidButton
-            text="진료실 입장하기"
+            text={((telemedicineData?.invoiceInfo && count < -900) || (!(telemedicineData?.invoiceInfo) && count < -600)) ? "입장 시간 초과" : "진료실 입장하기"}
             marginBottom={20}
-            disabled={count>270}
+            disabled={count>270 || (telemedicineData?.invoiceInfo && count < -900) || (!(telemedicineData?.invoiceInfo) && count < -600)}
             action={() => handleNotice1()}
           />
         </Container>
