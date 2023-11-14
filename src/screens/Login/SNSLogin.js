@@ -147,7 +147,7 @@ export default function LoginPage({ navigation }) {
 
     } catch (error) {
       if (error.response.data.statusCode === 404) {
-        const eamil = extractEmailFromString(error.response.data.message);
+        const email = extractEmailFromString(error.response.data.message);
         appContextDispatch({
           type: 'REGISTER_ROUTE',
           route: 'APPLE_EMAIL_EXISTENT',
@@ -158,7 +158,7 @@ export default function LoginPage({ navigation }) {
             onPress: () => {
               appContextDispatch({
                 type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
-                email: eamil,
+                email: email,
                 password: undefined,
                 invitationToken: credential.user,
               });
@@ -167,10 +167,11 @@ export default function LoginPage({ navigation }) {
           }
         ]);
       } else if (error.response.data.statusCode === 422) {
+        // const email = extractEmailAddress(error.response.data.message);
         appContextDispatch({
           type: 'REGISTER_ROUTE',
-          route: 'APPLE_EMAIL_EXISTENT',
-          //route: 'APPLE_EMAIL_UNDEFINED',
+          // route: 'APPLE_EMAIL_EXISTENT',
+          route: 'APPLE_EMAIL_UNDEFINED',
         });
         Alert.alert('안내', '해당 계정이 존재하지 않습니다. 회원가입을 진행합니다.', [
           {
@@ -213,6 +214,12 @@ export default function LoginPage({ navigation }) {
     }
   }
 
+  function extractEmailAddress(inputString) {
+    const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
+    const matches = inputString.match(emailRegex);
+    return matches ? matches[0] : null;
+  }
+
   return (
     <SafeArea>
       <KeyboardAvoiding>
@@ -248,6 +255,7 @@ export default function LoginPage({ navigation }) {
                       AppleAuthentication.AppleAuthenticationScope.EMAIL,
                     ],
                   });
+                  // const credential = {"user":"001658.0c0a45583d304171a0a76e70bf045e55.0519","state":null,"identityToken":"eyJraWQiOiJZdXlYb1kiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoia3IuY28uaW5zdW5naW5mby5va2RvYyIsImV4cCI6MTcwMDAzNTY1MiwiaWF0IjoxNjk5OTQ5MjUyLCJzdWIiOiIwMDE2NTguMGMwYTQ1NTgzZDMwNDE3MWEwYTc2ZTcwYmYwNDVlNTUuMDUxOSIsImNfaGFzaCI6Ii11WGl6SnVCRG82RFVkQWpIVWdORWciLCJlbWFpbCI6Ind4cmJ6cmd5bm5AcHJpdmF0ZXJlbGF5LmFwcGxlaWQuY29tIiwiZW1haWxfdmVyaWZpZWQiOiJ0cnVlIiwiaXNfcHJpdmF0ZV9lbWFpbCI6InRydWUiLCJhdXRoX3RpbWUiOjE2OTk5NDkyNTIsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.jl1HonixQNKkRGYAJQ_k-n7Al-ZM6z_g_pJgwDuWDxZKJMqv0ozGvwI6CVMR88AZCmaJ2r1Z2pziH_K1XW6WjWDzexxFOa6ksf6L-dTOFyPAO7IO2XjoelOB4mllDf_G5So8k_rB0ytGxi2klYF493BLvh_K34msqcEjqVHfjvvgGZloc8CL2wDNBtlX2WWW2JOCTQ7VHBP4ZnkYc-yfyEm25CiBPI8LvwZeh03eFW1yPULaFwxRS-MnOyjtwxKbQMqRGkC0EF9YcoXjuiWLx0YnU5xwGMc6SO4_c7xfZU3_nAyzT6oRdughARW2VDMGE3QOXBUdZFruCEAGrIieQg","fullName":{"nameSuffix":null,"middleName":null,"familyName":null,"givenName":null,"namePrefix":null,"nickname":null},"authorizationCode":"cb1bfb13eee504885ab4b224b982eea91.0.srwvy.5Odl5_TY84zm-6u5ekk8Fg","email":null,"realUserStatus":1}
                   handleSignInWithApple(credential);
                 } catch (e) {
                   if (e.code === 'ERR_REQUEST_CANCELED') {
