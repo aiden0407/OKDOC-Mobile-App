@@ -96,6 +96,7 @@ export default function useAlarmUpdate() {
                 // console.log('alarm update!!!!!!!!!!!!!!!!')
             }, 1000);
         } catch (error) {
+            appContextDispatch({ type: 'ALARM_DATA_UPDATED' });
             // console.log(error);
         }
     };

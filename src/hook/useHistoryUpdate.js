@@ -215,6 +215,7 @@ export default function useHistoryUpdate() {
             // console.log('Updated')
 
         } catch (error) {
+            appContextDispatch({ type: 'HISTORY_DATA_UPDATED' });
             // console.log(error);
         }
     };
