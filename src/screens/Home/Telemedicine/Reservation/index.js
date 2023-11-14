@@ -164,7 +164,12 @@ export default function ReservationScreen({ navigation, route }) {
       setIsLoading(false);
 
     } catch (error) {
-      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+      if (error.data.statusCode === 404) {
+        // 해당 진료과 소속 의사가 존재하지 않는 경우
+        setIsLoading(false);
+      } else {
+        Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+      }
     }
   }
 
