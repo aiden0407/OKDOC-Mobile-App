@@ -83,7 +83,6 @@ export default function PaymentNotificationScreen({ navigation }) {
         }
       }
     } catch (error) {
-      console.log(error)
       if(error.status===404){
         // 예약되어 있는 진료 없음
         try {
