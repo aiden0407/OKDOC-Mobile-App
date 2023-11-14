@@ -2,6 +2,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import useHistoryUpdate from 'hook/useHistoryUpdate';
+import useAlarmUpdate from 'hook/useAlarmUpdate';
 
 //Components
 import { COLOR } from 'constants/design';
@@ -17,6 +18,7 @@ import { getPaymentInformation } from 'api/Home';
 export default function PaymentCompleteScreen({ navigation, route }) {
 
   const { refresh } = useHistoryUpdate();
+  const { refreshAlarm } = useAlarmUpdate();
   const { state: { accountData } } = useContext(ApiContext);
   const [isLoading, setIsLoading] = useState(true);
   const [invoiceData, setInvoiceData] = useState();
@@ -60,6 +62,7 @@ export default function PaymentCompleteScreen({ navigation, route }) {
 
   function handleConfirm() {
     refresh();
+    refreshAlarm();
     navigation.popToTop();
     navigation.goBack();
     navigation.navigate('HistoryStackNavigation', { 
