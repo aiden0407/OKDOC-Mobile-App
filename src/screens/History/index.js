@@ -251,11 +251,11 @@ export default function HistoryScreen({ navigation }) {
         accountData.loginToken
           ? (<>
             {(historyData?.underReservation?.length || historyData?.pastHistory?.length)
-              ? <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20} paddingTop={Device.osName === 'Android' ? 0 : refreshing ? 30 : 0}>
+              ? <Container backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
                 <ScrollView
                   showsVerticalScrollIndicator={false}
                   refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLOR.MAIN} />
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLOR.MAIN} progressViewOffset={20} />
                   }
                   overScrollMode='never'
                 >
