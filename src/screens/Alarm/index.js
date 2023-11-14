@@ -6,7 +6,7 @@ import useAlarmUpdate from 'hook/useAlarmUpdate';
 import styled from 'styled-components/native';
 
 //Components
-import * as Device from 'expo-device';
+import { SimpleLineIcons } from '@expo/vector-icons';
 import { COLOR } from 'constants/design';
 import { StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import { SafeArea, ScrollView, Container, ContainerCenter, Row, DividingLine, Box } from 'components/Layout';
@@ -90,21 +90,9 @@ export default function AlarmScreen({ navigation }) {
                 </ScrollView>
               </Container>
 
-              : <AlarmEmptyContainer backgroundColor={COLOR.GRAY6} paddingHorizontal={20} paddingTop={Device.osName === 'Android' ? 0 : refreshing ? 30 : 0}>
-                <AlarmEmptyScrollView
-                  showsVerticalScrollIndicator={false}
-                  refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLOR.MAIN} />
-                  }
-                  overScrollMode='never'
-                  contentContainerStyle={styles.container}
-                >
-                  <AlarmEmptyBox>
-                    <Image source={letterIcon} width={70} height={74} />
-                    <Text T3 bold marginTop={24}>알림함이 비어있습니다</Text>
-                    <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>예약하신 진료와 관련된 안내 사항을{'\n'} 알림으로 보내드립니다</Text>
-                  </AlarmEmptyBox>
-                </AlarmEmptyScrollView>
+              : <AlarmEmptyContainer backgroundColor="#FFFFFF">
+                <SimpleLineIcons name="bell" size={45} color={COLOR.GRAY1} />
+                <Text T6 medium center color={COLOR.GRAY1} marginTop={25}>새로운 알림은 여기에서 확인할 수 있어요.</Text>
               </AlarmEmptyContainer>
             }
           </>)
@@ -138,18 +126,6 @@ const LoadingBackground = styled.View`
 
 const AlarmEmptyContainer = styled(Container)`
   justify-content: center;
-  align-items: center;
-`;
-
-const AlarmEmptyScrollView = styled(ScrollView)`
-  width: 100%;
-`;
-
-const AlarmEmptyBox = styled.View`
-  width: 100%;
-  padding: 40px 20px;
-  border-radius: 10px;
-  background-color: #FFFFFF;
   align-items: center;
 `;
 
