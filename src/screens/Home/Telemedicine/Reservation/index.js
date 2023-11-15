@@ -43,6 +43,10 @@ export default function ReservationScreen({ navigation, route }) {
         doctorsList = doctorsList.concat(response.data.response);
       }
 
+      if(!useTestAccount(accountData.email)){
+        doctorsList = doctorsList.filter(obj => obj.hospital_name !== '오케이닥');
+      }
+
       for (let jj = 0; jj < doctorsList.length; jj++) {
         try {
           const response = await getScheduleByDoctorId(doctorsList[jj].id);
