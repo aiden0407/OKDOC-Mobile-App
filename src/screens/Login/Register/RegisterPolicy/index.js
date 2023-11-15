@@ -171,7 +171,7 @@ export default function RegisterPolicyScreen({ navigation }) {
     });
 
     if(registerStatus.route === 'APPLE_EMAIL_EXISTENT' || registerStatus.route === 'GOOGLE_REGISTER'){
-      navigation.navigate('PassportPhoneCertifiaction');
+      navigation.navigate('PassportInformation');
     }
     if(registerStatus.route === 'APPLE_EMAIL_UNDEFINED'){
       navigation.navigate('AppleEmail');

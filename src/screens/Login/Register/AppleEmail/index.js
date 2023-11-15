@@ -67,7 +67,7 @@ export default function AppleEmailScreen({ navigation }) {
       password: undefined,
       invitationToken: registerStatus.invitationToken,
     });
-    navigation.navigate('PassportPhoneCertifiaction');
+    navigation.navigate('PassportInformation');
   }
 
   return (

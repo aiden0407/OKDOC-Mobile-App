@@ -77,7 +77,7 @@ export default function EmailPasswordScreen({ navigation }) {
       password: password,
       invitationToken: emailToken,
     });
-    navigation.navigate('PassportPhoneCertifiaction');
+    navigation.navigate('PassportInformation');
   }
 
   return (
