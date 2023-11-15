@@ -226,7 +226,8 @@ export default function PassportInformationScreen({ navigation }) {
             showsVerticalScrollIndicator={false}
             ref={scrollRef}
           >
-            <Text T3 bold marginTop={30}>본인 여권정보를 입력해주세요</Text>
+            <Text T3 bold marginTop={30}>오케이닥 진료 서비스 이용을 위해{'\n'}여권 정보를 기입해 주세요</Text>
+            <Text T6 color={COLOR.GRAY1} marginTop={12}>의료법에 따라 본인 확인 후 서비스 이용이 가능합니다</Text>
 
             <Text T6 bold marginTop={30}>한글 성명</Text>
             <BoxInput
@@ -241,7 +242,7 @@ export default function PassportInformationScreen({ navigation }) {
             <DateTimePickerOpenButton onPress={() => Device.osName === 'Android' ? showBirthSelector() : setIsBirthPickerShow(true)} underlayColor={COLOR.GRAY4}>
               <Text T6 color={birth.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{birth.toDateString() === today.toDateString() ? '생년월일 8자리' : formatDateString(birth)}</Text>
             </DateTimePickerOpenButton>
-            <Text T6 bold marginTop={24}>여권번호</Text>
+            <Text T6 bold marginTop={24}>여권 번호</Text>
             <BoxInput
               marginTop={12}
               placeholder="알파벳+숫자 총 9자리"
@@ -250,11 +251,11 @@ export default function PassportInformationScreen({ navigation }) {
               onChangeText={handlePassportNumberChange}
               onFocus={() => handleTextInputFocus(200)}
             />
-            <Text T6 bold marginTop={24}>발급일</Text>
+            <Text T6 bold marginTop={24}>여권 발급일</Text>
             <DateTimePickerOpenButton onPress={() => Device.osName === 'Android' ? showDateOfIssueSelector() : setIsDateOfIssuePickerShow(true)} underlayColor={COLOR.GRAY4}>
               <Text T6 color={dateOfIssue.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfIssue.toDateString() === today.toDateString() ? '발급일 숫자 8자리' : formatDateString(dateOfIssue)}</Text>
             </DateTimePickerOpenButton>
-            <Text T6 bold marginTop={24}>기간 만료일</Text>
+            <Text T6 bold marginTop={24}>여권 만료일</Text>
             <DateTimePickerOpenButton onPress={() => Device.osName === 'Android' ? showDateOfExpirySelector() : setIsDateOfExpiryPickerShow(true)} underlayColor={COLOR.GRAY4}>
               <Text T6 color={dateOfExpiry.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{dateOfExpiry.toDateString() === today.toDateString() ? '기간 만료일 숫자 8자리' : formatDateString(dateOfExpiry)}</Text>
             </DateTimePickerOpenButton>
