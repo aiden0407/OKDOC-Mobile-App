@@ -2,7 +2,7 @@
   "expo": {
     "name": "OK DOC",
     "slug": "okdoc",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "icon": "./src/assets/main/main_icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -58,6 +58,9 @@
           "NSAllowsArbitraryLoads": true,
           "NSAllowsArbitraryLoadsInWebContent": true
         }
+      },
+      "config": {
+        "usesNonExemptEncryption": false
       }
     },
     "android": {
