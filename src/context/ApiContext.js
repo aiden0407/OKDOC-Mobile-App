@@ -231,6 +231,7 @@ const reducer = (state, action) => {
         accountData: {
           ...state.accountData,
           loginToken: undefined,
+          email: undefined,
         },
       };
 
