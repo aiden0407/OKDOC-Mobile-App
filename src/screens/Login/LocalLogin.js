@@ -62,18 +62,11 @@ export default function LoginPage({ navigation }) {
   }
 
   function handleRegister() {
-    Alert.alert('안내', '본 서비스는 재외국민을 대상으로 하는 서비스입니다. 회원가입을 진행하기 위해서는 대한민국 여권 또는 한국인 명의의 휴대폰이 필요합니다.', [
-      {
-        text: '확인',
-        onPress: () => {
-          appContextDispatch({
-            type: 'REGISTER_ROUTE',
-            route: 'LOCAL_REGISTER',
-          });
-          navigation.navigate('RegisterPolicy');
-        }
-      }
-    ]);
+    appContextDispatch({
+      type: 'REGISTER_ROUTE',
+      route: 'LOCAL_REGISTER',
+    });
+    navigation.navigate('RegisterPolicy');
   }
 
   function handleFindEmailPassword() {
