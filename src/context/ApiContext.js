@@ -233,6 +233,24 @@ const reducer = (state, action) => {
           loginToken: undefined,
           email: undefined,
         },
+        profileData: [
+          {
+            id: undefined,
+            name: undefined,
+            relationship: undefined,
+            birth: undefined,
+            gender: undefined,
+            height: undefined,
+            weight: undefined,
+            drinker: undefined,
+            smoker: undefined,
+            medicalHistory: undefined,
+            medicalHistoryFamily: undefined,
+            medication: undefined,
+            allergicReaction: undefined,
+            etcConsideration: undefined,
+          }
+        ]
       };
 
     case 'PROFILE_CREATE_MAIN':
