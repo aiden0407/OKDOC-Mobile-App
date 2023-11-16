@@ -67,7 +67,7 @@ export default function AppleEmailScreen({ navigation }) {
     try {
       const deviceType = await AsyncStorage.getItem('@device_type');
       const deviceToken = await AsyncStorage.getItem('@device_token');
-      const response = await createAppleAccount(email, password, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
+      const response = await createAppleAccount(email, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
       const loginToken = response.data.response.accessToken;
       const accountData = {
         loginToken: loginToken,
