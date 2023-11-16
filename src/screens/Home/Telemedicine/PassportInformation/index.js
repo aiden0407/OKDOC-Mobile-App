@@ -150,6 +150,7 @@ export default function PassportInformationScreen({ navigation }) {
       } else {
         Alert.alert('네트워크 에러', '프로필 등록에 실패했습니다. 관리자에게 문의해 주시기 바랍니다.');
       }
+      setPassportCertifiactionState('NONE');
     }
   }
 
