@@ -1,7 +1,9 @@
 //React
 import { useState, useContext, useRef } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Components
 import * as Device from 'expo-device';
@@ -12,11 +14,12 @@ import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { emailCheckOpen, emailCheckClose } from 'api/Login';
+import { emailCheckOpen, emailCheckClose, createAppleAccount } from 'api/Login';
 
 export default function AppleEmailScreen({ navigation }) {
 
-  const { state: { registerStatus }, dispatch } = useContext(AppContext);
+  const { dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { state: { registerStatus }, dispatch: appContextDispatch } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [invitationToken, setInvitationToken] = useState('');
   const [email, setEmail] = useState('');
@@ -60,14 +63,27 @@ export default function AppleEmailScreen({ navigation }) {
     }
   }
 
-  function handleNextScreen() {
-    dispatch({
-      type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
-      email: email,
-      password: undefined,
-      invitationToken: registerStatus.invitationToken,
-    });
-    navigation.navigate('PassportInformation');
+  const handleNextScreen = async function () {
+    try {
+      const deviceType = await AsyncStorage.getItem('@device_type');
+      const deviceToken = await AsyncStorage.getItem('@device_token');
+      const response = await createAppleAccount(email, password, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
+      const loginToken = response.data.response.accessToken;
+      const accountData = {
+        loginToken: loginToken,
+        email: email,
+      };
+      await AsyncStorage.setItem('@account_data', JSON.stringify(accountData));
+      apiContextDispatch({
+        type: 'LOGIN',
+        loginToken: loginToken,
+        email: email,
+      });
+      appContextDispatch({ type: 'REGISTER_COMPLETE' });
+      navigation.navigate('RegisterComplete');
+    } catch (error) {
+      Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+    }
   }
 
   return (
@@ -137,7 +153,7 @@ export default function AppleEmailScreen({ navigation }) {
           </Container>
 
           <SolidButton
-            text="다음"
+            text="회원 가입"
             marginBottom={20}
             disabled={!isEmailCertificated}
             action={() => handleNextScreen()}
