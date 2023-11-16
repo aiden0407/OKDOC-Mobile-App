@@ -6,7 +6,6 @@ import useAlarmUpdate from 'hook/useAlarmUpdate';
 import styled from 'styled-components/native';
 
 //Components
-import { SimpleLineIcons } from '@expo/vector-icons';
 import { COLOR } from 'constants/design';
 import { StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import { SafeArea, ScrollView, Container, ContainerCenter, Row, DividingLine, Box } from 'components/Layout';
@@ -90,9 +89,12 @@ export default function AlarmScreen({ navigation }) {
                 </ScrollView>
               </Container>
 
-              : <AlarmEmptyContainer backgroundColor="#FFFFFF">
-                <SimpleLineIcons name="bell" size={45} color={COLOR.GRAY1} />
-                <Text T6 medium center color={COLOR.GRAY1} marginTop={25}>새로운 알림은 여기에서 확인할 수 있어요.</Text>
+              : <AlarmEmptyContainer backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
+                <AlarmEmptyBox>
+                  <Image source={letterIcon} width={70} height={74} />
+                  <Text T3 bold marginTop={24}>알림함이 비어있습니다</Text>
+                  <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>예약하신 진료와 관련된 안내 사항을{'\n'} 알림으로 보내드립니다</Text>
+                </AlarmEmptyBox>
               </AlarmEmptyContainer>
             }
           </>)
@@ -126,6 +128,14 @@ const LoadingBackground = styled.View`
 
 const AlarmEmptyContainer = styled(Container)`
   justify-content: center;
+  align-items: center;
+`;
+
+const AlarmEmptyBox = styled.View`
+  width: 100%;
+  padding: 40px 20px;
+  border-radius: 10px;
+  background-color: #FFFFFF;
   align-items: center;
 `;
 
