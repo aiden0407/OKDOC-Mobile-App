@@ -17,7 +17,7 @@ export default function RegisterCompleteScreen({ navigation }) {
   function handleFillInProfileDetail() {
     navigation.popToTop();
     navigation.goBack();
-    navigation.navigate('MyPageStackNavigation', { screen: 'ProfileDetail' });
+    navigation.navigate('MyPageStackNavigation', { screen: 'PassportInformation' });
   }
 
   function handleNextScreen() {
@@ -38,7 +38,7 @@ export default function RegisterCompleteScreen({ navigation }) {
           <OutlineButton
             large
             marginTop={18}
-            text="건강 정보 등록"
+            text="프로필 정보 등록"
             action={() => handleFillInProfileDetail()}
           />
 
