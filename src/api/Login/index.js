@@ -14,7 +14,7 @@ function generateRandomPassword() {
         password += chars[randomIndex];
     }
 
-    if (password.match(/^.*(?=^.{8,14}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[.?!@#$%^&*+=]).*$/)) {
+    if (password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.?!@#$%^&*+=]).{8,14}$/)) {
         return password;
     } else {
         return generateRandomPassword(); // 조건을 만족하지 않으면 다시 생성
