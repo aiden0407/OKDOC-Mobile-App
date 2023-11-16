@@ -12,7 +12,7 @@ import RegisterPolicyDetailScreen from 'screens/Login/Register/RegisterPolicy/De
 import EmailPasswordScreen from 'screens/Login/Register/EmailPassword';
 import AppleEmailScreen from 'screens/Login/Register/AppleEmail';
 // import PassportPhoneCertifiactionScreen from 'screens/Login/Register/PassportPhoneCertifiaction';
-import PassportInformationScreen from 'screens/Login/Register/PassportInformation';
+// import PassportInformationScreen from 'screens/Login/Register/PassportInformation';
 // import PhoneInformationScreen from 'screens/Login/Register/PhoneInformation';
 // import SearchCountryCodeScreen from 'screens/Login/Register/SearchCountryCode';
 import RegisterCompleteScreen from 'screens/Login/Register/RegisterComplete';
@@ -114,14 +114,14 @@ export default function LoginStackNavigation({ navigation }) {
             headerLeft: () => <NavigationBackArrow action={()=>handlePassportPhoneCertifiactionBack()} />,
           }}
         /> */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="PassportInformation"
           component={PassportInformationScreen}
           options={{
             title: '회원가입',
             headerLeft: () => <NavigationBackArrow action={()=>handlePassportPhoneCertifiactionBack()} />,
           }}
-        />
+        /> */}
         {/* <Stack.Screen
           name="PhoneInformation"
           component={PhoneInformationScreen}
