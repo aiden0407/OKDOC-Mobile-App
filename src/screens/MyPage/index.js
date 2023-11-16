@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 //Components
 import { COLOR } from 'constants/design'
 import { Ionicons } from '@expo/vector-icons';
-import { SafeArea, ContainerTop, DividingLine } from 'components/Layout';
+import { SafeArea, ContainerTop, DividingLine, Row } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 
@@ -37,8 +37,12 @@ export default function MyPageScreen({ navigation }) {
   }
 
   function handleProfileList() {
-    if (accountData.loginToken) {
-      navigation.navigate('MyPageStackNavigation', { screen: 'ProfileDetail' });
+    if (accountData?.loginToken) {
+      if (mainProfile?.id) {
+        navigation.navigate('MyPageStackNavigation', { screen: 'ProfileDetail' });
+      } else {
+        navigation.navigate('MyPageStackNavigation', { screen: 'PassportInformation' });
+      }
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
@@ -69,11 +73,18 @@ export default function MyPageScreen({ navigation }) {
         <LoginContainer>
           {
             accountData?.loginToken
-              ? (<>
-                <LoginButton activeOpacity={1}>
-                  <Text T3 bold>안녕하세요, <Text T3 bold color={COLOR.MAIN} marginRight={12}>{mainProfile.name}</Text>님</Text>
-                </LoginButton>
-              </>)
+              ? mainProfile?.id
+                ? (<>
+                  <LoginButton activeOpacity={1}>
+                    <Text T3 bold>안녕하세요, <Text T3 bold color={COLOR.MAIN} marginRight={12}>{mainProfile.name}</Text>님</Text>
+                  </LoginButton>
+                </>)
+                : (<Row>
+                  <StyledLoginButton onPress={() => handleProfileList()}>
+                    <Text T3 bold color={COLOR.MAIN}>프로필 등록</Text>
+                  </StyledLoginButton>
+                  <Text T3 bold>&nbsp;&nbsp;<Text T4 bold>후 서비스 이용이 가능합니다</Text> </Text>
+                </Row>)
               : (<>
                 <LoginButton onPress={() => handleLogin()}>
                   <Text T3 bold marginRight={12}>로그인을 해주세요</Text>
@@ -94,7 +105,11 @@ export default function MyPageScreen({ navigation }) {
           <InformationButton underlayColor={COLOR.GRAY5} onPress={() => handleProfileList()}>
             <>
               <Image source={profileCard} width={54} height={32} marginTop={18} />
-              <Text T6 marginTop={14}>프로필 정보</Text>
+              {
+                (accountData?.loginToken && !mainProfile?.id)
+                  ? <Text T6 marginTop={14}>프로필 등록</Text>
+                  : <Text T6 marginTop={14}>프로필 정보</Text>
+              }
             </>
           </InformationButton>
         </InformationContainer>
@@ -121,6 +136,11 @@ const LoginButton = styled.TouchableOpacity`
   margin-left: 20px;
   flex-direction: row;
   align-items: center;
+`;
+
+const StyledLoginButton = styled(LoginButton)`
+  border-bottom-width: 1px;
+  border-bottom-color: ${COLOR.MAIN};
 `;
 
 const InformationContainer = styled.View`
