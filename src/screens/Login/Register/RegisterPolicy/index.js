@@ -163,7 +163,8 @@ export default function RegisterPolicyScreen({ navigation }) {
   }
 
   const handleNextScreen = async function (isMarketingAgreed) {
-    const checkedList = checkedPolicies;
+    let checkedList = checkedPolicies;
+    checkedList = checkedList.filter(policy => policy !== policyList[policyList.length - 1].id);
     if (isMarketingAgreed) {
       checkedList.push(policyList[policyList.length - 1].id);
     }
@@ -281,7 +282,7 @@ export default function RegisterPolicyScreen({ navigation }) {
         </Container>
 
         <SolidButton
-          text="확인"
+          text={(registerStatus.route === 'APPLE_EMAIL_EXISTENT' || registerStatus.route === 'GOOGLE_REGISTER') ? "회원가입" : "확인"}
           marginBottom={20}
           disabled={!meetRequirement}
           action={() => handleNotice1()}
