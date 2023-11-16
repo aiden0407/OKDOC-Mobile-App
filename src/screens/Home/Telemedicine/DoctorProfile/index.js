@@ -30,9 +30,13 @@ export default function DoctorProfileScreen({ navigation }) {
 
   function handleApplyReservation() {
     if (accountData.loginToken) {
-      // navigation.navigate('ProfileList');
-      dispatch({ type: 'TELEMEDICINE_RESERVATION_PROFILE', profileType: 'my', profileInfo: profileData[0] });
-      navigation.navigate('ProfileDetail');
+      if(profileData[0].id){
+        dispatch({ type: 'TELEMEDICINE_RESERVATION_PROFILE', profileType: 'my', profileInfo: profileData[0] });
+        navigation.navigate('ProfileDetail');
+      } else {
+        // 프로필 등록
+        navigation.navigate('PassportInformation');
+      }
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
