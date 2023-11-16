@@ -1,7 +1,9 @@
 //React
 import { useContext, useState, useEffect } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Components
 import { COLOR } from 'constants/design'
@@ -13,11 +15,12 @@ import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { getRegisterTerms } from 'api/Login';
+import { getRegisterTerms, createAppleAccount, createGoogleAccount } from 'api/Login';
 
 export default function RegisterPolicyScreen({ navigation }) {
 
-  const { state: { registerStatus }, dispatch } = useContext(AppContext);
+  const { dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { state: { registerStatus }, dispatch: appContextDispatch } = useContext(AppContext);
   const [policyList, setPolicyList] = useState([]);
   const [allPolicyAgreement, setAllPolicyAgreement] = useState(false);
   const [policy1Agreement, setPolicy1Agreement] = useState(false);
@@ -76,7 +79,7 @@ export default function RegisterPolicyScreen({ navigation }) {
       setPolicy8Agreement(true);
       setMeetRequirement(true);
       const checkedList = [];
-      for (let ii = 0; ii < policyList.length-1; ii++) {
+      for (let ii = 0; ii < policyList.length - 1; ii++) {
         checkedList.push(policyList[ii].id);
       }
       setCheckedPolicies(checkedList);
@@ -100,7 +103,7 @@ export default function RegisterPolicyScreen({ navigation }) {
 
     setAllPolicyAgreement(true);
     setMeetRequirement(true);
-    for (let ii = 0; ii < policyList.length-1; ii++) {
+    for (let ii = 0; ii < policyList.length - 1; ii++) {
       if (policyList[ii].level === 'required') {
         if (ii === index) {
           if (useStateValues[ii]) {
@@ -159,30 +162,77 @@ export default function RegisterPolicyScreen({ navigation }) {
     ]);
   }
 
-  function handleNextScreen(isMarketingAgreed) {
+  const handleNextScreen = async function (isMarketingAgreed) {
     const checkedList = checkedPolicies;
-    if(isMarketingAgreed){
-      checkedList.push(policyList[policyList.length-1].id);
+    if (isMarketingAgreed) {
+      checkedList.push(policyList[policyList.length - 1].id);
     }
 
-    dispatch({
-      type: 'REGISTER_POLICY',
-      policy: checkedList,
-    });
-
-    if(registerStatus.route === 'APPLE_EMAIL_EXISTENT' || registerStatus.route === 'GOOGLE_REGISTER'){
-      navigation.navigate('PassportInformation');
+    if (registerStatus.route === 'GOOGLE_REGISTER') {
+      try {
+        const deviceType = await AsyncStorage.getItem('@device_type');
+        const deviceToken = await AsyncStorage.getItem('@device_token');
+        const response = await createGoogleAccount(registerStatus.email, checkedList, deviceType, deviceToken, registerStatus.invitationToken);
+        const loginToken = response.data.response.accessToken;
+        const accountData = {
+          loginToken: loginToken,
+          email: registerStatus.email,
+        };
+        await AsyncStorage.setItem('@account_data', JSON.stringify(accountData));
+        apiContextDispatch({
+          type: 'LOGIN',
+          loginToken: loginToken,
+          email: registerStatus.email,
+        });
+        appContextDispatch({ type: 'REGISTER_COMPLETE' });
+        navigation.navigate('RegisterComplete');
+      } catch (error) {
+        Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+      }
     }
-    if(registerStatus.route === 'APPLE_EMAIL_UNDEFINED'){
+
+    if (registerStatus.route === 'APPLE_EMAIL_EXISTENT') {
+      try {
+        const deviceType = await AsyncStorage.getItem('@device_type');
+        const deviceToken = await AsyncStorage.getItem('@device_token');
+        const response = await createAppleAccount(registerStatus.email, checkedList, deviceType, deviceToken, registerStatus.invitationToken);
+        const loginToken = response.data.response.accessToken;
+        const accountData = {
+          loginToken: loginToken,
+          email: registerStatus.email,
+        };
+        await AsyncStorage.setItem('@account_data', JSON.stringify(accountData));
+        apiContextDispatch({
+          type: 'LOGIN',
+          loginToken: loginToken,
+          email: registerStatus.email,
+        });
+        appContextDispatch({ type: 'REGISTER_COMPLETE' });
+        navigation.navigate('RegisterComplete');
+      } catch (error) {
+        Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+      }
+    }
+
+    if (registerStatus.route === 'APPLE_EMAIL_UNDEFINED') {
+      appContextDispatch({
+        type: 'REGISTER_POLICY',
+        policy: checkedList,
+      });
       navigation.navigate('AppleEmail');
     }
-    if(registerStatus.route === 'LOCAL_REGISTER'){
+
+    if (registerStatus.route === 'LOCAL_REGISTER') {
+      appContextDispatch({
+        type: 'REGISTER_POLICY',
+        policy: checkedList,
+      });
       navigation.navigate('EmailPassword');
     }
   }
 
   function PolicyButton({ essential, title, content, index }) {
-    if(title==='NOTIFICATION_OF_ADS') return;
+    if (title === 'NOTIFICATION_OF_ADS') return;
 
     return (
       <Row marginTop={15} align>
@@ -219,7 +269,7 @@ export default function RegisterPolicyScreen({ navigation }) {
             <Ionicons name="checkbox" size={30} color={allPolicyAgreement ? COLOR.MAIN : COLOR.GRAY3} marginRight={6} marginTop={1} />
             <Text T4 bold>모든 약관에 동의합니다.</Text>
           </AgreeRow>
-          {policyList.map((item, index) => 
+          {policyList.map((item, index) =>
             <PolicyButton
               key={`policy${index}`}
               essential={item.level === 'required'}
