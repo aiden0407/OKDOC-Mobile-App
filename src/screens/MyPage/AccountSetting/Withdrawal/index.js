@@ -1,5 +1,5 @@
 //React
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
@@ -72,18 +72,26 @@ export default function WithdrawalScreen({ navigation }) {
               value={accountData.email}
               editable={false}
             />
-            <Text T5 medium marginTop={24}>이름</Text>
-            <LineInput
-              marginTop={12}
-              value={mainProfile.name}
-              editable={false}
-            />
-            <Text T5 medium marginTop={24}>생년월일</Text>
-            <LineInput
-              marginTop={12}
-              value={formatDate(mainProfile?.birth)}
-              editable={false}
-            />
+            {
+              mainProfile?.name && (<>
+                <Text T5 medium marginTop={24}>이름</Text>
+                <LineInput
+                  marginTop={12}
+                  value={mainProfile?.name}
+                  editable={false}
+                />
+              </>)
+            }
+            {
+              mainProfile?.birth && (<>
+                <Text T5 medium marginTop={24}>생년월일</Text>
+                <LineInput
+                  marginTop={12}
+                  value={formatDate(mainProfile?.birth)}
+                  editable={false}
+                />
+              </>)
+            }
           </Container>
 
           <SolidButton
