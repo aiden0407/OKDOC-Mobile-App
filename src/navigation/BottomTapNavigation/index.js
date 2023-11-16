@@ -55,7 +55,7 @@ export default function BottomTapNavigation({ navigation }) {
 
   const autoLogin = async function () {
     try {
-      const jsonValue = await AsyncStorage.getItem('accountData');
+      const jsonValue = await AsyncStorage.getItem('@account_data');
       if (jsonValue !== null) {
         const accountData = JSON.parse(jsonValue);
         dispatch({
@@ -94,7 +94,7 @@ export default function BottomTapNavigation({ navigation }) {
       if (error.response.data.statusCode === 403) {
         dispatch({ type: 'LOGOUT' });
         try {
-          await AsyncStorage.removeItem('accountData');
+          await AsyncStorage.removeItem('@account_data');
         } catch (error) {
           console.log(error);
         }

@@ -43,7 +43,7 @@ export default function AccountSettingScreen({ navigation }) {
   const handleLogout = async function () {
     dispatch({ type: 'LOGOUT' });
     try {
-      await AsyncStorage.removeItem('accountData');
+      await AsyncStorage.removeItem('@account_data');
     } catch (error) {
       console.log(error);
     }

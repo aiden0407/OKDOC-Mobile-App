@@ -86,7 +86,7 @@ export default function LoginPage({ navigation }) {
             loginToken: loginToken,
             email: user.email,
           };
-          await AsyncStorage.setItem('accountData', JSON.stringify(accountData));
+          await AsyncStorage.setItem('@account_data', JSON.stringify(accountData));
           navigation.goBack();
         } catch (error) {
           //console.log(error);
@@ -139,7 +139,7 @@ export default function LoginPage({ navigation }) {
           loginToken: loginToken,
           email: email,
         };
-        await AsyncStorage.setItem('accountData', JSON.stringify(accountData));
+        await AsyncStorage.setItem('@account_data', JSON.stringify(accountData));
         navigation.goBack();
       } catch (error) {
         //console.log(error);

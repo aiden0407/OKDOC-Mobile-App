@@ -63,7 +63,7 @@ export default function EmailPasswordScreen({ navigation }) {
           loginToken: loginToken,
           email: registerStatus.email,
         };
-        await AsyncStorage.setItem('accountData', JSON.stringify(accountData));
+        await AsyncStorage.setItem('@account_data', JSON.stringify(accountData));
       } catch (error) {
         //console.log(error);
       }
@@ -84,7 +84,7 @@ export default function EmailPasswordScreen({ navigation }) {
           await deleteFamilyAccout(loginToken, registerStatus.email);
           apiContextDispatch({ type: 'LOGOUT' });
           try {
-            await AsyncStorage.removeItem('accountData');
+            await AsyncStorage.removeItem('@account_data');
           } catch (error) {
             //console.log(error);
           }

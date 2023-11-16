@@ -46,7 +46,7 @@ export default function ChangePasswordScreen({ navigation }) {
       await changePassword(accountData.loginToken, accountData.email, currentPassword, newPassword);
       dispatch({ type: 'LOGOUT' });
       try {
-        await AsyncStorage.removeItem('accountData');
+        await AsyncStorage.removeItem('@account_data');
       } catch (error) {
         console.log(error);
       }

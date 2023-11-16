@@ -38,7 +38,7 @@ export default function WithdrawalScreen({ navigation }) {
       await deleteFamilyAccout(accountData.loginToken, accountData.email);
       dispatch({ type: 'LOGOUT' });
       try {
-        await AsyncStorage.removeItem('accountData');
+        await AsyncStorage.removeItem('@account_data');
       } catch (error) {
         console.log(error);
       }
