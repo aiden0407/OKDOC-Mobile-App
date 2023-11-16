@@ -17,7 +17,7 @@ import { getFamilyInfo } from 'api/MyPage';
 export default function AccountSettingScreen({ navigation }) {
 
   const { state: { accountData }, dispatch } = useContext(ApiContext);
-  const [isSNSFamily, setIsSNSFamily] = useState(true);
+  const [accountRoute, setAccountRoute] = useState(' ');
 
   useEffect(() => {
     checkLoginType();
@@ -26,10 +26,12 @@ export default function AccountSettingScreen({ navigation }) {
   const checkLoginType = async function () {
     try {
       const response = await getFamilyInfo(accountData.loginToken, accountData.email);
-      if (response.data.response?.apple_id || response.data.response?.google_id) {
-        setIsSNSFamily(true);
+      if (response.data.response?.apple_id) {
+        setAccountRoute('애플');
+      } else if (response.data.response?.google_id) {
+        setAccountRoute('구글');
       } else {
-        setIsSNSFamily(false);
+        setAccountRoute('');
       }
     } catch (error) {
       console.log(error);
@@ -83,7 +85,7 @@ export default function AccountSettingScreen({ navigation }) {
         <Text T6 color={COLOR.GRAY2} marginTop={12} marginLeft={20}>해당 이메일은 가입 시 기입된 정보입니다.{'\n'}개인정보 관련 문의는 고객센터 1:1 문의를 통해 전달해주세요.</Text>
         <Row marginTop={24} paddingHorizontal={20} gap={6}>
           <PhoneNumberBox style={{width: '100%'}}>
-            <Text T5>{accountData?.email?.includes('privaterelay') ? '애플 계정' : accountData?.email}</Text>
+            <Text T5>{accountData?.email} {(accountRoute==='애플' || accountRoute==='구글') && `(${accountRoute})`}</Text>
           </PhoneNumberBox>
         </Row>
 
@@ -91,7 +93,7 @@ export default function AccountSettingScreen({ navigation }) {
 
         <SettingButtonContainer>
           {
-            !isSNSFamily && <SettingButton title="비밀번호 변경" action={() => handleChangePassword()} />
+            accountRoute==='' && <SettingButton title="비밀번호 변경" action={() => handleChangePassword()} />
           }
           <SettingButton title="로그아웃" action={() => createLogoutAlert()} />
           <SettingButton title="회원탈퇴" action={() => handleWithdrawal()} />
@@ -101,13 +103,6 @@ export default function AccountSettingScreen({ navigation }) {
     </SafeArea>
   );
 }
-
-const CountryCallingCodeBox = styled.View`
-  width: 66px;
-  padding: 8px 0 8px 12px;
-  background-color: ${COLOR.GRAY6};
-  border-radius: 3px;
-`;
 
 const PhoneNumberBox = styled.View`
   width: ${(props) => `${props.windowWidth - 112}px`};
