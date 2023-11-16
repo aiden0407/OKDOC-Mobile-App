@@ -43,7 +43,7 @@ export default function useAlarmUpdate() {
     }
 
     const refreshAlarm = () => {
-        if (accountData.loginToken && profileData) {
+        if (accountData.loginToken && profileData?.[0]?.id) {
             appContextDispatch({ type: 'ALARM_DATA_UPDATING' });
         }
         updateAlarm();
