@@ -24,7 +24,7 @@ export default function ProfileDetailScreen({ navigation }) {
   const profileInfo = telemedicineReservationStatus?.profileInfo;
   const [name, setName] = useState(profileInfo?.name);
   const [relationship, setRelationship] = useState(profileInfo?.relationship);
-  const [birth, setBirth] = useState(formatDate(profileInfo?.birth));
+  const [birth, setBirth] = useState(profileInfo?.birth && formatDate(profileInfo?.birth));
   const [gender, setGender] = useState(profileInfo?.gender);
   const [height, setHeight] = useState(profileInfo?.height?.toString());
   const [weight, setWeight] = useState(profileInfo?.weight?.toString());
