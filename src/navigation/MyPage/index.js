@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AccountSettingScreen from 'screens/MyPage/AccountSetting';
 import ChangePasswordScreen from 'screens/MyPage/AccountSetting/ChangePassword';
 import WithdrawalScreen from 'screens/MyPage/AccountSetting/Withdrawal';
+import PassportInformationScreen from 'screens/Home/Telemedicine/PassportInformation';
 import ProfileDetailScreen from 'screens/MyPage/Profile/ProfileDetail';
 import InquiryScreen from 'screens/MyPage/Inquiry';
 import PolicyScreen from 'screens/MyPage/Policy';
@@ -31,6 +32,11 @@ export default function MyPageInnerStackNavigation({ navigation }) {
           name="AccountSetting"
           component={AccountSettingScreen}
           options={{ title: '계정 설정' }}
+        />
+        <Stack.Screen
+          name="PassportInformation"
+          component={PassportInformationScreen}
+          options={{ title: '프로필 등록' }}
         />
         <Stack.Screen
           name="ProfileDetail"
