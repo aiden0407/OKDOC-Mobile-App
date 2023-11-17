@@ -1,17 +1,16 @@
 //React
-import { useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 
 //Components
 import { StatusBarArea, Container } from 'components/Layout';
-import { StatusBar } from 'expo-status-bar';
-import { useIsFocused } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import * as ScreenOrientation from 'expo-screen-orientation';
 
 export default function TelemedicineRoomScreen({ navigation, route }) {
 
   const { state: { accountData } } = useContext(ApiContext);
+  const [isReplaced, setIsReplaced] = useState(false);
   const telemedicineData = route.params.telemedicineData;
   const meetingNumber = telemedicineData.fullDocument.treatment_appointment.hospital_treatment_room.id;
   const userName = telemedicineData.profileInfo?.passport?.user_name ?? telemedicineData.profileInfo?.passapp_certification?.name;
@@ -20,19 +19,17 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
   const token = accountData.loginToken;
 
   useEffect(() => {
-    changeScreenOrientation();
+    setTimeout(() => {
+      changeScreenOrientation();
+    }, 500);
   }, []);
 
   async function changeScreenOrientation() {
     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT);
   }
 
-  // function FocusAwareStatusBar(props) {
-  //   const isFocused = useIsFocused();
-  //   return isFocused && <StatusBar {...props} />;
-  // }
-
   async function handleTelemedicineComplete() {
+    setIsReplaced(true);
     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
 
     const originalTime = new Date(telemedicineData.wish_at);
@@ -47,13 +44,13 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
 
     if(remainingTime > 0){
       setTimeout(() => {
-        navigation.navigate('TelemedicineWhetherFinished', {
+        navigation.replace('TelemedicineWhetherFinished', {
           telemedicineData: telemedicineData,
         });
       }, 500);
     } else {
       setTimeout(() => {
-        navigation.navigate('TelemedicineComplete', {
+        navigation.replace('TelemedicineComplete', {
           telemedicineData: telemedicineData,
         });
       }, 500);
@@ -62,9 +59,6 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
 
   return (
     <>
-      {/* <StatusBarArea backgroundColor="#111111">
-        <FocusAwareStatusBar animated style="light" />
-      </StatusBarArea> */}
       <Container>
         <WebView
           source={{ uri: `https://zoom.okdoc.app/meeting/patient/?meetingNumber=${meetingNumber}&userName=${userName}&wishAt=${wishAt}&biddingId=${biddingId}&token=${token}` }}
@@ -77,7 +71,7 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
           allowsInlineMediaPlayback
           mediaPlaybackRequiresUserAction={false}
           onNavigationStateChange={(navState) => {
-            if (navState.url.includes("https://zoom.okdoc.app/meeting/end")) {
+            if (navState.url.includes("https://zoom.okdoc.app/meeting/end") && !isReplaced) {
               handleTelemedicineComplete();
             }
           }}
