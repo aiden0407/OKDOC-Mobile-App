@@ -1,11 +1,13 @@
 //React
 import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
+import useHistoryUpdate from 'hook/useHistoryUpdate';
+import useAlarmUpdate from 'hook/useAlarmUpdate';
 
 //Components
 import { COLOR } from 'constants/design'
 import { Alert } from 'react-native';
-import { SafeArea, Container, ContainerCenter, Row } from 'components/Layout';
+import { SafeArea, Container, ContainerCenter } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 import { SolidButton, OutlineButton } from 'components/Button';
@@ -18,6 +20,8 @@ import { treatmentComplete, getCCTVInformation, patchCCTVPatientBye, getInvoiceI
 
 export default function TelemedicineCompleteScreen({ navigation, route }) {
 
+  const { refresh } = useHistoryUpdate();
+  const { refreshAlarm } = useAlarmUpdate();
   const { state: { accountData } } = useContext(ApiContext);
   const [invoiceInformation, setInvoiceInformation] = useState();
   const telemedicineData = route.params.telemedicineData;
@@ -29,6 +33,8 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
   const letCCTVStatusChange = async function () {
     try {
       await treatmentComplete(accountData.loginToken, telemedicineData.id);
+      refresh();
+      refreshAlarm();
       checkInvoice();
     } catch (error) {
       //Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
