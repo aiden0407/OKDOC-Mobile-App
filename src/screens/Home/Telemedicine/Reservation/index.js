@@ -56,7 +56,7 @@ export default function ReservationScreen({ navigation, route }) {
           });
           doctorsList[jj].schedules = updatedSchedule;
         } catch (error) {
-          console.log(error.data);
+          // console.log(error.data);
         }
       }
 
