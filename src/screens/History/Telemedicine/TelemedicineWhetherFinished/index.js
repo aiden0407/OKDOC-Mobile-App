@@ -64,9 +64,8 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
   }
 
   function handleNotFinish() {
-    navigation.navigate('HistoryStackNavigation', { 
-      screen: 'SymptomDetailCheck',
-      params: { telemedicineData: telemedicineData }
+    navigation.navigate('TelemedicineRoom', {
+      telemedicineData: telemedicineData,
     });
   }
 
