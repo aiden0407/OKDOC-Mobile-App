@@ -122,7 +122,7 @@ export default function PassportInformationScreen({ navigation }) {
         }
       } else {
         setPassportCertifiactionState('NONE');
-        Alert.alert('네트워크 에러', '여권 정보 검증에 실패했습니다. 다시 시도해 주시기 바랍니다.');
+        Alert.alert('네트워크 에러', '여권 정보 검증에 실패했습니다. 관리자에게 문의해 주시기 바랍니다.');
       }      
     }
   }
