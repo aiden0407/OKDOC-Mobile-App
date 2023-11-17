@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AccountSettingScreen from 'screens/MyPage/AccountSetting';
 import ChangePasswordScreen from 'screens/MyPage/AccountSetting/ChangePassword';
 import WithdrawalScreen from 'screens/MyPage/AccountSetting/Withdrawal';
-import PassportInformationScreen from 'screens/Home/Telemedicine/PassportInformation';
+import PassportInformationScreen from 'screens/MyPage/PassportInformation';
 import ProfileDetailScreen from 'screens/MyPage/Profile/ProfileDetail';
 import InquiryScreen from 'screens/MyPage/Inquiry';
 import PolicyScreen from 'screens/MyPage/Policy';

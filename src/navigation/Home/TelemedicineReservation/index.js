@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CategoryScreen from 'screens/Home/Telemedicine/Category';
 import ReservationScreen from 'screens/Home/Telemedicine/Reservation';
 import DoctorProfileScreen from 'screens/Home/Telemedicine/DoctorProfile';
-import PassportInformationScreen from 'screens/Home/Telemedicine/PassportInformation';
+import PassportInformationScreen from 'screens/MyPage/PassportInformation';
 import ProfileDetailScreen from 'screens/Home/Telemedicine/ProfileDetail';
 import SymptomDetailScreen from 'screens/Home/Telemedicine/SymptomDetail';
 import PaymentNotificationScreen from 'screens/Home/Telemedicine/PaymentNotification';
