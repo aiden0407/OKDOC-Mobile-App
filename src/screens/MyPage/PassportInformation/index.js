@@ -106,32 +106,10 @@ export default function PassportInformationScreen({ navigation }) {
 
   const [passportCertifiactionState, setPassportCertifiactionState] = useState('NONE');
 
-  const passportCheck = async function () {
-    setPassportCertifiactionState('CHECKING');
-    try {
-      await checkPassportInformation(name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry));
-      
-      initPatient();
-
-    } catch (error) {
-      if(error.response.data.statusCode===422){
-        if(error.response.data.message.includes('여권정보가 일치하지 않습니다.')) {
-          setPassportCertifiactionState('WRONG_INFORMATION_ERROR');
-        } else {
-          setPassportCertifiactionState('CERTIFICATE_ERROR');
-        }
-      } else {
-        setPassportCertifiactionState('NONE');
-        Alert.alert('네트워크 에러', '여권 정보 검증에 실패했습니다. 다시 시도해 주시기 바랍니다.');
-      }      
-    }
-  }
-
   const initPatient = async function () {
     try {
       const createPatientByPassportResponse = await createPatientByPassport(accountData.loginToken, accountData.email, name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry), gender);
       const mainProfile = createPatientByPassportResponse.data.response;
-
       apiContextDispatch({
         type: 'PROFILE_CREATE_MAIN',
         id: mainProfile.id,
@@ -140,17 +118,22 @@ export default function PassportInformationScreen({ navigation }) {
         birth: mainProfile.passport.birth,
         gender: mainProfile.gender,
       });
-
       setPassportCertifiactionState('NONE');
-
       navigation.navigate('ProfileDetail');
     } catch (error) {
-      if(error.response.data.statusCode === 409){
+      if (error.response.data.statusCode === 422) {
+        if (error.response.data.message.includes('여권정보가 일치하지 않습니다.')) {
+          setPassportCertifiactionState('WRONG_INFORMATION_ERROR');
+        } else {
+          setPassportCertifiactionState('CERTIFICATE_ERROR');
+        }
+      } else if (error.response.data.statusCode === 409) {
+        setPassportCertifiactionState('NONE');
         Alert.alert('프로필 등록 실패', '동일한 정보로 등록된 프로필이 존재합니다.');
       } else {
+        setPassportCertifiactionState('NONE');
         Alert.alert('네트워크 에러', '프로필 등록에 실패했습니다. 관리자에게 문의해 주시기 바랍니다.');
       }
-      setPassportCertifiactionState('NONE');
     }
   }
 
@@ -211,7 +194,7 @@ export default function PassportInformationScreen({ navigation }) {
               text="다음"
               marginBottom={20}
               disabled={!validateName(name) || passportNumber.length!==9 || !gender || birth.toDateString() === today.toDateString() || dateOfIssue.toDateString() === today.toDateString() || dateOfExpiry.toDateString() === today.toDateString()}
-              action={() => passportCheck()}
+              action={() => initPatient()}
             />
           </ScrollView>
         </Container>
