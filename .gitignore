@@ -1,8 +1,6 @@
 # dependencies
 .expo/
 node_modules/
-.package-lock.json
-.yarn.lock
 
 # macOS
 .DS_Store
