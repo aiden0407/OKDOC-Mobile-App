@@ -15,14 +15,15 @@ import { BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { checkPassportInformation, createPatientByPassport } from 'api/Login';
+import { createPatientByPassport } from 'api/Login';
 
 //Assets
 import exclamationIcon from 'assets/icons/circle-exclamation.png';
 
 export default function PassportInformationScreen({ navigation }) {
 
-  const { state: { accountData },dispatch: apiContextDispatch } = useContext(ApiContext);
+  const { state: { accountData }, dispatch: apiContextDispatch } = useContext(ApiContext);
+  const [checking, setChecking] = useState(false);
   const [name, setName] = useState('');
   const [passportNumber, setPassportNumber] = useState('');
   const [gender, setGender] = useState('');
@@ -107,6 +108,7 @@ export default function PassportInformationScreen({ navigation }) {
   const [passportCertifiactionState, setPassportCertifiactionState] = useState('NONE');
 
   const initPatient = async function () {
+    setChecking(true);
     try {
       const createPatientByPassportResponse = await createPatientByPassport(accountData.loginToken, accountData.email, name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry), gender);
       const mainProfile = createPatientByPassportResponse.data.response;
@@ -119,6 +121,7 @@ export default function PassportInformationScreen({ navigation }) {
         gender: mainProfile.gender,
       });
       setPassportCertifiactionState('NONE');
+      setChecking(false);
       navigation.navigate('ProfileDetail');
     } catch (error) {
       if (error.response.data.statusCode === 422) {
@@ -134,6 +137,7 @@ export default function PassportInformationScreen({ navigation }) {
         setPassportCertifiactionState('NONE');
         Alert.alert('네트워크 에러', '프로필 등록에 실패했습니다. 관리자에게 문의해 주시기 바랍니다.');
       }
+      setChecking(false);
     }
   }
 
@@ -193,8 +197,12 @@ export default function PassportInformationScreen({ navigation }) {
             <SolidButton
               text="다음"
               marginBottom={20}
-              disabled={!validateName(name) || passportNumber.length!==9 || !gender || birth.toDateString() === today.toDateString() || dateOfIssue.toDateString() === today.toDateString() || dateOfExpiry.toDateString() === today.toDateString()}
-              action={() => initPatient()}
+              disabled={!validateName(name) || passportNumber.length !== 9 || !gender || birth.toDateString() === today.toDateString() || dateOfIssue.toDateString() === today.toDateString() || dateOfExpiry.toDateString() === today.toDateString()}
+              action={() => {
+                if (!checking) {
+                  initPatient();
+                }
+              }}
             />
           </ScrollView>
         </Container>
