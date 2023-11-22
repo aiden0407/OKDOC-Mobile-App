@@ -100,7 +100,6 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
   }
 
   function handleInvoicePaymnt() {
-    navigation.navigate('History');
     navigation.navigate('TelemedicineRoomNavigation', {
       screen: 'Payment',
       params: { telemedicineData: telemedicineData }
