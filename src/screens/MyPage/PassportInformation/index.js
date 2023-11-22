@@ -23,7 +23,6 @@ import exclamationIcon from 'assets/icons/circle-exclamation.png';
 export default function PassportInformationScreen({ navigation }) {
 
   const { state: { accountData }, dispatch: apiContextDispatch } = useContext(ApiContext);
-  const [checking, setChecking] = useState(false);
   const [name, setName] = useState('');
   const [passportNumber, setPassportNumber] = useState('');
   const [gender, setGender] = useState('');
@@ -108,7 +107,7 @@ export default function PassportInformationScreen({ navigation }) {
   const [passportCertifiactionState, setPassportCertifiactionState] = useState('NONE');
 
   const initPatient = async function () {
-    setChecking(true);
+    setPassportCertifiactionState('CHECKING');
     try {
       const createPatientByPassportResponse = await createPatientByPassport(accountData.loginToken, accountData.email, name, formatDate(birth), passportNumber, formatDate(dateOfIssue), formatDate(dateOfExpiry), gender);
       const mainProfile = createPatientByPassportResponse.data.response;
@@ -120,9 +119,7 @@ export default function PassportInformationScreen({ navigation }) {
         birth: mainProfile.passport.birth,
         gender: mainProfile.gender,
       });
-      setPassportCertifiactionState('NONE');
-      setChecking(false);
-      navigation.navigate('ProfileDetail');
+      navigation.replace('ProfileDetail');
     } catch (error) {
       if (error.response.data.statusCode === 422) {
         if (error.response.data.message.includes('여권정보가 일치하지 않습니다.')) {
@@ -137,7 +134,6 @@ export default function PassportInformationScreen({ navigation }) {
         setPassportCertifiactionState('NONE');
         Alert.alert('네트워크 에러', '프로필 등록에 실패했습니다. 관리자에게 문의해 주시기 바랍니다.');
       }
-      setChecking(false);
     }
   }
 
@@ -150,7 +146,7 @@ export default function PassportInformationScreen({ navigation }) {
             ref={scrollRef}
           >
             <Text T3 bold marginTop={30}>오케이닥 진료 서비스 이용을 위해{'\n'}여권 정보를 기입해 주세요</Text>
-            <Text T6 color={COLOR.GRAY1} marginTop={12}>의료법에 따라 본인 확인 후 서비스 이용이 가능합니다</Text>
+            <Text T6 color={COLOR.GRAY1} marginTop={12}>본 서비스는 의료법에 따라 본인 확인 후 이용이 가능합니다</Text>
 
             <Text T6 bold marginTop={30}>한글 성명</Text>
             <BoxInput
@@ -198,11 +194,7 @@ export default function PassportInformationScreen({ navigation }) {
               text="다음"
               marginBottom={20}
               disabled={!validateName(name) || passportNumber.length !== 9 || !gender || birth.toDateString() === today.toDateString() || dateOfIssue.toDateString() === today.toDateString() || dateOfExpiry.toDateString() === today.toDateString()}
-              action={() => {
-                if (!checking) {
-                  initPatient();
-                }
-              }}
+              action={() => initPatient()}
             />
           </ScrollView>
         </Container>
