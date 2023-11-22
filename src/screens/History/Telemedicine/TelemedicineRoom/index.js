@@ -47,13 +47,13 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
         navigation.replace('TelemedicineWhetherFinished', {
           telemedicineData: telemedicineData,
         });
-      }, 500);
+      }, 1000);
     } else {
       setTimeout(() => {
         navigation.replace('TelemedicineComplete', {
           telemedicineData: telemedicineData,
         });
-      }, 500);
+      }, 1000);
     }
   }
 
