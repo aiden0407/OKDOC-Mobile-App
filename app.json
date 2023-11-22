@@ -2,7 +2,7 @@
   "expo": {
     "name": "OK DOC",
     "slug": "okdoc",
-    "version": "1.0.11",
+    "version": "1.0.12",
     "icon": "./src/assets/main/main_icon.png",
     "userInterfaceStyle": "light",
     "splash": {
