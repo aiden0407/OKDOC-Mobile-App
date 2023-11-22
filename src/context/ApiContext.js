@@ -250,7 +250,9 @@ const reducer = (state, action) => {
             allergicReaction: undefined,
             etcConsideration: undefined,
           }
-        ]
+        ],
+        historyData: {},
+        alarmData: [],
       };
 
     case 'PROFILE_CREATE_MAIN':
