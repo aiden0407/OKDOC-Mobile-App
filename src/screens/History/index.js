@@ -4,6 +4,7 @@ import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import useHistoryUpdate from 'hook/useHistoryUpdate';
 import styled from 'styled-components/native';
+import { getCalendars } from 'expo-localization';
 
 //Components
 import * as Device from 'expo-device';
@@ -28,6 +29,12 @@ export default function HistoryScreen({ navigation }) {
   const { state: { historyDataLoading }, dispatch: appContextDispatch } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [deviceCalendar, setDeviceCalendar] = useState();
+
+  useEffect(() => {
+    const calendar = getCalendars()[0];
+    setDeviceCalendar(calendar);
+  }, []);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -262,6 +269,8 @@ export default function HistoryScreen({ navigation }) {
                   {historyData?.underReservation?.length
                     ? (<>
                       <Text T3 bold marginTop={30}>예약 / 접수 내역</Text>
+                      {deviceCalendar?.timeZone && <Text T7 medium color={COLOR.GRAY1}>({deviceCalendar?.timeZone} 시간대 기준)</Text>}
+                      
                       <HistoryColumn>
                         {historyData?.underReservation?.map((item, index) =>
                           <HistoryCard key={`underReservation${index}`} item={item} type="underReservation" />
@@ -276,6 +285,8 @@ export default function HistoryScreen({ navigation }) {
                         <Text T3 bold>지난 내역</Text>
                         <Text T7 medium color={COLOR.GRAY1} marginLeft={6} marginTop={9}>전체 {historyData.pastHistory.length}건</Text>
                       </Row>
+                      {deviceCalendar?.timeZone && <Text T7 medium color={COLOR.GRAY1}>({deviceCalendar?.timeZone} 시간대 기준)</Text>}
+                      
                       <HistoryColumn>
                         {historyData?.pastHistory?.map((item, index) =>
                           <HistoryCard key={`pastHistory${index}`} item={item} type="pastHistory" />

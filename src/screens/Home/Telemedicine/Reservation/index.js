@@ -4,6 +4,7 @@ import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import useTestAccount from 'hook/useTestAccount';
 import styled from 'styled-components/native';
+import { getCalendars } from 'expo-localization';
 
 //Components
 import { COLOR } from 'constants/design';
@@ -27,8 +28,11 @@ export default function ReservationScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
   const [dateIndex, setDateIndex] = useState(0);
   const [timeIndex, setTimeIndex] = useState(0);
+  const [deviceCalendar, setDeviceCalendar] = useState();
 
   useEffect(() => {
+    const calendar = getCalendars()[0];
+    setDeviceCalendar(calendar);
     initScheduleData()
   }, []);
 
@@ -211,7 +215,9 @@ export default function ReservationScreen({ navigation, route }) {
 
               <ReservationContainer>
                 <Text T3 bold marginTop={30}>진료시간을 선택해주세요</Text>
-                <Text T6 medium marginTop={36}>날짜선택</Text>
+                {deviceCalendar?.timeZone && <Text T7 medium color={COLOR.GRAY1}>({deviceCalendar?.timeZone} 시간대 기준)</Text>}
+
+                <Text T6 medium marginTop={24}>날짜선택</Text>
                 <DateContainer>
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     {bookableData.map((item, index) =>
