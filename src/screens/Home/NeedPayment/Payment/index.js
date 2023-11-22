@@ -94,8 +94,7 @@ export default function PaymentScreen({ navigation, route }) {
 
   function handlePaymentComplete(url) {
     if (url?.split('?invoice_id=')[1]) {
-      navigation.navigate('History');
-      navigation.navigate('TelemedicineRoomNavigation', { 
+      navigation.replace('TelemedicineRoomNavigation', { 
         screen: 'PaymentComplete',
         params: { telemedicineData: telemedicineData }
       });
