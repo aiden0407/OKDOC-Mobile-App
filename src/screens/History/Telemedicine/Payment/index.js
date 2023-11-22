@@ -112,7 +112,7 @@ export default function PaymentScreen({ navigation, route }) {
       if (needPayment) {
         navigation.navigate('PaymentStackNavigation');
       } else {
-        Alert.alert('안내', '결제 과정에서 문제가 발생했습니다. 다시 시도해 주시기 바랍니다?');
+        Alert.alert('안내', '결제 과정에서 문제가 발생했습니다. 다시 시도해 주시기 바랍니다.');
         navigation.goBack();
       }
     }
