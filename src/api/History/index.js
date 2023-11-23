@@ -22,26 +22,6 @@ export const getScheduleByPatientId = async function (loginToken, patientId) {
     }
 }
 
-export const treatmentCancel = async function (loginToken, appointmentId) {
-    try {
-        let options = {
-            url: `${APIURL}/treatment_appointments/${appointmentId}`,
-            method: 'PATCH',
-            headers: {
-                Authorization: `Bearer ${loginToken}`
-            },
-            data: {
-                "status": "CANCELLED",
-            },
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error.response;
-    }
-}
-
 export const treatmentComplete = async function (loginToken, appointmentId) {
     try {
         let options = {
