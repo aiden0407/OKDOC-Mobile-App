@@ -1,8 +1,9 @@
 //React
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
-import * as Clipboard from 'expo-clipboard';
+import { Alert } from 'react-native';
+// import * as Clipboard from 'expo-clipboard';
 
 //Api
 import { getHistoryListByPatientId, getHistoryStatus, getAuditLog, getTreatmentResults } from 'api/History';
@@ -56,7 +57,7 @@ export default function useHistoryUpdate() {
                     } else {
                         obj.STATUS = 'CANCELED';
                         try {
-                            const response = await getAuditLog(accountData.loginToken, obj.fullDocument.id);
+                            await getAuditLog(accountData.loginToken, obj.fullDocument.id);
                             // 환자의 감사 목록은 환자만 확인 가능
                             obj.CANCELER = 'PATIENT';
                         } catch (error) {
@@ -72,6 +73,7 @@ export default function useHistoryUpdate() {
                         }
                     }
                 } catch (error) {
+                    throw error
                     // console.log(error);
                 }
             }
@@ -216,7 +218,9 @@ export default function useHistoryUpdate() {
 
         } catch (error) {
             appContextDispatch({ type: 'HISTORY_DATA_UPDATED' });
-            // console.log(error);
+            if(error.status===429){
+                Alert.alert('경고', '과도한 요청이 감지되었습니다. 잠시 후 다시 시도해주세요.');
+            }
         }
     };
 
