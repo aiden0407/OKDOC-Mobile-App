@@ -86,7 +86,7 @@ export default function CategoryScreen({ navigation }) {
               underlayColor='transparent'
               onPress={() => setCategoryGroup('subjects')}
             >
-              <Text T5 color={COLOR.GRAY1}>진료과</Text>
+              <Text T5 color={COLOR.GRAY1}>상담과목</Text>
             </UnsellectedButtonRight>
           </ButtonsArea>
         )}

@@ -38,7 +38,7 @@ export default function TelemedicineReservation({ navigation }) {
           name="Category"
           component={CategoryScreen}
           options={{
-            title: '비대면 진료실',
+            title: '비대면 상담실',
             headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
           }}
         />
@@ -46,7 +46,7 @@ export default function TelemedicineReservation({ navigation }) {
           name="Reservation"
           component={ReservationScreen}
           options={{
-            title: '비대면 진료실',
+            title: '비대면 상담실',
             headerLeft: () => <NavigationBackArrow action={() => handleReservationBack()} />,
           }}
         />

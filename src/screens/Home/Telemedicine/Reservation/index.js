@@ -214,7 +214,7 @@ export default function ReservationScreen({ navigation, route }) {
             ? <ScrollView showsVerticalScrollIndicator={false}>
 
               <ReservationContainer>
-                <Text T3 bold marginTop={30}>진료시간을 선택해주세요</Text>
+                <Text T3 bold marginTop={30}>상담시간을 선택해주세요</Text>
                 {deviceCalendar?.timeZone && <Text T7 medium color={COLOR.GRAY1}>({deviceCalendar?.timeZone} 시간대 기준)</Text>}
 
                 <Text T6 medium marginTop={24}>날짜선택</Text>
@@ -261,7 +261,7 @@ export default function ReservationScreen({ navigation, route }) {
               <DividingLine marginTop={42} />
 
               <DoctorContainer>
-                <Text T6 medium>진료 가능 의사 선택</Text>
+                <Text T6 medium>상담 가능 의사 선택</Text>
                 {bookableData[dateIndex]?.[2]?.[timeIndex]?.[1]?.map((item, index) =>
                   <DoctorRow
                     key={`doctor${index}`}
@@ -269,7 +269,7 @@ export default function ReservationScreen({ navigation, route }) {
                   >
                     <Image source={{ uri: item.image }} width={66} height={66} circle />
                     <DoctorColumn>
-                      <Text T4 bold>{item.name} 의사</Text>
+                      <Text T4 bold>{item.name} 교수</Text>
                       <Text T7 medium color={COLOR.GRAY1}>{item.hospital} / {item.subject}</Text>
                       <StyledText T7 color={COLOR.GRAY1} numberOfLines={1} ellipsizeMode="tail">{convertToHashtags(item.strength)}</StyledText>
                     </DoctorColumn>

@@ -40,7 +40,7 @@ export default function DoctorProfileScreen({ navigation }) {
     } else {
       navigation.navigate('NeedLoginNavigation', {
         screen: 'NeedLogin',
-        params: { headerTitle: '비대면 진료실' },
+        params: { headerTitle: '비대면 상담실' },
       });
     }
   }
@@ -119,7 +119,7 @@ export default function DoctorProfileScreen({ navigation }) {
             <Row align marginTop={36}>
               <Image source={{ uri: doctorInfo.image }} width={66} height={66} circle />
               <DoctorColumn>
-                <Text T4 bold>{doctorInfo.name} 의사</Text>
+                <Text T4 bold>{doctorInfo.name} 교수</Text>
                 <Text T7 medium color={COLOR.GRAY1}>{doctorInfo.hospital} / {doctorInfo.subject}</Text>
                 <StyledText T7 color={COLOR.GRAY1} >{convertToHashtags(doctorInfo.strength)}</StyledText>
               </DoctorColumn>
@@ -189,7 +189,7 @@ export default function DoctorProfileScreen({ navigation }) {
         }}
       >
         <SolidButton
-          text="진료 예약 신청"
+          text="상담 예약 신청"
           action={() => handleApplyReservation()}
         />
       </LinearGradient>

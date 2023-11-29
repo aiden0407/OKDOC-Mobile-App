@@ -145,8 +145,8 @@ export default function PassportInformationScreen({ navigation }) {
             showsVerticalScrollIndicator={false}
             ref={scrollRef}
           >
-            <Text T3 bold marginTop={30}>오케이닥 진료 서비스 이용을 위해{'\n'}여권 정보를 기입해 주세요</Text>
-            <Text T6 color={COLOR.GRAY1} marginTop={12}>본 서비스는 의료법에 따라 본인 확인 후 이용이 가능합니다</Text>
+            <Text T3 bold marginTop={30}>의료 상담 서비스 이용을 위해{'\n'}여권 정보를 기입해 주세요</Text>
+            <Text T6 color={COLOR.GRAY1} marginTop={12}>대한민국 국적 본인 확인 후 이용이 가능합니다</Text>
 
             <Text T6 bold marginTop={30}>한글 성명</Text>
             <BoxInput

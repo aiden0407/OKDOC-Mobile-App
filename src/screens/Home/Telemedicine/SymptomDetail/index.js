@@ -90,7 +90,7 @@ export default function SymptomDetailScreen({ navigation }) {
             <BoxInput
               large
               marginTop={12}
-              placeholder="진료받고자 하는 증상을 서술해 주세요."
+              placeholder="상담받고자 하는 증상을 서술해 주세요."
               value={symptom}
               onChangeText={setSymptom}
             />

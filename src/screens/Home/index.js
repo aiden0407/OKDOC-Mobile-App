@@ -97,7 +97,7 @@ export default function HomeScreen({ navigation }) {
 
           <ContentsContainer>
             <Text T6 color={COLOR.GRAY1}>해외에서도 한국 대학병원 전문의에게</Text>
-            <Text T3 bold marginTop={6}>비대면 진료</Text>
+            <Text T3 bold marginTop={6}>비대면 의료 상담</Text>
 
             <ContainerCenter>
               <IconsWrapper>
@@ -122,7 +122,7 @@ export default function HomeScreen({ navigation }) {
               </IconsWrapper>
 
               <FullCategoryButton underlayColor={COLOR.GRAY5} onPress={() => handleFullCategory()}>
-                <Text T5 medium>증상/진료과 전체 보기 +</Text>
+                <Text T5 medium>증상/상담과목 전체 보기 +</Text>
               </FullCategoryButton>
             </ContainerCenter>
           </ContentsContainer>

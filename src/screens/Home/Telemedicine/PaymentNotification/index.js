@@ -108,10 +108,9 @@ export default function PaymentNotificationScreen({ navigation }) {
       <SafeArea>
         <ScrollView showsVerticalScrollIndicator={false} overScrollMode='never'>
           <PaddingContainer>
-            <Text T3 bold marginTop={30}>진료를 위해{'\n'}예약하신 정보를 확인 해주세요</Text>
+            <Text T3 bold marginTop={30}>의료 상담을 위해{'\n'}예약하신 정보를 확인 해주세요</Text>
             <Row marginTop={24}>
               <Text T3 bold color={COLOR.MAIN}>비용 {telemedicineReservationStatus.product.price?.toLocaleString()}원</Text>
-              <Text T3 bold color={COLOR.GRAY1}> (비급여 진료)</Text>
             </Row>
             <Row align marginTop={15}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
@@ -119,7 +118,7 @@ export default function PaymentNotificationScreen({ navigation }) {
             </Row>
             <Row align marginTop={12}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-              <Text T6 medium>{telemedicineReservationStatus.doctorInfo.subject} / {telemedicineReservationStatus.product.name}</Text>
+              <Text T6 medium>{telemedicineReservationStatus.doctorInfo.subject} / 의료 상담</Text>
             </Row>
             <Row align marginTop={12}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
@@ -127,21 +126,21 @@ export default function PaymentNotificationScreen({ navigation }) {
             </Row>
             <Row align marginTop={12}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-              <Text T6 medium>예약자: {telemedicineReservationStatus.profileInfo.name}</Text>
+              <Text T6 medium>예약자 : {telemedicineReservationStatus.profileInfo.name}</Text>
             </Row>
           </PaddingContainer>
 
           <DividingLine marginTop={30} />
 
           <PaddingContainer>
-            <Text T3 bold marginTop={30}>진료 유의사항</Text>
+            <Text T3 bold marginTop={30}>유의사항</Text>
             <Row marginTop={15}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-              <Text T6 medium>대한민국에서는 진료실 입장이 불가능합니다.</Text>
+              <Text T6 medium>대한민국에서는 상담실 입장이 불가능합니다.</Text>
             </Row>
             <Row marginTop={15}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-              <Text T6 medium>재외국민 진료는 비급여 진료 입니다.</Text>
+              <Text T6 medium>재외국민 비대면 의료 상담은 비급여 항목 입니다.</Text>
             </Row>
             <Row marginTop={15}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
@@ -149,7 +148,7 @@ export default function PaymentNotificationScreen({ navigation }) {
             </Row>
             <Row marginTop={15}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-              <Text T6 medium>기본 진료시간은 10분이며, 추가로 5분 연장 가능합니다.</Text>
+              <Text T6 medium>기본 10분 상담이며, 추가로 5분 연장 가능합니다.</Text>
             </Row>
             <Row marginTop={15}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
@@ -184,7 +183,7 @@ export default function PaymentNotificationScreen({ navigation }) {
             <RefundPolicyNotificationContainer>
               <Row align>
                 <BulletPoint />
-                <Text T7 color={COLOR.GRAY2}>진료 시작 5분 전 : 100% 환불</Text>
+                <Text T7 color={COLOR.GRAY2}>상담 시작 5분 전 : 100% 환불</Text>
               </Row>
               <Row align>
                 <BulletPoint />
@@ -210,7 +209,7 @@ export default function PaymentNotificationScreen({ navigation }) {
             {
               processStatus === 'NOTICE' && (<>
                 <Image source={exclamationIcon} width={70} height={70} marginTop={-20} />
-                <Text T4 medium center marginTop={12}>진료 유의사항을 모두 확인하였으며,{'\n'}이에 동의하고 결제를 진행하시겠습니까?</Text>
+                <Text T4 medium center marginTop={12}>유의사항을 모두 확인하였으며,{'\n'}이에 동의하고 결제를 진행하시겠습니까?</Text>
                 <Row gap={24} marginTop={30}>
                   <DisabledButtonWrapper onPress={() => setProcessStatus('BEFORE')}>
                     <SolidButton
