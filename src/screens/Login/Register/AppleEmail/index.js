@@ -54,9 +54,10 @@ export default function AppleEmailScreen({ navigation }) {
     setLoading(true);
     try {
       await emailCheckClose(email, certificationNumber, invitationToken);
-      setIsEmailCertificated(true);
-      setLoading(false);
-      Alert.alert('이메일이 인증되었습니다.');
+      // setIsEmailCertificated(true);
+      // setLoading(false);
+      // Alert.alert('이메일이 인증되었습니다.');
+      handleNextScreen();
     } catch (error) {
       setLoading(false);
       Alert.alert('인증 실패', '인증번호가 일치하지 않습니다. 다시 입력해 주시기 바랍니다.');
