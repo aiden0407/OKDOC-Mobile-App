@@ -21,7 +21,7 @@ export default function WithdrawalScreen({ navigation }) {
   const mainProfile = profileData?.[0]
 
   function createWithdrawalAlert() {
-    Alert.alert('정말 탈퇴하시겠습니까?', '\n회원탈퇴 시 모든 정보가 삭제되며,\n예약하신 진료는 환불 규정에 따라\n취소 처리됩니다.', [
+    Alert.alert('정말 탈퇴하시겠습니까?', '\n회원탈퇴 시 모든 정보가 삭제되며,\n예약하신 상담은 환불 규정에 따라\n취소 처리됩니다.', [
       {
         text: '취소',
         style: 'cancel',

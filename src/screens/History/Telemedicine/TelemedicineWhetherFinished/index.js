@@ -75,7 +75,7 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
         telemedicineData: telemedicineData,
       });
     } else {
-      Alert.alert('진료 종료 확정 불가', '진료 입장 시간 전의 스케줄은 종료할 수 없습니다.');
+      Alert.alert('상담 종료 확정 불가', '상담 입장 시간 전의 스케줄은 종료할 수 없습니다.');
     }
   }
 
@@ -88,19 +88,19 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
       <Container paddingHorizontal={20}>
         <ContainerCenter>
 
-          <Text T2 bold marginTop={18}>진료가 끝났나요?</Text>
+          <Text T2 bold marginTop={18}>상담이 끝났나요?</Text>
           <Text T4 bold color={COLOR.GRAY1} marginTop={6}>(자동 종료까지 남은 시간 {formatTime(count)})</Text>
-          <Text T6 center color={COLOR.GRAY1} marginTop={12}>진료 종료를 확정해야만 화상 진료 통화방이 닫히고{'\n'}의사가 작성한 소견서를 확인할 수 있습니다.</Text>
+          <Text T6 center color={COLOR.GRAY1} marginTop={12}>상담 종료를 확정해야만 통화방이 닫히고{'\n'}의사가 작성한 소견서를 확인할 수 있습니다.</Text>
           <OutlineButton
             large
             marginTop={24}
-            text="진료실 재입장 하기"
+            text="상담실 재입장 하기"
             action={() => handleNotFinish()}
           />
           <SolidButton
             large
             marginTop={6}
-            text="진료 종료"
+            text="상담 종료"
             disabled={false}
             action={() => handleFinish()}
           />

@@ -72,7 +72,7 @@ export default function HistoryScreen({ navigation }) {
   }
 
   function handleCancleReservation(item) {
-    Alert.alert('해당 진료 예약을 취소하시겠습니까?', '환불 규정에 따라 취소\n수수료가 발생할 수 있습니다.', [
+    Alert.alert('해당 상담 예약을 취소하시겠습니까?', '환불 규정에 따라 취소\n수수료가 발생할 수 있습니다.', [
       {
         text: '이전으로',
       },
@@ -86,7 +86,7 @@ export default function HistoryScreen({ navigation }) {
 
   const handleCancleComplete = async function (item) {
     if(getRemainingTime(item.wish_at) < 300){
-      Alert.alert('취소 불가 안내', '진료 5분 전에는 취소가 불가능합니다.', [
+      Alert.alert('취소 불가 안내', '상담 5분 전에는 취소가 불가능합니다.', [
         {
           text: '확인',
           onPress: () => loadingRefresh()
@@ -102,7 +102,7 @@ export default function HistoryScreen({ navigation }) {
           }
         ]);
       } catch (error) {
-        Alert.alert('네트워크 에러', '진료 취소 중 에러가 발생했습니다. 다시 시도해 주시기 바랍니다.', [
+        Alert.alert('네트워크 에러', '예약 취소 중 에러가 발생했습니다. 다시 시도해 주시기 바랍니다.', [
           {
             text: '확인',
             onPress: () => loadingRefresh()
@@ -158,7 +158,7 @@ export default function HistoryScreen({ navigation }) {
               : <CardTitleButton
                 underlayColor={COLOR.GRAY5}
               >
-                <Text T7 medium color={COLOR.GRAY1}>진료중</Text>
+                <Text T7 medium color={COLOR.GRAY1}>상담중</Text>
               </CardTitleButton>
             : item.STATUS === 'CANCELED'
               ? <CardTitleButton>
@@ -189,13 +189,13 @@ export default function HistoryScreen({ navigation }) {
                 underlayColor={COLOR.SUB1}
                 onPress={() => handleEnterTelemedicine(item)}
               >
-                <Text T5 medium color="#FFFFFF">진료 예약 정보</Text>
+                <Text T5 medium color="#FFFFFF">상담 예약 정보</Text>
               </CustomSolidButton>
               : <CustomSolidButton
                 underlayColor={COLOR.SUB1}
                 onPress={() => handleEnterTelemedicine(item)}
               >
-                <Text T5 medium color="#FFFFFF">진료실 입장</Text>
+                <Text T5 medium color="#FFFFFF">상담실 입장</Text>
               </CustomSolidButton>
             : item.STATUS === 'CANCELED'
               ? item?.CANCELER === 'PATIENT'
@@ -230,7 +230,7 @@ export default function HistoryScreen({ navigation }) {
                   underlayColor={COLOR.SUB1}
                   onPress={() => handleViewTelemedicineDetail(item)}
                 >
-                  <Text T5 medium color="#FFFFFF">진료 내역</Text>
+                  <Text T5 medium color="#FFFFFF">상담 내역</Text>
                 </CustomSolidButton>
                 : <CustomSolidButton
                   underlayColor={COLOR.SUB1}
@@ -302,12 +302,12 @@ export default function HistoryScreen({ navigation }) {
               : <ContainerCenter backgroundColor={COLOR.GRAY6} paddingHorizontal={20}>
                 <HistoryEmptyContainer marginTop={-40}>
                   <Image source={letterIcon} width={70} height={74} />
-                  <Text T3 bold marginTop={24}>진료 내역이 없습니다</Text>
+                  <Text T3 bold marginTop={24}>상담 내역이 없습니다</Text>
                   <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>해외에서도 비대면으로{'\n'}한국 대학병원 전문의를 만나보세요</Text>
                   <SolidButton
                     large
                     marginTop={24}
-                    text="진료 예약"
+                    text="상담 예약"
                     action={() => handleMakeReservation()}
                   />
                 </HistoryEmptyContainer>

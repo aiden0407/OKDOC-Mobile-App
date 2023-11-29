@@ -22,7 +22,7 @@ export default function NeedPaymentNavigation({ navigation }) {
           name="NeedPaymentDetail"
           component={NeedPaymentDetailScreen}
           options={{
-            title: '진료 내역',
+            title: '상담 내역',
             headerBackVisible: false
           }}
         />

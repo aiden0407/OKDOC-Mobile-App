@@ -347,7 +347,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
 
             <div class='row2'>
                 <div class='titleBox3'>
-                    <p class='title'>진료 내용 및<br>향후 치료에 대한<br>소견</p>
+                    <p class='title'>상담 내용 및<br>향후 치료에 대한<br>소견</p>
                 </div>
                 <div class='contentBox3'>
                     <div class='column2'>
@@ -375,7 +375,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
             </div>
 
             <div class='contentBox4'>
-                <p class='content'>상기 진료는 ㈜인성정보의 OK DOC 플랫폼을 통한 원격진료로 진행되었으며, 위와 같이 소견합니다.</p>
+                <p class='content'>상기 상담은 ㈜인성정보의 OK DOC 플랫폼을 통한 원격 상담으로 진행되었으며, 위와 같이 소견합니다.</p>
                 <div class='row3'>
                     <p class='content'>${formatDate3(telemedicineData.opinion.createdAt)}</p>
                 </div>
@@ -432,7 +432,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
                       ? (<Center>
                         <Box height={24} />
                         <Text T3 bold marginTop={12}>추가 결제 필요</Text>
-                        <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>진료를 연장했기 때문에{'\n'}결제 후 소견서를 확인하실 수 있습니다</Text>
+                        <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>상담을 연장했기 때문에{'\n'}결제 후 소견서를 확인하실 수 있습니다</Text>
                       </Center>)
                       : telemedicineData?.opinion
                         ? <CustomSubColorButton underlayColor={COLOR.SUB2} onPress={() => handleViewTelemedicineOpinion()}>
@@ -442,7 +442,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
                           ? (<Center>
                             <Box height={24} />
                             <Text T3 bold marginTop={12}>작성된 소견서가 없습니다</Text>
-                            <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>환자분의 진료 미참여 혹은 짧은 진료로 인해{'\n'}작성된 소견서가 없습니다.</Text>
+                            <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>환자분의 상담 미참여 혹은 짧은 상담으로 인해{'\n'}작성된 소견서가 없습니다.</Text>
                           </Center>)
                           : (<Center>
                             <Box height={24} />
@@ -458,7 +458,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
 
           <PaddingContainer>
             <Text T3 bold marginTop={24}>{telemedicineData?.STATUS === 'CANCELED'?'취소':'결제'} 내역</Text>
-            <Text T3 bold color={COLOR.MAIN} marginTop={20}>진료 예약 {Number(biddingPaymentData.price)?.toLocaleString()}원</Text>
+            <Text T3 bold color={COLOR.MAIN} marginTop={20}>상담 예약 {Number(biddingPaymentData.price)?.toLocaleString()}원</Text>
             <Row marginTop={18}>
               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
               <Text T6 color={COLOR.GRAY1}>{Number(biddingPaymentData.price)?.toLocaleString()}원 | 일시불</Text>
@@ -476,7 +476,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
           {
             invoicePaymentData
              ?<PaddingContainer>
-             <Text T3 bold color={COLOR.MAIN} marginTop={36}>진료 연장 {Number(invoicePaymentData.price)?.toLocaleString()}원</Text>
+             <Text T3 bold color={COLOR.MAIN} marginTop={36}>상담 연장 {Number(invoicePaymentData.price)?.toLocaleString()}원</Text>
              <Row marginTop={18}>
                <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
                <Text T6 color={COLOR.GRAY1}>{Number(invoicePaymentData.price)?.toLocaleString()}원 | 일시불</Text>

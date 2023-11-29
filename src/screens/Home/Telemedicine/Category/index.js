@@ -100,7 +100,7 @@ export default function CategoryScreen({ navigation }) {
               <Text T5 color={COLOR.GRAY1}>증상</Text>
             </UnsellectedButtonLeft>
             <SellectedButton>
-              <Text T5 bold color={COLOR.MAIN}>진료과</Text>
+              <Text T5 bold color={COLOR.MAIN}>상담과목</Text>
             </SellectedButton>
           </ButtonsArea>
         )}

@@ -42,7 +42,7 @@ export default function NeedPaymentScreen({ navigation, route }) {
         </FindEmailPasswordContainer>
 
         <SolidButton
-          text="진료내역 확인하기"
+          text="상담내역 확인하기"
           marginBottom={20}
           disabled={false}
           action={() => handleInvoicePaymnt()}

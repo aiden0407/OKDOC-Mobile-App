@@ -137,17 +137,8 @@ export default function DoctorProfileScreen({ navigation }) {
 
             <DividingLine thin marginTop={24} />
 
-            {
-              title
-                ? <Text T4 bold marginTop={36}>{title}</Text>
-                : <Text T4 bold marginTop={36}>{doctorInfo.hospital} {doctorInfo.subject} {doctorInfo.name}입니다</Text>
-            }
-
-            {
-              text
-                ? <Text T6 marginTop={18} marginBottom={60}>{text}</Text>
-                : <Text T6 marginTop={18} marginBottom={60}>바른 진료, 진심을 담은 진료 약속 드립니다.</Text>
-            }
+            <Text T4 bold marginTop={36}>{title}</Text>
+            <Text T6 marginTop={18} marginBottom={60}>{text}</Text>
           </>
         )}
         {/* {informationCategory === 'review' && (

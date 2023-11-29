@@ -144,7 +144,7 @@ export default function BottomTapNavigation({ navigation }) {
         headerShadowVisible: false,
       }}>
         <BottomTab.Screen name="Home" component={HomeScreen} options={{ title: '홈', headerShown: false }} />
-        <BottomTab.Screen name="History" component={HistoryScreen} options={{ title: '진료 내역' }} />
+        <BottomTab.Screen name="History" component={HistoryScreen} options={{ title: '상담 내역' }} />
         <BottomTab.Screen name="Alarm" component={AlarmScreen} options={{ title: '알림', headerShadowVisible: true }} />
         <BottomTab.Screen name="MyPage" component={MyPageScreen} options={{ title: '마이페이지' }} />
       </BottomTab.Group>

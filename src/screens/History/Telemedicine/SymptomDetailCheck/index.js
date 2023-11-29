@@ -74,7 +74,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
       if (deviceLocale?.regionCode === 'KR' && deviceCalendar?.timeZone === 'Asia/Seoul') {
         Alert.alert('대한민국에서는 해당 서비스를 이용하실 수 없습니다.');
       } else {
-        Alert.alert('진료실에 입장하시겠습니까?', '조기 입장시에도 정상 진료는 예약하신 시간대부터 진행됩니다.', [
+        Alert.alert('상담실에 입장하시겠습니까?', '조기 입장시에도 정상 상담은 예약하신 시간대부터 진행됩니다.', [
           {
             text: '취소',
             style: 'cancel',
@@ -89,7 +89,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
   }
 
   function handleNotice2() {
-    Alert.alert('안내', '화상 진료를 받기 위해서는 카메라와 마이크 사용 권한을 허가해야 합니다. 또한 정확한 의료 진단을 위해 화상 진료 녹화를 허가해야 합니다.', [
+    Alert.alert('안내', '화상 상담을 받기 위해서는 카메라와 마이크 사용 권한을 허가해야 합니다. 또한 정확한 의료 상담을 위해 화상 녹화를 허가해야 합니다.', [
       {
         text: '확인',
         onPress: () => handleConfirm()
@@ -110,13 +110,13 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
         <Container paddingHorizontal={20}>
           <Container>
             <Text T3 bold marginTop={30}>증상을 확인해 주세요</Text>
-            <Text T6 medium color={COLOR.GRAY1} marginTop={12}>아래 내용은 진료 예약 시점에 입력하신 내용입니다.{'\n'}변경된 증상이 있다면 진료 중 말씀해 주시기 바랍니다.{'\n'}진료실 입장 버튼은 예약시간 5분 전부터 활성화됩니다.</Text>
+            <Text T6 medium color={COLOR.GRAY1} marginTop={12}>아래 내용은 상담 예약 시점에 입력하신 내용입니다.{'\n'}변경된 증상이 있다면 상담 중 말씀해 주시기 바랍니다.{'\n'}상담실 입장 버튼은 예약시간 5분 전부터 활성화됩니다.</Text>
             <Text T6 bold marginTop={30}>증상</Text>
             <BoxInput
               editable={false}
               large
               marginTop={12}
-              placeholder="진료받고자 하는 증상을 서술해 주세요."
+              placeholder="상담받고자 하는 증상을 서술해 주세요."
               value={symptom}
               onChangeText={setSymptom}
             />
@@ -156,7 +156,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
           </Container>
           
           <SolidButton
-            text={((telemedicineData?.invoiceInfo && count < -900) || (!(telemedicineData?.invoiceInfo) && count < -600)) ? "입장 시간 초과" : "진료실 입장하기"}
+            text={((telemedicineData?.invoiceInfo && count < -900) || (!(telemedicineData?.invoiceInfo) && count < -600)) ? "입장 시간 초과" : "상담실 입장하기"}
             marginBottom={20}
             disabled={count>270 || (telemedicineData?.invoiceInfo && count < -900) || (!(telemedicineData?.invoiceInfo) && count < -600)}
             action={() => handleNotice1()}

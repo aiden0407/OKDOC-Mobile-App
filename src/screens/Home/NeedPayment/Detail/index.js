@@ -105,7 +105,7 @@ export default function NeedPaymentDetailScreen({ navigation, route }) {
             <Center>
               <Box height={24} />
               <Text T3 bold marginTop={12}>추가 결제 필요</Text>
-              <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>진료를 연장했기 때문에{'\n'}결제 후 소견서를 확인하실 수 있습니다</Text>
+              <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>상담을 연장했기 때문에{'\n'}결제 후 소견서를 확인하실 수 있습니다</Text>
             </Center>
           </PaddingContainer>
 
@@ -113,7 +113,7 @@ export default function NeedPaymentDetailScreen({ navigation, route }) {
 
           <PaddingContainer>
             <Text T3 bold marginTop={24}>결제 내역</Text>
-            <Text T3 bold color={COLOR.MAIN} marginTop={20}>진료 예약 {Number(biddingPaymentData.price)?.toLocaleString()}원</Text>
+            <Text T3 bold color={COLOR.MAIN} marginTop={20}>상담 예약 {Number(biddingPaymentData.price)?.toLocaleString()}원</Text>
             <Row marginTop={18}>
               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
               <Text T6 color={COLOR.GRAY1}>{Number(biddingPaymentData.price)?.toLocaleString()}원 | 일시불</Text>

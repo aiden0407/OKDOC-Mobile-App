@@ -93,7 +93,7 @@ export default function AlarmScreen({ navigation }) {
                 <AlarmEmptyBox>
                   <Image source={letterIcon} width={70} height={74} />
                   <Text T3 bold marginTop={24}>알림함이 비어있습니다</Text>
-                  <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>예약하신 진료와 관련된 안내 사항을{'\n'} 알림으로 보내드립니다</Text>
+                  <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>예약하신 상담과 관련된 안내 사항을{'\n'} 알림으로 보내드립니다</Text>
                 </AlarmEmptyBox>
               </AlarmEmptyContainer>
             }

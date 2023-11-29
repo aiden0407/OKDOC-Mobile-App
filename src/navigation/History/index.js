@@ -18,7 +18,7 @@ export default function HistoryInnerStackNavigation({ navigation }) {
           name="SymptomDetailCheck"
           component={SymptomDetailCheckScreen}
           options={{
-            title: '진료 예약 정보',
+            title: '상담 전 확인사항',
             headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
           }}
         />
@@ -26,7 +26,7 @@ export default function HistoryInnerStackNavigation({ navigation }) {
           name="TelemedicineDetail"
           component={TelemedicineDetailScreen}
           options={{
-            title: '진료 내역',
+            title: '상담 내역',
             headerLeft: () => <NavigationBackArrow action={() => navigation.goBack()} />,
           }}
         />

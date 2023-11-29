@@ -50,7 +50,7 @@ export default function ProfileListScreen({ navigation, route }) {
     <SafeArea>
       <Container paddingHorizontal={20}>
         <Container>
-          <Text T3 bold marginTop={30}>진료 받을 분을 선택해 주세요</Text>
+          <Text T3 bold marginTop={30}>상담 받을 분을 선택해 주세요</Text>
           <Row marginTop={42} gap={10}>
             <Profile
               name={profileData[0].name}

@@ -98,7 +98,7 @@ export default function PaymentNotificationScreen({ navigation }) {
         }
       } else {
         setProcessStatus('BEFORE');
-        Alert.alert('네트워크 에러', '진료 목록 불러오기를 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+        Alert.alert('네트워크 에러', '상담 목록 불러오기를 실패하였습니다. 다시 시도해 주시기 바랍니다.');
       }
     }
   }
@@ -152,7 +152,7 @@ export default function PaymentNotificationScreen({ navigation }) {
             </Row>
             <Row marginTop={15}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-              <Text T6 medium>진료시간 연장 시 50,000원의 추가 비용이 발생합니다.</Text>
+              <Text T6 medium>상담 시간 연장 시 50,000원의 추가 비용이 발생합니다.</Text>
             </Row>
           </PaddingContainer>
 
