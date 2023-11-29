@@ -16,7 +16,7 @@ import { SolidButton, OutlineButton } from 'components/Button';
 import checkIcon from 'assets/icons/circle-check.png';
 
 //Api
-import { treatmentComplete, getCCTVInformation, patchCCTVPatientBye, getInvoiceInformation } from 'api/History';
+import { patchCCTVPatientBye, getInvoiceInformation } from 'api/History';
 
 export default function TelemedicineCompleteScreen({ navigation, route }) {
 
@@ -32,30 +32,14 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
 
   const letCCTVStatusChange = async function () {
     try {
-      await treatmentComplete(accountData.loginToken, telemedicineData.id);
+      const meetingNumber = telemedicineData.fullDocument.treatment_appointment.hospital_treatment_room.id;
+      await patchCCTVPatientBye(accountData.loginToken, meetingNumber);
       refresh();
       refreshAlarm();
       checkInvoice();
     } catch (error) {
-      //Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+      Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }
-
-    // try {
-    //   const response = await getCCTVInformation(accountData.loginToken, telemedicineData.id);
-
-    //   try {
-    //     await patchCCTVPatientBye(accountData.loginToken, response.data.response[0].id);
-    //     dispatch({ type: 'HISTORY_DATA_ID_DELETE' });
-    //     checkInvoice();
-    //   } catch (error) {
-    //     console.log("1"+error.data.response);
-    //     Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
-    //   }
-
-    // } catch (error) {
-    //   console.log("2"+error.data.response);
-    //   Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
-    // }
   }
 
   const checkInvoice = async function () {
