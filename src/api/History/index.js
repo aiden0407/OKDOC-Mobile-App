@@ -4,45 +4,6 @@ import { APIURL } from 'constants/api';
 import uuid from 'react-native-uuid';
 import useTestAccount from 'hook/useTestAccount';
 
-// <--레거시 함수-->
-export const getScheduleByPatientId = async function (loginToken, patientId) {
-    try {
-        let options = {
-            url: `${APIURL}/treatment_appointments/?patient_id=${patientId}`,
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${loginToken}`
-            }
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error.response;
-    }
-}
-
-export const treatmentComplete = async function (loginToken, appointmentId) {
-    try {
-        let options = {
-            url: `${APIURL}/treatment_appointments/${appointmentId}`,
-            method: 'PATCH',
-            headers: {
-                Authorization: `Bearer ${loginToken}`
-            },
-            data: {
-                "status": "EXIT",
-            },
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error.response;
-    }
-}
-// <--레거시 함수 End-->
-
 // <--진료 상태 정의 함수-->
 export const getHistoryListByPatientId = async function (patientId) {
     try {
