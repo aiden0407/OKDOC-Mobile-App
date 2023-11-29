@@ -15,8 +15,7 @@ import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { getBiddingInformation, createBidding } from 'api/Home';
-import { getScheduleByPatientId } from 'api/History';
+import { getScheduleByPatientId, getBiddingInformation, createBidding } from 'api/Home';
 
 //Assets
 import exclamationIcon from 'assets/icons/circle-exclamation.png';

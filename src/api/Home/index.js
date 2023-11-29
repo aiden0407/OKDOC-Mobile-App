@@ -74,6 +74,23 @@ export const getScheduleByDoctorId = async function (doctorId) {
     }
 }
 
+export const getScheduleByPatientId = async function (loginToken, patientId) {
+    try {
+        let options = {
+            url: `${APIURL}/treatment_appointments/?patient_id=${patientId}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
 export const createBidding = async function (loginToken, reservationInfo) {
     const formData = new FormData();
     formData.append('doctor_id', reservationInfo.doctorInfo.doctorId);
