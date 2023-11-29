@@ -6,8 +6,8 @@ import { Alert } from 'react-native';
 // import * as Clipboard from 'expo-clipboard';
 
 //Api
-import { getHistoryListByPatientId, getHistoryStatus, getAuditLog, getTreatmentResults } from 'api/History';
-import { getTreatmentInformation, getBiddingInformation, getInvoiceInformation, getPurchaseInformation } from 'api/History';
+import { getHistoryListByPatientId, getHistoryStatus, getAuditLog, getTreatmentResults, getCCTVInformation } from 'api/History';
+import { getBiddingInformation, getInvoiceInformation, getPurchaseInformation } from 'api/History';
 
 export default function useHistoryUpdate() {
 
@@ -88,11 +88,13 @@ export default function useHistoryUpdate() {
                         obj.STATUS = 'FINISHED';
                     } catch (error) {
 
-                        // 소견서 제출 안된 케이스 => EXIT 여부 조회로 환자의 진료 확정 확인
+                        // 소견서 제출 안된 케이스 => cctv patient_motion 조회로 환자의 진료 확정 확인
                         try {
-                            const response = await getTreatmentInformation(accountData.loginToken, obj.fullDocument.treatment_appointment.id);
-                            const appointmentData = response.data.response;
-                            if (appointmentData.status === 'EXIT') {
+                            const response = await getCCTVInformation(accountData.loginToken, obj.fullDocument.treatment_appointment.id);
+                            const cctvData = response.data.response[0];
+                            // obj.CCTV = cctvData;
+                            if (cctvData?.patient_bye_at) {
+                                // 환자가 bye를 날린 적이 있음
                                 obj.STATUS = 'FINISHED';
                             } else {
                                 const currentTime = new Date();
@@ -111,7 +113,7 @@ export default function useHistoryUpdate() {
                                 }
                             }
                         } catch (error) {
-                            // console.log(error);
+                            // cctv 기록이 없는 경우이므로 아직 입장 전
                         }
                     }
                 }
