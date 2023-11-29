@@ -34,8 +34,6 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
     try {
       const meetingNumber = telemedicineData.fullDocument.treatment_appointment.hospital_treatment_room.id;
       await patchCCTVPatientBye(accountData.loginToken, meetingNumber);
-      refresh();
-      refreshAlarm();
       checkInvoice();
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
@@ -48,7 +46,11 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
       telemedicineData.invoiceInfo = response.data.response?.[0];
       setInvoiceInformation(response.data.response?.[0]);
     } catch (error) {
-      if (error.data.statusCode !== 404) {
+      if (error.data.statusCode === 404) {
+        // 진료 연장을 하지 않은 경우 바로 리프레쉬
+        refresh();
+        refreshAlarm();
+      } else {
         Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
       }
     }
@@ -57,7 +59,7 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
   function handleFeedback() {
     navigation.navigate('InquiryStackNavigation', { 
       screen: 'Inquiry',
-      params: { headerTitle: '진료 후기 작성 / 문의하기' },
+      params: { headerTitle: '문의하기' },
     });
   }
 
@@ -80,12 +82,12 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
         <ContainerCenter>
 
           <Image source={checkIcon} width={70} height={70} />
-          <Text T2 bold marginTop={18}>진료가 종료되었습니다</Text>
-          <Text T6 center color={COLOR.GRAY1} marginTop={18}>진료 중 좋았던 점이나{'\n'}불편한 점이 있었다면  알려주세요</Text>
+          <Text T2 bold marginTop={18}>상담이 종료되었습니다</Text>
+          <Text T6 center color={COLOR.GRAY1} marginTop={18}>상담 중 좋았던 점이나{'\n'}불편한 점이 있었다면  알려주세요</Text>
           <OutlineButton
             large
             marginTop={24}
-            text="진료 후기 남기기"
+            text="고객센터 연결하기"
             action={() => handleFeedback()}
           />
 
