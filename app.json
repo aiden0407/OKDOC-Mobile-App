@@ -24,8 +24,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "진료 예약 시 사진 첨부를 위해 이미지 권한을 허용해야 합니다.",
-          "cameraPermission": "진료 예약 시 사진 첨부를 위해 사진 권한을 허용해야 합니다."
+          "photosPermission": "상담 예약 시 사진 첨부를 위해 이미지 권한을 허용해야 합니다.",
+          "cameraPermission": "상담 예약 시 사진 첨부를 위해 사진 권한을 허용해야 합니다."
         }
       ],
       [
@@ -39,21 +39,21 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "화상 진료를 진행하기 위해서는 위치 권한을 허용해야 합니다."
+          "locationAlwaysAndWhenInUsePermission": "화상 상담을 진행하기 위해서는 위치 권한을 허용해야 합니다."
         }
       ]
     ],
     "ios": {
-      "buildNumber": "1",
+      "buildNumber": "2",
       "bundleIdentifier": "kr.co.insunginfo.okdoc",
       "icon": "./src/assets/main/main_icon.png",
       "supportsTablet": false,
       "requireFullScreen": true,
       "usesAppleSignIn": true,
       "infoPlist": {
-        "NSPhotoLibraryUsageDescription": "진료 예약 시 사진 첨부를 위해 라이브러리 권한을 허용해야 합니다.",
-        "NSCameraUsageDescription": "화상 진료를 진행하기 위해서는 카메라 권한을 허용해야 합니다.",
-        "NSMicrophoneUsageDescription": "화상 진료를 진행하기 위해서는 마이크 권한을 허용해야 합니다.",
+        "NSPhotoLibraryUsageDescription": "상담 예약 시 사진 첨부를 위해 라이브러리 권한을 허용해야 합니다.",
+        "NSCameraUsageDescription": "화상 상담을 진행하기 위해서는 카메라 권한을 허용해야 합니다.",
+        "NSMicrophoneUsageDescription": "화상 상담을 진행하기 위해서는 마이크 권한을 허용해야 합니다.",
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true,
           "NSAllowsArbitraryLoadsInWebContent": true
