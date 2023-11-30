@@ -176,7 +176,7 @@ export default function HistoryScreen({ navigation }) {
           <Row>
             <Image source={{ uri: item.doctorInfo?.attachments?.[0]?.Location ?? item.doctorInfo.photo }} width={66} height={66} circle />
             <CardDoctorInfoColumn>
-              <Text T4 bold>{item.doctorInfo.name} 의사</Text>
+              <Text T4 bold>{item.doctorInfo.name} 교수</Text>
               <Text T7 bold color={COLOR.GRAY2}>
                 {item.doctorInfo.hospital_name} / {item.doctorInfo.department_name}
               </Text>

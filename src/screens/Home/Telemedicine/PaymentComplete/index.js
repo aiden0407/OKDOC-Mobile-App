@@ -100,7 +100,7 @@ export default function PaymentCompleteScreen({ navigation, route }) {
           <Text T3 bold marginTop={30}>예약하신 내역을 확인해주세요</Text>
           <Row align marginTop={15}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.name} 의사 ({telemedicineReservationStatus?.doctorInfo?.hospital})</Text>
+            <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.name} 교수 ({telemedicineReservationStatus?.doctorInfo?.hospital})</Text>
           </Row>
           <Row align marginTop={12}>
             <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
