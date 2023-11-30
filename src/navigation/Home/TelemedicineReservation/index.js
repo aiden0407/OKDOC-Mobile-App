@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CategoryScreen from 'screens/Home/Telemedicine/Category';
 import ReservationScreen from 'screens/Home/Telemedicine/Reservation';
 import DoctorProfileScreen from 'screens/Home/Telemedicine/DoctorProfile';
+import DoctorProfileInquiryScreen from 'screens/Home/Telemedicine/DoctorProfileInquiry';
 import PassportInformationScreen from 'screens/MyPage/PassportInformation';
 import ProfileDetailScreen from 'screens/Home/Telemedicine/ProfileDetail';
 import SymptomDetailScreen from 'screens/Home/Telemedicine/SymptomDetail';
@@ -53,6 +54,14 @@ export default function TelemedicineReservation({ navigation }) {
         <Stack.Screen
           name="DoctorProfile"
           component={DoctorProfileScreen}
+          options={{
+            title: '의사 프로필',
+            headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Reservation')} />,
+          }}
+        />
+        <Stack.Screen
+          name="DoctorProfileInquiry"
+          component={DoctorProfileInquiryScreen}
           options={{
             title: '의사 프로필',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Reservation')} />,
