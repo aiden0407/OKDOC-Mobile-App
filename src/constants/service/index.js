@@ -86,17 +86,17 @@ export const CONSTANT_POLICY = {
 export const SYMPTOM = {
     '감기': {
         NAME: 'flu',
-        DEPARTMENT: ['소아청소년과', '이비인후과'],
+        DEPARTMENT: ['이비인후과', '소아청소년과'],
         ICON: fluIcon
     },
     '두통': {
         NAME: 'headache',
-        DEPARTMENT: ['소아청소년과', '이비인후과'],
+        DEPARTMENT: ['이비인후과', '소아청소년과'],
         ICON: headacheIcon
     },
     '고열/미열': {
         NAME: 'highFever',
-        DEPARTMENT: ['소아청소년과', '이비인후과'],
+        DEPARTMENT: ['이비인후과', '소아청소년과'],
         ICON: highFeverIcon
     },
     '복통': {
@@ -111,12 +111,12 @@ export const SYMPTOM = {
     },
     '몸살': {
         NAME: 'ache',
-        DEPARTMENT: ['소아청소년과', '이비인후과'],
+        DEPARTMENT: ['이비인후과', '소아청소년과'],
         ICON: acheIcon
     },
     '오한': {
         NAME: 'chill',
-        DEPARTMENT: ['소아청소년과', '이비인후과'],
+        DEPARTMENT: ['이비인후과', '소아청소년과'],
         ICON: chillIcon
     },
     '변비': {
