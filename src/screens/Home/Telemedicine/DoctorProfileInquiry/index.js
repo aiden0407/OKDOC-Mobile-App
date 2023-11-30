@@ -1,0 +1,92 @@
+//React
+import styled from 'styled-components/native';
+
+//Components
+import * as Device from 'expo-device';
+import { COLOR } from 'constants/design';
+import { Linking } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient'
+import { SafeArea, ScrollView, Row, DividingLine, Box } from 'components/Layout';
+import { Text } from 'components/Text';
+import { Image } from 'components/Image';
+import { SolidButton } from 'components/Button';
+
+export default function DoctorProfileScreen({ navigation, route }) {
+
+  const doctorInfo = route.params.doctorInfo;
+
+  function handleInquiry() {
+    Linking.openURL("https://zoom.okdoc.app/inquiry/doctor")
+  }
+
+  function convertToHashtags(dataArray) {
+    const hashtags = dataArray.map(tag => `#${tag}`).join(' ');
+    return hashtags;
+  }
+
+  return (
+    <SafeArea>
+      <ScrollView showsVerticalScrollIndicator={false} paddingHorizontal={20} paddingTop={0} overScrollMode='never'>
+        <Row align marginTop={36}>
+          <Image source={{ uri: doctorInfo?.attachments?.[0]?.Location ?? doctorInfo?.photo }} width={66} height={66} circle />
+          <DoctorColumn>
+            <Text T4 bold>{doctorInfo.name} 교수</Text>
+            <Text T7 medium color={COLOR.GRAY1}>{doctorInfo.hospital_name} / {doctorInfo.department_name}</Text>
+            <StyledText T7 color={COLOR.GRAY1} >{convertToHashtags(doctorInfo.strengths)}</StyledText>
+          </DoctorColumn>
+        </Row>
+
+        <DividingLine thin marginTop={24} />
+
+        <Text T4 bold marginTop={24} marginBottom={3}>학력 및 이력</Text>
+        {doctorInfo?.fields?.map((item, index) =>
+          <Row align marginTop={9} key={`date${index}`}>
+            <BulletPoint />
+            <Text T6 color={COLOR.GRAY1}>{item}</Text>
+          </Row>
+        )}
+
+        <DividingLine thin marginTop={24} />
+
+        <Text T4 bold marginTop={36}>{doctorInfo.self_introduction_title}</Text>
+        <Text T6 marginTop={18} marginBottom={60}>{doctorInfo.self_introduction}</Text>
+        <Box height={100} />
+      </ScrollView>
+
+      <LinearGradient
+        colors={['rgba(255,255,255,0)', '#FFFFFF', '#FFFFFF', '#FFFFFF']}
+        style={{
+          width: '100%',
+          marginBottom: Device.osName === 'Android' ? 0 : 34,
+          padding: 20,
+          paddingTop: 70,
+          position: 'absolute',
+          bottom: 0
+        }}
+      >
+        <SolidButton
+          text="예약 문의"
+          action={() => handleInquiry()}
+        />
+      </LinearGradient>
+    </SafeArea>
+  );
+}
+
+const DoctorColumn = styled.View`
+  margin-left: 24px;
+  flex: 1;
+`;
+
+const BulletPoint = styled.View`
+  margin-right: 14px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50px;
+  background-color: ${COLOR.GRAY3};
+`;
+
+const StyledText = styled(Text)`
+  width: 230px;
+  margin-top: 12px;
+`;
