@@ -73,8 +73,8 @@ export default function useHistoryUpdate() {
                         }
                     }
                 } catch (error) {
-                    throw error
                     // console.log(error);
+                    throw error
                 }
             }
 
@@ -97,6 +97,7 @@ export default function useHistoryUpdate() {
                                 // 환자가 bye를 날린 적이 있음
                                 obj.STATUS = 'FINISHED';
                             } else {
+                                // cctv 기록은 있는데 환자가 bye 안날림
                                 const currentTime = new Date();
                                 const wishAtTime = new Date(obj.fullDocument.treatment_appointment.hospital_treatment_room.start_time);
                                 const remainingTime = wishAtTime - currentTime;
@@ -114,6 +115,20 @@ export default function useHistoryUpdate() {
                             }
                         } catch (error) {
                             // cctv 기록이 없는 경우이므로 아직 입장 전
+                            const currentTime = new Date();
+                            const wishAtTime = new Date(obj.fullDocument.treatment_appointment.hospital_treatment_room.start_time);
+                            const remainingTime = wishAtTime - currentTime;
+                            const remainingSeconds = Math.floor(remainingTime / 1000);
+
+                            if (remainingSeconds < -600) {
+                                // 진료 후(정상 진료X)
+                                obj.STATUS = 'ABNORMAL_FINISHED';
+                            } else if (remainingSeconds < 0) {
+                                // 진료 중
+                                obj.STATUS = 'IN_TREATMENT';
+                            } else {
+                                // 진료 전 'RESERVED'
+                            }
                         }
                     }
                 }
@@ -121,8 +136,9 @@ export default function useHistoryUpdate() {
 
             // 모든 히스토리에 데이터 추가
             for (const obj of puchaseHistory) {
-                // 프로덕트 정보 추가?
-                obj.productInfo = productList[2];
+                // 프로덕트 정보 추가
+                 obj.productInfo = productList[2];
+                // obj.productInfo = productList[4];
                 obj.id = obj.fullDocument.treatment_appointment.id;
                 obj.bidding_id = obj.fullDocument.bidding_id;
 
