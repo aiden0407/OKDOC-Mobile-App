@@ -135,15 +135,15 @@ export const createPaymentRequest = async function (reservationInfo, email) {
         P_UNAME: encodeURIComponent(reservationInfo.profileInfo.name),
         P_NEXT_URL: `${APIURL}/merchant-webhook/advanced-paid/${reservationInfo.biddingId}/${orderId}`,
         P_EMAIL: email,
-        P_RESERVED: 'global_visa3d=Y&apprun_check=Y',
-        P_CHARSET: 'utf8'
+        P_CHARSET: 'utf8',
+        P_RESERVED: 'global_visa3d=Y&apprun_check=Y&below1000=Y',
     };
     if (useTestAccount(email)) {
         data.P_AMT = '1000';
     } else {
         data.P_AMT = `${reservationInfo.product.price}`;
-        data.P_TAX = '3818';
-        data.P_TAXFREE = '88000';
+        data.P_TAX = `${reservationInfo.product.tax}`;
+        data.P_TAXFREE = `${reservationInfo.product.tax_free}`;
     }
 
     try {
