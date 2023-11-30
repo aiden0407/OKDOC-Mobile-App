@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import * as Clipboard from 'expo-clipboard';
 
 //Api
 import { getAlarmHistory } from 'api/Alarm';
@@ -93,8 +94,9 @@ export default function useAlarmUpdate() {
             });
             setTimeout(() => {
                 appContextDispatch({ type: 'ALARM_DATA_UPDATED' });
-                // console.log('alarm update!!!!!!!!!!!!!!!!')
             }, 1000);
+            // await Clipboard.setStringAsync(JSON.stringify(contextAlarmSet));
+            // console.log('alarm update!!!!!!!!!!!!!!!!')
         } catch (error) {
             appContextDispatch({ type: 'ALARM_DATA_UPDATED' });
             // console.log(error);
