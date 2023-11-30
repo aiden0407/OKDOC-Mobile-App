@@ -11,7 +11,7 @@ import { COLOR } from 'constants/design';
 import { Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ActivityIndicator } from 'react-native';
-import { SafeArea, ContainerCenter, Container, ScrollView, Row, DividingLine } from 'components/Layout';
+import { SafeArea, ContainerCenter, Container, ScrollView, Box, DividingLine } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 
@@ -29,6 +29,7 @@ export default function ReservationScreen({ navigation, route }) {
   const [dateIndex, setDateIndex] = useState(0);
   const [timeIndex, setTimeIndex] = useState(0);
   const [deviceCalendar, setDeviceCalendar] = useState();
+  const [doctorList, setDoctorList] = useState();
 
   useEffect(() => {
     const calendar = getCalendars()[0];
@@ -47,9 +48,12 @@ export default function ReservationScreen({ navigation, route }) {
         doctorsList = doctorsList.concat(response.data.response);
       }
 
-      if(!useTestAccount(accountData.email)){
+      // hospital_name이 오케이닥인 의사는 테스트 계정에만 노출됨
+      if (!useTestAccount(accountData.email)) {
         doctorsList = doctorsList.filter(obj => obj.hospital_name !== '오케이닥');
       }
+
+      setDoctorList(doctorsList);
 
       for (let jj = 0; jj < doctorsList.length; jj++) {
         try {
@@ -191,6 +195,10 @@ export default function ReservationScreen({ navigation, route }) {
     navigation.navigate('DoctorProfile');
   }
 
+  function handleInquireDoctor(doctorInfo) {
+    navigation.navigate('DoctorProfileInquiry', { doctorInfo: doctorInfo });
+  }
+
   function convertToHashtags(dataArray) {
     const hashtags = dataArray.map(tag => `#${tag}`).join(' ');
     return hashtags;
@@ -278,11 +286,68 @@ export default function ReservationScreen({ navigation, route }) {
                 )}
               </DoctorContainer>
 
+              <DividingLine marginTop={42} />
+
+              <DoctorContainer>
+                <Text T6 medium>예약 문의</Text>
+                {doctorList?.map((item, index) =>
+                  <DoctorRow
+                    key={`doctor${index}`}
+                    onPress={() => handleInquireDoctor(item)}
+                  >
+                    <Image source={{ uri: item?.attachments?.[0]?.Location ?? item?.photo }} width={66} height={66} circle />
+                    <DoctorColumn>
+                      <Text T4 bold>{item.name} 교수</Text>
+                      <Text T7 medium color={COLOR.GRAY1}>{item.hospital_name} / {item.department_name}</Text>
+                      <StyledText T7 color={COLOR.GRAY1} numberOfLines={1} ellipsizeMode="tail">{convertToHashtags(item.strengths)}</StyledText>
+                    </DoctorColumn>
+                    <Ionicons name="chevron-forward" size={24} color={COLOR.MAIN} />
+                  </DoctorRow>
+                )}
+              </DoctorContainer>
+
+              <Box height={120} />
+
             </ScrollView>
-            : <ContainerCenter>
-              <Image source={exclamationIcon} width={60} height={60} />
-              <Text T4 bold center marginTop={18} marginBottom={50}>해당 증상 또는 상담과목으로{'\n'}예약 가능한 일정이 존재하지 않습니다</Text>
-            </ContainerCenter>
+            : <ScrollView showsVerticalScrollIndicator={false}>
+
+              <ReservationContainer>
+                <Text T3 bold marginTop={30}>상담시간을 선택해주세요</Text>
+                {deviceCalendar?.timeZone && <Text T7 medium color={COLOR.GRAY1}>({deviceCalendar?.timeZone} 시간대 기준)</Text>}
+
+                <ReservationNoneContainer>
+                  <Image source={exclamationIcon} width={60} height={60} />
+                  <Text T4 medium center marginTop={18} marginBottom={5}>현재 모든 예약이 마감되었습니다.{'\n'}예약 문의를 진행해주세요.</Text>
+                </ReservationNoneContainer>
+              </ReservationContainer>
+
+              <DividingLine marginTop={42} />
+
+              <DoctorContainer>
+                <Text T6 medium>예약 문의</Text>
+                {doctorList?.map((item, index) =>
+                  <DoctorRow
+                    key={`doctor${index}`}
+                    onPress={() => handleInquireDoctor(item)}
+                  >
+                    <Image source={{ uri: item?.attachments?.[0]?.Location ?? item?.photo }} width={66} height={66} circle />
+                    <DoctorColumn>
+                      <Text T4 bold>{item.name} 교수</Text>
+                      <Text T7 medium color={COLOR.GRAY1}>{item.hospital_name} / {item.department_name}</Text>
+                      <StyledText T7 color={COLOR.GRAY1} numberOfLines={1} ellipsizeMode="tail">{convertToHashtags(item.strengths)}</StyledText>
+                    </DoctorColumn>
+                    <Ionicons name="chevron-forward" size={24} color={COLOR.MAIN} />
+                  </DoctorRow>
+                )}
+              </DoctorContainer>
+
+              <Box height={120} />
+
+            </ScrollView>
+          // : <ContainerCenter>
+          //   <Image source={exclamationIcon} width={60} height={60} />
+          //   <Text T4 bold center marginTop={18} marginBottom={50}>해당 증상 또는 상담과목으로{'\n'}예약 가능한 일정이 존재하지 않습니다</Text>
+          // </ContainerCenter>
         }
       </Container>
     </SafeArea>
@@ -291,6 +356,13 @@ export default function ReservationScreen({ navigation, route }) {
 
 const ReservationContainer = styled.View`
   margin-left: 20px;
+`;
+
+const ReservationNoneContainer = styled.View`
+  margin-left: -20px;
+  margin-top: 45px;
+  align-items: center;
+  justify-content: center;
 `;
 
 const DateContainer = styled.View`
@@ -327,7 +399,6 @@ const TimeButton = styled.TouchableHighlight`
 
 const DoctorContainer = styled.View`
   margin-top: 42px;
-  margin-bottom: 120px;
   padding: 0 20px;
 `;
 
