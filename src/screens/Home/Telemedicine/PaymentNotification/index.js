@@ -22,7 +22,7 @@ import exclamationIcon from 'assets/icons/circle-exclamation.png';
 
 export default function PaymentNotificationScreen({ navigation }) {
 
-  const { state: { accountData } } = useContext(ApiContext);
+  const { state: { accountData, productList } } = useContext(ApiContext);
   const { state: { telemedicineReservationStatus }, dispatch } = useContext(AppContext);
   const [paymentAgreement, setPaymentAgreement] = useState(false);
   const [refundAgreement, setRefundAgreement] = useState(false);
@@ -114,7 +114,7 @@ export default function PaymentNotificationScreen({ navigation }) {
             </Row>
             <Row align marginTop={15}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-              <Text T6 medium>{telemedicineReservationStatus.doctorInfo.name} 의사 ({telemedicineReservationStatus.doctorInfo.hospital})</Text>
+              <Text T6 medium>{telemedicineReservationStatus.doctorInfo.name} 교수 ({telemedicineReservationStatus.doctorInfo.hospital})</Text>
             </Row>
             <Row align marginTop={12}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
@@ -152,7 +152,7 @@ export default function PaymentNotificationScreen({ navigation }) {
             </Row>
             <Row marginTop={15}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-              <Text T6 medium>상담 시간 연장 시 50,000원의 추가 비용이 발생합니다.</Text>
+              <Text T6 medium>상담 시간 연장 시 {productList[4].price}원의 추가 비용이 발생합니다.</Text>
             </Row>
           </PaddingContainer>
 

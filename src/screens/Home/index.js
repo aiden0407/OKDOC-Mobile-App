@@ -39,7 +39,8 @@ export default function HomeScreen({ navigation }) {
     try {
       const getProductsResponse = await getProducts();
       apiContextDispatch({ type: 'PRODUCT_LIST_UPDATE', productList: getProductsResponse.data.response });
-      appContextDispatch({ type: 'TELEMEDICINE_RESERVATION_PRODUCT', product: getProductsResponse.data.response[0] });
+      // appContextDispatch({ type: 'TELEMEDICINE_RESERVATION_PRODUCT', product: getProductsResponse.data.response[0] });
+      appContextDispatch({ type: 'TELEMEDICINE_RESERVATION_PRODUCT', product: getProductsResponse.data.response[3] });
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }

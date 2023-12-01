@@ -137,8 +137,8 @@ export default function useHistoryUpdate() {
             // 모든 히스토리에 데이터 추가
             for (const obj of puchaseHistory) {
                 // 프로덕트 정보 추가
-                 obj.productInfo = productList[2];
-                // obj.productInfo = productList[4];
+                // obj.productInfo = productList[2];
+                obj.productInfo = productList[4];
                 obj.id = obj.fullDocument.treatment_appointment.id;
                 obj.bidding_id = obj.fullDocument.bidding_id;
 
