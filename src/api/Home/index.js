@@ -49,7 +49,7 @@ export const getDepartments = async function () {
 export const getDoctorsByDepartment = async function (department) {
     try {
         let options = {
-            url: `${APIURL}/doctors/?department_name=${department}`,
+            url: `${APIURL}/doctors/?department_name=${department}&sort_by=name&sort_order=1`,
             method: 'GET',
         }
         const response = await axios(options);
@@ -140,6 +140,8 @@ export const createPaymentRequest = async function (reservationInfo, email) {
     };
     if (useTestAccount(email)) {
         data.P_AMT = '1000';
+        data.P_TAX = '0';
+        data.P_TAXFREE = '0';
     } else {
         data.P_AMT = `${reservationInfo.product.price}`;
         data.P_TAX = `${reservationInfo.product.tax}`;
