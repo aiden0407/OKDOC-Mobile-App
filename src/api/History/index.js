@@ -214,6 +214,12 @@ export const createInvoicePaymentRequest = async function (telemedicineData, ema
         data.P_AMT = '1000';
     } else {
         data.P_AMT = `${telemedicineData.productInfo.price}`;
+        if(telemedicineData.productInfo?.tax){
+            data.P_TAX = `${telemedicineData.productInfo?.tax}`;
+        }
+        if(telemedicineData.productInfo?.tax_free){
+            data.P_TAXFREE = `${telemedicineData.productInfo?.tax_free}`;
+        }
     }
 
     try {

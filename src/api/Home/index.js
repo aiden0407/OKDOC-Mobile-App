@@ -140,12 +140,14 @@ export const createPaymentRequest = async function (reservationInfo, email) {
     };
     if (useTestAccount(email)) {
         data.P_AMT = '1000';
-        data.P_TAX = '0';
-        data.P_TAXFREE = '0';
     } else {
         data.P_AMT = `${reservationInfo.product.price}`;
-        data.P_TAX = `${reservationInfo.product.tax}`;
-        data.P_TAXFREE = `${reservationInfo.product.tax_free}`;
+        if(reservationInfo.product?.tax){
+            data.P_TAX = `${reservationInfo.product?.tax}`;
+        }
+        if(reservationInfo.product?.tax_free){
+            data.P_TAXFREE = `${reservationInfo.product?.tax_free}`;
+        }
     }
 
     try {
