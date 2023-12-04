@@ -2,7 +2,7 @@
   "expo": {
     "name": "OK DOC",
     "slug": "okdoc",
-    "version": "1.0.13",
+    "version": "1.1.0",
     "icon": "./src/assets/main/main_icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -44,7 +44,7 @@
       ]
     ],
     "ios": {
-      "buildNumber": "3",
+      "buildNumber": "1",
       "bundleIdentifier": "kr.co.insunginfo.okdoc",
       "icon": "./src/assets/main/main_icon.png",
       "supportsTablet": false,
