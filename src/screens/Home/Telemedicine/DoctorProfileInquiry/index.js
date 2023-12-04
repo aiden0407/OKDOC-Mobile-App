@@ -1,4 +1,6 @@
 //React
+import { useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
 import styled from 'styled-components/native';
 
 //Components
@@ -13,10 +15,25 @@ import { SolidButton } from 'components/Button';
 
 export default function DoctorProfileScreen({ navigation, route }) {
 
+  const { state: { accountData, profileData } } = useContext(ApiContext);
   const doctorInfo = route.params.doctorInfo;
 
   function handleInquiry() {
-    Linking.openURL("https://zoom.okdoc.app/inquiry/doctor")
+    if (accountData.loginToken) {
+      if (profileData[0].id) {
+        // const inquiryURL = `https://6uar6qa0bjl.typeform.com/to/zHmgevYI#name=${encodeURIComponent(profileData?.[0]?.name)}&email=${accountData.email}&doctor=${encodeURIComponent(doctorInfo.department_name + ' ' + doctorInfo.name)}`;
+        const inquiryURL = `https://walla.my/survey/ZHz5Yumm5v3vSD4vFl3F?name=${profileData?.[0]?.name}&email=${accountData.email}&doctor=${doctorInfo.department_name + ' ' + doctorInfo.name}`;
+        Linking.openURL(inquiryURL)
+      } else {
+        // 프로필 등록
+        navigation.navigate('PassportInformation');
+      }
+    } else {
+      navigation.navigate('NeedLoginNavigation', {
+        screen: 'NeedLogin',
+        params: { headerTitle: '비대면 상담실' },
+      });
+    }
   }
 
   function convertToHashtags(dataArray) {
