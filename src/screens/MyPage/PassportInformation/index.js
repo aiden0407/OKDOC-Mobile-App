@@ -119,7 +119,7 @@ export default function PassportInformationScreen({ navigation }) {
         birth: mainProfile.passport.birth,
         gender: mainProfile.gender,
       });
-      navigation.replace('ProfileDetail');
+      navigation.goBack();
     } catch (error) {
       if (error.response.data.statusCode === 422) {
         if (error.response.data.message.includes('여권정보가 일치하지 않습니다.')) {
