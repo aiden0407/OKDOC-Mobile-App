@@ -51,6 +51,7 @@ export default function ReservationScreen({ navigation, route }) {
       // hospital_name이 오케이닥인 의사는 테스트 계정에만 노출됨
       if (!useTestAccount(accountData.email)) {
         doctorsList = doctorsList.filter(obj => obj.hospital_name !== '오케이닥');
+        doctorsList = doctorsList.filter(obj => obj.self_introduction_title !== 'da4202bc-a4f8-46a5-b7be-afa9d9e1cfe6');
       }
 
       setDoctorList(doctorsList);
