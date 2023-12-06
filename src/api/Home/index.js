@@ -124,6 +124,25 @@ export const createBidding = async function (loginToken, reservationInfo) {
     }
 }
 
+// [!PROMOTION] 0원 결제 요청부
+export const merchantCashlessBidding = async function (loginToken, biddingId) {
+    const orderId = uuid.v4();
+    try {
+        let options = {
+            url: `${APIURL}/merchant/cashless-prepaid/${biddingId}/${orderId}`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
 export const createPaymentRequest = async function (reservationInfo, email) {
     const orderId = uuid.v4();
     const data = {
