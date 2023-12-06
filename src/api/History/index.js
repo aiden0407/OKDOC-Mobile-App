@@ -176,6 +176,24 @@ export const canclePayment = async function (loginToken, purchaseId, P_TID) {
     }
 }
 
+// [!PROMOTION] 0원 결제 취소부
+export const cancleCashlessPayment = async function (loginToken, purchaseId) {
+    try {
+        let options = {
+            url: `${APIURL}/merchant/cashless-cancel/${purchaseId}`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
 export const patchCCTVPatientBye = async function (loginToken, CCTVId) {
     try {
         let options = {
