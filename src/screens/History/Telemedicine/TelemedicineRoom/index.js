@@ -62,7 +62,7 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
       <Container>
         <WebView
           source={{ uri: `https://zoom.okdoc.app/meeting/patient/?meetingNumber=${meetingNumber}&userName=${userName}&wishAt=${wishAt}&biddingId=${biddingId}&token=${token}` }}
-          // source={{ uri: `http://127.0.0.1:5500/meeting/patient/?meetingNumber=85440949682&userName=${userName}&wishAt=${wishAt}&id=${id}&token=${token}` }}
+          // source={{ uri: `http://localhost:5500/meeting/patient/?meetingNumber=${meetingNumber}&userName=${userName}&wishAt=${wishAt}&biddingId=${biddingId}&token=${token}` }}
           // source={{ uri: `https://zoom.okdoc.app/meeting/end` }}
           originWhitelist={['*']}
           useWebkit
