@@ -16,7 +16,7 @@ import { SolidButton, OutlineButton } from 'components/Button';
 import checkIcon from 'assets/icons/circle-check.png';
 
 //Api
-import { patchCCTVPatientBye, getInvoiceInformation } from 'api/History';
+import { patchCCTVPatientBye, getInvoiceInformation, merchantCashlessInvoice } from 'api/History';
 
 export default function TelemedicineCompleteScreen({ navigation, route }) {
 
@@ -63,11 +63,22 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
     });
   }
 
-  function handleNextScreen() {
+  const handleNextScreen = async function () {
     if (invoiceInformation) {
-      navigation.navigate('Payment', { 
-        telemedicineData: telemedicineData
-      });
+      // navigation.navigate('Payment', { 
+      //   telemedicineData: telemedicineData
+      // });
+
+      try {
+        merchantCashlessInvoice(accountData.loginToken, telemedicineData.invoiceInfo.id);
+        navigation.navigate('HistoryStackNavigation', { 
+          screen: 'TelemedicineDetail',
+          params: { telemedicineData: telemedicineData }
+        });
+      } catch (error) {
+        // console.log(error);
+      }
+
     } else {
       navigation.navigate('HistoryStackNavigation', { 
         screen: 'TelemedicineDetail',
@@ -94,7 +105,8 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
         </ContainerCenter>
 
         <SolidButton
-          text={invoiceInformation?"추가요금 결제하기":"다음으로"}
+          // text={invoiceInformation?"추가요금 결제하기":"다음으로"}
+          text="다음으로"
           marginBottom={20}
           disabled={false}
           action={() => handleNextScreen()}

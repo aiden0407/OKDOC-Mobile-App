@@ -215,11 +215,11 @@ export const patchCCTVPatientBye = async function (loginToken, CCTVId) {
 }
 
 // [!PROMOTION] 연장 0원 결제 요청부
-export const merchantCashlessInvoice = async function (loginToken, telemedicineData) {
+export const merchantCashlessInvoice = async function (loginToken, invoiceId) {
     const orderId = uuid.v4();
     try {
         let options = {
-            url: `${APIURL}/merchant/cashless-postpaid/${telemedicineData.invoiceInfo.id}/${orderId}`,
+            url: `${APIURL}/merchant/cashless-postpaid/${invoiceId}/${orderId}`,
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${loginToken}`
