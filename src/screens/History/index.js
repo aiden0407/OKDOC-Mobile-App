@@ -225,7 +225,7 @@ export default function HistoryScreen({ navigation }) {
                     >
                       <Text T5 medium color="#FFFFFF">정책에 의한 환불</Text>
                     </CustomSolidButton>
-              : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID
+              : !(item?.invoiceInfo) || item?.invoiceInfo?.P_TID || item?.invoiceInfo?.product?.price === 0
                 ? <CustomSolidButton
                   underlayColor={COLOR.SUB1}
                   onPress={() => handleViewTelemedicineDetail(item)}
