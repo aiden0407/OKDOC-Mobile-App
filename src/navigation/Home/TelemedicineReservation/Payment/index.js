@@ -22,7 +22,7 @@ export default function TelemedicineReservation({ navigation }) {
           name="PaymentComplete"
           component={PaymentCompleteScreen}
           options={{
-            title: '결제 완료',
+            title: '예약 완료',
             headerBackVisible: false,
           }}
         />
