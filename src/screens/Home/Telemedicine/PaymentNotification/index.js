@@ -15,7 +15,7 @@ import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { getScheduleByPatientId, getBiddingInformation, createBidding } from 'api/Home';
+import { getScheduleByPatientId, getBiddingInformation, createBidding, merchantCashlessBidding } from 'api/Home';
 
 //Assets
 import exclamationIcon from 'assets/icons/circle-exclamation.png';
@@ -73,8 +73,26 @@ export default function PaymentNotificationScreen({ navigation }) {
             type: 'TELEMEDICINE_RESERVATION_BIDDING_ID',
             biddingId: response.data.response.id,
           });
-          navigation.navigate('TelemedicineReservationPayment', { screen: 'Payment' });
-          setProcessStatus('BEFORE');
+
+          // navigation.navigate('TelemedicineReservationPayment', { screen: 'Payment' });
+          // setProcessStatus('BEFORE');
+
+          try {
+            merchantCashlessBidding(accountData.loginToken, response.data.response.id)
+            navigation.navigate('TelemedicineReservationPayment', 
+              { 
+                screen: 'PaymentComplete',
+                params: { 
+                  biddingId: response.data.response.id 
+                }
+              }
+            );
+            setProcessStatus('BEFORE');
+          } catch (error) {
+            // console.log(error);
+            setProcessStatus('BEFORE');
+          }
+
         } catch (error) {
           console.log(error.data)
           setProcessStatus('BEFORE');
@@ -90,8 +108,24 @@ export default function PaymentNotificationScreen({ navigation }) {
             type: 'TELEMEDICINE_RESERVATION_BIDDING_ID',
             biddingId: response.data.response.id,
           });
-          navigation.navigate('TelemedicineReservationPayment', { screen: 'Payment' });
-          setProcessStatus('BEFORE');
+          
+          // setProcessStatus('BEFORE');
+          // navigation.navigate('TelemedicineReservationPayment', { screen: 'Payment' });
+
+          try {
+            merchantCashlessBidding(accountData.loginToken, response.data.response.id);
+            setProcessStatus('BEFORE');
+            navigation.navigate('TelemedicineReservationPayment', 
+            { 
+              screen: 'PaymentComplete',
+              params: {
+                biddingId: response.data.response.id 
+              }
+            });
+          } catch (error) {
+            setProcessStatus('BEFORE');
+          }
+
         } catch (error) {
           setProcessStatus('BEFORE');
           Alert.alert('결제 정보 생성 실패', '고객센터로 문의해주시기 바랍니다.');
@@ -111,6 +145,11 @@ export default function PaymentNotificationScreen({ navigation }) {
             <Text T3 bold marginTop={30}>의료 상담을 위해{'\n'}예약하신 정보를 확인 해주세요</Text>
             <Row marginTop={24}>
               <Text T3 bold color={COLOR.MAIN}>비용 {telemedicineReservationStatus.product.price?.toLocaleString()}원</Text>
+              {
+                telemedicineReservationStatus.product.price===0 && (
+                  <StyledText T6 medium color={COLOR.GRAY2} marginTop={8} marginLeft={6}>130,000원</StyledText>
+                )
+              }
             </Row>
             <Row align marginTop={15}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
@@ -150,10 +189,14 @@ export default function PaymentNotificationScreen({ navigation }) {
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
               <Text T6 medium>기본 10분 상담이며, 추가로 5분 연장 가능합니다.</Text>
             </Row>
-            <Row marginTop={15}>
-              <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-              <Text T6 medium>상담 시간 연장 시 {productList[4].price}원의 추가 비용이 발생합니다.</Text>
-            </Row>
+            {
+              productList[4].price !== 0 && (
+                <Row marginTop={15}>
+                  <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
+                  <Text T6 medium>상담 시간 연장 시 {productList[4].price}원의 추가 비용이 발생합니다.</Text>
+                </Row>
+              )
+            }
           </PaddingContainer>
 
           <DividingLine marginTop={30} />
@@ -302,4 +345,9 @@ const BottomSheetContainer = styled.View`
 `;
 
 const DisabledButtonWrapper = styled.Pressable`
+`;
+
+const StyledText = styled(Text)`
+  text-decoration-line: line-through;
+  text-decoration-color: ${COLOR.GRAY2};
 `;
