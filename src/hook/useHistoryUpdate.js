@@ -170,8 +170,8 @@ export default function useHistoryUpdate() {
 
                     // 인보이스가 생성되어 있을 때 결제 필요 여부 확인, 가장 오래된 인보이스부터 결제 유도
                     if (!(invoiceInfo?.P_TID)) {
-                        if (remainingSeconds < -900) {
-                            // 15분이 지났어야만 needPayment에 추가
+                        if (remainingSeconds < -900 && obj.invoiceInfo.product.price !== 0) {
+                            // 15분이 지났고 0원이 아니어야만 needPayment에 추가
                             needPayment = obj;
                         }
                     }
