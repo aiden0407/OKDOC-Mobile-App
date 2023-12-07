@@ -64,7 +64,7 @@
       }
     },
     "android": {
-      "versionCode": 13,
+      "versionCode": 14,
       "package": "kr.co.insunginfo.okdoc",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/main/main_icon2.png",
