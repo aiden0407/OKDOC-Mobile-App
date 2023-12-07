@@ -214,6 +214,25 @@ export const patchCCTVPatientBye = async function (loginToken, CCTVId) {
     }
 }
 
+// [!PROMOTION] 연장 0원 결제 요청부
+export const merchantCashlessInvoice = async function (loginToken, telemedicineData) {
+    const orderId = uuid.v4();
+    try {
+        let options = {
+            url: `${APIURL}/merchant/cashless-postpaid/${telemedicineData.invoiceInfo.id}/${orderId}`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error.response;
+    }
+}
+
 export const createInvoicePaymentRequest = async function (telemedicineData, email) {
     const orderId = uuid.v4();
     const data = {
