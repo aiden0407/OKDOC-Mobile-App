@@ -38,6 +38,7 @@ export default function PaymentCompleteScreen({ navigation, route }) {
       initPaymentData(response.data.response.P_TID);
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
+      navigation.goBack();
     }
   }
 
@@ -47,7 +48,8 @@ export default function PaymentCompleteScreen({ navigation, route }) {
       setPaymentData(response.data.response);
       setIsLoading(false);
     } catch (error) {
-      Alert.alert('결제 정보를 불러오지 못했습니다.');
+      // 0원 결제라 결제 정보 없음
+      setIsLoading(false);
     }
   }
 
@@ -57,7 +59,7 @@ export default function PaymentCompleteScreen({ navigation, route }) {
     const day = inputDate.slice(6, 8);
     const hour = inputDate.slice(8, 10);
     const minute = inputDate.slice(10, 12);
-    
+
     const formattedDate = `${year}.${month}.${day} (${hour}:${minute})`;
     return formattedDate;
   }
@@ -66,7 +68,7 @@ export default function PaymentCompleteScreen({ navigation, route }) {
     dispatch({ type: 'TELEMEDICINE_RESERVATION_CONFIRMED' });
     refresh();
     refreshAlarm();
-    navigation.navigate('BottomTapNavigation', { screen: 'History'});
+    navigation.navigate('BottomTapNavigation', { screen: 'History' });
   }
 
   if (isLoading) {
@@ -77,44 +79,48 @@ export default function PaymentCompleteScreen({ navigation, route }) {
     <SafeArea>
       <Container>
         <Container>
-        <PaddingContainer>
-          <Text T3 bold marginTop={30}>결제가 완료되었어요</Text>
-          <Text T3 bold color={COLOR.MAIN} marginTop={9}>의료상담 {Number(paymentData.price)?.toLocaleString()}원</Text>
-          <Row marginTop={18}>
-            <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
-            <Text T6 color={COLOR.GRAY1}>{Number(paymentData.price)?.toLocaleString()}원 | 일시불</Text>
-          </Row>
-          <Row marginTop={6}>
-            <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 수단</Text>
-            <Text T6 color={COLOR.GRAY1}>신용카드</Text>
-          </Row>
-          <Row marginTop={6}>
-            <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
-            <Text T6 color={COLOR.GRAY1}>{formatDate(biddingData?.P_AUTH_DT)}</Text>
-          </Row>
-        </PaddingContainer>
+          {
+            paymentData && (<>
+              <PaddingContainer>
+                <Text T3 bold marginTop={30}>결제가 완료되었어요</Text>
+                <Text T3 bold color={COLOR.MAIN} marginTop={9}>의료상담 {Number(paymentData.price)?.toLocaleString()}원</Text>
+                <Row marginTop={18}>
+                  <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
+                  <Text T6 color={COLOR.GRAY1}>{Number(paymentData.price)?.toLocaleString()}원 | 일시불</Text>
+                </Row>
+                <Row marginTop={6}>
+                  <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 수단</Text>
+                  <Text T6 color={COLOR.GRAY1}>신용카드</Text>
+                </Row>
+                <Row marginTop={6}>
+                  <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
+                  <Text T6 color={COLOR.GRAY1}>{formatDate(biddingData?.P_AUTH_DT)}</Text>
+                </Row>
+              </PaddingContainer>
 
-        <DividingLine marginTop={30} />
+              <DividingLine marginTop={30} />
+            </>)
+          }
 
-        <PaddingContainer>
-          <Text T3 bold marginTop={30}>예약하신 내역을 확인해주세요</Text>
-          <Row align marginTop={15}>
-            <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.name} 교수 ({telemedicineReservationStatus?.doctorInfo?.hospital})</Text>
-          </Row>
-          <Row align marginTop={12}>
-            <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.subject} / 의료상담</Text>
-          </Row>
-          <Row align marginTop={12}>
-            <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>2023/{telemedicineReservationStatus?.date} ({telemedicineReservationStatus?.time})</Text>
-          </Row>
-          <Row align marginTop={12}>
-            <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-            <Text T6 medium>예약자: {telemedicineReservationStatus?.profileInfo?.name}</Text>
-          </Row>
-        </PaddingContainer>
+          <PaddingContainer>
+            <Text T3 bold marginTop={30}>예약하신 내역을 확인해주세요</Text>
+            <Row align marginTop={15}>
+              <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
+              <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.name} 교수 ({telemedicineReservationStatus?.doctorInfo?.hospital})</Text>
+            </Row>
+            <Row align marginTop={12}>
+              <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
+              <Text T6 medium>{telemedicineReservationStatus?.doctorInfo?.subject} / 의료상담</Text>
+            </Row>
+            <Row align marginTop={12}>
+              <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
+              <Text T6 medium>2023/{telemedicineReservationStatus?.date} ({telemedicineReservationStatus?.time})</Text>
+            </Row>
+            <Row align marginTop={12}>
+              <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
+              <Text T6 medium>예약자: {telemedicineReservationStatus?.profileInfo?.name}</Text>
+            </Row>
+          </PaddingContainer>
         </Container>
 
         <PaddingContainer>

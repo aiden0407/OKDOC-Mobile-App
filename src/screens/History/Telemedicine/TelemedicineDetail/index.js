@@ -35,7 +35,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    if(isFocused){
+    if (isFocused) {
       initBiddingData();
     }
   }, [isFocused]);
@@ -69,7 +69,8 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
       setIsLoading(false);
       initInvoiceData();
     } catch (error) {
-      Alert.alert('결제 정보를 불러오지 못했습니다.');
+      // 0원 결제라 결제 정보 없음
+      setIsLoading(false);
     }
   }
 
@@ -112,7 +113,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
     const day = inputDate.slice(6, 8);
     const hour = inputDate.slice(8, 10);
     const minute = inputDate.slice(10, 12);
-    
+
     const formattedDate = `${year}.${month}.${day} (${hour}:${minute})`;
     return formattedDate;
   }
@@ -129,7 +130,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-  
+
     const formattedDate = `${year}년 ${month}월 ${day}일`;
     return formattedDate;
   }
@@ -393,7 +394,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
     </html>
     `;
 
-    const { uri } = await Print.printToFileAsync({ html, height:842, width:595 });
+    const { uri } = await Print.printToFileAsync({ html, height: 842, width: 595 });
     await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
   };
 
@@ -424,7 +425,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
           {
             telemedicineData?.STATUS === 'CANCELED'
               ? <></>
-              :(<>
+              : (<>
                 <PaddingContainer>
                   <Text T3 bold marginTop={24}>전자 소견서</Text>
                   {
@@ -451,44 +452,51 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
                           </Center>)
                   }
                 </PaddingContainer>
-
-                <DividingLine marginTop={36} />
+                {
+                  biddingPaymentData && (<DividingLine marginTop={36} />)
+                }
               </>)
           }
 
-          <PaddingContainer>
-            <Text T3 bold marginTop={24}>{telemedicineData?.STATUS === 'CANCELED'?'취소':'결제'} 내역</Text>
-            <Text T3 bold color={COLOR.MAIN} marginTop={20}>상담 예약 {Number(biddingPaymentData.price)?.toLocaleString()}원</Text>
-            <Row marginTop={18}>
-              <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
-              <Text T6 color={COLOR.GRAY1}>{Number(biddingPaymentData.price)?.toLocaleString()}원 | 일시불</Text>
-            </Row>
-            <Row marginTop={6}>
-              <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 수단</Text>
-              <Text T6 color={COLOR.GRAY1}>신용카드</Text>
-            </Row>
-            <Row marginTop={6}>
-              <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
-              <Text T6 color={COLOR.GRAY1}>{formatDate(biddingData?.P_AUTH_DT)}</Text>
-            </Row>
-          </PaddingContainer>
+          {
+            biddingPaymentData
+              ? (<>
+                <PaddingContainer>
+                  <Text T3 bold marginTop={24}>{telemedicineData?.STATUS === 'CANCELED' ? '취소' : '결제'} 내역</Text>
+                  <Text T3 bold color={COLOR.MAIN} marginTop={20}>상담 예약 {Number(biddingPaymentData.price)?.toLocaleString()}원</Text>
+                  <Row marginTop={18}>
+                    <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
+                    <Text T6 color={COLOR.GRAY1}>{Number(biddingPaymentData.price)?.toLocaleString()}원 | 일시불</Text>
+                  </Row>
+                  <Row marginTop={6}>
+                    <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 수단</Text>
+                    <Text T6 color={COLOR.GRAY1}>신용카드</Text>
+                  </Row>
+                  <Row marginTop={6}>
+                    <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
+                    <Text T6 color={COLOR.GRAY1}>{formatDate(biddingData?.P_AUTH_DT)}</Text>
+                  </Row>
+                </PaddingContainer>
+              </>)
+              : null
+          }
 
           {
             invoicePaymentData
-             ?<PaddingContainer>
-             <Text T3 bold color={COLOR.MAIN} marginTop={36}>상담 연장 {Number(invoicePaymentData.price)?.toLocaleString()}원</Text>
-             <Row marginTop={18}>
-               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
-               <Text T6 color={COLOR.GRAY1}>{Number(invoicePaymentData.price)?.toLocaleString()}원 | 일시불</Text>
-             </Row>
-             <Row marginTop={6}>
-               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 수단</Text>
-               <Text T6 color={COLOR.GRAY1}>신용카드</Text>
-             </Row>
-             <Row marginTop={6}>
-               <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
-               <Text T6 color={COLOR.GRAY1}>{formatDate(invoiceData?.P_AUTH_DT)}</Text>
-             </Row>
+              ? <PaddingContainer>
+                <Text T3 bold color={COLOR.MAIN} marginTop={36}>상담 연장 {Number(invoicePaymentData.price)?.toLocaleString()}원</Text>
+                <Row marginTop={18}>
+                  <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 금액</Text>
+                  <Text T6 color={COLOR.GRAY1}>{Number(invoicePaymentData.price)?.toLocaleString()}원 | 일시불</Text>
+                </Row>
+                <Row marginTop={6}>
+                  <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 수단</Text>
+                  <Text T6 color={COLOR.GRAY1}>신용카드</Text>
+                </Row>
+                <Row marginTop={6}>
+                  <Text T6 medium color={COLOR.GRAY1} marginRight={42}>결제 일시</Text>
+                  <Text T6 color={COLOR.GRAY1}>{formatDate(invoiceData?.P_AUTH_DT)}</Text>
+                </Row>
               </PaddingContainer>
               : null
           }
