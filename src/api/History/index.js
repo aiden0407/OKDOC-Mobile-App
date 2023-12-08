@@ -36,7 +36,8 @@ export const getHistoryStatus = async function (documentKey) {
 export const getAuditLog = async function (loginToken, fullDocumentId) {
     try {
         let options = {
-            url: `${APIURL}/audits/?focus=/merchant/cancel/${fullDocumentId}&action=POST`,
+            // url: `${APIURL}/audits/?focus=/merchant/cancel/${fullDocumentId}&action=POST`,
+            url: `${APIURL}/audits/?focus=/merchant/cashless-cancel/${fullDocumentId}&action=POST`,
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${loginToken}`
