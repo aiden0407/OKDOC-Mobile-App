@@ -179,8 +179,8 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
                 }
                 .watermark {
                     position: absolute;
-                    top: 270;
-                    left: 50%;
+                    top: 260;
+                    left: 54%;
                     transform: translate(-50%, 0%);
                     width: 300;
                     opacity: 0.2;
@@ -308,7 +308,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
         </head>
 
         <body>
-            <img class='watermark' src="https://unsafe-public-okdoc-user-upload-image.s3.ap-northeast-2.amazonaws.com/insung-icon.png" alt="인성 아이콘">
+            <img class='watermark' src="https://unsafe-public-okdoc-user-upload-image.s3.ap-northeast-2.amazonaws.com/eulji-logo.png" alt="인성 아이콘">
 
             <p class='main'>소견서</p>
 
