@@ -7,7 +7,6 @@ import styled from 'styled-components/native';
 import { getCalendars } from 'expo-localization';
 
 //Components
-import * as Device from 'expo-device';
 import { COLOR } from 'constants/design';
 import { Alert, ActivityIndicator, RefreshControl } from 'react-native';
 import { SafeArea, ScrollView, Container, ContainerCenter, Row, DividingLine, Box } from 'components/Layout';
@@ -17,7 +16,7 @@ import { SolidButton } from 'components/Button';
 import NeedLogin from 'components/NeedLogin';
 
 //Api
-import { canclePayment } from 'api/History';
+import { canclePayment, cancleCashlessPayment } from 'api/History';
 
 //Assets
 import letterIcon from 'assets/icons/mypage-letter.png';
@@ -94,7 +93,8 @@ export default function HistoryScreen({ navigation }) {
       ]);
     } else {
       try {
-        await canclePayment(accountData.loginToken, item.purchaseId, item.biddingInfo.P_TID);
+        // await canclePayment(accountData.loginToken, item.purchaseId, item.biddingInfo.P_TID);
+        await cancleCashlessPayment(accountData.loginToken, item.purchaseId);
         Alert.alert('해당 예약이 정상적으로 취소되었습니다.', '', [
           {
             text: '확인',
