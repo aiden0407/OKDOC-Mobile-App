@@ -11,10 +11,10 @@ import RegisterPolicyScreen from 'screens/Login/Register/RegisterPolicy';
 import RegisterPolicyDetailScreen from 'screens/Login/Register/RegisterPolicy/Detail';
 import EmailPasswordScreen from 'screens/Login/Register/EmailPassword';
 import AppleEmailScreen from 'screens/Login/Register/AppleEmail';
-// import PassportPhoneCertifiactionScreen from 'screens/Login/Register/PassportPhoneCertifiaction';
+// import PassportPassCertifiactionScreen from 'screens/Login/Register/PassportPassCertifiaction';
 // import PassportInformationScreen from 'screens/Login/Register/PassportInformation';
-// import PhoneInformationScreen from 'screens/Login/Register/PhoneInformation';
-// import SearchCountryCodeScreen from 'screens/Login/Register/SearchCountryCode';
+// import PassInformationScreen from 'screens/Login/Register/PassInformation';
+import BirthInformationScreen from 'screens/Login/Register/BirthInformation';
 import RegisterCompleteScreen from 'screens/Login/Register/RegisterComplete';
 
 //Components
@@ -34,7 +34,7 @@ export default function LoginStackNavigation({ navigation }) {
     }
   }
 
-  function handlePassportPhoneCertifiactionBack() {
+  function handlePassportPassCertifiactionBack() {
     if(registerStatus.route === 'APPLE_EMAIL_EXISTENT' || registerStatus.route === 'GOOGLE_REGISTER'){
       navigation.navigate('RegisterPolicy');
     }
@@ -107,11 +107,11 @@ export default function LoginStackNavigation({ navigation }) {
           }}
         />
         {/* <Stack.Screen
-          name="PassportPhoneCertifiaction"
-          component={PassportPhoneCertifiactionScreen}
+          name="PassportPassCertifiaction"
+          component={PassportPassCertifiactionScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>handlePassportPhoneCertifiactionBack()} />,
+            headerLeft: () => <NavigationBackArrow action={()=>handlePassportPassCertifiactionBack()} />,
           }}
         /> */}
         {/* <Stack.Screen
@@ -119,25 +119,25 @@ export default function LoginStackNavigation({ navigation }) {
           component={PassportInformationScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>handlePassportPhoneCertifiactionBack()} />,
+            headerLeft: () => <NavigationBackArrow action={()=>handlePassportPassCertifiactionBack()} />,
           }}
         /> */}
         {/* <Stack.Screen
-          name="PhoneInformation"
-          component={PhoneInformationScreen}
+          name="PassInformation"
+          component={PassInformationScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PassportPhoneCertifiaction')} />,
+            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PassportPassCertifiaction')} />,
           }}
         /> */}
-        {/* <Stack.Screen
-          name="SearchCountryCode"
-          component={SearchCountryCodeScreen}
+        <Stack.Screen
+          name="BirthInformation"
+          component={BirthInformationScreen}
           options={{
             title: '회원가입',
-            headerLeft: () => <NavigationBackArrow action={()=>navigation.navigate('PhoneInformation')} />,
+            headerLeft: () => <NavigationBackArrow action={()=>handlePassportPassCertifiactionBack()} />,
           }}
-        /> */}
+        />
         <Stack.Screen
           name="RegisterComplete"
           component={RegisterCompleteScreen}
