@@ -156,7 +156,7 @@ export default function BirthInformationScreen({ navigation }) {
           
           <Container>
             <PaddingContainer>
-              <Text T3 bold marginTop={30}>오케이닥 진료 서비스 이용을 위해{'\n'}본인 정보를 기입해 주세요</Text>
+              <Text T3 bold marginTop={30}>오케이닥 서비스 이용을 위해{'\n'}본인 정보를 기입해 주세요</Text>
 
               <Text T6 bold marginTop={30}>한글 성명</Text>
               <BoxInput
