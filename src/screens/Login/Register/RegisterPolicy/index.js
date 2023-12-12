@@ -1,9 +1,7 @@
 //React
 import { useContext, useState, useEffect } from 'react';
-import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Components
 import { COLOR } from 'constants/design'
@@ -15,11 +13,10 @@ import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { getRegisterTerms, createAppleAccount, createGoogleAccount } from 'api/Login';
+import { getRegisterTerms } from 'api/Login';
 
 export default function RegisterPolicyScreen({ navigation }) {
 
-  const { dispatch: apiContextDispatch } = useContext(ApiContext);
   const { state: { registerStatus }, dispatch: appContextDispatch } = useContext(AppContext);
   const [policyList, setPolicyList] = useState([]);
   const [allPolicyAgreement, setAllPolicyAgreement] = useState(false);
@@ -168,66 +165,21 @@ export default function RegisterPolicyScreen({ navigation }) {
     if (isMarketingAgreed) {
       checkedList.push(policyList[policyList.length - 1].id);
     }
+    
+    appContextDispatch({
+      type: 'REGISTER_POLICY',
+      policy: checkedList,
+    });
 
-    if (registerStatus.route === 'GOOGLE_REGISTER') {
-      try {
-        const deviceType = await AsyncStorage.getItem('@device_type');
-        const deviceToken = await AsyncStorage.getItem('@device_token');
-        const response = await createGoogleAccount(registerStatus.email, checkedList, deviceType, deviceToken, registerStatus.invitationToken);
-        const loginToken = response.data.response.accessToken;
-        const accountData = {
-          loginToken: loginToken,
-          email: registerStatus.email,
-        };
-        await AsyncStorage.setItem('@account_data', JSON.stringify(accountData));
-        apiContextDispatch({
-          type: 'LOGIN',
-          loginToken: loginToken,
-          email: registerStatus.email,
-        });
-        appContextDispatch({ type: 'REGISTER_COMPLETE' });
-        navigation.navigate('RegisterComplete');
-      } catch (error) {
-        Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
-      }
-    }
-
-    if (registerStatus.route === 'APPLE_EMAIL_EXISTENT') {
-      try {
-        const deviceType = await AsyncStorage.getItem('@device_type');
-        const deviceToken = await AsyncStorage.getItem('@device_token');
-        const response = await createAppleAccount(registerStatus.email, checkedList, deviceType, deviceToken, registerStatus.invitationToken);
-        const loginToken = response.data.response.accessToken;
-        const accountData = {
-          loginToken: loginToken,
-          email: registerStatus.email,
-        };
-        await AsyncStorage.setItem('@account_data', JSON.stringify(accountData));
-        apiContextDispatch({
-          type: 'LOGIN',
-          loginToken: loginToken,
-          email: registerStatus.email,
-        });
-        appContextDispatch({ type: 'REGISTER_COMPLETE' });
-        navigation.navigate('RegisterComplete');
-      } catch (error) {
-        Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
-      }
+    if (registerStatus.route === 'GOOGLE_REGISTER' || registerStatus.route === 'APPLE_EMAIL_EXISTENT') {
+      navigation.navigate('BirthInformation');
     }
 
     if (registerStatus.route === 'APPLE_EMAIL_UNDEFINED') {
-      appContextDispatch({
-        type: 'REGISTER_POLICY',
-        policy: checkedList,
-      });
       navigation.navigate('AppleEmail');
     }
 
     if (registerStatus.route === 'LOCAL_REGISTER') {
-      appContextDispatch({
-        type: 'REGISTER_POLICY',
-        policy: checkedList,
-      });
       navigation.navigate('EmailPassword');
     }
   }

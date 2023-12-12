@@ -1,9 +1,7 @@
 //React
 import { useState, useContext, useRef } from 'react';
-import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Components
 import * as Device from 'expo-device';
@@ -14,11 +12,10 @@ import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { emailCheckOpen, emailCheckClose, createAppleAccount } from 'api/Login';
+import { emailCheckOpen, emailCheckClose } from 'api/Login';
 
 export default function AppleEmailScreen({ navigation }) {
 
-  const { dispatch: apiContextDispatch } = useContext(ApiContext);
   const { state: { registerStatus }, dispatch: appContextDispatch } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [invitationToken, setInvitationToken] = useState('');
@@ -54,10 +51,9 @@ export default function AppleEmailScreen({ navigation }) {
     setLoading(true);
     try {
       await emailCheckClose(email, certificationNumber, invitationToken);
-      // setIsEmailCertificated(true);
-      // setLoading(false);
-      // Alert.alert('이메일이 인증되었습니다.');
-      handleNextScreen();
+      setIsEmailCertificated(true);
+      setLoading(false);
+      Alert.alert('이메일이 인증되었습니다.');
     } catch (error) {
       setLoading(false);
       Alert.alert('인증 실패', '인증번호가 일치하지 않습니다. 다시 입력해 주시기 바랍니다.');
@@ -65,26 +61,13 @@ export default function AppleEmailScreen({ navigation }) {
   }
 
   const handleNextScreen = async function () {
-    try {
-      const deviceType = await AsyncStorage.getItem('@device_type');
-      const deviceToken = await AsyncStorage.getItem('@device_token');
-      const response = await createAppleAccount(email, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
-      const loginToken = response.data.response.accessToken;
-      const accountData = {
-        loginToken: loginToken,
-        email: email,
-      };
-      await AsyncStorage.setItem('@account_data', JSON.stringify(accountData));
-      apiContextDispatch({
-        type: 'LOGIN',
-        loginToken: loginToken,
-        email: email,
-      });
-      appContextDispatch({ type: 'REGISTER_COMPLETE' });
-      navigation.navigate('RegisterComplete');
-    } catch (error) {
-      Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
-    }
+    appContextDispatch({
+      type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
+      email: email,
+      password: undefined,
+      invitationToken: registerStatus.invitationToken,
+    });
+    navigation.navigate('BirthInformation');
   }
 
   return (
