@@ -125,30 +125,6 @@ export const emailCheckClose = async function (email, certificationNumber, email
     }
 }
 
-export const checkPassportInformation = async function (name, birth, passportNumber, dateOfIssue, dateOfExpiry) {
-    try {
-        let options = {
-            url: `${APIURL}/authentication/passport-check`,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            data: {
-                user_name: name,
-                birth: birth,
-                passport_number: passportNumber,
-                issue_date: dateOfIssue,
-                close_date: dateOfExpiry,
-            }
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error;
-    }
-}
-
 export const createAppleAccount = async function (email, policy, deviceType, deviceToken, apple_id) {
     try {
         let options = {
