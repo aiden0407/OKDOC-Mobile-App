@@ -34,8 +34,8 @@ export default function DoctorProfileScreen({ navigation }) {
         dispatch({ type: 'TELEMEDICINE_RESERVATION_PROFILE', profileType: 'my', profileInfo: profileData[0] });
         navigation.navigate('ProfileDetail');
       } else {
-        // 프로필 등록
-        navigation.navigate('PassportInformation');
+        // 프로필 등록 (1.1.3 버전 이후로 프로필 없는 계정 존재하지 않게 됨)
+        // navigation.navigate('PassportInformation');
       }
     } else {
       navigation.navigate('NeedLoginNavigation', {

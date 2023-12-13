@@ -25,8 +25,8 @@ export default function DoctorProfileScreen({ navigation, route }) {
         const inquiryURL = `https://walla.my/survey/ZHz5Yumm5v3vSD4vFl3F?name=${profileData?.[0]?.name}&email=${accountData.email}&doctor=${doctorInfo.department_name + ' ' + doctorInfo.name}`;
         Linking.openURL(inquiryURL)
       } else {
-        // 프로필 등록
-        navigation.navigate('PassportInformation');
+        // 프로필 등록 (1.1.3 버전 이후로 프로필 없는 계정 존재하지 않게 됨)
+        // navigation.navigate('PassportInformation');
       }
     } else {
       navigation.navigate('NeedLoginNavigation', {

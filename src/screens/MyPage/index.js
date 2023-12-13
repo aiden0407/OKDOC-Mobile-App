@@ -41,7 +41,8 @@ export default function MyPageScreen({ navigation }) {
       if (mainProfile?.id) {
         navigation.navigate('MyPageStackNavigation', { screen: 'ProfileDetail' });
       } else {
-        navigation.navigate('MyPageStackNavigation', { screen: 'PassportInformation' });
+        // 프로필 등록 (1.1.3 버전 이후로 프로필 없는 계정 존재하지 않게 됨)
+        // navigation.navigate('MyPageStackNavigation', { screen: 'PassportInformation' });
       }
     } else {
       navigation.navigate('NeedLoginNavigation', {
