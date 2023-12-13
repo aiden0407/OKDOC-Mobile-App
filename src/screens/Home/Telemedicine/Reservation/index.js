@@ -5,6 +5,7 @@ import { AppContext } from 'context/AppContext';
 import useTestAccount from 'hook/useTestAccount';
 import styled from 'styled-components/native';
 import { getCalendars } from 'expo-localization';
+// import * as Clipboard from 'expo-clipboard';
 
 //Components
 import { COLOR } from 'constants/design';
@@ -55,6 +56,25 @@ export default function ReservationScreen({ navigation, route }) {
       }
 
       setDoctorList(doctorsList);
+
+      // 각 의사마다 중복 생성되어있는 스케줄 디스플레이간 유일성 보장
+      for (const item of doctorsList) {
+        const uniqueOpenAt = new Set();
+        const uniqueSchedules = [];
+
+        if (item?.schedules) {
+          for (const schedule of item.schedules) {
+            const { open_at } = schedule;
+            if (!uniqueOpenAt.has(open_at)) {
+              uniqueSchedules.push(schedule);
+              uniqueOpenAt.add(open_at);
+            }
+          }
+          item.schedules = uniqueSchedules;
+        }
+      }
+
+      // await Clipboard.setStringAsync(JSON.stringify(doctorsList));
 
       for (let jj = 0; jj < doctorsList.length; jj++) {
         try {
