@@ -8,7 +8,7 @@ import CategoryScreen from 'screens/Home/Telemedicine/Category';
 import ReservationScreen from 'screens/Home/Telemedicine/Reservation';
 import DoctorProfileScreen from 'screens/Home/Telemedicine/DoctorProfile';
 import DoctorProfileInquiryScreen from 'screens/Home/Telemedicine/DoctorProfileInquiry';
-import PassportInformationScreen from 'screens/MyPage/PassportInformation';
+// import PassportInformationScreen from 'screens/MyPage/PassportInformation';
 import ProfileDetailScreen from 'screens/Home/Telemedicine/ProfileDetail';
 import SymptomDetailScreen from 'screens/Home/Telemedicine/SymptomDetail';
 import PaymentNotificationScreen from 'screens/Home/Telemedicine/PaymentNotification';
@@ -67,14 +67,14 @@ export default function TelemedicineReservation({ navigation }) {
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('Reservation')} />,
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="PassportInformation"
           component={PassportInformationScreen}
           options={{
             title: '프로필 등록',
             headerLeft: () => <NavigationBackArrow action={() => navigation.navigate('DoctorProfile')} />,
           }}
-        />
+        /> */}
         <Stack.Screen
           name="ProfileDetail"
           component={ProfileDetailScreen}

@@ -17,7 +17,7 @@ export default function RegisterCompleteScreen({ navigation }) {
   function handleFillInProfileDetail() {
     navigation.popToTop();
     navigation.goBack();
-    navigation.navigate('MyPageStackNavigation', { screen: 'PassportInformation' });
+    navigation.navigate('MyPageStackNavigation', { screen: 'ProfileDetail' });
   }
 
   function handleNextScreen() {
