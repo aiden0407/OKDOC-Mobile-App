@@ -217,6 +217,29 @@ export const createLocalAccount = async function (email, password, policy, devic
     }
 }
 
+export const createPatientByBirth = async function (loginToken, email, name, birth, gender) {
+    try {
+        let options = {
+            url: `${APIURL}/families/${email}/patients/${uuid.v4()}`,
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${loginToken}`
+            },
+            data: {
+                user_name: name,
+                birth: birth,
+                gender: gender,
+                relationship: '본인',
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const createPatientByPassport = async function (loginToken, email, name, birth, passportNumber, dateOfIssue, dateOfExpiry, gender) {
     try {
         let options = {
