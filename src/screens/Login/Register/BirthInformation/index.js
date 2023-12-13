@@ -119,16 +119,17 @@ export default function BirthInformationScreen({ navigation }) {
       navigation.navigate('RegisterComplete');
 
     } catch (error) {
-      //중복 프로필 생성
-      if (error.response.data.statusCode === 409) {
+      // 409 중복 프로필 생성 또는 기타 에러로 프로필 생성이 불가시 우선은 회원 탈퇴 콜을 날림
+      try {
+        await deleteFamilyAccout(loginToken, registerStatus.email);
+        apiContextDispatch({ type: 'LOGOUT' });
         try {
-          await deleteFamilyAccout(loginToken, registerStatus.email);
-          apiContextDispatch({ type: 'LOGOUT' });
-          try {
-            await AsyncStorage.removeItem('@account_data');
-          } catch (error) {
-            //console.log(error);
-          }
+          await AsyncStorage.removeItem('@account_data');
+        } catch (error) {
+          //console.log(error);
+        }
+
+        if (error.response.data.statusCode === 409) {
           Alert.alert('계정 안내', '이미 가입된 회원입니다. 로그인 혹은 계정 찾기를 진행해주시기 바랍니다.', '', [
             {
               text: '확인',
@@ -138,12 +139,12 @@ export default function BirthInformationScreen({ navigation }) {
               }
             }
           ]);
-        } catch (error) {
-          //회원 탈퇴 실패
-          Alert.alert('네트워크 에러', '프로필 생성에 실패했습니다. 관리자에게 문의해 주시기 바랍니다.');
+        } else {
+          // 프로필 생성 후 회원탈퇴 성공 => 다시 시도 요청
+          Alert.alert('네트워크 에러', '프로필 생성에 실패했습니다. 다시 시도해 주시기 바랍니다.');
         }
-      } else {
-        //중복 프로필 생성 외 프로필 생성 실패
+      } catch (error) {
+        // 회원 탈퇴 실패
         Alert.alert('네트워크 에러', '프로필 생성에 실패했습니다. 관리자에게 문의해 주시기 바랍니다.');
       }
     }
