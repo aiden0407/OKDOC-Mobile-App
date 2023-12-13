@@ -162,30 +162,6 @@ const reducer = (state, action) => {
         },
       };
 
-    case 'REGISTER_PASSPORT_INFORMATION':
-      return {
-        ...state,
-        registerStatus: {
-          ...state.registerStatus,
-          name: action.name,
-          birth: action.birth,
-          passportNumber: action.passportNumber,
-          dateOfIssue: action.dateOfIssue,
-          dateOfExpiry: action.dateOfExpiry,
-          gender: action.gender,
-        },
-      };
-
-    case 'REGISTER_PASSPORT_PHONE_NUMBER':
-      return {
-        ...state,
-        registerStatus: {
-          ...state.registerStatus,
-          countryCode: action.countryCode,
-          phoneNumber: action.phoneNumber,
-        },
-      };
-
     case 'REGISTER_COMPLETE':
       return {
         ...state,
