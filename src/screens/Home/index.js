@@ -71,11 +71,11 @@ export default function HomeScreen({ navigation }) {
       >
         <>
           {category === 'symptom' && (<>
-            <Image source={SYMPTOM[name]?.ICON} marginTop={6} width={48} height={48} />
+            <Image source={SYMPTOM[name]?.ICON} marginTop={6} width={66} height={66} />
             <Text T7 medium>{name}</Text>
           </>)}
           {category === 'medicalSubject' && (<>
-            <Image source={DEPARTMENT[name]?.ICON} marginTop={6} width={48} height={48} />
+            <Image source={DEPARTMENT[name]?.ICON} marginTop={6} width={66} height={66} />
             <Text T7 medium>{name}</Text>
           </>)}
         </>
@@ -111,15 +111,6 @@ export default function HomeScreen({ navigation }) {
                 <Icon category="medicalSubject" name="이비인후과" />
                 <Icon category="medicalSubject" name="안과" />
                 <Icon category="medicalSubject" name="소아청소년과" />
-                {/* <Icon category="symptom" name="근육통" />
-                <Icon category="medicalSubject" name="정형외과" />
-                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
-                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
-                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
-                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
-                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
-                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton>
-                <IconButton underlayColor={COLOR.GRAY5} onPress={() => {}}><></></IconButton> */}
               </IconsWrapper>
 
               <FullCategoryButton underlayColor={COLOR.GRAY5} onPress={() => handleFullCategory()}>
@@ -144,29 +135,29 @@ const BannerContainer = styled.TouchableOpacity`
 const ContentsContainer = styled.View`
   flex: 1;
   width: 100%;
-  padding: 42px 24px 0px 24px;
+  padding: 32px 24px 0px 24px;
   background-color: #FFFFFF;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 `;
 
 const IconsWrapper = styled.View`
-  width: 300px;
+  width: 324px;
   flex-flow: row wrap;
-  gap: 30px;
+  gap: 12px;
 `;
 
 const IconButton = styled.TouchableHighlight`
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 10px;
   background-color: ${COLOR.GRAY6};
   align-items: center;
 `;
 
 const FullCategoryButton = styled.TouchableHighlight`
-  margin-top: 30px;
-  width: 300px;
+  margin-top: 20px;
+  width: 324px;
   height: 56px;
   border-radius: 5px;
   background-color: ${COLOR.GRAY6};
