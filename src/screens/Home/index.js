@@ -1,5 +1,5 @@
 //React
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useRef, useCallback } from 'react';
 import { ApiContext } from 'context/ApiContext';
 import { AppContext } from 'context/AppContext';
 import { useIsFocused } from '@react-navigation/native';
@@ -9,22 +9,43 @@ import styled from 'styled-components/native';
 import * as Device from 'expo-device';
 import { COLOR } from 'constants/design';
 import { SYMPTOM, DEPARTMENT } from 'constants/service';
-import { Alert, Linking } from 'react-native';
+import { Alert, Linking, Animated, FlatList, useWindowDimensions, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { StatusBarArea, SafeArea, ContainerTop, ContainerCenter } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
+import { ExpandingDot } from 'react-native-animated-pagination-dots';
 
 //Api
 import { getProducts } from 'api/Home';
 
 //Assets
 import bannerImage1 from 'assets/images/banner_image1.png';
+import bannerImage2 from 'assets/images/banner_image2.png';
+import bannerImage3 from 'assets/images/banner_image3.png';
 
 function FocusAwareStatusBar(props) {
   const isFocused = useIsFocused();
   return isFocused && <StatusBar {...props} />;
 }
+
+const INTRO_DATA = [
+  {
+    key: '1',
+    image: bannerImage1,
+    link: 'https://insunginfo.notion.site/OK-DOC-ea3bd10f6dbf429389dfd924b29f989a?pvs=4'
+  },
+  {
+    key: '2',
+    image: bannerImage2,
+    link: 'https://www.notion.so/insunginfo/OK-DOC-ea3bd10f6dbf429389dfd924b29f989a?pvs=4#a2e7573a0a494cb59dd2ed4e0a051f51'
+  },
+  {
+    key: '3',
+    image: bannerImage3,
+    link: 'https://www.notion.so/insunginfo/OK-DOC-ea3bd10f6dbf429389dfd924b29f989a?pvs=4#10ef9357761648758dc19354c54a8558'
+  }
+];
 
 export default function HomeScreen({ navigation }) {
 
@@ -83,6 +104,24 @@ export default function HomeScreen({ navigation }) {
     )
   }
 
+  const { width } = useWindowDimensions();
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const renderItem = useCallback(
+    ({item}) => {
+      return (
+        <BannerTouchableOpacity
+          key={`banner_${item.key}`}
+          activeOpacity={0.8}
+          onPress={() => Linking.openURL(item.link)}
+        >
+          <Image source={item.image} width={300} height={100} marginLeft={10}/>
+        </BannerTouchableOpacity>
+      );
+    },
+    [width],
+  );
+  const keyExtractor = useCallback((item) => item.key, []);
+
   return (
     <>
       <StatusBarArea backgroundColor={COLOR.MAIN}>
@@ -92,8 +131,32 @@ export default function HomeScreen({ navigation }) {
       <SafeArea backgroundColor={COLOR.MAIN}>
         <ContainerTop>
 
-          <BannerContainer activeOpacity={0.8} onPress={() => Linking.openURL("https://insunginfo.notion.site/OK-DOC-ea3bd10f6dbf429389dfd924b29f989a?pvs=4")}>
-            <Image source={bannerImage1} width={300} height={100} marginLeft={20} marginBottom={10} />
+          <BannerContainer>
+            <FlatList
+              data={INTRO_DATA}
+              keyExtractor={keyExtractor}
+              showsHorizontalScrollIndicator={false}
+              onScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                {
+                  useNativeDriver: false,
+                },
+              )}
+              style={styles.flatList}
+              pagingEnabled
+              horizontal
+              decelerationRate={'normal'}
+              renderItem={renderItem}
+            />
+            <ExpandingDot
+              data={INTRO_DATA}
+              expandingDotWidth={17}
+              scrollX={scrollX}
+              inActiveDotColor={COLOR.GRAY2}
+              activeDotColor={'#FFFFFF'}
+              dotStyle={styles.dotStyles}
+              containerStyle={styles.constainerStyles}
+            />
           </BannerContainer>
 
           <ContentsContainer>
@@ -124,12 +187,35 @@ export default function HomeScreen({ navigation }) {
   );
 }
 
-const BannerContainer = styled.TouchableOpacity`
+const styles = StyleSheet.create({
+  flatList: {
+    width: 360,
+    height: 100,
+    marginBottom: 20,
+  },
+  constainerStyles: {
+    bottom: 20,
+    left: 46
+  },
+  dotStyles: {
+    width: 5,
+    height: 5,
+    borderRadius: 5,
+    marginHorizontal: 4,
+  },
+});
+
+const BannerContainer = styled.View`
   width: 100%;
   height: ${Device.osName === 'Android' ? '180px' : '130px'};
   padding-top: ${Device.osName === 'Android' ? '35px' : '0px'};
   align-items: center;
   justify-content: center;
+`;
+
+const BannerTouchableOpacity = styled.TouchableOpacity`
+  width: 360px;
+  align-items: center;
 `;
 
 const ContentsContainer = styled.View`
