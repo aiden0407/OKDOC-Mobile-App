@@ -17,7 +17,7 @@ import { getSymptoms, getDepartments } from 'api/Home';
 export default function CategoryScreen({ navigation }) {
 
   const { dispatch } = useContext(AppContext);
-  const [categoryGroup, setCategoryGroup] = useState('symptoms');
+  const [categoryGroup, setCategoryGroup] = useState('subjects');
   const [symptomsData, setSymptomsData] = useState([]);
   const [departmentsData, setdepartmentsData] = useState([]);
 
@@ -28,9 +28,12 @@ export default function CategoryScreen({ navigation }) {
   const initCategories = async function () {
     try {
       const getSymptomsResponse = await getSymptoms();
-      setSymptomsData(getSymptomsResponse.data.response);
+      const symptomList = getSymptomsResponse.data.response;
+      setSymptomsData(symptomList);
+
       const getDepartmentsResponse = await getDepartments();
-      setdepartmentsData(getDepartmentsResponse.data.response);
+      const departmentList = getDepartmentsResponse.data.response;
+      setdepartmentsData(departmentList);
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
     }
@@ -77,30 +80,30 @@ export default function CategoryScreen({ navigation }) {
     <SafeArea>
       <ContainerTop paddingHorizontal={20} paddingVertical={36}>
 
-        {categoryGroup === 'symptoms' && (
-          <ButtonsArea>
-            <SellectedButton>
-              <Text T5 bold color={COLOR.MAIN}>증상</Text>
-            </SellectedButton>
-            <UnsellectedButtonRight
-              underlayColor='transparent'
-              onPress={() => setCategoryGroup('subjects')}
-            >
-              <Text T5 color={COLOR.GRAY1}>상담과목</Text>
-            </UnsellectedButtonRight>
-          </ButtonsArea>
-        )}
-
         {categoryGroup === 'subjects' && (
           <ButtonsArea>
-            <UnsellectedButtonLeft
+            <SellectedButton>
+              <Text T5 bold color={COLOR.MAIN}>상담과목</Text>
+            </SellectedButton>
+            <UnsellectedButtonRight
               underlayColor='transparent'
               onPress={() => setCategoryGroup('symptoms')}
             >
               <Text T5 color={COLOR.GRAY1}>증상</Text>
+            </UnsellectedButtonRight>
+          </ButtonsArea>
+        )}
+
+        {categoryGroup === 'symptoms' && (
+          <ButtonsArea>
+            <UnsellectedButtonLeft
+              underlayColor='transparent'
+              onPress={() => setCategoryGroup('subjects')}
+            >
+              <Text T5 color={COLOR.GRAY1}>상담과목</Text>
             </UnsellectedButtonLeft>
             <SellectedButton>
-              <Text T5 bold color={COLOR.MAIN}>상담과목</Text>
+              <Text T5 bold color={COLOR.MAIN}>증상</Text>
             </SellectedButton>
           </ButtonsArea>
         )}
