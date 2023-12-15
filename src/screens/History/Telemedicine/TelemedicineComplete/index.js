@@ -65,12 +65,10 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
 
   const handleNextScreen = async function () {
     if (invoiceInformation) {
-      // navigation.navigate('Payment', { 
-      //   telemedicineData: telemedicineData
-      // });
-
       try {
         merchantCashlessInvoice(accountData.loginToken, telemedicineData.invoiceInfo.id);
+        refresh();
+        refreshAlarm();
         navigation.navigate('HistoryStackNavigation', { 
           screen: 'TelemedicineDetail',
           params: { telemedicineData: telemedicineData }
