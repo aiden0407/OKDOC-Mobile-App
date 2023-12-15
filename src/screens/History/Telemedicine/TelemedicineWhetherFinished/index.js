@@ -1,5 +1,7 @@
 //React
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
+import { ApiContext } from 'context/ApiContext';
+import { useIsFocused } from '@react-navigation/native';
 
 //Components
 import { COLOR } from 'constants/design'
@@ -8,18 +10,57 @@ import { SafeArea, Container, ContainerCenter } from 'components/Layout';
 import { Text } from 'components/Text';
 import { SolidButton, OutlineButton } from 'components/Button';
 
+//Api
+import { getInvoiceInformation } from 'api/History';
+
 export default function TelemedicineWhetherFinishedScreen({ navigation, route }) {
 
+  const { state: { accountData } } = useContext(ApiContext);
   const telemedicineData = route.params.telemedicineData;
+  const biddingId = telemedicineData.bidding_id;
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(600);
   const savedCallback = useRef();
 
+  const isFocused = useIsFocused();
+  let timer;
+
   useEffect(() => {
+    remainingTimeCalculator();
+    function tick() {
+      savedCallback.current();
+    }
+    timer = setInterval(tick, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  });
+
+  const callback = () => {
+    if(isFocused){
+      if (count === 1) {
+        handleFinish();
+      } else {
+        setCount(count - 1);
+      }
+    } else {
+      clearInterval(timer);
+    }
+  }
+
+  async function remainingTimeCalculator() {
     const originalTime = new Date(telemedicineData.wish_at);
-    const addedTime = new Date(originalTime.getTime() + 10 * 60 * 1000);
+    let endTime;
+    try {
+      await getInvoiceInformation(accountData.loginToken, biddingId);
+      endTime = new Date(originalTime.getTime() + 15 * 60 * 1000);
+    } catch {
+      endTime = new Date(originalTime.getTime() + 10 * 60 * 1000);
+    }
     const currentTime = new Date();
-    const remainingTime = Math.floor((addedTime - currentTime) / 1000);
+    const remainingTime = Math.floor((endTime - currentTime) / 1000);
 
     if (remainingTime < 1){
       setTimeout(() => {
@@ -30,24 +71,6 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
     } else {
       setCount(remainingTime);
       setIsLoading(false);
-    }
-
-    function tick() {
-      savedCallback.current();
-    }
-    const timer = setInterval(tick, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    savedCallback.current = callback;
-  });
-
-  const callback = () => {
-    if (count === 1) {
-      handleFinish();
-    } else {
-      setCount(count - 1);
     }
   }
 
