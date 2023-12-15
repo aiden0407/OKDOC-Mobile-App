@@ -8,10 +8,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //Components
 import * as Device from 'expo-device';
 import { COLOR, BUTTON, INPUT_BOX } from 'constants/design';
-import { Alert } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import { SafeArea, ScrollView, Container, PaddingContainer, Row, DividingLine } from 'components/Layout';
+import { SafeArea, KeyboardAvoiding, Container, PaddingContainer, Row, DividingLine } from 'components/Layout';
 import { Text } from 'components/Text';
 import { BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
@@ -153,68 +153,90 @@ export default function BirthInformationScreen({ navigation }) {
   return (
     <>
       <SafeArea>
-        <Container>
-          
+        <KeyboardAvoiding>
           <Container>
-            <PaddingContainer>
-              <Text T3 bold marginTop={30}>오케이닥 서비스 이용을 위해{'\n'}본인 정보를 기입해 주세요</Text>
 
-              <Text T6 bold marginTop={30}>한글 성명</Text>
-              <BoxInput
-                marginTop={12}
-                placeholder="한글 성명"
-                value={name}
-                onChangeText={setName}
-                returnKeyType="next"
+            <Container>
+              <PaddingContainer>
+                <Text T3 bold marginTop={30}>오케이닥 서비스 이용을 위해{'\n'}본인 정보를 기입해 주세요</Text>
+
+                <Text T6 bold marginTop={30}>한글 성명</Text>
+                <BoxInput
+                  marginTop={12}
+                  placeholder="한글 성명"
+                  value={name}
+                  onChangeText={setName}
+                  returnKeyType="next"
+                />
+                <Text T6 bold marginTop={24}>생년월일</Text>
+                <DateTimePickerOpenButton
+                  onPress={() => {
+                    Keyboard.dismiss();
+                    if(Device.osName === 'Android'){
+                      showBirthSelector();
+                    } else {
+                      setIsBirthPickerShow(true);
+                    }
+                  }} 
+                  underlayColor={COLOR.GRAY4}
+                >
+                  <Text 
+                    T6 
+                    color={(birth.toDateString() === today.toDateString() || birth > today) ? COLOR.GRAY2 : '#000000'}
+                  >
+                    {(birth.toDateString() === today.toDateString() || birth > today) ? '생년월일 8자리' : formatDateString(birth)}
+                  </Text>
+                </DateTimePickerOpenButton>
+                <Text T6 bold marginTop={24}>성별</Text>
+                <Row marginTop={12} gap={12}>
+                  <MediumSolidButtonBackground isSelected={gender === 'MALE'} onPress={() => setGender('MALE')}>
+                    <Text T6 medium={!gender === 'MALE'} bold={gender === 'MALE'} color={gender === 'MALE' ? '#FFFFFF' : COLOR.GRAY2}>남성</Text>
+                  </MediumSolidButtonBackground>
+                  <MediumSolidButtonBackground isSelected={gender === 'FEMALE'} onPress={() => setGender('FEMALE')}>
+                    <Text T6 medium={!gender === 'FEMALE'} bold={gender === 'FEMALE'} color={gender === 'FEMALE' ? '#FFFFFF' : COLOR.GRAY2}>여성</Text>
+                  </MediumSolidButtonBackground>
+                </Row>
+              </PaddingContainer>
+
+              <DividingLine marginTop={30} />
+
+              <PaddingContainer>
+                <Text T3 bold marginTop={30}>재외국민 및 사실 확인</Text>
+                <Row marginTop={20}>
+                  <AgreeRow onPress={() => setKoreanAgreement(!koreanAgreement)}>
+                    <Ionicons name="checkbox" size={22} color={koreanAgreement ? COLOR.MAIN : COLOR.GRAY3} marginRight={6} />
+                    <Text T6 medium color={koreanAgreement ? '#000000' : COLOR.GRAY1}>본인은 대한민국 국적이며, 재외국민입니다.</Text>
+                  </AgreeRow>
+                </Row>
+                <Row marginTop={-8}>
+                  <AgreeRow onPress={() => setFactAgreement(!factAgreement)}>
+                    <Ionicons name="checkbox" size={22} color={factAgreement ? COLOR.MAIN : COLOR.GRAY3} marginRight={6} />
+                    <Text T6 medium marginTop={19} color={factAgreement ? '#000000' : COLOR.GRAY1}>상기 내용은 사실이며 사실이 아닐 경우,{`\n`}발생하는 문제에 대한 책임은 본인에게 있습니다.</Text>
+                  </AgreeRow>
+                </Row>
+              </PaddingContainer>
+            </Container>
+
+            <PaddingContainer>
+              <SolidButton
+                text="회원가입"
+                marginBottom={20}
+                disabled={!validateName(name) || !gender || birth.toDateString() === today.toDateString() || birth > today || !koreanAgreement || !factAgreement}
+                action={() => handleRegister()}
               />
-              <Text T6 bold marginTop={24}>생년월일</Text>
-              <DateTimePickerOpenButton onPress={() => Device.osName === 'Android' ? showBirthSelector() : setIsBirthPickerShow(true)} underlayColor={COLOR.GRAY4}>
-                <Text T6 color={birth.toDateString() === today.toDateString() ? COLOR.GRAY2 : '#000000'}>{birth.toDateString() === today.toDateString() ? '생년월일 8자리' : formatDateString(birth)}</Text>
-              </DateTimePickerOpenButton>
-              <Text T6 bold marginTop={24}>성별</Text>
-              <Row marginTop={12} gap={12}>
-                <MediumSolidButtonBackground isSelected={gender === 'MALE'} onPress={() => setGender('MALE')}>
-                  <Text T6 medium={!gender === 'MALE'} bold={gender === 'MALE'} color={gender === 'MALE' ? '#FFFFFF' : COLOR.GRAY2}>남성</Text>
-                </MediumSolidButtonBackground>
-                <MediumSolidButtonBackground isSelected={gender === 'FEMALE'} onPress={() => setGender('FEMALE')}>
-                  <Text T6 medium={!gender === 'FEMALE'} bold={gender === 'FEMALE'} color={gender === 'FEMALE' ? '#FFFFFF' : COLOR.GRAY2}>여성</Text>
-                </MediumSolidButtonBackground>
-              </Row>
             </PaddingContainer>
 
-            <DividingLine marginTop={30} />
-
-            <PaddingContainer>
-              <Text T3 bold marginTop={30}>재외국민 및 사실 확인</Text>
-              <Row marginTop={20}>
-                <AgreeRow onPress={() => setKoreanAgreement(!koreanAgreement)}>
-                  <Ionicons name="checkbox" size={22} color={koreanAgreement ? COLOR.MAIN : COLOR.GRAY3} marginRight={6} />
-                  <Text T6 medium color={koreanAgreement ? '#000000' : COLOR.GRAY1}>본인은 대한민국 국적이며, 재외국민입니다.</Text>
-                </AgreeRow>
-              </Row>
-              <Row marginTop={-8}>
-                <AgreeRow onPress={() => setFactAgreement(!factAgreement)}>
-                  <Ionicons name="checkbox" size={22} color={factAgreement ? COLOR.MAIN : COLOR.GRAY3} marginRight={6} />
-                  <Text T6 medium  marginTop={19} color={factAgreement ? '#000000' : COLOR.GRAY1}>상기 내용은 사실이며 사실이 아닐 경우,{`\n`}발생하는 문제에 대한 책임은 본인에게 있습니다.</Text>
-                </AgreeRow>
-              </Row>
-            </PaddingContainer>
           </Container>
-
-          <PaddingContainer>
-            <SolidButton
-              text="회원가입"
-              marginBottom={20}
-              disabled={!validateName(name) || !gender || birth.toDateString() === today.toDateString() || !koreanAgreement || !factAgreement}
-              action={() => handleRegister()}
-            />
-          </PaddingContainer>
-
-        </Container>
+        </KeyboardAvoiding>
       </SafeArea>
 
       {isBirthPickerShow && (
-        <BottomSheetBackground onPress={() => setIsBirthPickerShow(false)}>
+        <BottomSheetBackground onPress={() => {
+          setIsBirthPickerShow(false);
+          if(birth.toDateString() === today.toDateString() || birth > today){
+            Alert.alert('안내', '해당 날짜로는 지정하실 수 없습니다.');
+          }
+        }}>
           <DateTimePickerContainer>
             <DateTimePicker
               display="spinner"
@@ -225,7 +247,12 @@ export default function BirthInformationScreen({ navigation }) {
             />
             <CustomSolidButton
               underlayColor={COLOR.SUB1}
-              onPress={() => setIsBirthPickerShow(false)}
+              onPress={() => {
+                setIsBirthPickerShow(false);
+                if(birth.toDateString() === today.toDateString() || birth > today){
+                  Alert.alert('안내', '해당 날짜로는 지정하실 수 없습니다.');
+                }
+              }}
             >
               <Text T5 medium color="#FFFFFF">확인</Text>
             </CustomSolidButton>
