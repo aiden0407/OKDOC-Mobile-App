@@ -7,6 +7,9 @@ import { StatusBarArea, Container } from 'components/Layout';
 import { WebView } from 'react-native-webview';
 import * as ScreenOrientation from 'expo-screen-orientation';
 
+//Api
+import { getInvoiceInformation } from 'api/History';
+
 export default function TelemedicineRoomScreen({ navigation, route }) {
 
   const { state: { accountData } } = useContext(ApiContext);
@@ -33,14 +36,21 @@ export default function TelemedicineRoomScreen({ navigation, route }) {
     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
 
     const originalTime = new Date(telemedicineData.wish_at);
-    let addedTime;
+    let endTime;
+
     if(telemedicineData?.invoiceInfo){
-      addedTime = new Date(originalTime.getTime() + 15 * 60 * 1000);
+      endTime = new Date(originalTime.getTime() + 15 * 60 * 1000);
     } else {
-      addedTime = new Date(originalTime.getTime() + 10 * 60 * 1000);
+      try {
+        await getInvoiceInformation(accountData.loginToken, biddingId);
+        endTime = new Date(originalTime.getTime() + 15 * 60 * 1000);
+      } catch (error) {
+        endTime = new Date(originalTime.getTime() + 10 * 60 * 1000);
+      }
     }
+    
     const currentTime = new Date();
-    const remainingTime = Math.floor((addedTime - currentTime) / 1000);
+    const remainingTime = Math.floor((endTime - currentTime) / 1000);
 
     if(remainingTime > 0){
       setTimeout(() => {
