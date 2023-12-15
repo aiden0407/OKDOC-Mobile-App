@@ -165,15 +165,15 @@ export default function HomeScreen({ navigation }) {
 
             <ContainerCenter>
               <IconsWrapper>
-                <Icon category="symptom" name="감기" />
-                <Icon category="symptom" name="두통" />
-                <Icon category="symptom" name="고열/미열" />
-                <Icon category="symptom" name="복통" />
-                <Icon category="symptom" name="소화불량" />
-                <Icon category="symptom" name="몸살" />
-                <Icon category="medicalSubject" name="이비인후과" />
-                <Icon category="medicalSubject" name="안과" />
+                <Icon category="medicalSubject" name="가정의학과" />
                 <Icon category="medicalSubject" name="소아청소년과" />
+                <Icon category="medicalSubject" name="산부인과" />
+                <Icon category="medicalSubject" name="이비인후과" />
+                <Icon category="medicalSubject" name="외과" />
+                <Icon category="medicalSubject" name="흉부외과" />
+                <Icon category="medicalSubject" name="신장내과" />
+                <Icon category="medicalSubject" name="소화기내과" />
+                <Icon category="medicalSubject" name="정신건강의학과" />
               </IconsWrapper>
 
               <FullCategoryButton underlayColor={COLOR.GRAY5} onPress={() => handleFullCategory()}>
