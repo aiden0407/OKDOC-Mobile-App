@@ -19,6 +19,7 @@ import arthralgiaIcon from 'assets/icons/symptoms/arthralgia.png';
 
 //medical-subjects icons
 import internalMedicineIcon from 'assets/icons/medical-subjects/internal-medicine.png';
+import internalMedicineIcon2 from 'assets/icons/medical-subjects/internal-medicine2.png';
 import otolaryngologyIcon from 'assets/icons/medical-subjects/otolaryngology.png';
 import surgeryIcon from 'assets/icons/medical-subjects/surgery.png';
 import dentistryIcon from 'assets/icons/medical-subjects/dentistry.png';
@@ -49,6 +50,10 @@ import neurologyIcon from 'assets/icons/medical-subjects/neurology.png';
 import neurosurgeryIcon from 'assets/icons/medical-subjects/neurosurgery.png';
 import nephrologyIcon from 'assets/icons/medical-subjects/nephrology.png';
 import radiologyIcon from 'assets/icons/medical-subjects/radiology.png';
+import breastSurgeryIcon from 'assets/icons/medical-subjects/breast-surgery.png';
+import vascularTransplantSurgeryIcon from 'assets/icons/medical-subjects/vascular-transplant-surgery.png';
+import oncologyIcon from 'assets/icons/medical-subjects/oncology.png';
+
 
 export const POLICY = {
     'TERMS_OF_SERVICE': {
@@ -177,7 +182,7 @@ export const DEPARTMENT = {
     },
     '소화기내과': {
         NAME: 'internalMedicine',
-        ICON: internalMedicineIcon,
+        ICON: internalMedicineIcon2,
     },
     '신경과': {
         NAME: 'neurology',
@@ -202,7 +207,11 @@ export const DEPARTMENT = {
     '외과': {
         NAME: 'surgery',
         ICON: surgeryIcon,
-        DEPARTMENT: ['외과', '유방외과', '중환자외상외과', '혈관이식외과'],
+        DEPARTMENT: ['외과', '중환자외상외과'],
+    },
+    '유방외과': {
+        NAME: 'breastSurgery',
+        ICON: breastSurgeryIcon,
     },
     '이비인후과': {
         NAME: 'otolaryngology',
@@ -221,8 +230,8 @@ export const DEPARTMENT = {
         ICON: orthopedicsIcon
     },
     '종양내과': {
-        NAME: 'pathology',
-        ICON: pathologyIcon
+        NAME: 'oncology',
+        ICON: oncologyIcon
     },
     '치과': {
         NAME: 'dentistry',
@@ -231,6 +240,10 @@ export const DEPARTMENT = {
     '피부과': {
         NAME: 'dermatology',
         ICON: dermatologyIcon
+    },
+    '혈관이식외과': {
+        NAME: 'vascularTransplantSurgery',
+        ICON: vascularTransplantSurgeryIcon
     },
     '혈액종양내과': {
         NAME: 'hematoOncology',
