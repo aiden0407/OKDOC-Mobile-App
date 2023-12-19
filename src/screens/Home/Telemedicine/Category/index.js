@@ -33,6 +33,13 @@ export default function CategoryScreen({ navigation }) {
 
       const getDepartmentsResponse = await getDepartments();
       const departmentList = getDepartmentsResponse.data.response;
+      departmentList.sort((a, b) => {
+        if (a.name > b.name) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
       setdepartmentsData(departmentList);
     } catch (error) {
       Alert.alert('네트워크 오류로 인해 정보를 불러오지 못했습니다.');
@@ -53,7 +60,7 @@ export default function CategoryScreen({ navigation }) {
   }
 
   function Icon({ category, name }) {
-    if (name === '유방외과' || name === '중환자외상외과' || name === '혈관이식외과') {
+    if (name === '중환자외상외과') {
       return;
     } else {
       return (
