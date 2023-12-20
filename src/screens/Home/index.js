@@ -93,11 +93,11 @@ export default function HomeScreen({ navigation }) {
         <>
           {category === 'symptom' && (<>
             <Image source={SYMPTOM[name]?.ICON} marginTop={6} width={66} height={66} />
-            <Text T7 medium>{name}</Text>
+            <Text T6 medium>{name}</Text>
           </>)}
           {category === 'medicalSubject' && (<>
             <Image source={DEPARTMENT[name]?.ICON} marginTop={6} width={66} height={66} />
-            <Text T7 medium>{name}</Text>
+            <Text T6 medium>{name}</Text>
           </>)}
         </>
       </IconButton>
