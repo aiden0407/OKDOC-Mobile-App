@@ -54,60 +54,50 @@ export default function ReservationScreen({ navigation, route }) {
         doctorsList = doctorsList.filter(obj => obj.hospital_name !== '오케이닥');
         doctorsList = doctorsList.filter(obj => obj.self_introduction_title !== 'da4202bc-a4f8-46a5-b7be-afa9d9e1cfe6');
       }
-
       setDoctorList(doctorsList);
 
-      // 각 의사마다 중복 생성되어있는 스케줄 디스플레이간 유일성 보장
-      for (const item of doctorsList) {
-        const uniqueOpenAt = new Set();
-        const uniqueSchedules = [];
+      for (const doctor of doctorsList) {
+        if (doctor?.schedules) {
+          // 20분 이내 또는 3주 이후의 스케줄 제거
+          const currentTime = Date.now();
+          const threeWeeksAfter = new Date();
+          threeWeeksAfter.setDate(threeWeeksAfter.getDate() + 21);
+          if (useTestAccount(accountData.email)) {
+            doctor.schedules = doctor.schedules.filter(item => ((new Date(item.open_at) - currentTime > 2 * 60 * 1000) && new Date(item.open_at) < threeWeeksAfter));
+          } else {
+            doctor.schedules = doctor.schedules.filter(item => ((new Date(item.open_at) - currentTime > 20 * 60 * 1000) && new Date(item.open_at) < threeWeeksAfter));
+          }
 
-        if (item?.schedules) {
-          for (const schedule of item.schedules) {
+          // 각 의사마다 중복 생성되어있는 스케줄 디스플레이간 유일성 보장
+          const uniqueOpenAt = new Set();
+          const uniqueSchedules = [];
+          for (const schedule of doctor.schedules) {
             const { open_at } = schedule;
             if (!uniqueOpenAt.has(open_at)) {
               uniqueSchedules.push(schedule);
               uniqueOpenAt.add(open_at);
             }
           }
-          item.schedules = uniqueSchedules;
+          doctor.schedules = uniqueSchedules;
+
+          // 이미 예약이 잡힌 스케줄 제거
+          try {
+            const response = await getScheduleByDoctorId(doctor.id);
+            const appointmentsList = response.data.response;
+            const updatedSchedule = doctor.schedules.filter((slot) => {
+              return !appointmentsList.some((appt) => (new Date(appt.hospital_treatment_room.start_time).getTime() === new Date(slot.open_at).getTime()));
+            });
+            doctor.schedules = updatedSchedule;
+          } catch (error) {
+            // console.log(error.data);
+          }
         }
       }
 
       // await Clipboard.setStringAsync(JSON.stringify(doctorsList));
 
-      for (let jj = 0; jj < doctorsList.length; jj++) {
-        try {
-          const response = await getScheduleByDoctorId(doctorsList[jj].id);
-          const appointmentsList = response.data.response;
-          // 3주 이후의 스케줄 제거
-          const threeWeeksAfter = new Date();
-          threeWeeksAfter.setDate(threeWeeksAfter.getDate() + 21);
-          const updatedSchedule = doctorsList[jj].schedules.filter(item => new Date(item.open_at) < threeWeeksAfter);
-          // 이미 예약이 잡힌 스케줄 제거
-          doctorsList[jj].schedules = updatedSchedule.filter((slot) => {
-            return !appointmentsList.some((appt) => (new Date(appt.hospital_treatment_room.start_time).getTime() === new Date(slot.open_at).getTime()));
-          });
-        } catch (error) {
-          // console.log(error.data);
-        }
-      }
-
       doctorsList.forEach((doctor) => {
         doctor.schedules.forEach((schedule) => {
-
-          const wishTime = new Date(schedule.open_at).getTime();
-          const currentTime = Date.now();
-          if (useTestAccount(accountData.email)) {
-            if (wishTime - currentTime < 2 * 60 * 1000) {
-              return null;
-            }
-          } else {
-            if (wishTime - currentTime < 20 * 60 * 1000) {
-              return null;
-            }
-          }
-
           const date = new Date(schedule.open_at);
           const day = date.toLocaleDateString('ko-KR');
           const weekday = date.toLocaleDateString('ko-KR', { weekday: 'long' }).slice(-3);
