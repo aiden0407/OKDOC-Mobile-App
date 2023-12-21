@@ -80,10 +80,14 @@ export default function ReservationScreen({ navigation, route }) {
         try {
           const response = await getScheduleByDoctorId(doctorsList[jj].id);
           const appointmentsList = response.data.response;
-          const updatedSchedule = doctorsList[jj].schedules.filter((slot) => {
+          // 3주 이후의 스케줄 제거
+          const threeWeeksAfter = new Date();
+          threeWeeksAfter.setDate(threeWeeksAfter.getDate() + 21);
+          const updatedSchedule = doctorsList[jj].schedules.filter(item => new Date(item.open_at) < threeWeeksAfter);
+          // 이미 예약이 잡힌 스케줄 제거
+          doctorsList[jj].schedules = updatedSchedule.filter((slot) => {
             return !appointmentsList.some((appt) => (new Date(appt.hospital_treatment_room.start_time).getTime() === new Date(slot.open_at).getTime()));
           });
-          doctorsList[jj].schedules = updatedSchedule;
         } catch (error) {
           // console.log(error.data);
         }
