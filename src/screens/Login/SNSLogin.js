@@ -5,6 +5,7 @@ import { AppContext } from 'context/AppContext';
 import { getLocales } from 'expo-localization';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
+import * as Clipboard from 'expo-clipboard';
 
 //SNS Login
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -255,8 +256,9 @@ export default function LoginPage({ navigation }) {
                       AppleAuthentication.AppleAuthenticationScope.EMAIL,
                     ],
                   });
+                  await Clipboard.setStringAsync(JSON.stringify(credential));
                   // const credential = {"user":"001658.0c0a45583d304171a0a76e70bf045e55.0519","state":null,"identityToken":"eyJraWQiOiJZdXlYb1kiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoia3IuY28uaW5zdW5naW5mby5va2RvYyIsImV4cCI6MTcwMDAzNTY1MiwiaWF0IjoxNjk5OTQ5MjUyLCJzdWIiOiIwMDE2NTguMGMwYTQ1NTgzZDMwNDE3MWEwYTc2ZTcwYmYwNDVlNTUuMDUxOSIsImNfaGFzaCI6Ii11WGl6SnVCRG82RFVkQWpIVWdORWciLCJlbWFpbCI6Ind4cmJ6cmd5bm5AcHJpdmF0ZXJlbGF5LmFwcGxlaWQuY29tIiwiZW1haWxfdmVyaWZpZWQiOiJ0cnVlIiwiaXNfcHJpdmF0ZV9lbWFpbCI6InRydWUiLCJhdXRoX3RpbWUiOjE2OTk5NDkyNTIsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.jl1HonixQNKkRGYAJQ_k-n7Al-ZM6z_g_pJgwDuWDxZKJMqv0ozGvwI6CVMR88AZCmaJ2r1Z2pziH_K1XW6WjWDzexxFOa6ksf6L-dTOFyPAO7IO2XjoelOB4mllDf_G5So8k_rB0ytGxi2klYF493BLvh_K34msqcEjqVHfjvvgGZloc8CL2wDNBtlX2WWW2JOCTQ7VHBP4ZnkYc-yfyEm25CiBPI8LvwZeh03eFW1yPULaFwxRS-MnOyjtwxKbQMqRGkC0EF9YcoXjuiWLx0YnU5xwGMc6SO4_c7xfZU3_nAyzT6oRdughARW2VDMGE3QOXBUdZFruCEAGrIieQg","fullName":{"nameSuffix":null,"middleName":null,"familyName":null,"givenName":null,"namePrefix":null,"nickname":null},"authorizationCode":"cb1bfb13eee504885ab4b224b982eea91.0.srwvy.5Odl5_TY84zm-6u5ekk8Fg","email":null,"realUserStatus":1}
-                  handleSignInWithApple(credential);
+                  // handleSignInWithApple(credential);
                 } catch (e) {
                   if (e.code === 'ERR_REQUEST_CANCELED') {
                     // handle that the user canceled the sign-in flow
