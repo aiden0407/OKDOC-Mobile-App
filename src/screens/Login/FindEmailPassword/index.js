@@ -106,11 +106,11 @@ export default function FindEmailPasswordScreen({ navigation }) {
     try {
       const response = await findFamilyAccount(findEmailName, Number(findEmailBirth.replaceAll("-", "")));
       const familyAccountArray = response.data.response;
-      const pastHistory = [];
+      const emailList = [];
       familyAccountArray.forEach((familyAccount) => {
-        pastHistory.push(maskEmail(familyAccount));
+        emailList.push(maskEmail(familyAccount));
       });
-      setFoundEmail(pastHistory);
+      setFoundEmail(emailList);
       setIsFindEmailSubmitted(true);
     } catch (error) {
       if (error.response.data.statusCode === 404) {

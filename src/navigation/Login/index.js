@@ -15,6 +15,7 @@ import AppleEmailScreen from 'screens/Login/Register/AppleEmail';
 // import PassportInformationScreen from 'screens/Login/Register/PassportInformation';
 // import PassInformationScreen from 'screens/Login/Register/PassInformation';
 import BirthInformationScreen from 'screens/Login/Register/BirthInformation';
+import DuplicatedProfileScreen from 'screens/Login/Register/DuplicatedProfile';
 import RegisterCompleteScreen from 'screens/Login/Register/RegisterComplete';
 
 //Components
@@ -136,6 +137,14 @@ export default function LoginStackNavigation({ navigation }) {
           options={{
             title: '회원가입',
             headerLeft: () => <NavigationBackArrow action={()=>handlePassportPassCertifiactionBack()} />,
+          }}
+        />
+        <Stack.Screen
+          name="DuplicatedProfile"
+          component={DuplicatedProfileScreen}
+          options={{
+            headerShown: false,
+            gestureEnabled: false
           }}
         />
         <Stack.Screen

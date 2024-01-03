@@ -17,7 +17,7 @@ import { BoxInput } from 'components/TextInput';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { createAppleAccount, createGoogleAccount, createLocalAccount, createPatientByBirth } from 'api/Login';
+import { findFamilyAccount, createAppleAccount, createGoogleAccount, createLocalAccount, createPatientByBirth } from 'api/Login';
 import { deleteFamilyAccout } from 'api/MyPage';
 
 export default function BirthInformationScreen({ navigation }) {
@@ -64,26 +64,68 @@ export default function BirthInformationScreen({ navigation }) {
     return `${year}-${month}-${day}`;
   }
 
+  function maskEmail(familyAccount) {
+    const [username, domain] = familyAccount.id.split('@');
+    const usernameLength = username.length;
+    let maskedUsername = username.slice(0, 2);
+    if (usernameLength > 2) {
+      maskedUsername += '*'.repeat(usernameLength - 2);
+    }
+    maskedUsername += username.charAt(usernameLength - 1);
+
+    if (familyAccount?.apple_id) {
+      return maskedUsername + '@' + domain + ' (애플 로그인)';
+    } else if (familyAccount?.google_id) {
+      return maskedUsername + '@' + domain + ' (구글 로그인)';
+    } else {
+      return maskedUsername + '@' + domain;
+    }
+  }
+
   const handleRegister = async function () {
     try {
-      const deviceType = await AsyncStorage.getItem('@device_type');
-      const deviceToken = await AsyncStorage.getItem('@device_token');
-      let createLocalAccountResponse;
+      const response = await findFamilyAccount(name, formatDate(birth));
+      const familyAccountArray = response.data.response;
+      const emailList = [];
+      familyAccountArray.forEach((familyAccount) => {
+        emailList.push(maskEmail(familyAccount));
+      });
 
-      if (registerStatus.route === 'APPLE_EMAIL_EXISTENT' || registerStatus.route === 'APPLE_EMAIL_UNDEFINED') {
-        createLocalAccountResponse = await createAppleAccount(registerStatus.email, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
-      }
-      if (registerStatus.route === 'GOOGLE_REGISTER') {
-        createLocalAccountResponse = await createGoogleAccount(registerStatus.email, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
-      }
-      if (registerStatus.route === 'LOCAL_REGISTER') {
-        createLocalAccountResponse = await createLocalAccount(registerStatus.email, registerStatus.password, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
-      }
+      navigation.navigate('DuplicatedProfile', {
+        emailList: emailList,
+        name: name,
+        birth: formatDate(birth),
+        gender: gender,
+      });
 
-      const loginToken = createLocalAccountResponse.data.response.accessToken;
-      initPatient(loginToken);
     } catch (error) {
-      Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+      if (error.response.data.statusCode === 404) {
+        // 해당 정보로 등록된 유저가 존재하지 않으므로 바로 가입
+        try {
+          const deviceType = await AsyncStorage.getItem('@device_type');
+          const deviceToken = await AsyncStorage.getItem('@device_token');
+          let createLocalAccountResponse;
+    
+          if (registerStatus.route === 'APPLE_EMAIL_EXISTENT' || registerStatus.route === 'APPLE_EMAIL_UNDEFINED') {
+            createLocalAccountResponse = await createAppleAccount(registerStatus.email, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
+          }
+          if (registerStatus.route === 'GOOGLE_REGISTER') {
+            createLocalAccountResponse = await createGoogleAccount(registerStatus.email, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
+          }
+          if (registerStatus.route === 'LOCAL_REGISTER') {
+            createLocalAccountResponse = await createLocalAccount(registerStatus.email, registerStatus.password, registerStatus.policy, deviceType, deviceToken, registerStatus.invitationToken);
+          }
+    
+          const loginToken = createLocalAccountResponse.data.response.accessToken;
+          initPatient(loginToken);
+
+        } catch (error) {
+          Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+        }
+
+      } else {
+        Alert.alert('계정 생성에 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+      }
     }
   }
 
