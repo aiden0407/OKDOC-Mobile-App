@@ -386,7 +386,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
                     <p class='content'>[○]의사 [ ]치과의사 [ ]한의사 면허번호 : 제 ${telemedicineData.opinion.treatment_appointment.doctor.id} 호</p>
                     <br>
                     <p class='content'>
-                        성명:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${telemedicineData.opinion.treatment_appointment.doctor.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명)
+                        성명:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${telemedicineData.opinion.treatment_appointment.doctor.name}
                     </p>
                 </div>
             </div>

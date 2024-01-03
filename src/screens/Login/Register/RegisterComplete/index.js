@@ -34,7 +34,7 @@ export default function RegisterCompleteScreen({ navigation }) {
           <Text T2 bold marginTop={18}>환영합니다</Text>
           <Text T3 medium color={COLOR.GRAY1} marginTop={6}>회원가입이 완료되었습니다</Text>
 
-          <Text T6 center color={COLOR.GRAY1} marginTop={30}>더 빠른 이용을 위헤{'\n'}추가 설정을 진행 하시겠습니까?</Text>
+          <Text T6 center color={COLOR.GRAY1} marginTop={30}>더 빠른 이용을 위해{'\n'}추가 설정을 진행 하시겠습니까?</Text>
           <OutlineButton
             large
             marginTop={18}

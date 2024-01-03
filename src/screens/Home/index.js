@@ -161,7 +161,7 @@ export default function HomeScreen({ navigation }) {
 
           <ContentsContainer>
             <Text T6 color={COLOR.GRAY1}>해외에서도 한국 대학병원 전문의에게</Text>
-            <Text T3 bold marginTop={6}>비대면 의료 상담</Text>
+            <Text T3 bold>비대면 의료 상담</Text>
 
             <ContainerCenter>
               <IconsWrapper>
@@ -221,16 +221,16 @@ const BannerTouchableOpacity = styled.TouchableOpacity`
 const ContentsContainer = styled.View`
   flex: 1;
   width: 100%;
-  padding: 32px 24px 0px 24px;
+  padding: 24px 24px 0px 24px;
   background-color: #FFFFFF;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 `;
 
 const IconsWrapper = styled.View`
-  width: 324px;
+  width: 320px;
   flex-flow: row wrap;
-  gap: 12px;
+  gap: 10px;
 `;
 
 const IconButton = styled.TouchableHighlight`
@@ -242,7 +242,7 @@ const IconButton = styled.TouchableHighlight`
 `;
 
 const FullCategoryButton = styled.TouchableHighlight`
-  margin-top: 20px;
+  margin-top: 10px;
   width: 324px;
   height: 56px;
   border-radius: 5px;

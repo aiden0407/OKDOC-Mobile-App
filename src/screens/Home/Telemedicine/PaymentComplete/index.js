@@ -114,7 +114,14 @@ export default function PaymentCompleteScreen({ navigation, route }) {
             </Row>
             <Row align marginTop={12}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
-              <Text T6 medium>2023/{telemedicineReservationStatus?.date} ({telemedicineReservationStatus?.time})</Text>
+              <Text T6 medium>
+                {new Date(biddingData.wish_at).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('. ', '/').slice(0, -1)}&nbsp;
+                ({
+                  new Date(biddingData.wish_at).toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit' }).startsWith('24:')
+                  ? new Date(biddingData.wish_at).toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit' }).replace('24:', '00:')
+                  : new Date(biddingData.wish_at).toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit' })
+                })
+              </Text>
             </Row>
             <Row align marginTop={12}>
               <Ionicons name="checkmark-sharp" size={18} color={COLOR.MAIN} marginRight={6} />
