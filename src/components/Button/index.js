@@ -35,8 +35,8 @@ export function SolidButton({ text, action, marginTop, marginBottom, large, medi
 
 const SolidButtonBackground = styled.TouchableHighlight`
   ${(props) => buttonSizeSelector(props.large, props.medium, props.tiny)}
-  margin-top: ${(props) => `${props.marginTop ?? 0}px`};
-  margin-bottom: ${(props) => `${props.marginBottom ?? 0}px`};
+  ${(props) => props.marginTop && `margin-top: ${props.marginTop}px;`}
+  ${(props) => props.marginBottom && `margin-bottom: ${props.marginBottom}px;`}
   background-color: ${(props) => props.disabled ? COLOR.GRAY4 : COLOR.MAIN};
   align-items: center;
   justify-content: center;
@@ -67,8 +67,8 @@ export function OutlineButton({ text, action, marginTop, marginBottom, large, me
 
 const OutlineButtonBackground = styled.TouchableHighlight`
   ${(props) => buttonSizeSelector(props.large, props.medium, props.tiny)}
-  margin-top: ${(props) => `${props.marginTop ?? 0}px`};
-  margin-bottom: ${(props) => `${props.marginBottom ?? 0}px`};
+  ${(props) => props.marginTop && `margin-top: ${props.marginTop}px;`}
+  ${(props) => props.marginBottom && `margin-bottom: ${props.marginBottom}px;`}
   border-width: 1.5px;
   border-color: ${(props) => props.disabled ? COLOR.GRAY3 : COLOR.MAIN};
   background-color: #FFFFFF;
@@ -101,8 +101,8 @@ export function SubColorButton({ text, action, marginTop, marginBottom, large, m
 
 const SubColorButtonBackground = styled.TouchableHighlight`
   ${(props) => buttonSizeSelector(props.large, props.medium, props.tiny)}
-  margin-top: ${(props) => `${props.marginTop ?? 0}px`};
-  margin-bottom: ${(props) => `${props.marginBottom ?? 0}px`};
+  ${(props) => props.marginTop && `margin-top: ${props.marginTop}px;`}
+  ${(props) => props.marginBottom && `margin-bottom: ${props.marginBottom}px;`}
   background-color: ${(props) => props.disabled ? COLOR.GRAY6 : COLOR.SUB3};
   align-items: center;
   justify-content: center;
