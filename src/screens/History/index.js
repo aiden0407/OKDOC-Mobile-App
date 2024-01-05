@@ -306,7 +306,7 @@ export default function HistoryScreen({ navigation }) {
                   <Text T6 medium center color={COLOR.GRAY1} marginTop={12}>해외에서도 비대면으로{'\n'}한국 대학병원 전문의를 만나보세요</Text>
                   <SolidButton
                     large
-                    marginTop={24}
+                    mTop={24}
                     text="상담 예약"
                     action={() => handleMakeReservation()}
                   />

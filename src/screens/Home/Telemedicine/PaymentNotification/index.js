@@ -236,8 +236,8 @@ export default function PaymentNotificationScreen({ navigation }) {
             </RefundPolicyNotificationContainer>
 
             <SolidButton
-              marginTop={60}
-              marginBottom={20}
+              mTop={60}
+              mBottom={20}
               text="결제하기"
               disabled={!paymentAgreement || !refundAgreement}
               action={() => setProcessStatus('NOTICE')}

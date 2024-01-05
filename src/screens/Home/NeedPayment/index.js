@@ -43,7 +43,7 @@ export default function NeedPaymentScreen({ navigation, route }) {
 
         <SolidButton
           text="상담내역 확인하기"
-          marginBottom={20}
+          mBottom={20}
           disabled={false}
           action={() => handleInvoicePaymnt()}
         />

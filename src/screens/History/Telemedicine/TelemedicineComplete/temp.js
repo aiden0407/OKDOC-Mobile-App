@@ -86,7 +86,7 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
           <Text T6 center color={COLOR.GRAY1} marginTop={18}>상담 중 좋았던 점이나{'\n'}불편한 점이 있었다면  알려주세요</Text>
           <OutlineButton
             large
-            marginTop={24}
+            mTop={24}
             text="고객센터 연결하기"
             action={() => handleFeedback()}
           />
@@ -95,7 +95,7 @@ export default function TelemedicineCompleteScreen({ navigation, route }) {
 
         <SolidButton
           text={invoiceInformation?"추가요금 결제하기":"다음으로"}
-          marginBottom={20}
+          mBottom={20}
           disabled={false}
           action={() => handleNextScreen()}
         />

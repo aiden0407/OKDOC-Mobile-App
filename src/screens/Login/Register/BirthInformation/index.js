@@ -262,7 +262,7 @@ export default function BirthInformationScreen({ navigation }) {
             <PaddingContainer>
               <SolidButton
                 text="회원가입"
-                marginBottom={20}
+                mBottom={20}
                 disabled={!validateName(name) || !gender || birth.toDateString() === today.toDateString() || birth > today || !koreanAgreement || !factAgreement}
                 action={() => handleRegister()}
               />

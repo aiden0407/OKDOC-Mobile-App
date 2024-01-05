@@ -235,7 +235,7 @@ export default function RegisterPolicyScreen({ navigation }) {
 
         <SolidButton
           text={(registerStatus.route === 'APPLE_EMAIL_EXISTENT' || registerStatus.route === 'GOOGLE_REGISTER') ? "회원가입" : "확인"}
-          marginBottom={20}
+          mBottom={20}
           disabled={!meetRequirement}
           action={() => handleNotice1()}
         />

@@ -199,7 +199,7 @@ export default function EmailPasswordScreen({ navigation }) {
 
           <SolidButton
             text="회원가입"
-            marginBottom={20}
+            mBottom={20}
             disabled={!isEmailCertificated || !validatePassword(password) || password !== passwordCheck}
             action={() => handleNextScreen()}
           />

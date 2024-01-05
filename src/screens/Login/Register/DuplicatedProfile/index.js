@@ -146,8 +146,8 @@ export default function RegisterCompleteScreen({ navigation, route }) {
           action={() => handleRegister()}
         />
         <OutlineButton
-          marginTop={12}
-          marginBottom={20}
+          mTop={12}
+          mBottom={20}
           text="위 계정으로 로그인하기"
           action={() => handleGoBack()}
         />

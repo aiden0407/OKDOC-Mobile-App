@@ -134,7 +134,7 @@ export default function ChangePasswordScreen({ navigation }) {
           <PaddingContainer>
             <SolidButton
               text="저장"
-              marginBottom={20}
+              mBottom={20}
               disabled={!currentPassword || !validatePassword(newPassword) || newPassword !== newPasswordCheck}
               action={() => createChangePasswordAlert()}
             />

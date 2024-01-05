@@ -506,7 +506,7 @@ export default function TelemedicineDetailScreen({ navigation, route }) {
               ? <PaddingContainer>
                 <SolidButton
                   text="추가 결제하기"
-                  marginTop={24}
+                  mTop={24}
                   action={() => handleInvoicePaymnt()}
                 />
               </PaddingContainer>

@@ -50,7 +50,7 @@ export default function PassportPhoneCertifiactionScreen({ navigation }) {
 
         <SolidButton
           text="다음"
-          marginBottom={20}
+          mBottom={20}
           disabled={!allPolicyAgreement}
           action={() => handleNextScreen()}
         />

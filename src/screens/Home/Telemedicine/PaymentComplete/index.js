@@ -133,7 +133,7 @@ export default function PaymentCompleteScreen({ navigation, route }) {
         <PaddingContainer>
           <SolidButton
             text="확인"
-            marginBottom={20}
+            mBottom={20}
             action={() => handleConfirm()}
           />
         </PaddingContainer>

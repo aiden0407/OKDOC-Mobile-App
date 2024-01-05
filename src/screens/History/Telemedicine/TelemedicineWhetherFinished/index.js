@@ -116,13 +116,13 @@ export default function TelemedicineWhetherFinishedScreen({ navigation, route })
           <Text T6 center color={COLOR.GRAY1} marginTop={12}>상담 종료를 확정해야만 통화방이 닫히고{'\n'}의사가 작성한 소견서를 확인할 수 있습니다.</Text>
           <OutlineButton
             large
-            marginTop={24}
+            mTop={24}
             text="상담실 재입장 하기"
             action={() => handleNotFinish()}
           />
           <SolidButton
             large
-            marginTop={6}
+            mTop={6}
             text="상담 종료"
             disabled={false}
             action={() => handleFinish()}

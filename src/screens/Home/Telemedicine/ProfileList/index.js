@@ -68,7 +68,7 @@ export default function ProfileListScreen({ navigation, route }) {
         </Container>
 
         <SolidButton
-          marginBottom={20}
+          mBottom={20}
           disabled={profileIndex === null}
           text="다음"
           action={() => handleSelectProfile(profileIndex)}

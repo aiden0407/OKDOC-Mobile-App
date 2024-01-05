@@ -140,7 +140,7 @@ export default function SymptomDetailScreen({ navigation }) {
 
           <SolidButton
             text="다음"
-            marginBottom={20}
+            mBottom={20}
             disabled={!symptom}
             action={() => handleSubmitSymptomDetail()}
           />

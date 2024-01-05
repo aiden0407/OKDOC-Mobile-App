@@ -159,7 +159,7 @@ export default function AppleEmailScreen({ navigation }) {
 
           <SolidButton
             text="회원 가입"
-            marginBottom={20}
+            mBottom={20}
             disabled={!isEmailCertificated}
             action={() => handleNextScreen()}
           />

@@ -237,7 +237,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
 
                 <SolidButton
                   text="확인"
-                  marginBottom={20}
+                  mBottom={20}
                   disabled={!findEmailName || findEmailBirth.length !== 10}
                   action={() => handleFindEmail()}
                 />
@@ -266,7 +266,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
 
                 <SolidButton
                   text="뒤로가기"
-                  marginBottom={20}
+                  mBottom={20}
                   action={() => handleGoBackToLogin()}
                 />
               </Container>
@@ -316,7 +316,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
 
                 <SolidButton
                   text="확인"
-                  marginBottom={20}
+                  mBottom={20}
                   disabled={!findPasswordEmail || !findPasswordName || findPasswordBirth.length !== 10}
                   action={() => handleFindPassword()}
                 />
@@ -412,7 +412,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
 
                 <SolidButton
                   text="비밀번호 변경"
-                  marginBottom={20}
+                  mBottom={20}
                   disabled={!validatePassword(newPassword) || newPassword !== newPasswordCheck}
                   action={() => handleChangePassword()}
                 />
@@ -429,7 +429,7 @@ export default function FindEmailPasswordScreen({ navigation }) {
             <Text T4 medium center marginTop={20}>해당 계정은{'\n'}{findPasswordAccountType}&nbsp;로그인을 통해 가입하셨습니다</Text>
             <SolidButton
               text="로그인 하기"
-              marginTop={30}
+              mTop={30}
               action={() => handleGoBackToSNSLogin()}
             />
           </BottomSheetContainer>

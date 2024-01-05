@@ -37,7 +37,7 @@ export default function RegisterCompleteScreen({ navigation }) {
           <Text T6 center color={COLOR.GRAY1} marginTop={30}>더 빠른 이용을 위해{'\n'}추가 설정을 진행 하시겠습니까?</Text>
           <OutlineButton
             large
-            marginTop={18}
+            mTop={18}
             text="프로필 정보 등록"
             action={() => handleFillInProfileDetail()}
           />
@@ -46,7 +46,7 @@ export default function RegisterCompleteScreen({ navigation }) {
 
         <SolidButton
           text="OK DOK 시작하기"
-          marginBottom={20}
+          mBottom={20}
           disabled={false}
           action={() => handleNextScreen()}
         />

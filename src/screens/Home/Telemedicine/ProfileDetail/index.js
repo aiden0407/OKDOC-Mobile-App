@@ -310,8 +310,8 @@ export default function ProfileDetailScreen({ navigation }) {
               onFocus={() => handleTextInputFocus(1360)}
             />
             <SolidButton
-              marginTop={90}
-              marginBottom={20}
+              mTop={90}
+              mBottom={20}
               text="다음"
               disabled={!name || !relationship || !birth || !gender || !height || !weight || !drinker || !smoker}
               action={() => handleSubmitProfileDetail()}

@@ -117,12 +117,12 @@ export default function LoginPage({ navigation }) {
             />
 
             <SolidButton
-              marginTop={120}
+              mTop={120}
               text="로그인"
               action={() => handleLogin(email, password)}
             />
             <OutlineButton
-              marginTop={8}
+              mTop={8}
               text="회원가입"
               action={() => handleRegister()}
             />

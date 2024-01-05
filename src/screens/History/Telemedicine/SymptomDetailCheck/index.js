@@ -157,7 +157,7 @@ export default function SymptomDetailCheckScreen({ navigation, route }) {
           
           <SolidButton
             text={((telemedicineData?.invoiceInfo && count < -900) || (!(telemedicineData?.invoiceInfo) && count < -600)) ? "입장 시간 초과" : "상담실 입장하기"}
-            marginBottom={20}
+            mBottom={20}
             disabled={count>270 || (telemedicineData?.invoiceInfo && count < -900) || (!(telemedicineData?.invoiceInfo) && count < -600)}
             action={() => handleNotice1()}
           />

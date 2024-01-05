@@ -192,7 +192,7 @@ export default function PassportInformationScreen({ navigation }) {
 
             <SolidButton
               text="다음"
-              marginBottom={20}
+              mBottom={20}
               disabled={!validateName(name) || passportNumber.length !== 9 || !gender || birth.toDateString() === today.toDateString() || dateOfIssue.toDateString() === today.toDateString() || dateOfExpiry.toDateString() === today.toDateString()}
               action={() => initPatient()}
             />

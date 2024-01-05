@@ -15,7 +15,7 @@ function textSizeSelector(large, medium, tiny, double){
   return `font-size: ${TYPOGRAPHY.T5.SIZE}; line-height: ${TYPOGRAPHY.T5.LEADING}; font-family: Pretendard-Medium;`
 }
 
-export function SolidButton({ text, action, marginTop, marginBottom, large, medium, tiny, double, disabled }) {
+export function SolidButton({ text, action, mTop, mBottom, large, medium, tiny, double, disabled }) {
   return (
     <SolidButtonBackground
       disabled={disabled}
@@ -23,8 +23,8 @@ export function SolidButton({ text, action, marginTop, marginBottom, large, medi
       medium={medium}
       tiny={tiny}
       double={double}
-      marginTop={marginTop}
-      marginBottom={marginBottom}
+      mTop={mTop}
+      mBottom={mBottom}
       underlayColor={!disabled && COLOR.SUB1}
       onPress={action}
     >
@@ -35,8 +35,8 @@ export function SolidButton({ text, action, marginTop, marginBottom, large, medi
 
 const SolidButtonBackground = styled.TouchableHighlight`
   ${(props) => buttonSizeSelector(props.large, props.medium, props.tiny)}
-  ${(props) => props.marginTop && `margin-top: ${props.marginTop}px;`}
-  ${(props) => props.marginBottom && `margin-bottom: ${props.marginBottom}px;`}
+  ${(props) => props.mTop && `margin-top: ${props.mTop}px;`}
+  ${(props) => props.mBottom && `margin-bottom: ${props.mBottom}px;`}
   background-color: ${(props) => props.disabled ? COLOR.GRAY4 : COLOR.MAIN};
   align-items: center;
   justify-content: center;
@@ -47,7 +47,7 @@ const SolidButtonText = styled.Text`
   color: ${(props) => props.disabled ? COLOR.GRAY2 : '#FFFFFF'};
 `;
 
-export function OutlineButton({ text, action, marginTop, marginBottom, large, medium, tiny, double, disabled }) {
+export function OutlineButton({ text, action, mTop, mBottom, large, medium, tiny, double, disabled }) {
   return (
     <OutlineButtonBackground
       disabled={disabled}
@@ -55,8 +55,8 @@ export function OutlineButton({ text, action, marginTop, marginBottom, large, me
       medium={medium}
       tiny={tiny}
       double={double}
-      marginTop={marginTop}
-      marginBottom={marginBottom}
+      mTop={mTop}
+      mBottom={mBottom}
       underlayColor={!disabled && COLOR.SUB4}
       onPress={action}
     >
@@ -67,8 +67,8 @@ export function OutlineButton({ text, action, marginTop, marginBottom, large, me
 
 const OutlineButtonBackground = styled.TouchableHighlight`
   ${(props) => buttonSizeSelector(props.large, props.medium, props.tiny)}
-  ${(props) => props.marginTop && `margin-top: ${props.marginTop}px;`}
-  ${(props) => props.marginBottom && `margin-bottom: ${props.marginBottom}px;`}
+  ${(props) => props.mTop && `margin-top: ${props.mTop}px;`}
+  ${(props) => props.mBottom && `margin-bottom: ${props.mBottom}px;`}
   border-width: 1.5px;
   border-color: ${(props) => props.disabled ? COLOR.GRAY3 : COLOR.MAIN};
   background-color: #FFFFFF;
@@ -81,7 +81,7 @@ const OutlineButtonText = styled.Text`
   color: ${(props) => props.disabled ? COLOR.GRAY2 : COLOR.MAIN};
 `;
 
-export function SubColorButton({ text, action, marginTop, marginBottom, large, medium, tiny, double, disabled }) {
+export function SubColorButton({ text, action, mTop, mBottom, large, medium, tiny, double, disabled }) {
   return (
     <SubColorButtonBackground
       disabled={disabled}
@@ -89,8 +89,8 @@ export function SubColorButton({ text, action, marginTop, marginBottom, large, m
       medium={medium}
       tiny={tiny}
       double={double}
-      marginTop={marginTop}
-      marginBottom={marginBottom}
+      mTop={mTop}
+      mBottom={mBottom}
       underlayColor={!disabled && COLOR.SUB2}
       onPress={action}
     >
@@ -101,8 +101,8 @@ export function SubColorButton({ text, action, marginTop, marginBottom, large, m
 
 const SubColorButtonBackground = styled.TouchableHighlight`
   ${(props) => buttonSizeSelector(props.large, props.medium, props.tiny)}
-  ${(props) => props.marginTop && `margin-top: ${props.marginTop}px;`}
-  ${(props) => props.marginBottom && `margin-bottom: ${props.marginBottom}px;`}
+  ${(props) => props.mTop && `margin-top: ${props.mTop}px;`}
+  ${(props) => props.mBottom && `margin-bottom: ${props.mBottom}px;`}
   background-color: ${(props) => props.disabled ? COLOR.GRAY6 : COLOR.SUB3};
   align-items: center;
   justify-content: center;

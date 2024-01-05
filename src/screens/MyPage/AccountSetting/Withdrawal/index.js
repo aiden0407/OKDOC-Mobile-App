@@ -96,7 +96,7 @@ export default function WithdrawalScreen({ navigation }) {
 
           <SolidButton
             text="탈퇴하기"
-            marginBottom={20}
+            mBottom={20}
             action={() => createWithdrawalAlert()}
           />
         </Container>
