@@ -34,7 +34,7 @@ export default function LoginPage({ navigation }) {
   const [appleAuthAvailable, setAppleAuthAvailable] = useState(false);
   const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId: '73186981279-rf6plirme3crocphitmssnrlb5o1koem.apps.googleusercontent.com',
-    androidClientId: '73186981279-201g623eh63jgtt3a0c9ujfqc38vroke.apps.googleusercontent.com',
+    androidClientId: '73186981279-get8upmndqvj3l96lpqdk1q8snrdlk8d.apps.googleusercontent.com',
     expoClientId: '73186981279-8a8012fca0dq616i7rff9s7kqfhi61rn.apps.googleusercontent.com',
   });
 
