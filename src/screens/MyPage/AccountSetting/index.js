@@ -105,7 +105,6 @@ export default function AccountSettingScreen({ navigation }) {
 }
 
 const PhoneNumberBox = styled.View`
-  width: ${(props) => `${props.windowWidth - 112}px`};
   padding: 8px 0 8px 12px;
   background-color: ${COLOR.GRAY6};
   border-radius: 3px;

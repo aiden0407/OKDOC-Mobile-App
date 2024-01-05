@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   },
   constainerStyles: {
     bottom: 20,
-    left: 46
+    left: 0
   },
   dotStyles: {
     width: 5,
@@ -206,9 +206,9 @@ const styles = StyleSheet.create({
 });
 
 const BannerContainer = styled.View`
-  width: 100%;
+  width: 300px;
   height: ${Device.osName === 'Android' ? '180px' : '130px'};
-  padding-top: ${Device.osName === 'Android' ? '35px' : '0px'};
+  padding-top: ${Device.osName === 'Android' ? '45px' : '0px'};
   align-items: center;
   justify-content: center;
 `;

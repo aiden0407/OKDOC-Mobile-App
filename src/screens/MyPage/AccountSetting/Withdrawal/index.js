@@ -64,7 +64,7 @@ export default function WithdrawalScreen({ navigation }) {
         <Container paddingHorizontal={20}>
           <Container>
             <Text T3 bold marginTop={30}>회원 탈퇴를 위해{'\n'}아래 내용을 확인해주세요</Text>
-            <Text T6 color={COLOR.GRAY2} marginTop={12}>이 작업은 실행 취소할 수 없습니다.{'\n'}취급하고 있는 개인정보 데이터는 영구적으로 삭제됩니다.</Text>
+            <Text T6 color={COLOR.GRAY2} marginTop={12}>이 작업은 실행 취소할 수 없습니다.{'\n'}취급하고 있는 개인정보 데이터는 삭제되며,{'\n'}동일한 이메일로 재가입이 불가능하게 됩니다.</Text>
 
             <Text T5 medium marginTop={24}>이메일</Text>
             <LineInput
