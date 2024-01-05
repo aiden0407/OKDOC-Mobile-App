@@ -76,7 +76,7 @@ export const changePassword = async function (loginToken, email, password, newPa
                 Authorization: `Bearer ${loginToken}`
             },
             data: {
-                email: email,
+                id: email,
                 password: password,
                 new_password: newPassword,
             },
@@ -89,18 +89,17 @@ export const changePassword = async function (loginToken, email, password, newPa
     }
 }
 
-export const deleteFamilyAccout = async function (loginToken, email, password) {
+export const deleteFamilyAccout = async function (loginToken, email) {
 
     try {
         let options = {
-            url: `${APIURL}/authentication/withdrawal`,
+            url: `${APIURL}/authentication/leave`,
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${loginToken}`
             },
             data: {
-                id: email,
-                password: password,
+                id: email
             }
         }
         const response = await axios(options);

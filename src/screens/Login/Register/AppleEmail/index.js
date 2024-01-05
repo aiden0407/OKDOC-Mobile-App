@@ -2,6 +2,7 @@
 import { useState, useContext, useRef } from 'react';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
+import useTestAccount from 'hook/useTestAccount';
 
 //Components
 import * as Device from 'expo-device';
@@ -12,13 +13,13 @@ import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { emailCheckOpen, emailCheckClose } from 'api/Login';
+import { emailAvailabilityCheck, emailCheckOpen, emailCheckClose } from 'api/Login';
 
 export default function AppleEmailScreen({ navigation }) {
 
   const { state: { registerStatus }, dispatch: appContextDispatch } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
-  const [invitationToken, setInvitationToken] = useState('');
+  const [verifiedToken, setVerifiedToken] = useState('');
   const [email, setEmail] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [certificationNumber, setCertificationNumber] = useState('');
@@ -32,8 +33,28 @@ export default function AppleEmailScreen({ navigation }) {
   const handleRequestCertification = async function () {
     setLoading(true);
     try {
+      await emailAvailabilityCheck(email);
+      emailOpen();
+    } catch(error) {
+      setLoading(false);
+      if(error.response.data.statusCode === 422) {
+        if(useTestAccount(email)){
+          emailOpen();
+        } else {
+          Alert.alert('안내', '해당 계정으로 재가입이 불가능합니다.');
+        }
+      } else if(error.response.data.statusCode === 409) {
+        Alert.alert('안내', '이미 가입된 이메일입니다. 다른 이메일로 시도해 주시기 바랍니다.');
+      } else {
+        Alert.alert('인증요청 실패', '네트워크 오류로 인해 인증번호 발송을 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+      }
+    }
+  }
+
+  const emailOpen = async function () {
+    try {
       const emailCheckOpenResponse = await emailCheckOpen(email);
-      setInvitationToken(emailCheckOpenResponse.data.response.message)
+      setVerifiedToken(emailCheckOpenResponse.data.response.verified_token)
       setIsEmailSent(true);
       setLoading(false);
       Alert.alert('해당 이메일 주소로\n인증번호가 전송되었습니다.');
@@ -50,7 +71,7 @@ export default function AppleEmailScreen({ navigation }) {
   const handleCheckCertificationNumber = async function () {
     setLoading(true);
     try {
-      await emailCheckClose(email, certificationNumber, invitationToken);
+      await emailCheckClose(verifiedToken, email, certificationNumber);
       setIsEmailCertificated(true);
       setLoading(false);
       Alert.alert('이메일이 인증되었습니다.');

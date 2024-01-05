@@ -2,6 +2,7 @@
 import { useState, useContext, useRef } from 'react';
 import { AppContext } from 'context/AppContext';
 import styled from 'styled-components/native';
+import useTestAccount from 'hook/useTestAccount';
 
 //Components
 import * as Device from 'expo-device';
@@ -12,18 +13,18 @@ import { Text } from 'components/Text';
 import { SolidButton } from 'components/Button';
 
 //Api
-import { emailCheckOpen, emailCheckClose } from 'api/Login';
+import { emailAvailabilityCheck, emailCheckOpen, emailCheckClose } from 'api/Login';
 
 export default function EmailPasswordScreen({ navigation }) {
 
   const { dispatch: appContextDispatch } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
-  const [invitationToken, setInvitationToken] = useState('');
+  const [verifiedToken, setVerifiedToken] = useState('');
   const [email, setEmail] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [certificationNumber, setCertificationNumber] = useState('');
   const [isEmailCertificated, setIsEmailCertificated] = useState(false);
-  const [emailToken, setEmailToken] = useState('');
+  const [accessToken, setAccessToken] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const passwordCheckRef = useRef();
@@ -41,14 +42,17 @@ export default function EmailPasswordScreen({ navigation }) {
   const handleRequestCertification = async function () {
     setLoading(true);
     try {
-      const emailCheckOpenResponse = await emailCheckOpen(email);
-      setInvitationToken(emailCheckOpenResponse.data.response.message)
-      setIsEmailSent(true);
+      await emailAvailabilityCheck(email);
+      emailOpen();
+    } catch(error) {
       setLoading(false);
-      Alert.alert('해당 이메일 주소로\n인증번호가 전송되었습니다.');
-    } catch (error) {
-      setLoading(false);
-      if (error.response.data.statusCode === 409) {
+      if(error.response.data.statusCode === 422) {
+        if(useTestAccount(email)){
+          emailOpen();
+        } else {
+          Alert.alert('안내', '해당 계정으로 재가입이 불가능합니다.');
+        }
+      } else if(error.response.data.statusCode === 409) {
         Alert.alert('안내', '이미 가입된 이메일입니다. 다른 이메일로 시도해 주시기 바랍니다.');
       } else {
         Alert.alert('인증요청 실패', '네트워크 오류로 인해 인증번호 발송을 실패하였습니다. 다시 시도해 주시기 바랍니다.');
@@ -56,11 +60,24 @@ export default function EmailPasswordScreen({ navigation }) {
     }
   }
 
+  const emailOpen = async function () {
+    try {
+      const emailCheckOpenResponse = await emailCheckOpen(email);
+      setVerifiedToken(emailCheckOpenResponse.data.response.verified_token)
+      setIsEmailSent(true);
+      setLoading(false);
+      Alert.alert('해당 이메일 주소로\n인증번호가 전송되었습니다.');
+    } catch (error) {
+      setLoading(false);
+      Alert.alert('인증요청 실패', '네트워크 오류로 인해 인증번호 발송을 실패하였습니다. 다시 시도해 주시기 바랍니다.');
+    }
+  }
+
   const handleCheckCertificationNumber = async function () {
     setLoading(true);
     try {
-      const response = await emailCheckClose(email, certificationNumber, invitationToken);
-      setEmailToken(response.data.response.accessToken);
+      const response = await emailCheckClose(verifiedToken, email, certificationNumber);
+      setAccessToken(response.data.response.accessToken);
       setIsEmailCertificated(true);
       setLoading(false);
       Alert.alert('이메일이 인증되었습니다.');
@@ -75,7 +92,7 @@ export default function EmailPasswordScreen({ navigation }) {
       type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
       email: email,
       password: password,
-      invitationToken: emailToken,
+      invitationToken: accessToken,
     });
     navigation.navigate('BirthInformation');
   }

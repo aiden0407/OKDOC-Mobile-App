@@ -14,7 +14,7 @@ import { Image } from 'components/Image';
 import NavigationBackArrow from 'components/NavigationBackArrow';
 
 //Api
-import { findFamilyAccount, findPasswordOpen, findPasswordClose, changePassword } from 'api/Login';
+import { findFamilyAccount, emailCheckOpen, emailCheckClose, changePassword } from 'api/Login';
 
 //Assets
 import exclamationIcon from 'assets/icons/circle-exclamation.png';
@@ -33,7 +33,8 @@ export default function FindEmailPasswordScreen({ navigation }) {
   const [findPasswordEmail, setFindPasswordEmail] = useState('');
   const [findPasswordName, setFindPasswordName] = useState('');
   const [findPasswordBirth, setFindPasswordBirth] = useState('');
-  const [emailToken, setEmailToken] = useState('');
+  const [verifiedToken, setVerifiedToken] = useState('');
+  const [accessToken, setAccessToken] = useState('');
   const [findPasswordCertificationNumber, setFindPasswordCertificationNumber] = useState('');
   const [isEmailCertificated, setIsEmailCertificated] = useState(false);
   const [newPassword, setNewPassword] = useState('');
@@ -124,35 +125,28 @@ export default function FindEmailPasswordScreen({ navigation }) {
   const handleFindPassword = async function () {
     try {
       Keyboard.dismiss();
-      const response = await findPasswordOpen(findPasswordEmail, findPasswordName, Number(findPasswordBirth.replaceAll("-", "")));
-
-      if (response.data.response.family?.apple_id) {
-        setFindPasswordAccountType('애플');
-      } else if (response.data.response.family?.google_id) {
-        setFindPasswordAccountType('구글');
-      } else {
-        setEmailToken(response.data.response.verified_token);
-        setIsFindPasswordSubmitted(true);
-      }
-
+      const emailCheckOpenResponse = await emailCheckOpen(findPasswordEmail);
+      setVerifiedToken(emailCheckOpenResponse.data.response.verified_token);
+      setIsFindPasswordSubmitted(true);
     } catch (error) {
-      Alert.alert('해당 정보로 등록된 유저가 존재하지 않습니다.');
+      Alert.alert('오류', '다시 시도해 주시기 바랍니다.');
     }
   }
 
   const handleEmailResend = async function () {
     try {
-      const response = await findPasswordOpen(findPasswordEmail, findPasswordName, Number(findPasswordBirth.replaceAll("-", "")));
-      setEmailToken(response.data.response.verified_token);
+      const emailCheckOpenResponse = await emailCheckOpen(findPasswordEmail);
+      setVerifiedToken(emailCheckOpenResponse.data.response.verified_token)
       Alert.alert('해당 이메일로 인증번호가 재전송 되었습니다.');
     } catch (error) {
-      Alert.alert('네트워크 상태가 좋지 않습니다. 다시 시도해 주시기 바랍니다.');
+      Alert.alert('오류', '다시 시도해 주시기 바랍니다.');
     }
   }
 
   const handleCheckCertificationNumber = async function () {
     try {
-      await findPasswordClose(emailToken, findPasswordEmail, findPasswordCertificationNumber);
+      const response = await emailCheckClose(verifiedToken, findPasswordEmail, findPasswordCertificationNumber);
+      setAccessToken(response.data.response.accessToken);
       Alert.alert('인증 성공', '이메일 인증이 완료되었습니다.', [
         {
           text: '확인',
@@ -166,13 +160,20 @@ export default function FindEmailPasswordScreen({ navigation }) {
 
   const handleChangePassword = async function () {
     try {
-      await changePassword(emailToken, findPasswordEmail, newPassword);
+      await changePassword(accessToken, findPasswordEmail, newPassword, findPasswordName, Number(findPasswordBirth.replaceAll("-", "")));
       Alert.alert('비밀번호가 변경', '비밀번호가 변경되었습니다. 변경된 비밀번호로 로그인을 해주시기 바랍니다.', [{
         text: '확인',
         onPress: () => handleGoBackToLogin()
       }]);
     } catch (error) {
-      Alert.alert('현재 비밀번호가 일치하지 않습니다.');
+      Alert.alert('오류', '정보가 일치하지 않습니다. 입력하신 정보를 다시 확인해 주시기 바랍니다.', [{
+        text: '확인',
+        onPress: () => {
+          setIsFindPasswordSubmitted(false);
+          setIsEmailCertificated(false);
+          setFindPasswordCertificationNumber('');
+        }
+      }]);
     }
   }
 

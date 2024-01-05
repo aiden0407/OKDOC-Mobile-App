@@ -87,6 +87,23 @@ export const getRegisterTerms = async function () {
     }
 }
 
+export const emailAvailabilityCheck = async function (email) {
+    try {
+        let options = {
+            url: `${APIURL}/authentication/availability-check`,
+            method: 'POST',
+            data: {
+                email: email,
+            }
+        }
+        const response = await axios(options);
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const emailCheckOpen = async function (email) {
     try {
         let options = {
@@ -104,13 +121,13 @@ export const emailCheckOpen = async function (email) {
     }
 }
 
-export const emailCheckClose = async function (email, certificationNumber, emailToken) {
+export const emailCheckClose = async function (verifiedToken, email, certificationNumber) {
     try {
         let options = {
             url: `${APIURL}/authentication/email-check-close`,
             method: 'POST',
             headers: {
-                Authorization: `Bearer ${emailToken}`
+                Authorization: `Bearer ${verifiedToken}`
             },
             data: {
                 email: email,
@@ -267,7 +284,7 @@ export const createPatientByPassApp = async function (loginToken, imp_uid) {
 export const findFamilyAccount = async function (name, birth) {
     try {
         let options = {
-            url: `${APIURL}/authentication/email-find`,
+            url: `${APIURL}/authentication/ids-inquiry`,
             method: 'POST',
             data: {
                 name: name,
@@ -282,57 +299,19 @@ export const findFamilyAccount = async function (name, birth) {
     }
 }
 
-export const findPasswordOpen = async function (email, name, birth) {
+export const changePassword = async function (accessToken, email, newPassword, name, birth) {
     try {
         let options = {
-            url: `${APIURL}/authentication/password-find-open`,
-            method: 'POST',
-            data: {
-                email: email,
-                name: name,
-                birth: birth,
-            },
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error;
-    }
-}
-
-export const findPasswordClose = async function (emailToken, email, verificationNumber) {
-    try {
-        let options = {
-            url: `${APIURL}/authentication/password-find-close`,
+            url: `${APIURL}/authentication/password-reset`,
             method: 'POST',
             headers: {
-                Authorization: `Bearer ${emailToken}`
-            },
-            data: {
-                email: email,
-                verification_number: verificationNumber,
-            },
-        }
-        const response = await axios(options);
-        return response;
-
-    } catch (error) {
-        throw error;
-    }
-}
-
-export const changePassword = async function (emailToken, email, newPassword) {
-    try {
-        let options = {
-            url: `${APIURL}/authentication/password-find-change`,
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${emailToken}`
+                Authorization: `Bearer ${accessToken}`
             },
             data: {
                 email: email,
                 new_password: newPassword,
+                name: name,
+                birth: birth
             },
         }
         const response = await axios(options);

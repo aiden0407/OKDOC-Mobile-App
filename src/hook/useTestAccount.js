@@ -3,6 +3,7 @@ export default function useTestAccount(email) {
     const testAccountList = [
         // 에이든 계정
         'aiden@insunginfo.co.kr',
+        'cailyent0407@gmail.com',
         // 로건 계정
         'logan@insunginfo.co.kr',
         // 레오 계정

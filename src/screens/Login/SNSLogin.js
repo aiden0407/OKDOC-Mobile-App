@@ -5,7 +5,8 @@ import { AppContext } from 'context/AppContext';
 import { getLocales } from 'expo-localization';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
-import * as Clipboard from 'expo-clipboard';
+import useTestAccount from 'hook/useTestAccount';
+// import * as Clipboard from 'expo-clipboard';
 
 //SNS Login
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -14,12 +15,12 @@ import * as Google from 'expo-auth-session/providers/google';
 //Components
 import { COLOR } from 'constants/design'
 import { Alert, StyleSheet } from 'react-native';
-import { SafeArea, KeyboardAvoiding, ContainerCenter, Center, Row } from 'components/Layout';
+import { SafeArea, KeyboardAvoiding, ContainerCenter, Center } from 'components/Layout';
 import { Text } from 'components/Text';
 import { Image } from 'components/Image';
 
 //Api
-import { familyAppleLogin, familyGoogleLogin } from 'api/Login';
+import { familyAppleLogin, familyGoogleLogin, emailAvailabilityCheck } from 'api/Login';
 
 //Assets
 import mainLogo from 'assets/main/main_logo.png';
@@ -33,7 +34,7 @@ export default function LoginPage({ navigation }) {
   const [appleAuthAvailable, setAppleAuthAvailable] = useState(false);
   const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId: '73186981279-rf6plirme3crocphitmssnrlb5o1koem.apps.googleusercontent.com',
-    androidClientId: '73186981279-get8upmndqvj3l96lpqdk1q8snrdlk8d.apps.googleusercontent.com',
+    androidClientId: '73186981279-201g623eh63jgtt3a0c9ujfqc38vroke.apps.googleusercontent.com',
     expoClientId: '73186981279-8a8012fca0dq616i7rff9s7kqfhi61rn.apps.googleusercontent.com',
   });
 
@@ -90,7 +91,7 @@ export default function LoginPage({ navigation }) {
           await AsyncStorage.setItem('@account_data', JSON.stringify(accountData));
           navigation.goBack();
         } catch (error) {
-          //console.log(error);
+          // console.log(error);
         }
         
       } catch (error) {
@@ -102,15 +103,7 @@ export default function LoginPage({ navigation }) {
           Alert.alert('안내', '해당 계정이 존재하지 않습니다. 회원가입을 진행합니다.', [
             {
               text: '확인',
-              onPress: () => {
-                appContextDispatch({
-                  type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
-                  email: user.email,
-                  password: undefined,
-                  invitationToken: user.id,
-                });
-                navigation.navigate('RegisterPolicy');
-              }
+              onPress: () => availabilityCheck(user.email, user.id)
             }
           ]);
         } else {
@@ -156,22 +149,12 @@ export default function LoginPage({ navigation }) {
         Alert.alert('안내', '해당 계정이 존재하지 않습니다. 회원가입을 진행합니다.', [
           {
             text: '확인',
-            onPress: () => {
-              appContextDispatch({
-                type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
-                email: email,
-                password: undefined,
-                invitationToken: credential.user,
-              });
-              navigation.navigate('RegisterPolicy');
-            }
+            onPress: () => availabilityCheck(user.email, credential.user)
           }
         ]);
       } else if (error.response.data.statusCode === 422) {
-        // const email = extractEmailAddress(error.response.data.message);
         appContextDispatch({
           type: 'REGISTER_ROUTE',
-          // route: 'APPLE_EMAIL_EXISTENT',
           route: 'APPLE_EMAIL_UNDEFINED',
         });
         Alert.alert('안내', '해당 계정이 존재하지 않습니다. 회원가입을 진행합니다.', [
@@ -188,6 +171,36 @@ export default function LoginPage({ navigation }) {
             }
           }
         ]);
+      } else {
+        Alert.alert('네트워크 오류로 인해 로그인에 실패했습니다.');
+      }
+    }
+  }
+
+  async function availabilityCheck(email, id) {
+    try {
+      await emailAvailabilityCheck(email);
+      appContextDispatch({
+        type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
+        email: email,
+        password: undefined,
+        invitationToken: id,
+      });
+      navigation.navigate('RegisterPolicy');
+
+    } catch(error) {
+      if(error.response.data.statusCode === 422) {
+        if(useTestAccount(email)){
+          appContextDispatch({
+            type: 'REGISTER_EMAIL_PASSWORD_INVITATION_TOKEN',
+            email: email,
+            password: undefined,
+            invitationToken: id,
+          });
+          navigation.navigate('RegisterPolicy');
+        } else {
+          Alert.alert('안내', '해당 계정으로 재가입이 불가능합니다.');
+        }
       } else {
         Alert.alert('네트워크 오류로 인해 로그인에 실패했습니다.');
       }
@@ -242,7 +255,7 @@ export default function LoginPage({ navigation }) {
           </GoogleSignInButton>
 
           {
-            appleAuthAvailable &&
+            appleAuthAvailable && 
             <AppleAuthentication.AppleAuthenticationButton
               buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
               buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
