@@ -1,16 +1,14 @@
-# OKDOC
+# Deprecated
 
-OKDOC은 재외국민을 위한 대학병원 전문의 원격진료 서비스입니다.
+해당 프로젝트는 다른 프로젝트로 migration되어 archive 용으로 존재합니다.
 
-## OKDOC 프로덕트 문서
+자세한 사항은 https://github.com/aiden0407/OKDOC-Mobile-App-Bare 참고.
 
-[포트폴리오 노션 페이지](https://aiden0407.notion.site/OK-DOC-98512b4dc1af4fa180e26b2edada7e6a?pvs=4)
-
-## OKDOC-Mobile-App
+### OKDOC-Mobile-App
 
 재외국민이 국내 대학병원 전문의에게 원격진료를 받을 수 있는 서비스를 제공하는 어플리케이션입니다. Expo-cli 기반 React Native 프로젝트이며 Expo Application Services(EAS)를 통해 버전 관리 및 배포를 진행하고 있습니다.
 
-## OKDOC-Mobile-App 실행
+### OKDOC-Mobile-App 실행
 
 #### `yarn install`
 
